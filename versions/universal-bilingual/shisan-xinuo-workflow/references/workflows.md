@@ -2,19 +2,34 @@
 
 加载时机：开始与下列任务类型匹配的工作、或 SKILL.md 引用具体流程时。When to load: when starting work matching one of the task types below, or when SKILL.md cites a workflow. 每个流程都是清单，逐项打勾。Each flow is a checklist — track progress against it.
 
-## 0. 任务主流程——调研驱动（任何任务类型前先执行）· Task operating sequence — research-driven (run before ANY task type)
+## 0. 前置与总纲——强制流程 · Prelude & master — mandatory sequence (run before ANY task type)
 
-- [ ] 1. 接收指令；第一性原理理解（本质 / 必要 / 惯性）。Receive; first-principles understanding (essence / required / inertia).
-- [ ] 2. 按症状 / 关键词检索经验库；命中 → 按「解决 / 预防」执行。Search the experience log by symptom/keyword; hit → execute per "solve / prevent".
-- [ ] 3. 调研实际资源：真实代码（现状证据：消费方 / 常量 / 开关 + 文件行号结论）、环境、工作区、可用 Skill / MCP。Survey actual resources: real code (status evidence), environment, workspace, available skills & MCP.
-- [ ] 4. 降级：环境 / 能力 / 工具 / Skill / MCP 不可用 → 联网调研、加载所需 Skill、记录降级。Degraded: unavailable → research online, load needed skill, record fallback.
-- [ ] 5. 复用调研：本地项目 → 同类 / 已知项目资源（复用五问）；自研时记录结论。Reuse survey: local → similar projects (five-question chain); record conclusions.
-- [ ] 6. 向用户复述理解（目标 / 边界 / 验收）；确认对齐。Restate understanding; confirm alignment.
-- [ ] 7. 疑问或方向偏移 → 提问并结束回合等待。Ask on doubt or direction drift; end the turn and wait.
-- [ ] 8. 产品视角审查 + 约束 / 假设 + 定级 L1/L2/L3 + 准备回滚点（规则 43）。Product-view + constraints + triage + rollback point.
-- [ ] 9. 规划与验收文档：3-5 条可验证标准；目标模式加预算与文件边界。Plan & acceptance doc; goal mode adds budgets + file boundaries.
-- [ ] 10. 按分级执行（目标模式：按计划自主、节点记录、超预算自动停）。Execute per triage (goal mode: autonomous per plan).
-- [ ] 11. 自查与归档：最小验证 → 自查 → 文档同批 → 双写知识 → 提交附说明。Self-check & archive: verification → self-check → docs with code → dual-write → commit with note.
+### 0.0 状态澄清（目标 / 现状模糊时先走）· Status clarification
+
+**触发词 Triggers**：理不清 / 项目太乱 / 现状不明 / 不知道从哪下手 / 帮我梳理 / 下一步怎么办 / 要不要做 X。can't sort this out / where do I start / what's next / should I do X；或主流程第 1 步发现现状模糊。
+
+- [ ] 1. 共情框定 Empathize & frame：一句话复述处境与卡住的感觉，声明进入澄清对话
+- [ ] 2. 首问 First question：从最高杠杆点切入（「最终想要的结果 / 什么在阻挡你」）
+- [ ] 3. 逐层深挖 Drill：按回答追问（因果链 3-5 层、约束与假设、障碍转真问题），每轮 1-2 个
+- [ ] 4. 抛出线索 Offer leads：给出线索 / 假设请用户验证
+- [ ] 5. 收敛结构化 Converge：产出【澄清纪要：目标 / 现状 / 约束 / 卡点】
+- [ ] 6. 共同规划 Plan together：结构化行动规划，确认后回主流程第 1 步
+
+### 0.1 强制总纲主流程 · Mandatory master sequence（11 步，出口产物门禁）
+
+每步出口产物见 SKILL.md §2.2；进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由。Exit artifacts in SKILL.md §2.2; the previous step's artifact must exist first; record reasons for legitimate skips.
+
+- [ ] 1. 接收指令 Receive（任务本质一句话 essence）
+- [ ] 2. 经验库必读 Experience log first（命中记录 hit record）
+- [ ] 3. 调研实际资源 Survey actual resources（现状事实清单 status fact list）
+- [ ] 4. 降级联网调研 Degraded research（降级记录 degradation record）
+- [ ] 5. 复用调研 Reuse survey（复用结论 reuse conclusion）
+- [ ] 6. 复述理解 Restate understanding（用户确认 user confirmation）
+- [ ] 7. 疑问必问 Ask on doubt（提问记录 ask record）
+- [ ] 8. 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback（分级 + 回滚点记录）
+- [ ] 9. 规划与验收文档 Plan & acceptance doc（规划验收文档）
+- [ ] 10. 执行 Execute（执行记录 execution record）
+- [ ] 11. 自查与归档 Self-check & archive（验证结果 + 归档 verification + archive）
 
 ## 1. 新项目 / 新功能开发（15 步） · New feature / new project (15 steps)
 
