@@ -33,7 +33,25 @@ Before starting any task, adapt this workflow to the current platform:
 5. 一句话向用户确认：检测到的平台、注入模式、注入点已确认生效、生效提问工具。未完成不得开工。
    Confirm in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
 
-## 3. 关键必问协议 · Ask-before-acting protocol
+## 3. 任务主流程——调研驱动生命周期（每个任务都执行）· Task operating sequence — research-driven lifecycle (run for EVERY task)
+
+每个任务都按此顺序推进，这是核心循环，跳过即违反工作流。Every task follows this order; it is the core loop — skipping it is a workflow violation.
+
+1. **接收指令**：第一性原理理解——本质 / 必要 / 惯性。**Receive** — first-principles understanding (essence / required / inertia).
+2. **经验库必读**：按症状 / 关键词检索，命中先按「解决 / 预防」执行。**Read the experience log first** by symptom/keyword; hit → execute per "solve / prevent".
+3. **调研实际资源**：真实代码（现状证据）+ 环境 + 工作区 + 可用 Skill / MCP。**Survey actual resources** — real code (status evidence), environment, workspace, available skills & MCP.
+4. **降级联网调研**：环境 / 能力 / 工具 / Skill / MCP 不可用 → 联网调研并加载所需 Skill、记录降级。**Degraded research online** — research docs/libraries/equivalents, load the needed skill, record the fallback.
+5. **复用调研**：本地项目 → 同类 / 已知项目可复用资源（复用五问）；自研时记录结论。**Reuse survey** — local project, then similar projects (five-question chain); record conclusions when building new.
+6. **复述理解**：1-3 句复述目标 / 边界 / 验收，确认对齐。**Restate understanding** (goal / boundaries / acceptance); confirm alignment.
+7. **疑问必问**：执行不理解或方向偏移 → 第 4 节降级链提问并结束回合等待。**Ask on any doubt** or direction drift via the section-4 chain; end the turn.
+8. **产品视角审查 + 约束假设 + 分级 + 回滚点**。**Product-view review + constraints + L1/L2/L3 triage + rollback point.**
+9. **规划与验收文档**：3-5 条可验证标准；目标模式加预算与文件边界。**Plan & acceptance doc** — 3-5 verifiable criteria; goal mode adds budgets and file-boundary split.
+10. **执行**：按分级；目标模式按计划自主、节点记录、超预算自动停。**Execute** per triage; goal mode autonomous per plan.
+11. **自查与归档**：最小验证 → 自查 → 文档同批 → 双写知识 → 提交附说明。**Self-check & archive** — verification, self-check, docs with code, dual-write knowledge, commit/push with note.
+
+细节与分类型清单见 `references/workflows.md`。Details and per-task-type checklists in `references/workflows.md`.
+
+## 4. 关键必问协议 · Ask-before-acting protocol
 
 影响重大的决策必须在行动前与用户确认。触发：方向不明或歧义、需求冲突、权限/密钥处理、破坏性操作（删除、迁移、覆盖写、对外发布）、架构或技术选型、范围扩大、方案分歧。
 Consequential decisions must be confirmed before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permission/secret handling, destructive operations (delete, migrate, overwrite, publish externally), architecture or stack choices, scope expansion, conflicting proposals.
@@ -48,7 +66,7 @@ Consequential decisions must be confirmed before acting. Triggers: unclear direc
 常规 L1 任务无需提问——不过度打扰；高风险 L3 任务必须提问。
 Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking.
 
-## 4. 双模式与任务分级 · Execution modes & task triage
+## 5. 双模式与任务分级 · Execution modes & task triage
 
 ### 双模式（默认 = 普通模式） Dual modes (default = normal mode)
 
@@ -71,14 +89,14 @@ Goal-mode extra duties: write the plan (scope, risk rating, budgets) *before* ex
 判定依据：影响面、可逆性、返工成本、是否触碰数据与对外发布。
 Judge by: blast radius, reversibility, rework cost, whether data or external publishing is touched.
 
-## 5. 最小闭环交付 · Minimal closed-loop delivery
+## 6. 最小闭环交付 · Minimal closed-loop delivery
 
 1. **理解 Understand**：1-3 句复述目标、边界、验收口径。Restate goal, boundaries, acceptance criteria in 1-3 sentences.
 2. **最小修改 Minimal change**：只改任务要求范围；优先复用已有代码、依赖、平台原生能力与现成开源方案（复用五问见 `references/workflows.md`）。Modify only what the task requires; prefer existing code, dependencies, native capabilities, and open-source wheels (five-question chain in `references/workflows.md`).
 3. **最小验证 Minimal verification**：跑最小粒度验证证明改动有效（lint / type-check / 测试，以项目基线为准）。Run the smallest check that proves it works (project's own baseline).
 4. **交付成品 Deliver finished work**：不交半成品、不留占位；未完成显式标注（`TODO`、`未实现`、`待验证`）。**绝不假实现。** No half-done work, no placeholders; label unfinished work explicitly. **Never fake completion.**
 
-## 6. 质量门禁与回滚 · Quality gates & rollback
+## 7. 质量门禁与回滚 · Quality gates & rollback
 
 - 提交前：审查者视角重读 diff（边界 / 安全 / 可读性 / 未验证项 / 复用），重跑验证；文档与代码同批提交。
   Before committing: re-read the diff as a reviewer, re-run validation, ship docs in the same commit as code.
@@ -87,7 +105,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 - 对外发布：用户批准 → 约 30 分钟观察期（错误率 / 延迟 / 告警）→ 异常走回滚预案。
   External publishing: user approval → ~30 min observation window (errors / latency / alerts) → roll back on anomaly.
 
-## 7. 易错点 · Gotchas
+## 8. 易错点 · Gotchas
 
 - **触发关键词是活开关**：目标模式关键词（`目标：`、`unattended` 等）会静默改变决策模型，每条用户消息（含中途消息）都要检查。
   **Trigger keywords are live switches.** Goal-mode keywords silently change the decision model. Check every user message, including mid-task.
@@ -106,7 +124,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 - **结论即时落盘**：分析时即时记录，拖到收尾会在长会话中丢失。
   **Keep records at analysis time, not at cleanup.**
 
-## 8. 引用地图——按需加载 · Reference map — load on demand only
+## 9. 引用地图——按需加载 · Reference map — load on demand only
 
 | 文件 File | 何时加载 When to load |
 |---|---|
@@ -117,7 +135,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 不要预加载全部引用，只加载当前步骤需要的。**你无法自行感知上下文是否被压缩——不靠感知，靠两道守卫**：(a) 显式信号（用户说「重载 / 你被压缩了 / 从头加载」或平台重置）→ 立即重读 SKILL.md 与仍需要的引用；(b) 关键节点自检：开工 / 提交 / 重大决策前默写核心要素（分级、模式、回滚、必问），任一复述不全即视为上下文缺失，先重读再继续。You cannot detect context compaction — rely on explicit reload signals plus a core-elements self-check at key milestones; never continue on a compressed impression.
 
-## 9. 留档与知识纪律（摘要） · Records & knowledge discipline (summary)
+## 10. 留档与知识纪律 · Records & knowledge discipline (summary)
 
 完整细节见 `references/rules.md`（第 30-38 条）与 `references/workflows.md`。要点：
 Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`. Essentials:

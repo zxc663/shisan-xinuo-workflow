@@ -2,6 +2,20 @@
 
 加载时机：开始与下列任务类型匹配的工作、或 SKILL.md 引用具体流程时。When to load: when starting work matching one of the task types below, or when SKILL.md cites a workflow. 每个流程都是清单，逐项打勾。Each flow is a checklist — track progress against it.
 
+## 0. 任务主流程——调研驱动（任何任务类型前先执行）· Task operating sequence — research-driven (run before ANY task type)
+
+- [ ] 1. 接收指令；第一性原理理解（本质 / 必要 / 惯性）。Receive; first-principles understanding (essence / required / inertia).
+- [ ] 2. 按症状 / 关键词检索经验库；命中 → 按「解决 / 预防」执行。Search the experience log by symptom/keyword; hit → execute per "solve / prevent".
+- [ ] 3. 调研实际资源：真实代码（现状证据：消费方 / 常量 / 开关 + 文件行号结论）、环境、工作区、可用 Skill / MCP。Survey actual resources: real code (status evidence), environment, workspace, available skills & MCP.
+- [ ] 4. 降级：环境 / 能力 / 工具 / Skill / MCP 不可用 → 联网调研、加载所需 Skill、记录降级。Degraded: unavailable → research online, load needed skill, record fallback.
+- [ ] 5. 复用调研：本地项目 → 同类 / 已知项目资源（复用五问）；自研时记录结论。Reuse survey: local → similar projects (five-question chain); record conclusions.
+- [ ] 6. 向用户复述理解（目标 / 边界 / 验收）；确认对齐。Restate understanding; confirm alignment.
+- [ ] 7. 疑问或方向偏移 → 提问并结束回合等待。Ask on doubt or direction drift; end the turn and wait.
+- [ ] 8. 产品视角审查 + 约束 / 假设 + 定级 L1/L2/L3 + 准备回滚点（规则 43）。Product-view + constraints + triage + rollback point.
+- [ ] 9. 规划与验收文档：3-5 条可验证标准；目标模式加预算与文件边界。Plan & acceptance doc; goal mode adds budgets + file boundaries.
+- [ ] 10. 按分级执行（目标模式：按计划自主、节点记录、超预算自动停）。Execute per triage (goal mode: autonomous per plan).
+- [ ] 11. 自查与归档：最小验证 → 自查 → 文档同批 → 双写知识 → 提交附说明。Self-check & archive: verification → self-check → docs with code → dual-write → commit with note.
+
 ## 1. 新项目 / 新功能开发（15 步） · New feature / new project (15 steps)
 
 - [ ] 1. 开工自检（平台已适配、规则文件生效）Startup self-check (platform adapted, rule file active)
