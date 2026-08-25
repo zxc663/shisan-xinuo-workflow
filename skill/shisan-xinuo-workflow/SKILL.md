@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: "A cross-platform engineering-execution skill for AI coding agents with the workflow as its soul, the discipline rules as its foundation, dual engineer/product-manager eyes as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory universal task operating sequence (research-driven 11 steps, exit-artifact gates per step, status-clarification prelude), product-polish diagnosis & mandatory dual survey, verifiable online-survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback-before-major-changes, recordkeeping. Use when the user wants a disciplined, auditable, process-driven way of working on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not for domain-specific coding help."
+description: "A cross-platform engineering-execution skill for AI coding agents with the workflow as its soul, the discipline rules as its foundation, dual engineer/product-manager eyes as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory universal task operating sequence (research-driven 11 steps, exit-artifact gates per step, status-clarification prelude), product-polish diagnosis & mandatory dual survey, verifiable online-survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback-before-major-changes, recordkeeping. Use when the user wants a disciplined, auditable, process-driven way of working on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not domain tutorials — the workflow/rules layers are framework-agnostic; details.md is a pitfall log from real stacks."
 ---
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)
@@ -11,7 +11,9 @@ description: "A cross-platform engineering-execution skill for AI coding agents 
 
 **Use** for any engineering task (whenever you are doing work, advance along the master sequence in section 2); for disciplined execution, workflow governance, workflow rules, or consistent agent behavior across projects and platforms. Step 0 (section 3) also runs automatically whenever this skill loads.
 
-**NOT for** domain-specific knowledge (frameworks, libraries, APIs) or for replacing project-level conventions — the project's own docs always win where they conflict with this skill.
+**NOT a substitute for** learning a framework/API from its own docs or for replacing project-level conventions — the project's own docs always win where they conflict with this skill.
+
+> **Honest note on landing details**: `details.md` does carry fine-grained engineering experience from real projects, some bound to specific stacks (Next.js / Prisma / Playwright …). Treat it as a **pitfall log** ("what went wrong there") — not as domain tutorials ("how to use X"); the workflow / rules / gates layers themselves are framework-agnostic.
 
 ## 2. Master: Task operating sequence — mandatory universal skeleton (single entry)
 
@@ -40,6 +42,10 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 | 11 | **Self-check & archive** — minimal verification → self-check → docs with code → dual-write knowledge → commit with note | Verification result + archive (docs / knowledge / commit note) |
 
 **Gate**: before entering a step, the previous step's exit artifact must exist and be recorded; steps that legitimately cannot produce one (e.g. genuinely no reuse to survey) must record the reason in the task record — never skip silently.
+
+### 2.3 L1 fast path (triage-first)
+
+Right after step 1, triage the task level: **L1 routine** (small, reversible, low impact — typo fix, single-line change, doc tweak) → take the **L1 fast path**: one-sentence restatement → minimal change → minimal verification → report. Explicitly mark it as "L1 fast path" in the task record (a named lane, not a silent skip). L2 / L3 keep the full 11-step sequence (triage is finalized again at step 8).
 
 Details and per-task-type checklists: `references/workflows.md` (master + clarification + 9 task types).
 
@@ -133,4 +139,5 @@ Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`
 - Every session keeps a **task record** in the project's defined location: understanding → acceptance criteria → decisions → results. Write conclusions immediately; archive each step's exit artifacts with the task record.
 - At session end, distill 1-5 reusable knowledge points (default 3) in the form scenario → judgment → action; write the knowledge version to the project's knowledge doc, and give a plain-language version to the user.
 - An **experience log** (lessons learned, pitfalls) is mandatory reading at session start — search by symptom keywords. Its location is defined by the project; this skill does not impose one.
+- **Memory-file protocol (externalized long-term memory)** — maintain a project memory file by the project's convention (`memory/` — current goal / decisions / constraints / progress / pitfalls; ≤1 screen). Write at milestones and before the context reaches 40-60%; after any compaction / reset / reload signal, **read it first** before continuing (detail in `references/workflows.md`).
 - Docs ship in the same commit as code; a doc may be archived only after a current equivalent exists.

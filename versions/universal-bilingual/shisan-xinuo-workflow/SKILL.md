@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: "以通用工作执行流程为灵魂、以纪律规则为地基、以工程师与产品双视角为镜、以可信证据为依据、以安全为底线的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、产品完善度诊断与强制双调研、联网调研可信依据、开源安装强制校验、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul, the rules as its foundation, dual engineer/product-manager views as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory task operating sequence (11 steps, exit-artifact gates, clarification prelude), product-polish diagnosis & dual survey, verifiable survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help."
+description: "以通用工作执行流程为灵魂、以纪律规则为地基、以工程师与产品双视角为镜、以可信证据为依据、以安全为底线的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、产品完善度诊断与强制双调研、联网调研可信依据、开源安装强制校验、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul, the rules as its foundation, dual engineer/product-manager views as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory task operating sequence (11 steps, exit-artifact gates, clarification prelude), product-polish diagnosis & dual survey, verifiable survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help. 机制层跨领域；落地细则（details.md）为真实技术栈踩坑日志而非教程。Mechanisms framework-agnostic; details.md is a pitfall log, not a tutorial."
 ---
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
@@ -12,7 +12,8 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 
 **使用 Use**：任何工程任务（只要动手，就按第 2 节总纲推进）；纪律化执行、工作流治理、跨项目跨平台行为一致。本 Skill 加载时也执行第 3 节第 0 步（平台适配）。Any engineering task (advance along the master sequence in section 2); disciplined execution, workflow governance, consistent behavior across projects and platforms. Step 0 (section 3) also runs on load.
 
-**不用 NOT for**：领域专属知识（框架 / 库 / API）；项目自身约定优先于本 Skill。Domain-specific knowledge; the project's own docs always win where they conflict.
+**不用 NOT for**：替代不了用官方文档学习框架 / 库 / API；项目自身约定优先于本 Skill。Not a substitute for learning a framework/API from its docs; the project's own docs always win where they conflict.
+> **落地细则诚实说明 Honest note**：`details.md` 确实含绑定具体栈（Next.js / Prisma / Playwright 等）的真实工程经验——它是**踩坑日志**而非**技术教程**；流程 / 规则 / 门禁层与框架无关。details.md does carry stack-bound experience — treat it as a *pitfall log*, not a tutorial; the workflow/rules layers are framework-agnostic.
 
 ## 2. 总纲：任务主流程——强制通用推进骨架（唯一入口）· Master: task operating sequence — mandatory universal skeleton (single entry)
 
@@ -42,6 +43,10 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 | 11 | 自查与归档：验证→自查→文档→双写→提交 Self-check & archive | 验证结果 + 归档 Verification + archive |
 
 **门禁 Gate**：进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由，不得静默跳过。The previous step's artifact must exist before the next step; legitimate skips must record the reason, never silently.
+
+### 2.3 L1 快速通道（判级先行）· L1 fast path (triage-first)
+
+第 1 步接收后**先判级**：L1 常规（小改动、可逆、低影响）走 **L1 快速通道**：一句话复述 → 最小修改 → 最小验证 → 汇报，任务记录显式标注「L1 快速通道」（命名通道，非静默跳步）；L2 / L3 仍走完整 11 步（第 8 步再补全判级）。Triage right after step 1: L1 routine → fast lane (restate → minimal change → minimal verify → report), explicitly labelled "L1 fast path" in the record; L2/L3 keep the full 11 steps (triage finalized at step 8).
 
 细节与分类型清单见 `references/workflows.md`。Details and per-task-type checklists in `references/workflows.md`.
 
@@ -109,4 +114,4 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 
 ## 10. 留档与知识纪律（摘要）· Records & knowledge discipline (summary)
 
-任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; docs ship with code.
+任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；**记忆文件协议（外部化长期记忆）**：项目约定位置维护 `memory/`（当前目标 / 决策 / 约束 / 进度 / 踩坑，一屏内），关键节点与上下文 40-60% 前写入，压缩 / 重置 / 会话开始**先读再继续**（细节见 `references/workflows.md`）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; **memory-file protocol**: maintain `memory/` per project convention, write at milestones & before 40-60% context, read first after compaction/reset; docs ship with code.

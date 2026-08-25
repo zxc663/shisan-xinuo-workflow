@@ -196,3 +196,13 @@ Before building anything new, answer in order; only a full miss allows self-buil
 - Load at most 1-3 skills per task, filtered by catalog first.
 - No skill available does not block: fall back to general capability + official docs; record the fallback.
 - Repeated needs (2-3 times) become new skills via workflow 9.
+
+## Memory-file protocol (externalized long-term memory)
+
+Agents have no inherent long-term memory and cannot sense context compaction — externalize the session state to a file that can always be re-read.
+
+- **Location** (project-defined): e.g. `memory/` at the repo root (or the project's agreed memory path). Keep it ≤ 1 screen (~20 lines) so it re-reads instantly.
+- **Minimal structure** — current goal ／ decisions made ／ constraints ／ progress + next step ／ pitfalls (link the experience log).
+- **Write at**: ① goal confirmed (step 6); ② each task / milestone closed; ③ before the context reaches 40-60%; ④ at session end, before archiving.
+- **Read at**: ① session start; ② after any compaction / reset / reload signal — **read first, then continue**; ③ before starting a new task, scan the memory file.
+- **Layering**: memory file = *state* layer (session state); knowledge docs (step-11 dual-write) = *learning* layer; experience log = *pitfall* layer. They do not replace each other.
