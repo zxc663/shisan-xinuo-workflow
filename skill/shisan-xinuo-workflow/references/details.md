@@ -248,3 +248,23 @@
 ### 11.3 Risk-tier evidence (extends L1/L2/L3)
 
 186. **L3 additional evidence** — high-risk (auth / billing / migration / permissions / destructive / production rewrites) besides "ask first + rollback point" requires: integration/E2E coverage of critical paths + rollback/mitigation plan + observability updates + explicit architectural-risk review.
+
+## 12. Source-project deep-dive (2026-08-26 review of the 863KB dev log + pitfall/knowledge libraries)
+
+187. [Env] Windows system-reserved port ranges (Hyper-V) cause EACCES even with nothing listening: query `netsh interface ipv4 show excludedportrange` before picking a port.
+188. [Env] Windows schannel certificate-revocation checks can block curl: verify with `--ssl-no-revoke` when a direct connection fails.
+189. [Env] MCP / config-file changes are not hot-reloaded: fully exit the app and start a new session before relying on them; if still unavailable, switch to the fallback channel instead of repeatedly restarting.
+190. [Frontend] Elastic/drag-style animations must only animate `transform`/`opacity`; animating width/height pushes parents and grid row heights.
+191. [Frontend] SPA route transitions invalidate old DOM refs: re-acquire the reference after every view change before operating on it.
+192. [Frontend] Text/position APIs often differ in 0-based vs 1-based indexing ("not found" is usually a base mismatch): confirm the convention first and lock it with a pure-function unit test.
+193. [Frontend] Perceived "slowness" usually comes from missing feedback at the interaction point: put loading state on the interactive element, not just a global overlay.
+194. [Frontend] Color changes are driven by measured WCAG contrast data, not default palettes; re-run the contrast check after palette or semantic-color changes.
+195. [DB] Prisma: even when `where` guarantees non-null, TS types stay nullable (no narrowing by where) — handle null explicitly in the business layer.
+196. [DB] Composite unique keys with a nullable field reject `upsert` on null: use a non-null sentinel; migrations must drop FKs before UPDATE (FK violation).
+197. [DB] Rate limits are the most common "dead config" (defined but never wired): verify each public write endpoint actually calls the limiter before release.
+198. [API] Async tasks use a unified "202 + poll status endpoint" convention, kept consistent across design / API / feature docs.
+199. [Ops] In-process scheduled jobs (backup / scheduling) die when the process is offline: critical backups need an independent scheduled task as fallback.
+200. [Ops] Deployment verification must sample-assert static / key resources return 200, not just curl the HTML shell.
+201. [Git] One-time token push: after a successful push with a temporary token, restore the remote URL to the token-less form.
+202. [AI] Reasoning models default to `max_tokens >= 512`, else thinking consumes the budget and output is empty.
+203. [AI] LLM / vision APIs returning "HTTP 200 but empty content" count as failure: switch / retry, never treat as success.

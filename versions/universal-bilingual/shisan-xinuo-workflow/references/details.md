@@ -248,3 +248,23 @@
 ### 11.3 风险分级证据（补充 L1/L2/L3）· Risk-tier evidence
 
 186. L3 附加证据：认证/计费/迁移/权限/破坏性/生产重写，须集成/E2E 覆盖关键路径 + 回滚计划 + 观测 + 架构风险审查。L3: E2E coverage + rollback plan + observability + architecture review.
+
+## 12. 源项目深挖补充 · Source-project deep-dive（2026-08-26 审查 863KB 开发日志 + 踩坑库/知识沉淀）
+
+187. [环境 Env] Windows 系统保留端口段导致 EACCES（Hyper-V 保留）：先 `netsh interface ipv4 show excludedportrange` 查保留段再选端口。System-reserved port ranges cause EACCES — check excluded ranges first.
+188. [环境 Env] Windows schannel 证书吊销检查拦 curl 直连：必要时 `--ssl-no-revoke`。Use --ssl-no-revoke when schannel revoke checks block curl.
+189. [环境 Env] MCP/配置变更不热加载：完全退出应用 + 新建会话才生效；仍不可用走替代通道。Config changes are not hot-reloaded — restart + new session; else fallback.
+190. [前端 Frontend] 弹性/拖拽动效只作用 `transform`/`opacity`，动 width/height 撑动父级与网格行高。Animate only transform/opacity, not width/height.
+191. [前端 Frontend] SPA 路由跳转后旧 DOM ref 失效：每次视图变化重新获取。Re-acquire DOM refs after every route/view change.
+192. [前端 Frontend] 文本/位置 API 有 0 基/1 基口径差异（"永不命中"常源于此）：先确认口径 + 纯函数单测锁定。Confirm 0-based/1-based conventions; lock with a pure-function test.
+193. [前端 Frontend] "性能差"常因反馈不在交互点：加载态落在交互元素而非仅全局遮罩。Put loading state on the interactive element.
+194. [前端 Frontend] 配色以 WCAG 对比度实测驱动；语义色改动后必跑对比度校验。Drive colors by measured WCAG contrast.
+195. [数据库 DB] Prisma `where` 保证非空但 TS 仍可空（不按 where 收窄）：业务层显式处理 null。TS stays nullable even when where guarantees non-null.
+196. [数据库 DB] 含可空字段的复合唯一键 upsert 不接受 null：用非空哨兵值；迁移先删外键再 UPDATE。Nullable composite-unique upsert needs a sentinel; drop FKs before UPDATE.
+197. [数据库 DB] 限流最易"死配置"：上线前逐个核对公开写接口真正调用限流。Rate limits are often dead config — verify each write endpoint.
+198. [API] 异步任务统一「202 + 轮询状态端点」约定，跨层文档保持一致。Async tasks: unified 202 + poll-status convention across docs.
+199. [运维 Ops] 进程内定时任务（备份/调度）离线即停摆：关键备份用独立计划任务兜底。In-process jobs die offline — schedule critical backups independently.
+200. [运维 Ops] 部署验证抽样断言静态/关键资源 200，不只 curl 首页 HTML。Sample-assert static/key resources, not just the HTML shell.
+201. [Git] 一次性令牌推送成功后 remote 改回无令牌 URL。Restore token-less remote URL after a one-time-token push.
+202. [AI] 推理型模型 `max_tokens ≥ 512`，否则思考吃光预算输出为空。Reasoning models need max_tokens >= 512.
+203. [AI] LLM/视觉 API「HTTP 200 但内容为空」按失败处理并切换。Treat HTTP-200-empty as failure; switch/retry.

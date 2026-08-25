@@ -1,8 +1,8 @@
 # 十三希诺 Agent 工作流 · Shisan Xinuo Agent Workflow
 
-> **一个按需调用的「渐进式」工程治理 Skill**：不是把整本手册一次性砸进上下文，而是像神经系统一样——只在任务到达某个步骤（如开始调研、准备提交）时，才注入那一步所需的少量规则；只在任务被识别为 L1 常规时才走快速通道。它把真实开发历史中沉淀的 **43 条纪律、11 步主流程（每步出口产物门禁）、186 条落地细则（11 类）**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）注入、按需加载、可审计的治理元 Skill（Governance Meta-Skill），驱动 Agent 按统一、可审计的方式工作，**禁止假实现**。
+> **一个按需调用的「渐进式」工程治理 Skill**：不是把整本手册一次性砸进上下文，而是像神经系统一样——只在任务到达某个步骤（如开始调研、准备提交）时，才注入那一步所需的少量规则；只在任务被识别为 L1 常规时才走快速通道。它把真实开发历史中沉淀的 **43 条纪律、11 步主流程（每步出口产物门禁）、203 条落地细则（12 类）**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）注入、按需加载、可审计的治理元 Skill（Governance Meta-Skill），驱动 Agent 按统一、可审计的方式工作，**禁止假实现**。
 >
-> **EN** — An **on-demand, progressive engineering-governance Skill**: not a whole manual dumped into context at once, but a nervous system — it injects only the few rules a step needs (survey, commit, …) when that step arrives, and routes L1 trivial tasks to a fast lane. It packages **43 discipline rules, an 11-step master sequence (per-step exit-artifact gates), and 186 landing details in 11 categories** — distilled from real development history — into a cross-platform, on-demand-loaded, auditable governance meta-skill, driving any Agent platform with **no faked completions**.
+> **EN** — An **on-demand, progressive engineering-governance Skill**: not a whole manual dumped into context at once, but a nervous system — it injects only the few rules a step needs (survey, commit, …) when that step arrives, and routes L1 trivial tasks to a fast lane. It packages **43 discipline rules, an 11-step master sequence (per-step exit-artifact gates), and 203 landing details in 12 categories** — distilled from real development history — into a cross-platform, on-demand-loaded, auditable governance meta-skill, driving any Agent platform with **no faked completions**.
 
 ---
 
@@ -63,7 +63,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
       ├─ 1 接收 → 2 经验库必读 → 3 调研实际资源 → 4 联网调研（必须）
       ├─ 5 复用调研（铁律）→ 6 复述理解 → 7 疑问必问 → 8 产品视角+分级+回滚点
       ├─ 9 规划（双调研后，含 3-5 条可验证验收标准）→ 10 执行 → 11 自查与归档
-      └─ 规则（43 条，地基）Rules + 落地细则（186 条 / 11 类，按类按需加载）Details
+      └─ 规则（43 条，地基）Rules + 落地细则（203 条 / 12 类，按类按需加载）Details
 ```
 
 **渐进式（Progressive）体现在三层**：
@@ -107,7 +107,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 - **第 0 步平台适配与注入 · Step 0 platform adaptation & injection**：检测平台，写入 app 每会话真正自动注入的位置（绝不写进应用忽略的工作区文件）；询问按需（默认）/ 强制注入；应用内需启用时引导启用并确认生效。Detects the platform, injects into the location the app actually reads every session; asks on-demand (default) / forced; guides in-app enablement (e.g. Trae).
 - **带出口产物门禁的强制总纲主流程 · Mandatory master sequence with exit-artifact gates**：11 步是唯一入口，每步先产出出口产物方可进入下一步（可检查、可审计、不可跳步）；无法产出的步须在任务记录写明理由。The 11-step sequence is the single entry; each step requires its exit artifact before the next (checkable, auditable, unskippable).
 - **L1 快速通道 · L1 fast path**：第 1 步后先判级——L1 常规任务走「一句话复述 → 最小修改 → 最小验证 → 汇报」快速通道（显式标注，非静默跳步），L2/L3 仍走完整 11 步。Triage-first: L1 routine takes a fast lane; L2/L3 keep the full sequence.
-- **43 条规则地基 + 186 条落地细则 / 11 类 · 43-rule foundation + 186 landing details in 11 categories**：渐进式披露——规则为基础；细粒度工程规范（环境 / 前端 / 数据库 / 测试 / API 契约 / 部署运维 / 代码质量 / Git / 会话·备份·治理 / 开发日志深挖 / 铁律纪律）按类按需加载。Progressive disclosure; fine-grained engineering specifics loaded per category on demand.
+- **43 条规则地基 + 203 条落地细则 / 12 类 · 43-rule foundation + 203 landing details in 12 categories**：渐进式披露——规则为基础；细粒度工程规范（环境 / 前端 / 数据库 / 测试 / API 契约 / 部署运维 / 代码质量 / Git / 会话·备份·治理 / 开发日志深挖 / 铁律纪律 / 源项目深挖补充）按类按需加载。Progressive disclosure; fine-grained engineering specifics loaded per category on demand.
 - **记忆文件协议 · Memory-file protocol**：外部化长期记忆——项目 `memory/` 文件记录目标 / 决策 / 约束 / 进度，关键节点与上下文 40-60% 前写入，压缩 / 重置后先读再继续。Externalized long-term memory: write at milestones, read first after compaction.
 - **压缩后显式重载 · Reload sequence after compaction**：用户说「重载 / 你被压缩了」或平台重置上下文 → ①重读 SKILL.md → ②重读 memory/ → ③重读当前引用 → ④向用户复述任务与验收再继续。Explicit reload order: SKILL.md → memory file → references → restate task + acceptance.
 - **关键必问协议 · Ask-before-acting protocol**：平台无原生提问工具时，提供通用结构化文本兜底协议（理解 / 选项与利弊 / 风险与后果 / 推荐方案，结束回合等待）。Text-protocol fallback for platforms without a native asking tool.
@@ -152,7 +152,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 - **依赖强提示词注入 Strong-prompt-injection dependent**：本质是规范而非工具——无运行时、无强制；注入被跳过或描述未命中时，它什么也不会做。It is a specification, not a tool; if injection is skipped or the description fails to match, it does nothing.
 - **依赖 Agent 自律 Agent self-discipline**：无脚本强制执行；懒惰的 Agent 可以不遵守规则，也无法感知自己被压缩——用自检双守卫 + 显式重载顺序缓解。No scripts enforce anything; mitigated by self-check guards + explicit reload sequence.
 - **上下文成本 Context cost**：即使渐进式，治理层仍消耗上下文——这是换取一致性的代价；生成的规则文件控制在约 30 行、记忆文件一屏内。A governance layer consumes context — the trade-off for consistency; rule files ~30 lines, memory file ≤1 screen.
-- **细则体量大 Detail volume**：落地细则 186 条较多——这正是按类按需加载的原因。186 rules is heavy — hence per-category on-demand loading.
+- **细则体量大 Detail volume**：落地细则 203 条较多——这正是按类按需加载的原因。203 rules is heavy — hence per-category on-demand loading.
 - **平台检测是启发式 Detection heuristics**：靠目录 / 环境变量信号判断；无法确定时直接问用户，不猜。Best-effort; asks rather than guesses when ambiguous.
 - **不捆绑工具 Zero tooling bundled**：刻意零脚本 / 零依赖 / 零网络；能力缺口用「兜底」解决。Deliberately zero scripts / dependencies / network; gaps handled by fallbacks.
 - **规范演进 Spec evolution**：基于 Agent Skills 开放标准构建；不支持 Skill 的旧平台需手动加载。Built on the Agent Skills open standard; older platforms need manual loading.
@@ -199,7 +199,7 @@ shisan-xinuo-workflow/              ← 仓库根
 │   └── references/                 ← 按需加载的引用
 │       ├── rules.md                ← 43 条规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
-│       ├── details.md              ← 186 条落地细则 / 11 类（踩坑日志）
+│       ├── details.md              ← 203 条落地细则 / 12 类（踩坑日志）
 │       ├── platform-adaptation.md  ← 注入点、提问降级链、结构化协议
 │       └── security.md             ← 安全红线、安装校验、回滚、残留扫描
 └── versions/
@@ -222,11 +222,13 @@ shisan-xinuo-workflow/              ← 仓库根
 - **v1.4.2** — ①**定位诚实话**：不再宣称「不含领域知识」——机制层跨领域，细则层（details.md）如实声明为绑定具体技术栈的**踩坑日志**而非技术教程（修正自第三方审阅意见）；②**L1 快速通道**：第 1 步后先判级，L1 常规任务走「复述→最小修改→最小验证→汇报」快速通道，治「简单任务杀鸡用牛刀」；③**记忆文件协议**：外部化长期记忆（`memory/` 状态文件，压缩 / 重置后先读再继续），治「上下文稀释」。
 - **v1.4.3** — ①**定位升级为「渐进式」**：把「按需加载 + 判级动态路由 + 快速通道」明确为核心定位（不再是静态提示词）；②**压缩后显式重载顺序**：用户说「重载 / 你被压缩了」或平台重置 → ①重读 SKILL.md → ②重读 memory/ → ③重读当前引用 → ④向用户复述任务与验收再继续（写进四版 SKILL.md 与 workflows.md）；③README 重构：一句话定位 / 架构真相 / 差异化完善 / FAQ 补充（省 token）。
 - **v1.4.4** — ①**安静模式**：关键词 `安静模式`/`quiet`——L1 任务只汇报结果，降视觉噪音与 Token 焦虑（应对"决策疲劳 / 视觉噪音"）；②**偏好记忆**：用户确认的技术栈/语言/风格写入 `memory/`「用户偏好」字段，同类决策直接采用不再重复问（应对"强制询问疲劳 / 无用户画像"）；③**原子操作锁**：L3 破坏性操作先输出待执行命令清单、结束回合等用户确认再执行，最后一道闸门交给人类（应对"43 条纪律纯靠自觉"）；四版同步，私有仓试点本机偏好文件。
+- **v1.4.5** — **细则扩展至 203 条 / 12 类**：对作者 863KB 开发日志 + 踩坑库 / AI 知识沉淀 / 交接清单 / 规则文档进行分片审查提炼，与既有 186 条去重后精选 **17 条新增**（编号 187-203，第 12 类「源项目深挖补充」）：Windows 保留端口段 / schannel 吊销、MCP 配置不热加载、动效仅 transform+opacity、SPA ref 失效、0/1 基口径、加载态落交互点、WCAG 对比度实测、Prisma where 非空但 TS 可空、复合唯一键 null 哨兵、限流死配置核对、202+轮询约定、进程内定时任务兜底、部署抽样断言静态资源、一次性令牌 remote 还原、推理模型 max_tokens≥512、LLM HTTP200 空内容按失败。
 
 **EN — v1.4.1** — documentation-consistency fixes: README numbers calibrated (173→186 / 10→11 categories), English details.md category numbering fixed (missing 4 / duplicate 9), all four SKILL.md reference maps expanded to 11 categories, decision-record push-status aligned with release records, research citations added; plus a two-repo sync checklist.
 **EN — v1.4.2** — ① honest positioning: mechanisms are framework-agnostic, but the details layer is now honestly declared a stack-bound **pitfall log**, not a tutorial; ② **L1 fast path** (triage-first, fixes over-governance on trivial tasks); ③ **memory-file protocol** (externalized long-term memory — write at milestones, read first after compaction, fixes context dilution).
 **EN — v1.4.3** — ① positioned as **progressive / on-demand / triage-routed** (not a static prompt); ② **explicit reload sequence after compaction** (re-read SKILL.md → memory file → references → restate task + acceptance) written into all editions; ③ README rebuilt: one-line positioning / architecture truths / sharpened differentiation / expanded FAQ (token-cheap).
 **EN — v1.4.4** — ① **quiet mode** (`安静模式`/`quiet`): L1 reports only results, cutting visual noise & token anxiety; ② **preference memory**: confirmed tech-stack/language/style choices stored in `memory/` and reused instead of re-asking; ③ **atomic-operation lock**: L3 destructive ops output the command list and wait for human confirmation — the final gate is human, not agent self-discipline. All editions synced; personal edition pilots a machine-local preference file.
+**EN — v1.4.5** — details expanded to **203 rules / 12 categories**: review of the 863KB dev log + pitfall/knowledge libraries yielded 17 new rules (187-203) after dedup — Windows reserved ports / schannel revoke, MCP config not hot-reloaded, animate only transform+opacity, SPA ref invalidation, 0/1-based index mismatches, loading state at the interaction point, measured WCAG contrast, Prisma where-nonnull-but-TS-nullable, nullable composite-unique sentinel, dead rate-limit config, 202+poll convention, in-process job fallback, sample-assert static resources, restore token-less remote, reasoning max_tokens≥512, HTTP-200-empty as failure.
 
 ---
 
@@ -251,7 +253,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Where it comes from
 
-**数据口径（v1.4.4 实测）**——本 Skill 的 186 条落地细则 / 11 类，提炼自作者真实生产开发沉淀；源文档存放于独立工作项目目录，**不随本公开仓 / zip / npm 分发**，此处给出可核实的实测数据：
+**数据口径（v1.4.5 实测）**——本 Skill 的 203 条落地细则 / 12 类，提炼自作者真实生产开发沉淀；源文档存放于独立工作项目目录，**不随本公开仓 / zip / npm 分发**，此处给出可核实的实测数据：
 
 | 源文档（工作项目目录） | 实测大小 | 内容 |
 |---|---|---|
@@ -261,11 +263,11 @@ shisan-xinuo-workflow/              ← 仓库根
 | `踩坑经验库.md` | 59.8 KB / ≈3.6 万字符 / 323 行 | 踩坑条目库 |
 | `AGENTS.md` / `TRAE.md` / `README-工作区导航.md` 等 | — | 工作区规则文档（去敏提炼增量） |
 
-提炼方式：三子代理分片提炼 → 去重 → 精选 → 泛化脱敏 → 形成 `details.md` 186 条 / 11 类 + 个人经验手册。
+提炼方式：分片子代理审查（v1.4.5 覆盖开发日志 / 踩坑库 / AI 知识沉淀 / 交接清单 / 规则文档）→ 与既有 186 条去重 → 精选 17 条 → 泛化脱敏 → 形成 `details.md` 203 条 / 12 类 + 个人经验手册。
 
 **踩坑记录涵盖（11 类示例）**：PowerShell / Windows 终端 ｜ 前端 Next.js / React 环境 ｜ Prisma / PostgreSQL ｜ 测试与质量门禁 ｜ 视觉 MCP / 截图 ｜ 浏览器自动化 / E2E（Playwright）｜ Git 与提交 ｜ MCP 与工具链 ｜ API 契约与前后端联动 ｜ 监控 / 运维 / 压测 / 证书 ｜ 长会话与协作纪律。机制部分按 [Agent Skills 开放规范](https://agentskills.io/)及其[最佳实践](https://agentskills.io/skill-creation/best-practices)重写（渐进式披露、Gotchas、Checklist、Plan-Validate-Execute）。
 
-**EN** — 186 landing details in 11 categories are distilled from real production work (source docs live in a separate working-directory, not shipped here). Measured facts: the main dev-log is **863.6 KB / ~501K chars / 8,299 lines** (the basis of the "800KB+ development history" claim), plus a 209 KB session-handover log, 70 KB knowledge distillations and a 60 KB pitfall library; mechanics rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
+**EN** — 203 landing details in 12 categories are distilled from real production work (source docs live in a separate working-directory, not shipped here). Measured facts: the main dev-log is **863.6 KB / ~501K chars / 8,299 lines** (the basis of the "800KB+ development history" claim), plus a 209 KB session-handover log, 70 KB knowledge distillations and a 60 KB pitfall library; mechanics rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
 
 ---
 
