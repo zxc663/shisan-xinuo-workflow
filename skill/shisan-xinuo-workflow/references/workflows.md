@@ -31,6 +31,23 @@ Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must
 - [ ] 10. Execute (execution record)
 - [ ] 11. Self-check & archive (verification result + archive)
 
+### 0.2 Online survey — what & how, and trust signals
+
+> Purpose: not "is it popular" but **verifiable trust signals**, with local verification as the final judge. Authority tiers: **first-hand** (official docs / official repo / spec / standard) > **empirical** (stars / downloads / maintenance activity / adoption evidence) > **community feedback** (developer reviews / known pitfalls) > **listing heat** (discoverability reference only, never a quality signal).
+
+**What to check (tick each)**:
+
+- [ ] 1. Candidate inventory: GitHub search / official registries / awesome lists; collect 3-5 candidates
+- [ ] 2. Empirical signals: stars / forks / contributors / last release date / maintenance activity (long inactivity = risk) / dependency count / weekly downloads
+- [ ] 3. Adoption evidence: which known projects depend on or use it; real community usage
+- [ ] 4. Official docs & examples: README / docs / demo / API fit for the requirement and experience
+- [ ] 5. Community feedback: developer reviews (HN / Reddit / Discord / issues), known pitfalls (search GitHub issues)
+- [ ] 6. License & security: license compliance, CVE / security advisories, dependency-tree risk
+- [ ] 7. Local verification (the iron judge): install into a temp dir → run a minimal demo → verify it meets requirements & performance
+- [ ] 8. Record the conclusion: comparison table + recommendation + reasons, into the market solution survey record
+
+**Authority note**: daily-top / skills rankings (skills.sh, Glama, etc.) are based on install telemetry — discoverability, not quality. Quality is judged by evidence from items 2/3/4/5 plus item 7's local verification.
+
 ## 1. New feature / new project (15 steps)
 
 - [ ] 1. Startup self-check (platform adapted, rule file active)

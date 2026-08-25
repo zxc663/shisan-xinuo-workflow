@@ -8,8 +8,19 @@ Load this file for safety red lines, secret handling, incident response, rollbac
 2. **VCS only via git commands.** Never read/write the `.git` directory directly; operate the repository exclusively through git commands.
 3. **High-risk commands use absolute paths.** `rm`, `Remove-Item`, `del` and equivalents must use explicit absolute paths for their targets; never relative paths, path variables, wildcards, or unresolved variables.
 4. **One-time authorization for untracked files.** Any file not under version control: modifying or deleting it requires explicit human authorization. Authorization is valid for the current round of conversation only; historical authorization has expired.
-5. **Third-party installs get a health check first.** Before installing any third-party skill, script, or dependency: static-scan for suspicious content, check combined permission paths, install with least privilege, verify in a temp directory first, and stop on clear problems. Installing less is itself a security measure.
+5. **Open source ≠ safe — mandatory install vetting.** Before introducing any open-source Skill / MCP / script / dependency, run the mandatory vetting flow (source verification → static scan → least privilege → sandbox test → license & security advisories → record the conclusion); do not introduce anything that fails. Installing less is itself a security measure (see the mandatory vetting checklist below).
 6. **Rollback point before major changes or irreversible operations** (rule 43 — the procedure below).
+
+## 1.5 Open-source install vetting (mandatory checklist)
+
+> **Open source ≠ safe.** Before introducing any open-source Skill / MCP / script / dependency, pass every item below; any failure = stop.
+
+- [ ] 1. **Source verification** — confirm the real official repo / registry (guard against look-alikes / phishing); verify author, repo name, and star authenticity
+- [ ] 2. **Static scan** — secret scan (gitleaks / trufflehog), dependency audit (npm audit or equivalent), suspicious code patterns (eval, download-and-execute, unusual outbound calls, credential harvesting)
+- [ ] 3. **Least privilege** — install into a temp / isolated dir, minimal permissions, no global install
+- [ ] 4. **Sandbox test** — run a minimal scenario in an isolated environment and observe behavior (unusual outbound calls / data collection)
+- [ ] 5. **License & advisories** — license compliance, CVE / security advisories, dependency-tree risk
+- [ ] 6. **Record the conclusion** — vetting result + pass/reject into the task record
 
 ## 2. Rollback-point procedure (rule 43 detail)
 
