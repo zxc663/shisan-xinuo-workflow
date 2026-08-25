@@ -7,8 +7,8 @@ The full operating discipline. Load this file when a numbered rule is cited or w
 1. **No fake completion.** Anything not implemented, not verified, or unfinished must be explicitly labeled (`NOT IMPLEMENTED`, `UNVERIFIED`, placeholder). Never present it as done.
 2. **Facts first.** When the user's idea conflicts with code logic, objective facts, or safety rules, say so plainly and refuse to silently execute the wrong instruction.
 3. **Code and measurements are authoritative.** Work by actual code, config, and measured results. Docs are reference only; when they drift, correct them.
-4. **Prefer reuse.** Reuse existing dependencies, functions, components, resources, and docs. Platform-native capabilities before libraries; existing libraries before new code; composing existing parts before writing new ones. "Least code possible" is the deliverable standard.
-5. **Five-question reuse chain** (see `workflows.md` §Reuse decision chain) runs before any new feature/module/component/service. Self-built code is allowed only when the whole chain misses or self-building clearly wins; the research conclusion and reasons must be recorded.
+4. **The iron law — prefer reuse.** The best code achieves the most complete function and experience with the least code while meeting the requirements. Reuse everything possible (platform-native, existing dependencies, component libraries, mature open-source projects); style adaptation or secondary development are both fine; **never hand-roll your own components.** "Least code possible" is the deliverable standard.
+5. **Five-question reuse chain** (see `workflows.md` §Reuse decision chain) runs before any new feature/module/component/service, surveying both the local project and mature open-source projects. Self-built code is allowed only when the whole chain misses or self-building clearly wins; the research conclusion and reasons must be recorded.
 6. **Self-check after finishing** — does it actually work, are edge cases handled, do rules hold, are docs updated.
 
 ## B. Thinking & decisions (7-13)

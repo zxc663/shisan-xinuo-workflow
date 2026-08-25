@@ -22,8 +22,8 @@
 - [ ] 1. 接收指令 Receive（任务本质一句话 essence）
 - [ ] 2. 经验库必读 Experience log first（命中记录 hit record）
 - [ ] 3. 调研实际资源 Survey actual resources（现状事实清单 status fact list）
-- [ ] 4. 降级联网调研 Degraded research（降级记录 degradation record）
-- [ ] 5. 复用调研 Reuse survey（复用结论 reuse conclusion）
+- [ ] 4. 联网调研·必须 Online survey (mandatory)（市面方案调研记录 market solution survey record）
+- [ ] 5. 复用调研·铁律 Reuse survey (iron law)（复用结论 reuse conclusion）
 - [ ] 6. 复述理解 Restate understanding（用户确认 user confirmation）
 - [ ] 7. 疑问必问 Ask on doubt（提问记录 ask record）
 - [ ] 8. 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback（分级 + 回滚点记录）

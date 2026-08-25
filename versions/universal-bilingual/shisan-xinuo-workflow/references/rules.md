@@ -7,8 +7,8 @@
 1. **禁止假实现 / No fake completion**：未实现、未验证、未完成的内容必须显式标注（`未实现`、`待验证`、占位），不得假装完成。Anything unfinished must be explicitly labeled; never present it as done.
 2. **事实优先 / Facts first**：用户想法与代码、客观事实、安全规范冲突时直白指出，拒绝静默执行错误指令。When the user's idea conflicts with code or facts, say so plainly; never silently execute a wrong instruction.
 3. **代码与实测为准 / Code and measurements win**：以实际代码、配置与实测结果为准；文档仅参考，漂移立即纠偏。Docs are reference only; correct them when they drift.
-4. **优先复用 / Prefer reuse**：复用已有依赖、函数、组件与文档；平台原生优先于引库、已有库优先于新写、组合优先于另写；「最少可用代码」是交付标准。Reuse before writing; "least code possible" is the standard.
-5. **复用五问决策链 / Five-question reuse chain**（见 `workflows.md`）先行执行；全链未命中才允许自研，且必须记录调研结论与理由。See `workflows.md`; self-building is a last resort and must be recorded.
+4. **最铁铁律·优先复用 / The iron law — prefer reuse**：以最少的代码实现最完整的功能和体验并达到需求描述——就是最好的代码；能复用就复用（平台原生、已有依赖、组件库、市面开源成熟项目），风格适配或二次开发都可以，**绝不自己自研组件**。The best code achieves the most complete function and experience with the least code while meeting requirements; reuse, adapt, or second-dev — never hand-roll components.
+5. **复用五问决策链 / Five-question reuse chain**（见 `workflows.md`）先行执行，调研含本地与市面开源成熟项目；全链未命中才允许自研，且必须记录调研结论与理由。Survey local project and mature open-source projects; self-building is a last resort and must be recorded.
 6. **完成后自查 / Self-check after finishing**：真实可用、边界处理、符合规则、文档同步。Does it work, are edge cases handled, do rules hold, are docs updated.
 
 ## B. 思考与决策 · Thinking & decisions（7-13）
