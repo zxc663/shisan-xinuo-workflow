@@ -2,9 +2,11 @@
 
 加载时机：开始与下列任务类型匹配的工作、或 SKILL.md 引用具体流程时。When to load: when starting work matching one of the task types below, or when SKILL.md cites a workflow. 每个流程都是清单，逐项打勾。Each flow is a checklist — track progress against it.
 
-## 0. 前置与总纲——强制流程 · Prelude & master — mandatory sequence (run before ANY task type)
+## 0. 前置与总纲 · Prelude & master（强制流程 mandatory）
 
-### 0.0 状态澄清（目标 / 现状模糊时先走）· Status clarification
+> **前置选择 Prelude selector**：0.0 澄清（起点：目标/现状模糊）→ 0.1 总纲（每任务必走）→ 0.2 联网调研（第 4 步细节）→ 0.3 产品完善度诊断（触发式：反复审查/存量不足）→ 0.4 强制双调研（规划前必过）。0.3 与 0.4 互补：0.3 定位存量缺陷，0.4 保证新规划质量。Clarification (start) → master (every task) → survey (step-4 details) → diagnosis (triggered) → dual survey (pre-planning gate).
+
+### 0.0 状态澄清 · Status clarification
 
 **触发词 Triggers**：理不清 / 项目太乱 / 现状不明 / 不知道从哪下手 / 帮我梳理 / 下一步怎么办 / 要不要做 X。can't sort this out / where do I start / what's next / should I do X；或主流程第 1 步发现现状模糊。
 
@@ -47,6 +49,33 @@
 - [ ] 8. 结论留档：对比表 + 推荐 + 理由。Record the conclusion.
 
 **权威性说明 Authority note**：每日最火 / skills 榜单基于安装遥测，只代表被发现度，不代表质量；质量靠 2/3/4/5 证据 + 第 7 步实测判定。Rankings are discoverability, not quality; quality needs evidence + local verification.
+
+### 0.3 产品完善度诊断 · Product-polish diagnosis（反复审查 / 存量不足时先走 run first on repeated-review triggers）
+
+**触发 Triggers**：反复要求审查 / 存量项目反复不足 /「知道不够好但说不清」。Keep asking to review; a lasting sense of insufficiency; "know it's not good enough but can't say why".
+
+**视角切换 Viewpoint switch**：产品视角而非工程师视角——先问「模块本质为用户解决什么、体验应是什么」。Product view first: what does this module solve for the user, what should the experience be.
+
+- [ ] 1. 逐模块拆解本质需求 + 目标体验。Decompose: essential need + target experience.
+- [ ] 2. 五问定位缺陷维度（可多维度）Five-question location：
+      ① 功能逻辑 Feature logic（缺失/冗余/不自洽/边界/是否真解决问题）
+      ② 代码耦合 Code coupling（是否阻碍产品迭代、边界清晰）
+      ③ 界面 UI（视觉统一/设计规范/层级/对比度间距）
+      ④ 人性化互动流程 Humanized flow（路径/步骤/反馈/认知负担/兜底）
+      ⑤ 其他 Other（信息架构导航/三态/性能感知/A11y 多端/文案/品牌一致）
+- [ ] 3. 产出《产品完善度诊断报告》：本质需求/现状/缺陷定位/严重度/优先级。Produce the diagnosis report.
+- [ ] 4. 与用户确认结论与优先级。Confirm priorities with the user.
+- [ ] 5. 回总纲主流程执行（第 8 步门禁产物）。Return to the master sequence.
+
+### 0.4 强制双调研与规划 · Mandatory dual survey & planning（每个任务规划前必过 before every planning）
+
+> 双调研是规划质量门禁：工程师 + 产品经理双视角后才产出详细规划文档。Dual survey = engineer + product-manager views before any detailed plan.
+
+- [ ] 1. **工程师调研 Engineer survey**：代码实况 / 技术可行性 / 复用盘点。Code reality, feasibility, reuse.
+- [ ] 2. **产品经理调研 Product-manager survey**：本质需求 / 设计是否完备 / 体验·UI·交互是否符合定位品牌 / 同类对比 / 风险。Essential need, design completeness, positioning fit, risks.
+- [ ] 3. 定位「规划缺口」：功能逻辑 / 设计规划 / UI / 交互 / 技术可行性 / 其他。Locate planning gaps.
+- [ ] 4. 产出**详细规划文档**：目标边界 / 双调研结论 / 功能清单优先级 / 验收标准 / 风险回滚点。Detailed plan doc.
+- [ ] 5. 用户确认后进入执行（第 9 步门禁产物）。Proceed after confirmation.
 
 ## 1. 新项目 / 新功能开发（15 步） · New feature / new project (15 steps)
 

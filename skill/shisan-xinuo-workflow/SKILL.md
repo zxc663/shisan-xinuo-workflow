@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: "A cross-platform engineering-execution skill for AI coding agents with the workflow as its soul and the discipline rules as its foundation: a mandatory universal task operating sequence (research-driven 11 steps, exit-artifact gates per step, status-clarification prelude), dual execution modes, ask-before-acting, quality gates, rollback-before-major-changes, recordkeeping. Use when the user wants a disciplined, auditable, process-driven way of working on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not for domain-specific coding help."
+description: "A cross-platform engineering-execution skill for AI coding agents with the workflow as its soul, the discipline rules as its foundation, dual engineer/product-manager eyes as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory universal task operating sequence (research-driven 11 steps, exit-artifact gates per step, status-clarification prelude), product-polish diagnosis & mandatory dual survey, verifiable online-survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback-before-major-changes, recordkeeping. Use when the user wants a disciplined, auditable, process-driven way of working on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not for domain-specific coding help."
 ---
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)
@@ -34,8 +34,8 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 | 5 | **Reuse survey (iron law)** — local project → mature open-source projects; reuse whenever possible, style adaptation or secondary development both fine, **never hand-roll components** (five-question chain) | Reuse conclusion (candidates + adaptation plan + build-new reason, only when the whole chain misses) |
 | 6 | **Restate understanding** — goal / boundaries / acceptance criteria | User confirmation (continue only when aligned) |
 | 7 | **Ask on any doubt** — unclear execution or direction drift → ask and end the turn | Ask / confirmation record |
-| 8 | **Product-view review + constraints + L1/L2/L3 triage + rollback point** | Risk triage + rollback-point record |
-| 9 | **Plan & acceptance doc** — 3-5 verifiable criteria; goal mode adds budgets and file boundaries | Plan & acceptance doc |
+| 8 | **Product-view review + constraints + L1/L2/L3 triage + rollback point** — review from the product/experience angle first; when "review again / something keeps feeling off in a legacy codebase" triggers, **run the product-polish diagnosis first** (five questions: where does the gap live — feature logic / code coupling / UI / interaction flow / other; see `references/workflows.md` §0.3) before touching code as an engineer | Risk triage + rollback-point record + (when triggered) product-polish diagnosis report |
+| 9 | **Plan & acceptance doc (after the mandatory dual survey)** — first run the **dual survey**: ① engineer view (code reality / technical feasibility / reuse, steps 3 & 5) and ② product-manager view (soundness of the current design plan: essential need / is the design complete / do experience·UI·interaction match the product positioning; `references/workflows.md` §0.4) — then produce a **detailed plan doc** (dual-survey conclusions + feature list & priorities + 3-5 verifiable acceptance criteria; goal mode adds budgets & file boundaries) | Detailed plan doc (with dual-survey conclusions) |
 | 10 | **Execute** — per triage; goal mode autonomous per plan, log checkpoints, stop over budget | Execution record / changes |
 | 11 | **Self-check & archive** — minimal verification → self-check → docs with code → dual-write knowledge → commit with note | Verification result + archive (docs / knowledge / commit note) |
 
@@ -104,6 +104,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 ## 8. Gotchas
 
 - **The sequence is unskippable.** Survey (step 3) and reuse survey (step 5) are the most-skipped steps — skipping breaks the sequence and is the most common violation.
+- **On repeated review requests, run the product-polish diagnosis first** — when the user keeps asking to review or keeps feeling something is off, locate the gap by product dimension (feature logic / code coupling / UI / interaction flow / other; workflows.md §0.3) before touching code; don't just re-check correctness as an engineer.
 - **Trigger keywords are live switches.** Goal-mode keywords (`目标：`, `unattended`, …) silently change the decision model. Check every user message for them, including mid-task messages.
 - **Never overwrite an existing rule file** (`AGENTS.md`, `CLAUDE.md`, …). Backup + merge only.
 - **User idea vs code conflict** — code and measurements win. Say so plainly; never silently execute a wrong instruction.
@@ -120,6 +121,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 | `references/platform-adaptation.md` | Section 3 platform detection; asking-tool downgrade chain; full structured asking protocol |
 | `references/rules.md` | The 43-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule |
 | `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details |
+| `references/details.md` | Landing details — concrete engineering rules (environment / frontend / DB / testing / API contracts / ops / code quality / git); load by category when a step needs the specific how-to |
 | `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details |
 
 Do not preload all references — load only the one the current step needs. **You cannot detect context compaction yourself — do not rely on sensing it; rely on two guards:** (a) explicit signal — the user says "reload / you were compacted / start fresh", or the platform visibly reset the context → immediately re-read this SKILL.md and any references you still need; (b) milestone self-check — before starting a task, committing, or a major decision, recite the core elements (master-sequence steps, current mode, rollback rule, ask-before-acting); if you cannot restate any of them in full, treat it as missing context and reload before continuing.

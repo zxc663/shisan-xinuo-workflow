@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: "以通用工作执行流程为灵魂、以纪律规则为地基的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、双模式、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul and the discipline rules as its foundation: a mandatory universal task operating sequence (11 steps, exit-artifact gates, clarification prelude), dual modes, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help."
+description: "以通用工作执行流程为灵魂、以纪律规则为地基、以工程师与产品双视角为镜、以可信证据为依据、以安全为底线的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、产品完善度诊断与强制双调研、联网调研可信依据、开源安装强制校验、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul, the rules as its foundation, dual engineer/product-manager views as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory task operating sequence (11 steps, exit-artifact gates, clarification prelude), product-polish diagnosis & dual survey, verifiable survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help."
 ---
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
@@ -36,8 +36,8 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基的
 | 5 | 复用调研·铁律 Reuse survey (iron law)：能复用就复用，风格适配 / 二次开发皆可，绝不自研组件 reuse, adapt, or second-dev; never hand-roll | 复用结论 Reuse conclusion |
 | 6 | 复述理解：目标 / 边界 / 验收 Restate understanding | 用户确认 User confirmation |
 | 7 | 疑问必问：不理解 / 方向偏移→提问 Ask on doubt | 提问记录 Ask record |
-| 8 | 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback | 分级 + 回滚点记录 Triage + rollback record |
-| 9 | 规划与验收文档：3-5 条可验证标准 Plan & acceptance doc | 规划验收文档 Plan & acceptance doc |
+| 8 | 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback：触发反复审查/存量不足时**先做产品完善度诊断**（五问：功能逻辑/代码耦合/UI/互动流程/其他，见 §0.3）Product-polish diagnosis first on repeated-review triggers | 分级 + 回滚点记录 Triage + rollback record（+诊断报告 diagnosis report） |
+| 9 | 规划与验收文档（强制双调研后）Plan & acceptance doc (after the mandatory dual survey)：工程师视角 + 产品经理视角双调研后产出详细规划文档（双调研结论 + 验收标准，§0.4）Dual survey (engineer + product-manager) then a detailed plan doc | 详细规划文档 Detailed plan doc（含双调研结论） |
 | 10 | 执行：按分级；目标模式自主 + 预算 Execute per triage | 执行记录 Execution record |
 | 11 | 自查与归档：验证→自查→文档→双写→提交 Self-check & archive | 验证结果 + 归档 Verification + archive |
 
@@ -85,6 +85,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基的
 ## 8. 易错点 · Gotchas
 
 - **流程不可跳步**：调研（第 3 步）与复用调研（第 5 步）最常被跳过，是最常见违规。The sequence is unskippable; survey steps are the most-skipped.
+- **反复审查先做产品完善度诊断**：以产品角度定位缺陷（功能逻辑/代码耦合/UI/互动流程/其他，§0.3），别只查代码正确性。Diagnose by product dimension before code.
 - **触发关键词是活开关**：目标模式关键词会静默改变决策模型，每条消息都要检查。Goal-mode keywords are live switches.
 - **绝不覆盖已有规则文件**：备份 + 合并。Never overwrite rule files — backup + merge.
 - **代码与实测为准**：用户想法与代码冲突时直说。Code and measurements win.
@@ -101,6 +102,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基的
 | `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
 | `references/rules.md` | 43 条纪律（地基）The 43-rule discipline (foundation) |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
+| `references/details.md` | 落地细则（工程规范 / 具体做法）Landing details (engineering rules by category) |
 | `references/security.md` | 密钥红线、应急、回滚细节 Secrets, incident, rollback |
 
 **上下文缺失自检（压缩不可感知）Context-loss self-check**：显式信号（用户提示重载/平台重置）即重读；关键节点（开工/提交/重大决策）先默写核心要素（总纲步序、模式、回滚、必问），复述不全即重读。Reload on explicit signals; self-check core elements (master steps, mode, rollback, ask) before key milestones.

@@ -4,6 +4,8 @@ Load this file when starting work that matches one of the task types below, or w
 
 ## 0. Prelude & master — mandatory sequence (run before ANY task type)
 
+> **Prelude selector**: 0.0 status clarification (start — when goals/state are fuzzy) → 0.1 master sequence (every task) → 0.2 online survey (details for master step 4) → 0.3 product-polish diagnosis (triggered: repeated-review / legacy restlessness) → 0.4 mandatory dual survey (required before every task's planning, master step 9 gate). 0.3 and 0.4 are complementary: 0.3 locates existing defects, 0.4 guarantees new-plan quality.
+
 ### 0.0 Status clarification (run first when goals / state are fuzzy)
 
 **Triggers**: "can't sort this out / project is a mess / unclear where things stand / where do I even start / help me organize / what's next / should I do X / I'm a bit lost"; or master step 1 exposes a fuzzy baseline.
@@ -47,6 +49,33 @@ Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must
 - [ ] 8. Record the conclusion: comparison table + recommendation + reasons, into the market solution survey record
 
 **Authority note**: daily-top / skills rankings (skills.sh, Glama, etc.) are based on install telemetry — discoverability, not quality. Quality is judged by evidence from items 2/3/4/5 plus item 7's local verification.
+
+### 0.3 Product-polish diagnosis (run first on repeated-review / legacy-restlessness triggers)
+
+**Triggers**: the user keeps asking to review ("check again / anything else wrong / something feels off"); a lasting sense of insufficiency in a legacy codebase; "I know it's not good enough but can't say why".
+
+**Viewpoint switch**: adopt the **product view**, not the engineer view — before checking code correctness, ask "what does this module fundamentally solve for the user, and what should the experience be at this step?".
+
+- [ ] 1. Decompose module by module: essential need + target experience (the complete flow the user expects)
+- [ ] 2. Run the five-question frame to locate where "not good enough" lives (can be multiple):
+      ① **Feature logic** — missing / redundant / self-inconsistent / uncovered edges / does it actually solve the problem
+      ② **Code coupling** — does coupling block future product iteration, are module boundaries clear (serving product evolution)
+      ③ **UI** — visual consistency / design norms / information hierarchy / design defects (contrast, spacing, hierarchy)
+      ④ **Humanized interaction flow** — path smoothness / too many steps / timely feedback / cognitive load / error-prone without fallbacks
+      ⑤ **Other** — information architecture & navigation / empty-loading-error states / performance & perceived speed / accessibility & multi-device / copy & tone / consistency with product positioning & brand
+- [ ] 3. Produce a *product-polish diagnosis report*: per module = essential need / current state / defect location (multi-dimensional ok) / severity / priority
+- [ ] 4. Confirm the diagnosis and priorities with the user
+- [ ] 5. Return to the master sequence (step 8 already carries the report as a gate artifact)
+
+### 0.4 Mandatory dual survey & planning (before every task's planning)
+
+> Dual survey is the planning quality gate: only after the **engineer view + product-manager view** may a detailed plan doc be produced.
+
+- [ ] 1. **Engineer survey** — code reality (status evidence), technical feasibility, reuse inventory (master steps 3 & 5)
+- [ ] 2. **Product-manager survey** — examine the current design plan: essential need (what it solves for the user) / is the design complete / do experience·UI·interaction match product positioning & brand / comparison with alternatives / planning risks
+- [ ] 3. Combine both surveys to locate "planning gaps": feature logic / design plan / UI / interaction / technical feasibility / other
+- [ ] 4. Produce a **detailed plan doc**: goal & boundaries / dual-survey conclusions / feature list & priorities / acceptance criteria (3-5 verifiable) / risks & rollback point / (goal mode adds budgets & file boundaries)
+- [ ] 5. After user confirmation of the plan, proceed to execution (master step 9 gate artifact)
 
 ## 1. New feature / new project (15 steps)
 
