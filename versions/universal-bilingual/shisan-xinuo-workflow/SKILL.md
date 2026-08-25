@@ -24,12 +24,14 @@ Before starting any task, adapt this workflow to the current platform:
 
 1. **检测平台**：按 `references/platform-adaptation.md` 特征清单判断（目录标志、环境变量、工具可用性）。
    **Detect the platform** using the feature checklist in `references/platform-adaptation.md` (directory markers, env vars, tool availability).
-2. **生成平台规则文件**（`AGENTS.md`、`CLAUDE.md`、`.cursor/rules/*.mdc` 等）：写入精简纪律并回指本 Skill。若规则文件已存在：**先备份再合并——绝不覆盖**。
-   **Generate the platform rule file** with a condensed operating discipline pointing back to this skill. If it exists: **back up first, then merge — never overwrite**.
-3. **选定提问机制**：按第 4 节降级链取第一个可用项。
+2. **询问注入模式**（写规则文件前，用第 4 节降级链提问）：**按需注入（默认）**——精简纪律 + 回指本 Skill，开销最低；**强制注入（每会话）**——额外写入「每会话开工前必须完整读取本 Skill 的 SKILL.md」，纪律无条件生效（每会话增加全量 SKILL.md 开销）。无提问工具默认按需并明确告知。
+   **Ask the injection mode** (before writing any rule file): **on-demand (default)** — lean discipline + pointer, lowest cost; **forced per-session** — also writes "every session MUST fully read this skill's SKILL.md before starting", unconditional discipline (higher per-session cost). Default to on-demand and say so if no asking tool is available.
+3. **配置注入点——写入 agent 应用每会话真正自动注入的位置**（见 `references/platform-adaptation.md` 注入点表：Claude Code 的 `CLAUDE.md`、Codex 的 `AGENTS.md`、Cursor 的 `.cursor/rules/*.mdc`、Trae 的应用内项目规则等）；按所选注入模式采用对应模板。只写进应用从不读取的工作区文件是**无效的**。若平台要求应用内启用（如 Trae），**引导用户在应用设置里启用并确认生效**，未确认不得宣称成功。
+   **Configure the injection point** — write the rule file into the location the agent app actually auto-injects every session (see the injection-point table in `references/platform-adaptation.md`); a file the app never reads is **useless**. If the platform requires in-app enabling (e.g. Trae), guide the user to enable it and confirm it is active before claiming success.
+4. **选定提问机制**：按第 4 节降级链取第一个可用项。
    **Pick the active asking mechanism** from the downgrade chain in section 4.
-4. 一句话向用户确认：检测到的平台、规则文件写入情况、生效提问工具。未完成不得开工。
-   Confirm in one line: platform detected, rule file written/merged, asking tool active. Do not start the task until this is done.
+5. 一句话向用户确认：检测到的平台、注入模式、注入点已确认生效、生效提问工具。未完成不得开工。
+   Confirm in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
 
 ## 3. 关键必问协议 · Ask-before-acting protocol
 
