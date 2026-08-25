@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: Defines a platform-agnostic engineering governance workflow for AI coding agents: L1/L2/L3 task triage, dual execution modes, ask-before-critical-decisions protocol, quality gates, rollback-before-major-changes, and documentation discipline. Use when the user wants a disciplined, auditable workflow on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not for domain-specific coding help.
+description: "Defines a platform-agnostic engineering governance workflow for AI coding agents: L1/L2/L3 task triage, dual execution modes, ask-before-critical-decisions protocol, quality gates, rollback-before-major-changes, and documentation discipline. Use when the user wants a disciplined, auditable workflow on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not for domain-specific coding help."
 ---
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)

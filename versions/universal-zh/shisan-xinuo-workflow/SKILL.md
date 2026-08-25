@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: 定义跨平台的 AI 编码智能体工程治理工作流：L1/L2/L3 任务分级、普通/目标双模式、关键决策必问协议、质量门禁、重大修改前回滚点、留档纪律。当用户希望在 Trae、Codex、Claude Code、Cursor 或任意 CLI 智能体上获得纪律化、可审计的工作方式时使用。不用于领域专属编码知识。
+description: "定义跨平台的 AI 编码智能体工程治理工作流：L1/L2/L3 任务分级、普通/目标双模式、关键决策必问协议、质量门禁、重大修改前回滚点、留档纪律。当用户希望在 Trae、Codex、Claude Code、Cursor 或任意 CLI 智能体上获得纪律化、可审计的工作方式时使用。不用于领域专属编码知识。"
 ---
 
 # 十三希诺通用 Agent 工作流（Shisan Xinuo Agent Workflow）

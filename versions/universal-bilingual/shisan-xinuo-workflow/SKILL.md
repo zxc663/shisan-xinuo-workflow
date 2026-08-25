@@ -1,6 +1,6 @@
 ---
 name: shisan-xinuo-workflow
-description: 跨平台 AI 编码智能体工程治理工作流：L1/L2/L3 任务分级、双模式、关键必问、质量门禁、重大修改前回滚点、留档纪律。Use when the user wants a disciplined, auditable workflow on Trae, Codex, Claude Code, Cursor, or any CLI agent. A platform-agnostic engineering governance workflow: task triage, dual modes, ask-before-acting, quality gates, rollback safety, records. Not for domain-specific coding help. 不用于领域专属编码知识。
+description: "跨平台 AI 编码智能体工程治理工作流：L1/L2/L3 任务分级、双模式、关键必问、质量门禁、重大修改前回滚点、留档纪律。Use when the user wants a disciplined, auditable workflow on Trae, Codex, Claude Code, Cursor, or any CLI agent. A platform-agnostic engineering governance workflow: task triage, dual modes, ask-before-acting, quality gates, rollback safety, records. Not for domain-specific coding help. 不用于领域专属编码知识。"
 ---
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
