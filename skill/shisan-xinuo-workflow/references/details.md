@@ -55,7 +55,7 @@
 43. In non-interactive automation, use `migrate diff` → hand-written migration → `migrate deploy`.
 44. Raw-SQL time filters: confirm the timezone convention first (explicit `AT TIME ZONE 'UTC'`).
 
-## 5. Testing / E2E
+## 4. Testing / E2E
 
 45. After class-name changes, run the full test suite (stale assertions).
 46. Commit headers ≤100 chars, English words lowercase; commit first to see the linter, then push.
@@ -70,7 +70,7 @@
 55. SSR first frame + mount refresh needs explicit `staleTime: 0`.
 56. After swapping a form control library, re-run the E2E that depends on it; locate form fields by role.
 
-## 6. API contracts
+## 5. API contracts
 
 57. Before deleting an endpoint, search the frontend for references repo-wide.
 58. Success/failure is judged solely by the business code; treat `null` as success for delete-type APIs.
@@ -82,7 +82,7 @@
 64. Before adding a config key, confirm a consumer exists.
 65. When structure/copy changes, search and update verification scripts in the same pass.
 
-## 7. Deployment / operations
+## 6. Deployment / operations
 
 66. Add polling endpoints to the monitoring exclusion list to avoid self-counted P99 spikes.
 67. Heavy collection logic must run in the background (fire-and-forget + cache + single-flight).
@@ -105,7 +105,7 @@
 84. Deployment scripts list the archive structure before installing (an archive may contain a directory, not a single file).
 85. Packing scripts: never combine `-z` and `-I` (conflicting compression options).
 
-## 8. Code quality (foundational floor)
+## 7. Code quality (foundational floor)
 
 86. Add concise Chinese comments to critical / hard-to-follow logic; comments explain *why*, not *what*.
 87. When a single code block exceeds ~20 lines, consider abstraction (extract a function, merge duplicates).
@@ -116,7 +116,7 @@
 92. One function does one thing; related code stays together; keep a consistent abstraction level.
 93. Public APIs carry clear docs; sync comments and docs when code changes.
 
-## 9. Git & collaboration
+## 8. Git & collaboration
 
 94. Check `git status` before committing (lint-staged formatting creates new changes — re-add).
 95. Git commands use explicit `-C <absolute path>` when the working dir is ambiguous.
