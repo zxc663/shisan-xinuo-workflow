@@ -8,8 +8,19 @@
 2. **版本库只走 git 命令 / VCS only via git**：绝不直接读写 `.git` 目录，一律通过 git 命令操作。Never read/write `.git` directly; operate exclusively through git commands.
 3. **高风险命令绝对路径 / Absolute paths for high-risk commands**：`rm`、`Remove-Item`、`del` 等目标必须显式绝对路径；禁用相对路径、路径变量、通配符、未解析变量。Explicit absolute paths only; never relative paths, variables, wildcards, or unresolved variables.
 4. **未跟踪文件授权单次有效 / One-time authorization for untracked files**：修改或删除未纳入版本控制的文件前必须人类明确授权；授权仅本轮对话有效，历史授权过期。Explicit human authorization required; valid for this round only.
-5. **第三方安装先体检 / Health-check third-party installs**：静态扫描疑点、检查组合权限路径、最小权限、临时目录验证、有疑即停；少装即安全。Static-scan, least privilege, verify in temp first, stop on problems; less is safer.
+5. **开源不等于安全 · 安装强制校验 / Open source ≠ safe — mandatory install vetting**：引入任何开源 Skill / MCP / 脚本 / 依赖前必须走强制校验流程（来源核验 → 静态扫描 → 权限最小化 → 沙箱实测 → 许可与安全通告 → 结论留档），未通过不得引入；少装即安全。Mandatory vetting flow before any open-source install; never introduce what fails.
 6. **重大修改 / 不可逆操作前必建回滚点 / Rollback point before major or irreversible operations**（第 43 条——流程见下 rule 43 — procedure below）.
+
+## 1.5 开源安装强制校验流程（必过清单）· Open-source install vetting (mandatory checklist)
+
+> **开源不等于安全 Open source ≠ safe.** 引入任何开源 Skill / MCP / 脚本 / 依赖前必须逐项通过；任一不通过即停。Pass every item before any open-source install; any failure = stop.
+
+- [ ] 1. **来源核验 Source verification**——确认真实官方仓库 / registry（防仿冒 / 钓鱼），核对作者、仓库名、star 真实性。Confirm the real official repo/registry; verify author, name, stars.
+- [ ] 2. **静态扫描 Static scan**——密钥扫描、依赖审计、可疑代码（eval、下载即执行、异常外联）。Secret scan, dependency audit, suspicious code.
+- [ ] 3. **权限最小化 Least privilege**——临时 / 隔离目录、最小权限、不全局安装。Temp/isolated dir, minimal permissions.
+- [ ] 4. **沙箱实测 Sandbox test**——隔离环境跑最小场景，观察行为（异常外联 / 数据收集）。Run minimal scenario; observe behavior.
+- [ ] 5. **许可与安全通告 License & advisories**——license 合规、CVE / advisories、依赖树风险。License compliance, CVEs, dependency-tree risk.
+- [ ] 6. **结论留档 Record the conclusion**——通过 / 拒绝记入任务记录。Pass/reject into the task record.
 
 ## 2. 回滚点流程（第 43 条细则） · Rollback-point procedure (rule 43 detail)
 

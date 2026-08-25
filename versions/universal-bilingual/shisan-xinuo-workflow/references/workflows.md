@@ -31,6 +31,23 @@
 - [ ] 10. 执行 Execute（执行记录 execution record）
 - [ ] 11. 自查与归档 Self-check & archive（验证结果 + 归档 verification + archive）
 
+### 0.2 联网调研·详细查询清单与可信依据 · Online survey — what & how, and trust signals
+
+> 目的：收集**可验证可信信号**，以本地实测兜底。权威分级：一手源（官方文档 / 官方仓库 / spec）> 实证源（stars / 下载量 / 维护 / 被采用）> 社区口碑（评论 / 已知坑）> 榜单热度（仅被发现度参考）。Collect verifiable trust signals; authority tiers: first-hand > empirical > community > listing heat (discoverability only).
+
+**查什么 What to check（逐项 tick each）**：
+
+- [ ] 1. 候选盘点：GitHub 搜索 / registry / awesome 列表，3-5 个候选。Candidate inventory (3-5).
+- [ ] 2. 实证信号：stars / forks / 贡献者 / 最近 release / 维护活跃度 / 依赖数 / 周下载量。Empirical signals.
+- [ ] 3. 采用证据：被知名项目依赖 / 使用、实际案例。Adoption evidence.
+- [ ] 4. 官方文档与示例：README / 文档 / demo / API 是否合需求。Official docs & examples.
+- [ ] 5. 社区口碑：开发者评论（HN / Reddit / Discord / issues）、已知坑。Community feedback & known pitfalls.
+- [ ] 6. 许可与安全：license、CVE / advisories、依赖树风险。License & security.
+- [ ] 7. 本地实测（最铁）：临时目录安装 → 最小 demo → 实测验证。Local verification (the iron judge).
+- [ ] 8. 结论留档：对比表 + 推荐 + 理由。Record the conclusion.
+
+**权威性说明 Authority note**：每日最火 / skills 榜单基于安装遥测，只代表被发现度，不代表质量；质量靠 2/3/4/5 证据 + 第 7 步实测判定。Rankings are discoverability, not quality; quality needs evidence + local verification.
+
 ## 1. 新项目 / 新功能开发（15 步） · New feature / new project (15 steps)
 
 - [ ] 1. 开工自检（平台已适配、规则文件生效）Startup self-check (platform adapted, rule file active)
