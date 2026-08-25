@@ -95,6 +95,13 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 3. **回指本 Skill Point back to the skill**：注明完整工作流位置（Skill 目录或仓库 URL），保持渐进式披露。Reference where the full workflow lives.
 4. **校验 Verify**：一句话复述生效要点（分级、双模式、注入模式、密钥红线、回滚、留档），确认未丢失既有内容。Restate the active essentials (triage, dual modes, injection mode, secrets, rollback, records) and confirm no existing content was lost.
 
+### 3.2 会话启动钩子（可选，仅平台支持时）· Session-start hook (optional, platform-supported only)
+
+平台支持会话启动钩子时（如 Claude Code `SessionStart`，经 `.claude/settings.json` 或 `hooks.json`），可让纪律**自动**加载，而非只靠规则文本——这是「强制」模式的最强形态。When the platform supports session-start hooks (e.g. Claude Code `SessionStart`), the discipline can load automatically — the strongest form of "forced" mode.
+
+- **效果 Effect**：新会话启动打印纪律横幅（分级/双模式/密钥红线/回滚/留档），指向规则文件与记忆文件，工作前重新锚定。On session start, print a discipline banner and point to the rule file + memory file.
+- **方式 How**：模板在 `templates/hooks/`——`session-start.example.sh` + `hooks.example.json`（`SessionStart` → 运行脚本）。复制适配。Templates in `templates/hooks/`; copy & adapt.
+- **契约 Contract**：可选且受平台门控，配置示例非捆绑运行时，保持零脚本；无 hooks 的平台跳过。Optional & platform-gated; config example, not bundled runtime; skip on platforms without hooks.
 ## 4. 提问工具降级链 · Asking-tool downgrade chain
 
 1. 平台原生提问工具（`request_user_input` / `AskUserQuestion` / `ask_user` / 平台提问工具）。Native asking tool.

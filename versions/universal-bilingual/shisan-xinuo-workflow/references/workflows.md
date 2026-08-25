@@ -208,3 +208,4 @@ Agent 无天生长期记忆、也无法感知上下文压缩——把会话状�
 - **读取 Read at**：①会话开始；②压缩 / 重置 / 重载后——**先读再继续**；③新任务前扫一眼。Session start; after compaction/reset — **read first, then continue**; before new tasks.
 - **分层 Layering**：记忆文件 = 状态层；知识文档（第 11 步双写）= 学习层；经验库 = 踩坑层。Memory = *state*; knowledge docs = *learning*; experience log = *pitfall*. They do not replace each other.
 - **压缩后显式重载顺序 Reload sequence after compaction**：用户说「重载 / 你被压缩了」或平台重置上下文 → ①重读 SKILL.md → ②重读记忆文件 → ③重读当前引用 → ④向用户复述任务与验收再继续。On reload/reset: re-read SKILL.md → memory file → needed references → restate task + acceptance, then continue.
+- **提示词预算（可选）Prompt budget (optional)**：见 `templates/prompt-budget.template.md`——设置档位（nano/minimal/standard/full），只加载任务所需引用；记忆文件与任务记录保持预算内。预算指引非强制。See `templates/prompt-budget.template.md`; budgets are guidance, not enforcement.

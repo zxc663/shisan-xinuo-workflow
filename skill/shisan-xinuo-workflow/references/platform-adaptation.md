@@ -82,6 +82,13 @@ Forced-mode extra line to append to the template below:
 3. **Point back to the skill**: the rule file should reference where the full workflow lives (this skill's folder or repo URL), so details stay progressive-disclosure-friendly.
 4. **Verify**: after writing, restate the active essentials (triage, dual modes, injection mode, secrets red line, rollback rule, record discipline) in one line to the user and confirm no existing content was lost.
 
+### 3.2 Session-start hook (optional, platform-supported only)
+
+When the platform supports session-start hooks (e.g. Claude Code `SessionStart` via `.claude/settings.json` or `hooks.json`), the discipline can load **automatically** — the strongest form of "forced" mode.
+
+- **Effect**: on every new session, the hook prints a discipline banner (triage / dual modes / secrets red line / rollback / record discipline) and points to the rule file + memory file, so the agent re-anchors before any work.
+- **How**: templates live in `templates/hooks/` — `session-start.example.sh` (banner script) + `hooks.example.json` (Claude Code config: `SessionStart` → run the script). Copy and adapt to the platform.
+- **Contract**: the hook is **optional and platform-gated** — a config example, not a bundled runtime; the skill stays zero-script. Skip on platforms without hooks.
 ## 4. Asking-tool downgrade chain
 
 1. Native asking tool (`request_user_input` / `AskUserQuestion` / `ask_user` / platform question tool).

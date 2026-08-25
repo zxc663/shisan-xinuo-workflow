@@ -132,7 +132,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 | 通用系统提示词 Generic system prompts | 可操作、可验证、清单驱动：分级表、出口产物门禁、扫描清单——不是空泛口号。Operational, verifiable, checklist-driven. |
 | 静态规则包 / 单文件提示词 | 本 Skill 是**渐进式**：按步加载 + 判级动态路由（L1 快速通道），不是一次全量注入。Progressive, triage-routed, on-demand — not a one-shot static dump. |
 | 其他工作流 / 提示词类 Skill Other workflow skills | 多数只有规则或流程；本 Skill 同时具备**强制流程骨架 + 每步门禁**、**判级动态路由**、**工程师/产品双视角**、**可信调研依据**、**开源安装强制校验**、**记忆文件协议 + 压缩重载**。Most ship rules or a process; this one adds gates, triage routing, dual views, verifiable survey, install vetting, and memory/reload discipline. |
-| 官方技能仓库 Official skills repos | 补位「通用工程执行治理」品类：官方仓库领域技能丰富，跨领域工作纪律稀缺。Fills the "general engineering-execution governance" niche. |
+| 官方技能仓库 / 同类治理 Skill Official repos / peer governance skills | **工程治理全家桶完整度第一**：多数项目只有规则、流程或模板之一；本 Skill 同时集齐 43 条规则地基 + 11 步流程门禁 + 203 条落地细则 + 跨平台注入 + 双视角 + 记忆协议 + 压缩重载，一套完整闭环。The most complete engineering-governance package — rules + gated process + landing details + cross-platform injection + dual views + memory/reload discipline in one. |
 
 ---
 
@@ -193,9 +193,10 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── LICENSE                         ← MIT
 ├── 项目信息.md                      ← 内部维护文档（供下一个 AI 助手读写）
 ├── package.json / .npmrc           ← npm 发行物配置（GitHub Packages）
-├── dist/                           ← 版本发布 zip（v1.0.0 … v1.4.4）
+├── dist/                           ← 版本发布 zip（v1.0.0 … v1.4.5）
 ├── skill/shisan-xinuo-workflow/    ← 默认交付（英文）
 │   ├── SKILL.md                    ← 精简入口：定位、总纲主流程、门禁、引用地图、重载顺序
+│   ├── templates/                  ← 主流程配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子）
 │   └── references/                 ← 按需加载的引用
 │       ├── rules.md                ← 43 条规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
