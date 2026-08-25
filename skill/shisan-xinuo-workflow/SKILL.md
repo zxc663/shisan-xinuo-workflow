@@ -18,9 +18,13 @@ A cross-platform engineering-governance skill: it teaches any agent a single, au
 Before starting any task, adapt this workflow to the current platform:
 
 1. **Detect the platform** using the feature checklist in `references/platform-adaptation.md` (directory markers, env vars, tool availability).
-2. **Generate the platform rule file** (e.g. `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`) with a condensed operating discipline, pointing back to this skill for details. If a rule file already exists: **back it up first, then merge — never overwrite existing content**.
-3. **Pick the active asking mechanism** from the downgrade chain in section 4.
-4. Confirm to the user in one line: platform detected, rule file written/merged, asking tool active. Do not start the task until this is done.
+2. **Ask the injection mode** — use the asking chain from section 4 and let the user choose:
+   - **On-demand (default)** — the rule file holds a lean discipline and points back to this skill; the full skill activates when triggered. Lowest context cost.
+   - **Forced per-session** — the rule file additionally commands every session to fully read this skill's `SKILL.md` before starting work, so the discipline applies unconditionally each session (higher per-session context cost).
+   If no asking tool is available, default to on-demand and say so explicitly.
+3. **Configure the injection point — write the rule file into the location the agent app actually auto-injects every session** (see the injection-point table in `references/platform-adaptation.md`: e.g. `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex, `.cursor/rules/*.mdc` for Cursor, the app-managed project rules for Trae). A file written only into a workspace folder the app never reads is **useless** — it would still require manual triggering. If the platform requires enabling the rule inside the app (e.g. Trae project rules), **guide the user to enable it in the app settings and confirm it is active**; do not claim success until the app confirms it injects the rule.
+4. **Pick the active asking mechanism** from the downgrade chain in section 4.
+5. Confirm to the user in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
 
 ## 3. Ask-before-acting protocol
 

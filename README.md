@@ -33,6 +33,7 @@ Expected within one session: task triage, ask-before-acting, rollback before ris
 - **Rollback safety** — rollback point (commit/stash/snapshot) required *before* major changes or irreversible operations.
 - **Dual modes** — normal (ask on consequential decisions) and goal mode (`目标：` / `goal mode` / `unattended` → autonomous per plan; secrets & destructive ops still pause).
 - **Context-loss self-check** — agents cannot detect their own context compaction, so instead of assuming, the skill installs two guards: reload on explicit signals (user says "reload" / platform reset) and a core-elements self-check before work starts, commits, or major decisions.
+- **Injection-point & injection mode** — Step 0 writes the rule into the location the agent app **actually auto-injects every session** (e.g. `CLAUDE.md`, `AGENTS.md`, `.cursor/rules`, app-managed project rules for Trae) — never a workspace file the app ignores. It asks whether you want **on-demand** (default, lean rule) or **forced per-session** (rule commands reading the full SKILL.md every session, no manual trigger needed), and guides you to enable the rule inside the app when the platform requires it (e.g. Trae).
 
 ### Use cases
 
@@ -146,6 +147,7 @@ MIT — see [LICENSE](LICENSE).
 - **回滚安全**：重大修改/不可逆操作**前**必须先建回滚点（commit/stash/快照），高危命令执行前同样要求。
 - **双模式**：普通模式（关键决策必问）+ 目标模式（关键词 `目标：`/`目标模式`/`无人值守`/`goal mode` → 按计划自主执行，密钥与破坏性操作仍暂停等待确认）。
 - **上下文缺失自检**：Agent 无法感知自己被压缩，因此不靠感知、靠两道守卫——显式信号（用户说「重载」/ 平台重置）即重读；开工 / 提交 / 重大决策前默写核心要素，复述不全即重读。
+- **注入点与注入模式**：第 0 步把规则写入 agent 应用**每会话真正自动注入**的位置（如 `CLAUDE.md`、`AGENTS.md`、`.cursor/rules`、Trae 应用内项目规则）——绝不写进应用忽略的工作区文件。它会询问你选择**按需注入**（默认，精简规则）还是**强制注入**（规则命令每会话完整读取 SKILL.md，无需手动触发），并在平台要求时（如 Trae）**引导你在应用设置里启用规则**。
 
 ### 使用场景
 

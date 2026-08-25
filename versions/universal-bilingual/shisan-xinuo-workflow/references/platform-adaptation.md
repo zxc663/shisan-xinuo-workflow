@@ -19,20 +19,49 @@
 
 无法确定时直接问用户是哪个平台——要写规则文件时不允许猜测。If uncertain, ask the user which platform this is — do not guess when a rule file will be written.
 
-## 2. 规则文件映射与提问工具 · Rule-file mapping & asking tools
+## 2. 注入点——应用每会话真正自动注入规则的位置 · Injection points — where the app ACTUALLY auto-injects rules every session
 
-| 平台 Platform | 规则文件 Rule file | 原生提问工具 Native asking tool |
-|---|---|---|
-| Codex | `AGENTS.md`（项目根 project root） | `request_user_input` |
-| Claude Code | `CLAUDE.md`（+ Skill 装 `.claude/skills/`）+ this skill under `.claude/skills/` | 无原生 → 文本协议 none → text protocol |
-| Cursor | `.cursor/rules/workflow.mdc` | 无原生 → 文本协议 none → text protocol |
-| Windsurf | `.windsurfrules` | 无原生 → 文本协议 none → text protocol |
-| Trae | 项目规则文件（平台管理）project rules file (platform-managed) | 平台提问工具若存在，否则文本协议 platform question tool if present, else text protocol |
-| WorkBuddy | `BOOTSTRAP.md` | `AskUserQuestion` |
-| Reasonix | `AGENTS.md` | 无原生 → 文本协议 none → text protocol |
-| 通用 CLI | `README.md` 说明 + 本 Skill 目录 `README.md` note + this skill folder | 无原生 → 文本协议 none → text protocol |
+> 只把规则文件写进应用从不读取的工作区目录是**无效的**——仍会被迫手动触发。必须对准平台真正的注入点；需应用内启用时先引导用户在应用里启用。
+> A rule file the app never reads is **useless** — you would still have to trigger the skill manually. Target the platform's real injection point and enable it in-app when required.
+
+| 平台 Platform | 注入点 Injection point（每会话自动注入 auto-injected every session） | 需应用内启用 In-app enable | 原生提问工具 Native asking tool |
+|---|---|---|---|
+| Codex | `AGENTS.md`（项目根 project root） | 否 No — auto-read | `request_user_input` |
+| Claude Code | `CLAUDE.md`（项目 project）或 `~/.claude/CLAUDE.md`（用户全局 user-global） | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
+| Cursor | `.cursor/rules/*.mdc` 或应用设置全局 Rules / or global Rules in app settings | 通常自动读取；核对 Rules 开关 Usually auto-read; verify Rules toggle | 无原生 → 文本协议 none → text protocol |
+| Windsurf | `.windsurfrules`（项目）或全局规则 / or global rules | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
+| Trae | 应用内管理的项目规则（应用设置 → 项目规则 / Agent 规则）app-managed project rules (app settings) | **是——用户必须在应用内启用 / 挂载 YES — must enable/attach in the app** | 平台提问工具若存在，否则文本协议 platform tool if present, else text protocol |
+| WorkBuddy | `BOOTSTRAP.md` + 连接器配置 + connector config | 是——应用配置中挂载 Yes — attach in app config | `AskUserQuestion` |
+| Reasonix | `AGENTS.md`（插件 / 规则输入 plugin/rule input） | 视插件配置 per plugin config | 无原生 → 文本协议 none → text protocol |
+| 通用 CLI | 无自动注入 no auto-injection | 不适用 n/a | 无原生 → 文本协议 none → text protocol |
+
+**对每个平台 For every platform**：写入 / 合并后，若平台要求应用内启用（如 Trae 项目规则），**引导用户在应用设置里启用并等待确认生效**；应用未确认每会话加载前，不得宣称「已注入」。After writing/merging, if the platform requires in-app enabling, guide the user to enable it and wait for confirmation; do not claim "injected" until the app confirms the rule loads each session.
+
+**强制注入 Forced mode** = 把规则写入上面的注入点 + 追加「每会话完整读取 SKILL.md」指令（第 3.0 节）——每会话自动生效，无需手动触发。Write into the injection point above AND append the per-session read command, so every session loads it without manual triggering.
+
+通用 CLI（无自动注入 Generic CLI, no auto-injection）：提示用户每会话打开一次本 Skill，或写入自定义提示词。Open the skill once per session or wrap it in your custom prompt.
 
 ## 3. 生成 / 合并规则文件 · Generate / merge the rule file
+
+### 3.0 先选注入模式（询问用户）· Choose the injection mode first (ask the user)
+
+写任何规则文件前，用第 4 节降级链让用户选择；无提问工具默认**按需注入**并明确告知。
+Before writing any rule file, let the user pick an injection mode via the section-4 chain; default to **on-demand** and say so if no asking tool is available.
+
+| 模式 Mode | 规则文件内容 Rule file contains | 上下文开销 Context cost | 适用 Use when |
+|---|---|---|---|
+| **按需注入（默认）On-demand (default)** | 精简纪律 + 回指本 Skill lean discipline + pointer | 最低 lowest | 多数项目；Skill 按触发激活 most projects; triggers when relevant |
+| **强制注入（每会话）Forced per-session** | 精简纪律 + 回指 + 「每会话必读完整 SKILL.md」 lean + pointer + "read the full SKILL.md every session" | 较高（每会话全量 SKILL.md） higher (full SKILL.md per session) | 要求每会话无条件纪律化 unconditional discipline in every session |
+
+强制模式需追加的一行（加在下方模板末尾）Forced-mode line to append:
+```markdown
+- **强制注入 Forced injection**：每个会话开工前必须完整读取 shisan-xinuo-workflow
+  Skill 的 SKILL.md 并按此执行；references 按需加载。
+  Every session MUST fully read this skill's SKILL.md before starting work
+  and follow it; references load on demand.
+```
+
+### 3.1 步骤 Steps
 
 1. **先备份 Backup first**：目标文件存在则复制为 `<文件名>.bak-<日期>` 再动。Copy to `<file>.bak-<date>` before any change. 绝不原地直改。Never edit in place without a backup.
 2. **合并而非覆盖 Merge, never overwrite**：完整保留已有每一行，把精简纪律追加到分隔区块。Preserve every existing line; append the condensed discipline in a separated section:
@@ -64,7 +93,7 @@
 ```
 
 3. **回指本 Skill Point back to the skill**：注明完整工作流位置（Skill 目录或仓库 URL），保持渐进式披露。Reference where the full workflow lives.
-4. **校验 Verify**：一句话复述生效要点（分级、双模式、密钥红线、回滚、留档），确认未丢失既有内容。Restate the active essentials and confirm no existing content was lost.
+4. **校验 Verify**：一句话复述生效要点（分级、双模式、注入模式、密钥红线、回滚、留档），确认未丢失既有内容。Restate the active essentials (triage, dual modes, injection mode, secrets, rollback, records) and confirm no existing content was lost.
 
 ## 4. 提问工具降级链 · Asking-tool downgrade chain
 

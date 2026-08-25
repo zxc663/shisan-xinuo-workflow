@@ -19,23 +19,48 @@ Check the following signals in order; the first strong hit decides:
 
 If uncertain, ask the user which platform this is — do not guess when a rule file will be written.
 
-## 2. Rule-file mapping & asking tools
+## 2. Injection points — where the agent app ACTUALLY auto-injects rules every session
 
-| Platform | Rule file to create/merge | Native asking tool |
-|---|---|---|
-| Codex | `AGENTS.md` (project root) | `request_user_input` |
-| Claude Code | `CLAUDE.md` (+ this skill installed under `.claude/skills/`) | none native → text protocol |
-| Cursor | `.cursor/rules/workflow.mdc` | none native → text protocol |
-| Windsurf | `.windsurfrules` | none native → text protocol |
-| Trae | project rules file (platform-managed) | platform question tool if present, else text protocol |
-| WorkBuddy | `BOOTSTRAP.md` | `AskUserQuestion` |
-| Reasonix | `AGENTS.md` | none native → text protocol |
-| Generic CLI | `README.md` note + this skill folder | none native → text protocol |
+> Writing a rule file into a workspace folder the app never reads is **useless** — the skill would still require manual triggering. Always target the platform's real injection point, and enable it in-app when required.
+
+| Platform | Injection point (auto-injected every session) | In-app enable needed? | Native asking tool |
+|---|---|---|---|
+| Codex | `AGENTS.md` (project root) | No — auto-read | `request_user_input` |
+| Claude Code | `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user-global) | No — auto-read | none native → text protocol |
+| Cursor | `.cursor/rules/*.mdc` or global Rules (app settings) | Usually auto-read; verify Rules toggle | none native → text protocol |
+| Windsurf | `.windsurfrules` (project) or global rules | No — auto-read | none native → text protocol |
+| Trae | app-managed project rules (set inside the Trae app: 设置 → 项目规则/Agent 规则) | **YES — user must enable/attach the rule in the app** | platform question tool if present, else text protocol |
+| WorkBuddy | `BOOTSTRAP.md` (project bootstrap) + connector config | Yes — attach in app config | `AskUserQuestion` |
+| Reasonix | `AGENTS.md` (plugin/rule input) | Per plugin config | none native → text protocol |
+| Generic CLI | no auto-injection | n/a | none native → text protocol |
+
+**For every platform**: after writing/merging the file, if the platform requires enabling it inside the app (e.g. Trae project rules), **guide the user to enable it in the app settings and wait for confirmation that it is active**. Do not claim "injected" until the app confirms the rule is loaded each session.
+
+**Forced mode** = write the rule into the injection point above **and** append the per-session read command (section 3.0), so every session loads the discipline without manual triggering.
+
+Generic CLI (no auto-injection): tell the user to open the skill once per session, or wrap the rule in their custom prompt.
 
 ## 3. Generate / merge the rule file
 
+### 3.0 Choose the injection mode first (ask the user)
+
+Before writing any rule file, use the asking chain in section 4 to let the user pick an injection mode; if no asking tool is available, default to **on-demand** and say so.
+
+| Mode | Rule file contains | Context cost | Use when |
+|---|---|---|---|
+| **On-demand (default)** | lean discipline + pointer to this skill | lowest | most projects; skill triggers when relevant |
+| **Forced per-session** | lean discipline + pointer + "read the full SKILL.md every session" | higher (full SKILL.md per session) | you want the discipline unconditionally active in every session, including contexts where the skill would not auto-trigger |
+
+Forced-mode extra line to append to the template below:
+```markdown
+- **Forced injection**: every session MUST fully read the shisan-xinuo-workflow
+  skill's SKILL.md before starting work and follow it; references load on demand.
+```
+
+### 3.1 Steps
+
 1. **Backup first**: if the target file exists, copy it to `<file>.bak-<date>` before any change. Never edit an existing rule file in place without a backup.
-2. **Merge, never overwrite**: preserve every existing line of the user's rules. Append the condensed operating discipline below under a clearly separated section, e.g.:
+2. **Merge, never overwrite**: preserve every existing line of the user's rules. Append the condensed operating discipline below under a clearly separated section, e.g. (append the forced-injection line only if the user chose forced mode):
 
 ```markdown
 ## Agent workflow discipline (shisan-xinuo-workflow)
@@ -55,7 +80,7 @@ If uncertain, ask the user which platform this is — do not guess when a rule f
 ```
 
 3. **Point back to the skill**: the rule file should reference where the full workflow lives (this skill's folder or repo URL), so details stay progressive-disclosure-friendly.
-4. **Verify**: after writing, restate the active essentials (triage, dual modes, secrets red line, rollback rule, record discipline) in one line to the user and confirm no existing content was lost.
+4. **Verify**: after writing, restate the active essentials (triage, dual modes, injection mode, secrets red line, rollback rule, record discipline) in one line to the user and confirm no existing content was lost.
 
 ## 4. Asking-tool downgrade chain
 
