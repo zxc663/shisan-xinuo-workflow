@@ -1,0 +1,31 @@
+{
+  "name": "@zxc663/shisan-xinuo-workflow",
+  "version": "1.0.0",
+  "description": "Shisan Xinuo Agent Workflow — cross-platform engineering-governance Agent Skill (L1/L2/L3 task triage, dual modes, ask-before-acting, quality gates, rollback safety, no fake completion). 十三希诺通用 Agent 工作流。",
+  "keywords": [
+    "agent",
+    "skill",
+    "workflow",
+    "governance",
+    "claude",
+    "codex",
+    "cursor",
+    "trae",
+    "agentskills"
+  ],
+  "license": "MIT",
+  "files": [
+    "skill",
+    "versions",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "十三希诺",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zxc663/shisan-xinuo-workflow.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

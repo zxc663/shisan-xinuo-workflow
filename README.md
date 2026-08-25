@@ -14,6 +14,17 @@ A cross-platform engineering-governance **Agent Skill**: one installable folder 
 
 A **governance meta-skill**. It is not domain knowledge (no framework/library/API content) — it is the *way of working* layered on top of whatever the task is: how to triage by risk, when to ask the user, what to verify before shipping, when to take a rollback point, what to write down and when.
 
+### Quick start (快速体验)
+
+**Try it in under a minute** (needs a skills-capable agent: Claude Code, Trae, Cursor, Codex…):
+
+1. **Install** — copy `skill/shisan-xinuo-workflow/` into your platform's skill folder (see Install below), or `npm install @zxc663/shisan-xinuo-workflow` and copy the folder from `node_modules/`.
+2. **Load** — open a session. The skill runs **Step 0 platform adaptation** automatically: it detects the platform, writes a ~30-line rule file (`AGENTS.md`/`CLAUDE.md`/…) and picks an asking tool. (Existing rule files are backed up and merged, never overwritten.)
+3. **Feel it** — give a small task and watch it behave: it restates understanding first, writes 3-5 acceptance criteria, does the work, then self-checks. Now give a **risk task** (e.g. "delete this folder"): it must ask before acting — that is L3 triage in action.
+4. **Goal mode** — say `目标：整理本目录文件并归组，注意不要删除任何内容` and watch it plan, set budgets, split by file boundaries and stop when the budget is hit.
+
+Expected within one session: task triage, ask-before-acting, rollback before risky ops, and records at the end.
+
 ### What it does
 
 - **Step 0 platform adaptation** — on load, detects the platform (Codex / Claude Code / Cursor / …) and generates a condensed, merge-safe rule file (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, …). Existing rule files are backed up and merged, never overwritten.
@@ -98,6 +109,12 @@ versions/
 - **Does it send data anywhere?** No. Pure documentation; no scripts; no network.
 - **Can the agent tell when its context was compacted?** No — that is exactly why rule 25 installs explicit-signal reload + milestone self-checks instead of relying on compaction awareness.
 
+### Contributors
+
+- **十三希诺** — author & maintainer ([zxc663](https://github.com/zxc663))
+
+Contributions welcome: open an issue or PR for rule improvements, workflow additions, or localization fixes. New rules follow the skill's own rule-addition process (workflow 9) before merging.
+
 ### License
 
 MIT — see [LICENSE](LICENSE).
@@ -109,6 +126,17 @@ MIT — see [LICENSE](LICENSE).
 ### 定位
 
 一个**工程治理元 Skill**。它不含领域知识（无框架 / 库 / API 内容），而是叠加在任务之上的「工作方式」：按风险分级、何时向用户提问、交付前验证什么、何时建立回滚点、哪些结论何时落盘。
+
+### 快速体验
+
+**一分钟跑通**（需要支持 Skill 的 Agent 环境：Claude Code / Trae / Cursor / Codex 等）：
+
+1. **安装**：把 `skill/shisan-xinuo-workflow/` 复制到平台技能目录（见下方安装）；或 `npm install @zxc663/shisan-xinuo-workflow` 后从 `node_modules/` 复制该目录。
+2. **加载**：新开会话。Skill 自动执行**第 0 步平台适配**：检测平台、写入约 30 行规则文件（`AGENTS.md`/`CLAUDE.md`/…）、选定提问工具（已有规则先备份再合并，绝不覆盖）。
+3. **感受它**：先给一个小任务观察行为——它会先复述理解、写 3-5 条验收标准、做完自查。再给一个**风险任务**（如「把这个目录删了」）：它必须**先问再动手**——这就是 L3 分级在起作用。
+4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`，观察它写计划、设预算、按文件边界拆分、超预算自动停。
+
+一个会话内应看到：任务分级、关键必问、风险操作前回滚点、结束时留档。
 
 ### 它做什么
 
@@ -193,6 +221,12 @@ versions/
 - **会覆盖我已有的规则吗？** 不会——先备份再合并，绝不覆盖。
 - **会对外发送数据吗？** 不会。纯文档、无脚本、无网络。
 - **Agent 能感知自己被压缩吗？** 不能——这正是第 25 条规则改为「显式信号重载 + 关键节点自检」的原因，不依赖压缩感知。
+
+### 贡献者
+
+- **十三希诺** — 作者与维护者（[zxc663](https://github.com/zxc663)）
+
+欢迎贡献：规则改进、工作流补充、本地化修正请开 issue 或 PR。新增规则需先走本 Skill 自带的规则新增流程（工作流 9）再合并。
 
 ### 许可证
 
