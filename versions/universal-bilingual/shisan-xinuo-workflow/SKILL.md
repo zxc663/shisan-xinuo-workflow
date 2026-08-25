@@ -102,7 +102,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 | `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
 | `references/rules.md` | 43 条纪律（地基）The 43-rule discipline (foundation) |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
-| `references/details.md` | 落地细则（工程规范 / 具体做法）Landing details (engineering rules by category) |
+| `references/details.md` | 落地细则（工程规范 / 具体做法）11 类：环境/前端/数据库/测试/API/部署运维/代码质量/Git/会话·备份·治理/深挖补充/铁律纪律 Landing details, 11 categories (env/frontend/DB/testing/API/ops/code quality/git/sessions/deep-dive/iron laws), load by category |
 | `references/security.md` | 密钥红线、应急、回滚细节 Secrets, incident, rollback |
 
 **上下文缺失自检（压缩不可感知）Context-loss self-check**：显式信号（用户提示重载/平台重置）即重读；关键节点（开工/提交/重大决策）先默写核心要素（总纲步序、模式、回滚、必问），复述不全即重读。Reload on explicit signals; self-check core elements (master steps, mode, rollback, ask) before key milestones.
