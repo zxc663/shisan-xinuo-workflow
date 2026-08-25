@@ -2,19 +2,34 @@
 
 Load this file when starting work that matches one of the task types below, or when SKILL.md cites a workflow. Each flow is a checklist — track progress against it.
 
-## 0. Task operating sequence — research-driven (run before ANY task type)
+## 0. Prelude & master — mandatory sequence (run before ANY task type)
 
-- [ ] 1. Receive instruction; first-principles understanding (essence / required / inertia)
-- [ ] 2. Read the experience log by symptom/keyword; hit → execute per "solve / prevent"
-- [ ] 3. Survey actual resources: real code (status evidence: consumers/constants/switches + file/line conclusions), runtime environment, workspace, available skills & MCP this session
-- [ ] 4. Degraded: environment/capability/tool/skill/MCP unavailable → research online (docs/libraries/equivalents), load needed skill, record fallback & reason
-- [ ] 5. Reuse survey: local project assets → similar/known project assets (five-question chain); record conclusion when building new
-- [ ] 6. Restate understanding to the user (goal / boundaries / acceptance); confirm alignment
-- [ ] 7. Ask on any doubt or direction drift (scope / conflict / ambiguity / risk); end the turn and wait
-- [ ] 8. Product-view review + explicit constraints/assumptions + L1/L2/L3 triage + prepare rollback point (rule 43)
-- [ ] 9. Plan & acceptance doc: 3-5 verifiable criteria; goal mode adds time/round/budget caps + file-boundary split
-- [ ] 10. Execute per triage (goal mode: autonomous per plan, log checkpoints, stop over budget)
-- [ ] 11. Self-check & archive: minimal verification → self-check → docs synced with code → dual-write knowledge → commit/push with note
+### 0.0 Status clarification (run first when goals / state are fuzzy)
+
+**Triggers**: "can't sort this out / project is a mess / unclear where things stand / where do I even start / help me organize / what's next / should I do X / I'm a bit lost"; or master step 1 exposes a fuzzy baseline.
+
+- [ ] 1. Empathize & frame: restate the user's situation and stuck feeling in one line; declare the clarification dialogue
+- [ ] 2. First question: start at the highest-leverage point (usually "what is the result you want / what is blocking you")
+- [ ] 3. Drill layer by layer: follow up per answer (3-5 causal layers, explicit constraints/assumptions, convert obstacles into the real problem), 1-2 questions per round
+- [ ] 4. Offer leads: give observed leads/hypotheses for the user to verify, avoid question fatigue
+- [ ] 5. Converge & structure: stop when enough info; produce a clarification memo (goal / current state / constraints / blockers)
+- [ ] 6. Plan together: structured action plan (goal → priorities → next steps); after confirmation, return to master step 1
+
+### 0.1 Mandatory master sequence (11 steps, exit-artifact gates)
+
+Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must exist before the next step; legitimate skips must record the reason in the task record, never silently.
+
+- [ ] 1. Receive instruction (artifact: one-sentence task essence)
+- [ ] 2. Read the experience log first (hit record)
+- [ ] 3. Survey actual resources (status fact list)
+- [ ] 4. Degraded research online (degradation record)
+- [ ] 5. Reuse survey (reuse conclusion)
+- [ ] 6. Restate understanding (user confirmation)
+- [ ] 7. Ask on any doubt (ask record)
+- [ ] 8. Product-view + constraints + triage + rollback point (triage + rollback record)
+- [ ] 9. Plan & acceptance doc (plan & acceptance doc)
+- [ ] 10. Execute (execution record)
+- [ ] 11. Self-check & archive (verification result + archive)
 
 ## 1. New feature / new project (15 steps)
 

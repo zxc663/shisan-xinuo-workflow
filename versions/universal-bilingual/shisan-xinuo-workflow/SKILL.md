@@ -1,150 +1,108 @@
 ---
 name: shisan-xinuo-workflow
-description: "跨平台 AI 编码智能体工程治理工作流：L1/L2/L3 任务分级、双模式、关键必问、质量门禁、重大修改前回滚点、留档纪律。Use when the user wants a disciplined, auditable workflow on Trae, Codex, Claude Code, Cursor, or any CLI agent. A platform-agnostic engineering governance workflow: task triage, dual modes, ask-before-acting, quality gates, rollback safety, records. Not for domain-specific coding help. 不用于领域专属编码知识。"
+description: "以通用工作执行流程为灵魂、以纪律规则为地基的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、双模式、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul and the discipline rules as its foundation: a mandatory universal task operating sequence (11 steps, exit-artifact gates, clarification prelude), dual modes, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help."
 ---
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
 
-跨平台工程治理类 Skill：教会任意 Agent 一套统一、可审计的工作方式——按风险分级任务、关键决策先问、守护质量、留存记录、绝不假实现。
-A cross-platform engineering-governance skill: it teaches any agent a single, auditable way of working — task triage by risk, ask before acting on consequential decisions, quality gates, records, and never faking completion.
+> **定位：流程为魂、规则为基。** 通用工作执行流程是灵魂（每个任务强制通用的推进骨架），43 条纪律规则是地基（约束每步该守什么）；二者强耦合、相互依托——流程承载规则落地，规则约束流程执行，缺一不可。
+> **Positioning: workflow is the soul, rules are the foundation.** The universal operating sequence is the soul (the mandatory skeleton every task advances along); the 43 rules are the foundation (what each step must observe). Strongly coupled and mutually dependent — the workflow carries the rules into execution; the rules govern the workflow.
 
 ## 1. 何时使用 / 何时不用 · When to use / when NOT to use
 
-**使用 Use**：用户要求纪律化执行、工作流治理、工作流规则、运行协议，或希望 Agent 跨项目跨平台行为一致；本 Skill 每次加载也会自动执行第 0 步。
-When the user asks for disciplined execution, workflow governance, workflow rules, or consistent agent behavior across projects and platforms. Step 0 below also runs automatically on every load.
+**使用 Use**：任何工程任务（只要动手，就按第 2 节总纲推进）；纪律化执行、工作流治理、跨项目跨平台行为一致。本 Skill 加载时也执行第 3 节第 0 步（平台适配）。Any engineering task (advance along the master sequence in section 2); disciplined execution, workflow governance, consistent behavior across projects and platforms. Step 0 (section 3) also runs on load.
 
-**不用 NOT for**：领域专属知识（框架、库、API）；也不替代项目自身约定——与本 Skill 冲突时项目文档优先。
-Domain-specific knowledge (frameworks, libraries, APIs) or replacing project-level conventions — the project's own docs always win where they conflict.
+**不用 NOT for**：领域专属知识（框架 / 库 / API）；项目自身约定优先于本 Skill。Domain-specific knowledge; the project's own docs always win where they conflict.
 
-## 2. 第 0 步：平台检测与适配（先行执行，无例外）
-## Step 0 — Platform detection & adaptation (run first, no exceptions)
+## 2. 总纲：任务主流程——强制通用推进骨架（唯一入口）· Master: task operating sequence — mandatory universal skeleton (single entry)
 
-开始任何任务前，先把本工作流适配到当前平台：
-Before starting any task, adapt this workflow to the current platform:
+> **这是本 Skill 的核心，不是参考项。** 每步有「出口产物」，无产物 = 未完成 = 不得进入下一步；流程门禁可检查、可审计、不可跳步。
+> **This is the core, not a reference.** Every step has an exit artifact — no artifact means unfinished; the gate is checkable, auditable, unskippable.
 
-1. **检测平台**：按 `references/platform-adaptation.md` 特征清单判断（目录标志、环境变量、工具可用性）。
-   **Detect the platform** using the feature checklist in `references/platform-adaptation.md` (directory markers, env vars, tool availability).
-2. **询问注入模式**（写规则文件前，用第 4 节降级链提问）：**按需注入（默认）**——精简纪律 + 回指本 Skill，开销最低；**强制注入（每会话）**——额外写入「每会话开工前必须完整读取本 Skill 的 SKILL.md」，纪律无条件生效（每会话增加全量 SKILL.md 开销）。无提问工具默认按需并明确告知。
-   **Ask the injection mode** (before writing any rule file): **on-demand (default)** — lean discipline + pointer, lowest cost; **forced per-session** — also writes "every session MUST fully read this skill's SKILL.md before starting", unconditional discipline (higher per-session cost). Default to on-demand and say so if no asking tool is available.
-3. **配置注入点——写入 agent 应用每会话真正自动注入的位置**（见 `references/platform-adaptation.md` 注入点表：Claude Code 的 `CLAUDE.md`、Codex 的 `AGENTS.md`、Cursor 的 `.cursor/rules/*.mdc`、Trae 的应用内项目规则等）；按所选注入模式采用对应模板。只写进应用从不读取的工作区文件是**无效的**。若平台要求应用内启用（如 Trae），**引导用户在应用设置里启用并确认生效**，未确认不得宣称成功。
-   **Configure the injection point** — write the rule file into the location the agent app actually auto-injects every session (see the injection-point table in `references/platform-adaptation.md`); a file the app never reads is **useless**. If the platform requires in-app enabling (e.g. Trae), guide the user to enable it and confirm it is active before claiming success.
-4. **选定提问机制**：按第 4 节降级链取第一个可用项。
-   **Pick the active asking mechanism** from the downgrade chain in section 4.
-5. 一句话向用户确认：检测到的平台、注入模式、注入点已确认生效、生效提问工具。未完成不得开工。
-   Confirm in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
+### 2.1 前置：状态澄清（目标 / 现状模糊时）· Prelude: status clarification (when goals / state are fuzzy)
 
-## 3. 任务主流程——调研驱动生命周期（每个任务都执行）· Task operating sequence — research-driven lifecycle (run for EVERY task)
+用户理不清状态 / 目标不明 / 现状模糊时，先走「状态澄清」对话（`references/workflows.md` 澄清流程）：主导式逐层追问（一次一问）→ 摸清现状、拆解问题、锁定线索 → 产出【澄清纪要：目标 / 现状 / 约束 / 卡点】→ 确认后回到主流程第 1 步。When the user cannot sort out state or the baseline is fuzzy, first run the clarification dialogue: drive one-question-at-a-time interrogation → map state, decompose, lock the lead → produce a clarification memo (goal / state / constraints / blockers) → return to master step 1 after confirmation.
 
-每个任务都按此顺序推进，这是核心循环，跳过即违反工作流。Every task follows this order; it is the core loop — skipping it is a workflow violation.
+### 2.2 强制 11 步主流程（每步含出口产物）· Mandatory 11-step master sequence (exit artifact per step)
 
-1. **接收指令**：第一性原理理解——本质 / 必要 / 惯性。**Receive** — first-principles understanding (essence / required / inertia).
-2. **经验库必读**：按症状 / 关键词检索，命中先按「解决 / 预防」执行。**Read the experience log first** by symptom/keyword; hit → execute per "solve / prevent".
-3. **调研实际资源**：真实代码（现状证据）+ 环境 + 工作区 + 可用 Skill / MCP。**Survey actual resources** — real code (status evidence), environment, workspace, available skills & MCP.
-4. **降级联网调研**：环境 / 能力 / 工具 / Skill / MCP 不可用 → 联网调研并加载所需 Skill、记录降级。**Degraded research online** — research docs/libraries/equivalents, load the needed skill, record the fallback.
-5. **复用调研**：本地项目 → 同类 / 已知项目可复用资源（复用五问）；自研时记录结论。**Reuse survey** — local project, then similar projects (five-question chain); record conclusions when building new.
-6. **复述理解**：1-3 句复述目标 / 边界 / 验收，确认对齐。**Restate understanding** (goal / boundaries / acceptance); confirm alignment.
-7. **疑问必问**：执行不理解或方向偏移 → 第 4 节降级链提问并结束回合等待。**Ask on any doubt** or direction drift via the section-4 chain; end the turn.
-8. **产品视角审查 + 约束假设 + 分级 + 回滚点**。**Product-view review + constraints + L1/L2/L3 triage + rollback point.**
-9. **规划与验收文档**：3-5 条可验证标准；目标模式加预算与文件边界。**Plan & acceptance doc** — 3-5 verifiable criteria; goal mode adds budgets and file-boundary split.
-10. **执行**：按分级；目标模式按计划自主、节点记录、超预算自动停。**Execute** per triage; goal mode autonomous per plan.
-11. **自查与归档**：最小验证 → 自查 → 文档同批 → 双写知识 → 提交附说明。**Self-check & archive** — verification, self-check, docs with code, dual-write knowledge, commit/push with note.
+| 步 Step | 动作 Action | 出口产物 Exit artifact（无则不进入下一步 must exist first） |
+|---|---|---|
+| 1 | 接收指令：第一性原理（本质 / 必要 / 惯性）Receive; first principles | 任务本质一句话 One-sentence essence |
+| 2 | 经验库必读：按症状检索 Experience log first | 命中记录 Hit record |
+| 3 | 调研实际资源：代码 + 环境 + 工作区 + Skill/MCP Survey actual resources | 现状事实清单 Status fact list |
+| 4 | 降级联网调研：不可用→联网 + 加载 Skill Degraded research online | 降级记录 Degradation record |
+| 5 | 复用调研：本地→同类项目（五问）Reuse survey | 复用结论 Reuse conclusion |
+| 6 | 复述理解：目标 / 边界 / 验收 Restate understanding | 用户确认 User confirmation |
+| 7 | 疑问必问：不理解 / 方向偏移→提问 Ask on doubt | 提问记录 Ask record |
+| 8 | 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback | 分级 + 回滚点记录 Triage + rollback record |
+| 9 | 规划与验收文档：3-5 条可验证标准 Plan & acceptance doc | 规划验收文档 Plan & acceptance doc |
+| 10 | 执行：按分级；目标模式自主 + 预算 Execute per triage | 执行记录 Execution record |
+| 11 | 自查与归档：验证→自查→文档→双写→提交 Self-check & archive | 验证结果 + 归档 Verification + archive |
+
+**门禁 Gate**：进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由，不得静默跳过。The previous step's artifact must exist before the next step; legitimate skips must record the reason, never silently.
 
 细节与分类型清单见 `references/workflows.md`。Details and per-task-type checklists in `references/workflows.md`.
 
+## 3. 第 0 步：平台检测与注入 · Step 0: Platform detection & injection
+
+1. **检测平台 Detect**（`references/platform-adaptation.md` 特征清单）
+2. **询问注入模式 Ask the injection mode**：**按需（默认）on-demand (default)**——精简纪律 + 回指；**强制（每会话）forced per-session**——追加「每会话完整读 SKILL.md」。无提问工具默认按需并告知。
+3. **配置注入点 Configure the injection point**：写入 agent 应用每会话真正自动注入的位置（CLAUDE.md / AGENTS.md / .cursor/rules / Trae 应用内项目规则）；只写工作区文件是**无效的**。平台要求应用内启用时（如 Trae）**引导用户在应用设置启用并确认生效**，未确认不得宣称成功。
+4. **选定提问机制 Pick asking mechanism**（第 4 节降级链）
+5. **确认 Confirm**：平台 / 注入模式 / 注入点已生效 / 提问工具。未完成不得开工。
+
 ## 4. 关键必问协议 · Ask-before-acting protocol
 
-影响重大的决策必须在行动前与用户确认。触发：方向不明或歧义、需求冲突、权限/密钥处理、破坏性操作（删除、迁移、覆盖写、对外发布）、架构或技术选型、范围扩大、方案分歧。
-Consequential decisions must be confirmed before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permission/secret handling, destructive operations (delete, migrate, overwrite, publish externally), architecture or stack choices, scope expansion, conflicting proposals.
+影响重大的决策必须在行动前与用户确认。触发：方向不明或歧义、需求冲突、权限/密钥、破坏性操作（删除/迁移/覆盖/发布）、架构选型、范围扩大、方案分歧。Consequential decisions must be confirmed before acting. Triggers: ambiguity, conflict, permissions/secrets, destructive ops, architecture, scope, proposals.
 
-**提问工具降级链 Asking-tool downgrade chain**（取第一个可用项 use the first available）：
-
-1. 平台原生提问工具（`request_user_input`、`AskUserQuestion`、`ask_user` 等）
-   Platform-native asking tool (`request_user_input`, `AskUserQuestion`, `ask_user`, …)
-2. 不可用时：结构化文本协议——呈现（a）理解（b）选项与优缺点（c）风险与后果（d）推荐，然后**结束回合等待答复**。完整协议见 `references/platform-adaptation.md`。
-   If unavailable: structured text protocol — present (a) understanding, (b) options with pros/cons, (c) risks and consequences, (d) a recommendation, then **end the turn and wait**.
-
-常规 L1 任务无需提问——不过度打扰；高风险 L3 任务必须提问。
-Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking.
+**降级链 Downgrade chain**：① 平台原生提问工具 Native asking tool；② 不可用 → 结构化文本协议（a 理解 b 选项优缺点 c 风险后果 d 推荐），**结束回合等待** end the turn and wait。L1 常规不问；L3 必问。Do not over-ask on L1; always ask on L3.
 
 ## 5. 双模式与任务分级 · Execution modes & task triage
 
-### 双模式（默认 = 普通模式） Dual modes (default = normal mode)
-
 | 模式 Mode | 触发 Trigger | 行为 Behavior |
 |---|---|---|
-| **普通 Normal**（默认） | 无关键词 no keyword | 每个关键决策执行前必问 Ask before every consequential decision |
-| **目标模式 Goal mode** | 关键词 `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | 按书面计划自主执行；密钥与破坏性操作仍暂停等待 Work autonomously from a written plan; secrets and destructive operations still pause and wait |
+| **普通 Normal**（默认） | 无关键词 | 关键决策必问 Ask before consequential decisions |
+| **目标 Goal mode** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按计划自主执行；密钥与破坏性操作仍暂停等待 Autonomous per plan; secrets & destructive ops pause |
 
-目标模式附加职责：执行**前**写计划（范围、风险评级、时间/轮次预算）；子任务按文件边界拆分；边执行边记录；超预算自动停止；交付复盘 + 待确认清单。
-Goal-mode extra duties: write the plan (scope, risk rating, budgets) *before* executing; split subtasks by file boundaries; record progress; stop automatically past budget; deliver a retrospective plus open-questions list.
+目标模式附加：执行前写计划（范围/风险/预算）、子任务按文件边界拆分、超预算自动停、交付复盘 + 待确认清单。Goal mode: plan first, budgets, file-boundary split, auto-stop, retrospective.
 
-### 任务分级 L1 / L2 / L3 · Task triage
-
-| 级别 Level | 判定 Criteria | 普通模式 Normal | 目标模式 Goal mode |
+| 级别 Level | 判定 Criteria | 普通 Normal | 目标 Goal |
 |---|---|---|---|
-| L1 常规 routine | 小改动、可逆、低影响 small, reversible, low impact | 直接做 do directly | 直接做 do directly |
-| L2 中风险 medium | 新功能、多文件、跨模块 new feature, multi-file, cross-module | 记录后做，汇报关键点 record, do, report key points | 按计划执行，节点记录 execute per plan, log checkpoints |
-| L3 高风险 high | 密钥、权限、数据删除、迁移、对外发布、架构选型 secrets, permissions, deletion, migration, publishing, architecture | **先问再做 ask first** | 选推荐方案，标注 `REVIEW:` 留档；密钥/破坏性操作：暂停、等待 pick recommended option, label `REVIEW:` and log; secrets/destructive: pause and wait |
+| L1 常规 routine | 小改动、可逆、低影响 | 直接做 do | 直接做 do |
+| L2 中风险 medium | 新功能、多文件、跨模块 | 记录后做，汇报关键点 record & report | 按计划执行，节点记录 per plan |
+| L3 高风险 high | 密钥/权限/删除/迁移/发布/架构 | **先问再做 ask first** | 选推荐标注 `REVIEW:`；密钥与破坏性操作暂停留档 pick recommended, label REVIEW; pause on secrets/destructive |
 
-判定依据：影响面、可逆性、返工成本、是否触碰数据与对外发布。
-Judge by: blast radius, reversibility, rework cost, whether data or external publishing is touched.
+## 6. 最小闭环交付（第 11 步交付原则）· Minimal closed-loop delivery (step-11 principle)
 
-## 6. 最小闭环交付 · Minimal closed-loop delivery
-
-1. **理解 Understand**：1-3 句复述目标、边界、验收口径。Restate goal, boundaries, acceptance criteria in 1-3 sentences.
-2. **最小修改 Minimal change**：只改任务要求范围；优先复用已有代码、依赖、平台原生能力与现成开源方案（复用五问见 `references/workflows.md`）。Modify only what the task requires; prefer existing code, dependencies, native capabilities, and open-source wheels (five-question chain in `references/workflows.md`).
-3. **最小验证 Minimal verification**：跑最小粒度验证证明改动有效（lint / type-check / 测试，以项目基线为准）。Run the smallest check that proves it works (project's own baseline).
-4. **交付成品 Deliver finished work**：不交半成品、不留占位；未完成显式标注（`TODO`、`未实现`、`待验证`）。**绝不假实现。** No half-done work, no placeholders; label unfinished work explicitly. **Never fake completion.**
+理解 → 最小修改（复用优先）→ 最小验证 → 交付成品；不交半成品、不留占位、绝不假实现。Understand → minimal change (reuse first) → minimal verification → deliver finished work; no placeholders, never fake completion.
 
 ## 7. 质量门禁与回滚 · Quality gates & rollback
 
-- 提交前：审查者视角重读 diff（边界 / 安全 / 可读性 / 未验证项 / 复用），重跑验证；文档与代码同批提交。
-  Before committing: re-read the diff as a reviewer, re-run validation, ship docs in the same commit as code.
-- **回滚规则——重大修改 / 不可逆操作前必建回滚点**：git 文件先确认工作区干净并 commit/stash 当前状态（或独立分支）；非 git 文件先复制快照；回滚点就绪后才开始改动。
-  **Rollback rule — create a rollback point BEFORE major changes or irreversible operations.** Git-tracked: clean worktree → commit/stash (or separate branch). Non-git: copy a snapshot first. Start only after the rollback point exists.
-- 对外发布：用户批准 → 约 30 分钟观察期（错误率 / 延迟 / 告警）→ 异常走回滚预案。
-  External publishing: user approval → ~30 min observation window (errors / latency / alerts) → roll back on anomaly.
+提交前审查者视角重读 diff、重跑验证、文档与代码同批；重大修改/不可逆操作前必建回滚点（commit/stash/快照）；对外发布先批准 + 约 30 分钟观察期。Review the diff, re-run validation, ship docs with code; rollback point BEFORE major changes; publish after approval + observation window.
 
 ## 8. 易错点 · Gotchas
 
-- **触发关键词是活开关**：目标模式关键词（`目标：`、`unattended` 等）会静默改变决策模型，每条用户消息（含中途消息）都要检查。
-  **Trigger keywords are live switches.** Goal-mode keywords silently change the decision model. Check every user message, including mid-task.
-- **绝不覆盖已有规则文件**（`AGENTS.md`、`CLAUDE.md` 等）：只备份 + 合并。
-  **Never overwrite an existing rule file** — backup + merge only.
-- **用户想法与代码冲突**：代码与实测为准，直说，不静默执行错误指令。
-  **User idea vs code conflict** — code and measurements win. Say so plainly.
-- **平台无原生提问工具**：最常见的失败是埋头直冲而非使用文本协议并结束回合。先问，绝不擅自动手。
-  **No native asking tool?** The most common failure is charging ahead instead of using the text protocol and ending the turn. Ask first, act never.
-- **过度提问毁掉采纳率**：L1 反复确认是让用户禁用本 Skill 的最快方式。默认：L1 直接做，L3 必问。
-  **Over-asking kills adoption.** Default: act on L1, ask on L3.
-- **Skill 加载 ≠ 任务开工**：第 0 步即使用户消息简单也强制执行。
-  **Skill loaded ≠ task started.** Step 0 is mandatory even for trivial-looking messages.
-- **密钥**绝不进入代码、文档、提交或对话；提交前扫描；泄露立即轮换。
-  **Secrets** never go into code, docs, commits, or chat; scan before committing; rotate on leak.
-- **结论即时落盘**：分析时即时记录，拖到收尾会在长会话中丢失。
-  **Keep records at analysis time, not at cleanup.**
+- **流程不可跳步**：调研（第 3 步）与复用调研（第 5 步）最常被跳过，是最常见违规。The sequence is unskippable; survey steps are the most-skipped.
+- **触发关键词是活开关**：目标模式关键词会静默改变决策模型，每条消息都要检查。Goal-mode keywords are live switches.
+- **绝不覆盖已有规则文件**：备份 + 合并。Never overwrite rule files — backup + merge.
+- **代码与实测为准**：用户想法与代码冲突时直说。Code and measurements win.
+- **无原生提问工具**：用文本协议并结束回合，绝不埋头直冲。Ask first, act never.
+- **过度提问毁采纳率**：L1 直接做，L3 必问。Act on L1, ask on L3.
+- **Skill 加载 ≠ 任务开工**：第 2 节总纲强制执行。Master sequence is mandatory.
+- **密钥绝不落盘**：提交前扫描，泄露立即轮换。Secrets never in code/docs/chat.
+- **结论即时落盘**。Keep records at analysis time.
 
-## 9. 引用地图——按需加载 · Reference map — load on demand only
+## 9. 引用地图 · Reference map
 
 | 文件 File | 何时加载 When to load |
 |---|---|
-| `references/platform-adaptation.md` | 第 0 步检测；提问工具降级链；结构化提问协议全文 Step 0 detection, asking chain, structured asking protocol |
-| `references/rules.md` | 43 条完整纪律；引用规则编号或需查原文时 The full 43-rule discipline; when a numbered rule is cited |
-| `references/workflows.md` | 分类型工作流（新功能、Bug、UI、部署、文档、重大决策、多会话）、复用五问、质量门禁 Task-type workflows, reuse chain, quality-gate details |
-| `references/security.md` | 密钥红线、应急响应、安全生产红线、回滚细节 Secrets red line, incident response, safety red lines, rollback details |
+| `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
+| `references/rules.md` | 43 条纪律（地基）The 43-rule discipline (foundation) |
+| `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
+| `references/security.md` | 密钥红线、应急、回滚细节 Secrets, incident, rollback |
 
-不要预加载全部引用，只加载当前步骤需要的。**你无法自行感知上下文是否被压缩——不靠感知，靠两道守卫**：(a) 显式信号（用户说「重载 / 你被压缩了 / 从头加载」或平台重置）→ 立即重读 SKILL.md 与仍需要的引用；(b) 关键节点自检：开工 / 提交 / 重大决策前默写核心要素（分级、模式、回滚、必问），任一复述不全即视为上下文缺失，先重读再继续。You cannot detect context compaction — rely on explicit reload signals plus a core-elements self-check at key milestones; never continue on a compressed impression.
+**上下文缺失自检（压缩不可感知）Context-loss self-check**：显式信号（用户提示重载/平台重置）即重读；关键节点（开工/提交/重大决策）先默写核心要素（总纲步序、模式、回滚、必问），复述不全即重读。Reload on explicit signals; self-check core elements (master steps, mode, rollback, ask) before key milestones.
 
-## 10. 留档与知识纪律 · Records & knowledge discipline (summary)
+## 10. 留档与知识纪律（摘要）· Records & knowledge discipline (summary)
 
-完整细节见 `references/rules.md`（第 30-38 条）与 `references/workflows.md`。要点：
-Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`. Essentials:
-
-- 每个会话在项目约定位置维护**任务记录**：理解 → 验收标准 → 决策 → 结果；结论即时写入。
-  Every session keeps a **task record**: understanding → acceptance criteria → decisions → results; write conclusions immediately.
-- 会话结束提炼 1-5 条可复用知识点（默认 3 条），按「场景 → 判断 → 行动」结构；知识版入项目知识文档，个人版（类比 + 判断标准）在对话中给用户。
-  At session end, distill 1-5 reusable points (default 3) as scenario → judgment → action; write the knowledge version to the project's knowledge doc, give the plain-language version to the user in chat.
-- **经验库**为会话开工必读——按症状关键词搜索；路径由项目定义，本 Skill 不强加。
-  An **experience log** is mandatory reading at session start — search by symptom keywords; its location is project-defined.
-- 文档与代码同批提交；归档前必须有现行等价物。
-  Docs ship with code; nothing is archived without a current equivalent.
+任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; docs ship with code.
