@@ -120,6 +120,11 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 - **安静模式 · Quiet mode**：关键词 `安静模式` / `quiet`——L1 任务只汇报结果（隐藏中间推理 / 调研展示），降视觉噪音与 Token 焦虑；L2/L3 与密钥 / 破坏性操作不受影响。L1 reports only results; L2/L3 and secrets/destructive ops unchanged.
 - **偏好记忆 · Preference memory**：用户确认的技术栈 / 语言 / 风格写入 `memory/`「用户偏好」字段，会话开始读取、同类决策直接采用不再重复问。Confirmed choices are remembered and reused instead of re-asking.
 - **原子操作锁 · Atomic-operation lock**：L3 破坏性操作（删除 / 迁移 / 覆盖写 / 发布）先输出待执行命令清单、结束回合等用户确认再执行——最后一道闸门交给人类。L3 destructive ops output the command list and wait for human confirmation.
+- **配套模板 · Templates**：`templates/` 提供规划 / 验收标准 / 任务记录 / 复盘 / 回滚点 / 提示词预算 6 类模板（复制填写，不原地编辑）。Ready-to-fill templates (plan / acceptance / task-record / retrospective / rollback / prompt-budget) live in `templates/`; copy & fill.
+- **提示词预算 · Prompt budget**：可选预算档位（nano / minimal / standard / full）控制渐进式加载深度，让记忆文件与任务记录保持在 token 预算内（预算指引非强制）。Optional budget profiles control on-demand loading depth; budgets are guidance, not enforcement.
+- **会话启动钩子 · Session-start hook**：平台支持时（如 Claude Code `SessionStart`）可自动打印纪律横幅，把「强制注入」从靠文本自觉升级为平台钩子自动执行（配置示例，可选）。Session-start hook auto-prints the discipline banner (config example, optional).
+- **审查 / 风险 / 安全子代理 · Review sub-agents**：`templates/agents/` 提供 critic（对抗式方案评审）/ risk-reviewer（风险评审）/ security-auditor（安全审计）子代理模板，提升第 11 步独立审查。Optional sub-agent templates (critic / risk-reviewer / security-auditor) strengthen independent review.
+- **永不清单 · Never list**：`references/never-list.md` 将 7 类明线禁止项（假完成 / 密钥 / 跳步 / Git / 复用 / 提问 / 提示注入）浓缩为一页自查表。The NEVER list condenses 7 categories of bright-line prohibitions into a one-page self-check.
 
 ---
 
@@ -132,7 +137,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 | 通用系统提示词 Generic system prompts | 可操作、可验证、清单驱动：分级表、出口产物门禁、扫描清单——不是空泛口号。Operational, verifiable, checklist-driven. |
 | 静态规则包 / 单文件提示词 | 本 Skill 是**渐进式**：按步加载 + 判级动态路由（L1 快速通道），不是一次全量注入。Progressive, triage-routed, on-demand — not a one-shot static dump. |
 | 其他工作流 / 提示词类 Skill Other workflow skills | 多数只有规则或流程；本 Skill 同时具备**强制流程骨架 + 每步门禁**、**判级动态路由**、**工程师/产品双视角**、**可信调研依据**、**开源安装强制校验**、**记忆文件协议 + 压缩重载**。Most ship rules or a process; this one adds gates, triage routing, dual views, verifiable survey, install vetting, and memory/reload discipline. |
-| 官方技能仓库 / 同类治理 Skill Official repos / peer governance skills | **工程治理全家桶完整度第一**：多数项目只有规则、流程或模板之一；本 Skill 同时集齐 43 条规则地基 + 11 步流程门禁 + 203 条落地细则 + 跨平台注入 + 双视角 + 记忆协议 + 压缩重载，一套完整闭环。The most complete engineering-governance package — rules + gated process + landing details + cross-platform injection + dual views + memory/reload discipline in one. |
+| 官方技能仓库 / 同类治理 Skill Official repos / peer governance skills | **工程治理全家桶完整度第一**：多数项目只有规则、流程或模板之一；本 Skill 同时集齐 43 条规则地基 + 11 步流程门禁 + 203 条落地细则 + 跨平台注入 + 双视角 + 记忆协议 + 压缩重载 + 配套模板 / 预算 / 钩子 / 审查子代理 / 永不清单，一套完整闭环。The most complete engineering-governance package — rules + gated process + landing details + cross-platform injection + dual views + memory/reload + templates / budget / hooks / review sub-agents / never-list in one. |
 
 ---
 
