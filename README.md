@@ -251,9 +251,21 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Where it comes from
 
-源自真实生产工作流的实战沉淀——包括将 **800KB+ 开发历史**中的真实踩坑提炼为落地细则——按 [Agent Skills 开放规范](https://agentskills.io/)及其[最佳实践](https://agentskills.io/skill-creation/best-practices)重写（渐进式披露、Gotchas、Checklist、Plan-Validate-Execute）。
+**数据口径（v1.4.4 实测）**——本 Skill 的 186 条落地细则 / 11 类，提炼自作者真实生产开发沉淀；源文档存放于独立工作项目目录，**不随本公开仓 / zip / npm 分发**，此处给出可核实的实测数据：
 
-**EN** — Battle-tested in real production workflows, including a 800KB+ development history whose real pitfalls were distilled into the landing details, rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
+| 源文档（工作项目目录） | 实测大小 | 内容 |
+|---|---|---|
+| `开发日志与经验记录.md` | **863.6 KB / ≈50.1 万字符 / 8,299 行** | "800KB+ 开发历史"的实证来源，真实踩坑主库 |
+| `会话交接与待办清单.md` | 209.2 KB / ≈11.6 万字符 / 786 行 | 多会话交接与待办沉淀 |
+| `AI会话知识沉淀.md` | 70.3 KB / ≈3.6 万字符 / 426 行 | 会话知识双写沉淀 |
+| `踩坑经验库.md` | 59.8 KB / ≈3.6 万字符 / 323 行 | 踩坑条目库 |
+| `AGENTS.md` / `TRAE.md` / `README-工作区导航.md` 等 | — | 工作区规则文档（去敏提炼增量） |
+
+提炼方式：三子代理分片提炼 → 去重 → 精选 → 泛化脱敏 → 形成 `details.md` 186 条 / 11 类 + 个人经验手册。
+
+**踩坑记录涵盖（11 类示例）**：PowerShell / Windows 终端 ｜ 前端 Next.js / React 环境 ｜ Prisma / PostgreSQL ｜ 测试与质量门禁 ｜ 视觉 MCP / 截图 ｜ 浏览器自动化 / E2E（Playwright）｜ Git 与提交 ｜ MCP 与工具链 ｜ API 契约与前后端联动 ｜ 监控 / 运维 / 压测 / 证书 ｜ 长会话与协作纪律。机制部分按 [Agent Skills 开放规范](https://agentskills.io/)及其[最佳实践](https://agentskills.io/skill-creation/best-practices)重写（渐进式披露、Gotchas、Checklist、Plan-Validate-Execute）。
+
+**EN** — 186 landing details in 11 categories are distilled from real production work (source docs live in a separate working-directory, not shipped here). Measured facts: the main dev-log is **863.6 KB / ~501K chars / 8,299 lines** (the basis of the "800KB+ development history" claim), plus a 209 KB session-handover log, 70 KB knowledge distillations and a 60 KB pitfall library; mechanics rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
 
 ---
 
