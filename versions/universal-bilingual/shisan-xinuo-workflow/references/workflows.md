@@ -194,5 +194,15 @@
 ## 工具与技能策略（通用） · Tools & skills strategy (generic)
 
 - 每次任务最多加载 1-3 个技能，先按目录筛选。Load at most 1-3 skills per task, filtered by catalog first.
-- 无技能不阻塞：通用能力 + 官方文档兜底，降级留痕。No skill does not block: general capability + official docs; record the fallback.
+- 无技能不阻塞：通用能力 + 官方文档兜底，降级留痕。No skill does not block: fall back to general capability + official docs; record the fallback.
 - 反复需要（2-3 次）的能力按工作流 9 沉淀为新技能。Repeated needs (2-3×) become new skills via workflow 9.
+
+## 记忆文件协议（外部化长期记忆）· Memory-file protocol (externalized long-term memory)
+
+Agent 无天生长期记忆、也无法感知上下文压缩——把会话状态外部化到随时可重读的文件。Agents have no inherent long-term memory and cannot sense compaction — externalize the session state to a re-readable file.
+
+- **位置 Location**（项目约定）：如仓库根 `memory/`，保持一屏内（约 20 行）。Project-defined, e.g. `memory/`; keep ≤ 1 screen (~20 lines).
+- **最小结构 Minimal structure**——当前目标 / 已做决策 / 约束 / 进度+下一步 / 踩坑。Current goal ／ decisions ／ constraints ／ progress+next ／ pitfalls.
+- **写入 Write at**：①目标确认（第 6 步）；②任务/里程碑完成；③上下文 40-60% 前；④会话结束归档前。
+- **读取 Read at**：①会话开始；②压缩 / 重置 / 重载后——**先读再继续**；③新任务前扫一眼。Session start; after compaction/reset — **read first, then continue**; before new tasks.
+- **分层 Layering**：记忆文件 = 状态层；知识文档（第 11 步双写）= 学习层；经验库 = 踩坑层。Memory = *state*; knowledge docs = *learning*; experience log = *pitfall*. They do not replace each other.

@@ -43,9 +43,9 @@
 | 可信证据为依据 Verifiable evidence | 必须联网调研市面开源成熟项目，收集可验证可信信号（stars / 下载量 / 维护 / 被采用 / 口碑 / 安全通告），绝不凭「网上都说火」；本地实测兜底。Mandatory online survey of mature open-source solutions collecting verifiable trust signals; local verification is the final judge. |
 | 安全为底线 Safety is the baseline | 「开源不等于安全」：任何 Skill / MCP / 脚本 / 依赖引入前必须走强制校验流程；密钥绝不进代码 / 文档 / 对话。"Open source ≠ safe": mandatory install-vetting flow; secrets never land in code / docs / chat. |
 
-它不含领域知识（无框架 / 库 / API 内容），而是叠加在任务之上的「工作方式」。
+它的**机制层**（流程 / 规则 / 门禁 / 分级）不依赖任何框架，是叠加在任务之上的「工作方式」；**细则层**（`details.md`）确实含绑定具体技术栈（Next.js / Prisma / Playwright 等）的真实工程经验——如实说明：它是**踩坑日志**（什么会错），不是**技术教程**（怎么用），也不替代官方文档。
 
-**EN** — It is not domain knowledge (no framework/library/API content); it is the *way of working* layered on top of whatever the task is.
+**EN** — Its **mechanism layer** (workflow / rules / gates / triage) is framework-agnostic — the *way of working* layered on top of any task; its **details layer** (`details.md`) honestly does carry stack-bound engineering experience (Next.js / Prisma / Playwright …) — treat it as a *pitfall log* ("what went wrong"), not as domain tutorials ("how to use X"), and never as a substitute for official docs.
 
 ---
 
@@ -106,6 +106,8 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 - **开源安装强制校验 · Mandatory install vetting**：「开源不等于安全」——来源核验 → 静态扫描 → 权限最小化 → 沙箱实测 → 许可与安全通告 → 结论留档，任一不过即停。"Open source ≠ safe": source verification → static scan → least privilege → sandbox test → license & advisories → recorded conclusion.
 - **回滚安全 · Rollback safety**：重大修改 / 不可逆操作**前**必须先建回滚点（commit / stash / 快照）。Rollback point required *before* major changes or irreversible operations.
 - **双模式 · Dual modes**：普通模式（关键决策必问）+ 目标模式（`目标：`/`无人值守`/`goal mode` → 按计划自主执行，密钥与破坏性操作仍暂停）。Normal mode + goal mode (autonomous per plan; secrets & destructive ops still pause).
+- **L1 快速通道 · L1 fast path**：第 1 步后先判级——L1 常规任务走「一句话复述 → 最小修改 → 最小验证 → 汇报」快速通道（显式标注，非静默跳步），L2/L3 仍走完整 11 步。Triage-first: L1 routine takes a fast lane; L2/L3 keep the full sequence.
+- **记忆文件协议 · Memory-file protocol**：外部化长期记忆——项目 `memory/` 文件记录目标 / 决策 / 约束 / 进度，关键节点与上下文 40-60% 前写入，压缩 / 重置后先读再继续。Externalized long-term memory: write at milestones, read first after compaction.
 - **上下文缺失自检 · Context-loss self-check**：Agent 无法感知被压缩——两道守卫：显式信号重载 + 开工 / 提交 / 重大决策前核心要素自检。Two guards: reload on explicit signals + milestone self-checks.
 
 ---
@@ -204,8 +206,10 @@ shisan-xinuo-workflow/              ← 仓库根
 - **v1.3.2** — 联网调研可信信号 + 开源安装强制校验（「开源不等于安全」）。
 - **v1.4** — 落地细则（186 条 / 11 类，含开发日志深挖 + 铁律纪律补充）+ 产品完善度诊断 + 强制双调研 + 五支柱定位 + README 重构。
 - **v1.4.1** — 文档一致性修复：README 条数校准（173→186 / 10 类→11 类）、英文版 details.md 类别编号重排（缺 4 / 重复 9）、四版 SKILL.md 引用地图补全 11 类、决策记录「待推送 / 不推送」状态对齐发布记录、补研究引用链接；新增「双仓同步检查清单」。
+- **v1.4.2** — ①**定位诚实话**：不再宣称「不含领域知识」——机制层跨领域，细则层（details.md）如实声明为绑定具体技术栈的**踩坑日志**而非技术教程（修正自第三方审阅意见）；②**L1 快速通道**：第 1 步后先判级，L1 常规任务走「复述→最小修改→最小验证→汇报」快速通道，治「简单任务杀鸡用牛刀」；③**记忆文件协议**：外部化长期记忆（`memory/` 状态文件，压缩 / 重置后先读再继续），治「上下文稀释」。
 
 **EN — v1.4.1** — documentation-consistency fixes: README numbers calibrated (173→186 / 10→11 categories), English details.md category numbering fixed (missing 4 / duplicate 9), all four SKILL.md reference maps expanded to 11 categories, decision-record push-status aligned with release records, research citations added; plus a two-repo sync checklist.
+**EN — v1.4.2** — ① honest positioning: mechanisms are framework-agnostic, but the details layer is now honestly declared a stack-bound **pitfall log**, not a tutorial; ② **L1 fast path** (triage-first, fixes over-governance on trivial tasks); ③ **memory-file protocol** (externalized long-term memory — write at milestones, read first after compaction, fixes context dilution).
 
 ---
 
