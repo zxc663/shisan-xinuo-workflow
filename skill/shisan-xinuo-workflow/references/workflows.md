@@ -188,6 +188,7 @@ Before building anything new, answer in order; only a full miss allows self-buil
 - **Pre-commit:** lint / type-check / unit+integration tests (project baseline is authoritative; baseline regression blocks) / coverage (core ≥ 80% target) / dependency audit (before release) / commit message (header ≤ 100 chars) / docs shipped with code (`git status` check).
 - **CI:** every push runs lint + type-check + guardrails + unit + integration; releases additionally run E2E + performance.
 - **Review loop:** reviewer-view diff re-read (boundaries / security / readability / unverified items / reuse & least code / product view); fail → fix → re-run (max 3 rounds) → still failing: stop and report; requirement change mid-way: record impact first.
+- **Independent review (optional sub-agents):** adversarial critique `templates/agents/critic.md`; risk review `templates/agents/risk-reviewer.md`; security audit `templates/agents/security-auditor.md` — copy & adapt to the platform.
 - **Safety:** secret scan before every commit (CI mandatory); leak emergency: revoke/rotate → map exposure → record review.
 - **Periodic:** monthly dependency maintenance / workflow retrospective / memory upkeep; quarterly skill audit & doc reconciliation.
 

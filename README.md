@@ -193,16 +193,17 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── LICENSE                         ← MIT
 ├── 项目信息.md                      ← 内部维护文档（供下一个 AI 助手读写）
 ├── package.json / .npmrc           ← npm 发行物配置（GitHub Packages）
-├── dist/                           ← 版本发布 zip（v1.0.0 … v1.4.5）
+├── dist/                           ← 版本发布 zip（v1.0.0 … v1.5.0）
 ├── skill/shisan-xinuo-workflow/    ← 默认交付（英文）
 │   ├── SKILL.md                    ← 精简入口：定位、总纲主流程、门禁、引用地图、重载顺序
-│   ├── templates/                  ← 主流程配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子）
+│   ├── templates/                  ← 主流程配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子/审查子代理）
 │   └── references/                 ← 按需加载的引用
 │       ├── rules.md                ← 43 条规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
 │       ├── details.md              ← 203 条落地细则 / 12 类（踩坑日志）
 │       ├── platform-adaptation.md  ← 注入点、提问降级链、结构化协议
-│       └── security.md             ← 安全红线、安装校验、回滚、残留扫描
+│       ├── security.md             ← 安全红线、安装校验、回滚、提示注入、供应链/SBOM、残留扫描
+│       └── never-list.md           ← 永不清单（明线禁止，自查用）
 └── versions/
     ├── universal-zh/               ← 通用版 · 中文
     └── universal-bilingual/        ← 通用版 · 中英双语
@@ -211,6 +212,9 @@ shisan-xinuo-workflow/              ← 仓库根
 ---
 
 ## 版本历史 · Changelog
+
+- **v1.5.0** — **P0/P1 治理完整度补强**：新增 `templates/`（plan / acceptance / task-record / retrospective / rollback / prompt-budget 模板）+ `templates/hooks/`（session-start 钩子示例）+ `templates/agents/`（critic / risk-reviewer / security-auditor 子代理）+ `references/never-list.md`（永不清单明线）+ security.md 补提示注入防御与供应链/SBOM + README 重写（差异化主张改为「工程治理全家桶完整度第一」、新增参考项目章节）；三版同步。
+**EN — v1.5.0** — governance completeness: templates/ (plan/acceptance/task-record/retrospective/rollback/prompt-budget) + hooks/ (session-start) + agents/ (critic/risk-reviewer/security-auditor) + never-list + prompt-injection & supply-chain defenses + README reposition (most-complete package) + reference-projects section; all editions synced.
 
 - **v1.0** — 首版发布（43 条纪律、双模式、回滚、渐进式披露）。
 - **v1.1** — 注入点与注入模式（按需 / 强制每会话）。
@@ -235,8 +239,38 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 与其他规范的关系 · Relationship to standards
 
-- [Agent Skills / agentskills.io](https://agentskills.io/)：遵循开放标准（文件夹 + `SKILL.md` + 渐进式披露），兼容所有支持 Skills 的客户端。Follows the open standard; runs on any skills-compatible client.
-- [AGENTS.md](https://agents.md/)：第 0 步生成的就是这类跨平台规则文件（精简版），完整工作流保留在 Skill 内按需加载。Step 0 generates exactly this kind of cross-platform rule file, in condensed form.
+- [Agent Skills / agentskills.io](https://agentskills.io/)：遵循开放标准（文件夹 + `SKILL.md` + 渐进式披露），兼容所有支持 Skills 的客户端。规范由 Anthropic 发起、开放治理，30+ 客户端支持（Claude / Codex / Cursor / Gemini CLI / GitHub Copilot 等）。Follows the open standard (folder + `SKILL.md` + progressive disclosure); runs on any skills-compatible client.
+- [Agent Skills 最佳实践](https://agentskills.io/skill-creation/best-practices)：渐进式披露、Gotchas、Checklist、Plan-Validate-Execute——机制层按此重写。Mechanics rewritten against the official best practices.
+- [AGENTS.md](https://agents.md/)：第 0 步生成的就是这类跨平台规则文件（精简版），完整工作流保留在 Skill 内按需加载。规范由 Linux 基金会 Agentic AI Foundation（AAIF）托管，60,000+ 开源项目采用。Step 0 generates this kind of cross-platform rule file in condensed form.
+
+## 参考项目 · Reference projects
+
+> 按实际情况如实登记：本 Skill 的机制 / 结构 / 细节借鉴自以下**协议与同类项目**（借鉴机制与结构，非复制代码）。同类项目独立演进，本 Skill 为后发者，差异定位见「差异化优势」。All mechanisms/structures/detail layers borrow from the protocols and peer projects below — mechanism borrowing, not code copying; this skill is a later entrant.
+
+### 协议与规范（必列）· Protocols & standards
+
+| 参考 Reference | 链接 Link | 借鉴内容 Borrowed |
+|---|---|---|
+| Agent Skills 规范 Specification | [agentskills.io/specification](https://agentskills.io/specification) | `SKILL.md` 结构、渐进式披露、name+description 激活机制 |
+| Agent Skills 最佳实践 Best practices | [agentskills.io/skill-creation/best-practices](https://agentskills.io/skill-creation/best-practices) | Gotchas、Checklist、Plan-Validate-Execute、上下文纪律 |
+| AGENTS.md 规范 | [agents.md](https://agents.md/) | 第 0 步生成的跨平台规则文件格式（精简 + 回指） |
+
+### 同类工程治理项目（机制借鉴）· Peer governance projects (mechanism borrowing)
+
+| 参考项目 Project | 链接 Link | 借鉴内容 Borrowed |
+|---|---|---|
+| screenleon/agent-playbook-template | [github.com/screenleon/agent-playbook-template](https://github.com/screenleon/agent-playbook-template) | prompt-budget 预算管理、critic / risk-reviewer 子代理、harness 门禁思路 |
+| vignesh2027/AI-AGENT-SKILLS | [github.com/vignesh2027/AI-AGENT-SKILLS](https://github.com/vignesh2027/AI-AGENT-SKILLS) | session-start 会话启动钩子 |
+| peva3/anchor | [github.com/peva3/anchor](https://github.com/peva3/anchor) | NEVER list 明线结构、提示注入防御、供应链 / SBOM 专项 |
+| buildbetter-app/skills | [github.com/buildbetter-app/skills](https://github.com/buildbetter-app/skills) | 模板体系（spec / plan / tasks / checklist） |
+| Eriemon/agents-md-generator | [github.com/Eriemon/agents-md-generator](https://github.com/Eriemon/agents-md-generator) | 多平台规则文件（AGENTS.md / CLAUDE.md / GEMINI.md） |
+
+### 早期审阅参考（v1.4.0 记入项目信息决策 16）· Earlier review references
+
+- **engineering-policies**（token / context-rot / 停止规则）
+- **nadvolod AGENTS.md**（风险分级证据 / 人为审查边界）
+- **ponytail**（七级决策阶梯 / 删除优于添加）
+- **软件开发准则**（DRY / KISS / YAGNI / SoC / LoD）→ 进入 details.md 铁律与纪律类
 
 ---
 

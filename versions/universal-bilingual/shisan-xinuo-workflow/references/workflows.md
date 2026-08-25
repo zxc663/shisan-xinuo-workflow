@@ -188,6 +188,7 @@
 - **提交前 Pre-commit**：lint / type-check / 单测 + 集成（项目基线权威，基线回退拦截）/ 覆盖率（核心 ≥ 80%）/ 依赖审计（发版前）/ 提交信息（header ≤ 100）/ 文档同批（`git status` 检查）。Lint / type-check / unit+integration (project baseline is authoritative) / coverage (core ≥ 80%) / dependency audit (pre-release) / commit message (header ≤ 100 chars) / docs with code.
 - **CI**：每次推送跑 lint + type-check + 护栏 + 单测 + 集成；发版加跑 E2E + 性能。Every push: lint + type-check + guardrails + unit + integration; releases add E2E + performance.
 - **审查循环 Review loop**：审查者视角重读 diff（边界 / 安全 / 可读性 / 未验证项 / 复用与最少代码 / 产品视角）；失败 → 修复 → 重跑（限 3 轮）→ 仍失败停下汇报；中途变更先记录影响。Re-read the diff as a reviewer; max 3 rounds; then stop and report; record impact on mid-way requirement changes.
+- **独立审查（可选子代理）Independent review (optional sub-agents)**：critic 方案评审 / risk-reviewer 风险评审 / security-auditor 安全审计模板在 `templates/agents/`，复制适配。Templates in `templates/agents/`; copy & adapt.
 - **安全 Safety**：每次提交前密钥扫描（CI 强制）；泄露应急：撤销轮换 → 排查泄露面 → 记录复盘。Secret scan before every commit; leak: revoke/rotate → map exposure → record.
 - **周期 Periodic**：每月依赖维护 / 工作流回顾 / 记忆维护；每季度技能审计 + 文档对账。Monthly deps / workflow / memory; quarterly skill audit & doc reconciliation.
 
