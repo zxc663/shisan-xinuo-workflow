@@ -25,13 +25,15 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基的
 
 ### 2.2 强制 11 步主流程（每步含出口产物）· Mandatory 11-step master sequence (exit artifact per step)
 
+> **最铁铁律（复用铁律）The iron law (reuse)**：以最少的代码，实现最完整的功能和体验，并达到需求描述——就是最好的代码；能复用就复用，风格适配或二次开发都可以，**绝不自己自研组件**。The best code achieves the most complete function and experience with the least code while meeting the requirements; reuse whenever possible — style adaptation or secondary development both fine; never hand-roll your own components.
+
 | 步 Step | 动作 Action | 出口产物 Exit artifact（无则不进入下一步 must exist first） |
 |---|---|---|
 | 1 | 接收指令：第一性原理（本质 / 必要 / 惯性）Receive; first principles | 任务本质一句话 One-sentence essence |
 | 2 | 经验库必读：按症状检索 Experience log first | 命中记录 Hit record |
 | 3 | 调研实际资源：代码 + 环境 + 工作区 + Skill/MCP Survey actual resources | 现状事实清单 Status fact list |
-| 4 | 降级联网调研：不可用→联网 + 加载 Skill Degraded research online | 降级记录 Degradation record |
-| 5 | 复用调研：本地→同类项目（五问）Reuse survey | 复用结论 Reuse conclusion |
+| 4 | 联网调研·必须 Online survey (mandatory)：调研市面开源成熟项目 / 库 / 方案（非降级，强制步骤）research mature open-source projects/libraries/solutions | 市面方案调研记录 Market solution survey record |
+| 5 | 复用调研·铁律 Reuse survey (iron law)：能复用就复用，风格适配 / 二次开发皆可，绝不自研组件 reuse, adapt, or second-dev; never hand-roll | 复用结论 Reuse conclusion |
 | 6 | 复述理解：目标 / 边界 / 验收 Restate understanding | 用户确认 User confirmation |
 | 7 | 疑问必问：不理解 / 方向偏移→提问 Ask on doubt | 提问记录 Ask record |
 | 8 | 产品视角 + 约束 + 分级 + 回滚点 Product-view + triage + rollback | 分级 + 回滚点记录 Triage + rollback record |

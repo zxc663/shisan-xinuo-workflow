@@ -23,13 +23,15 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 
 ### 2.2 Mandatory 11-step master sequence (exit artifact per step)
 
+> **The iron law (reuse)**: the best code achieves the most complete function and experience with the least code while meeting the requirements. Reuse whenever possible — style adaptation or secondary development are both fine; **never hand-roll your own components.**
+
 | Step | Action | Exit artifact (must exist before the next step) |
 |---|---|---|
 | 1 | **Receive the instruction** — first-principles understanding (essence / required / inertia) | One-sentence task essence |
 | 2 | **Read the experience log first** — search by symptom / keyword | Hit record (hit → execute per "solve / prevent") |
 | 3 | **Survey actual resources** — real code (status evidence) + environment + workspace + available skills / MCP | Status fact list (file / line / conclusion) |
-| 4 | **Degraded research online** — if environment / capability / tool / skill / MCP is unavailable: research online + load the needed skill | Degradation record (missing item / alternative / reason) |
-| 5 | **Reuse survey** — local project → similar / known projects (five-question chain) | Reuse conclusion (five questions + build-new reason) |
+| 4 | **Online survey (mandatory)** — research mature open-source projects / libraries / solutions (not a fallback; a required step for every task, especially new features / modules / components); record degradation when environment/capability/tool/skill/MCP is missing | Market solution survey record (reusable candidates + degradation notes) |
+| 5 | **Reuse survey (iron law)** — local project → mature open-source projects; reuse whenever possible, style adaptation or secondary development both fine, **never hand-roll components** (five-question chain) | Reuse conclusion (candidates + adaptation plan + build-new reason, only when the whole chain misses) |
 | 6 | **Restate understanding** — goal / boundaries / acceptance criteria | User confirmation (continue only when aligned) |
 | 7 | **Ask on any doubt** — unclear execution or direction drift → ask and end the turn | Ask / confirmation record |
 | 8 | **Product-view review + constraints + L1/L2/L3 triage + rollback point** | Risk triage + rollback-point record |
