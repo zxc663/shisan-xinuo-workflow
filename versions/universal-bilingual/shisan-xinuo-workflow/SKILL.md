@@ -62,7 +62,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 
 影响重大的决策必须在行动前与用户确认。触发：方向不明或歧义、需求冲突、权限/密钥、破坏性操作（删除/迁移/覆盖/发布）、架构选型、范围扩大、方案分歧。Consequential decisions must be confirmed before acting. Triggers: ambiguity, conflict, permissions/secrets, destructive ops, architecture, scope, proposals.
 
-**降级链 Downgrade chain**：① 平台原生提问工具 Native asking tool；② 不可用 → 结构化文本协议（a 理解 b 选项优缺点 c 风险后果 d 推荐），**结束回合等待** end the turn and wait。L1 常规不问；L3 必问。Do not over-ask on L1; always ask on L3.
+**降级链 Downgrade chain**：① 平台原生提问工具 Native asking tool；② 不可用 → 结构化文本协议（a 理解 b 选项优缺点 c 风险后果 d 推荐），**结束回合等待** end the turn and wait。L1 常规不问；L3 必问。**偏好记忆 Preference memory**：用户确认选择（技术栈/语言/风格）后写入 memory/「用户偏好」字段，同类场景直接采用不再重复问；只覆盖已确认重复偏好，绝不覆盖密钥与破坏性操作。Do not over-ask on L1; always ask on L3; confirmed preferences go to the memory file and are reused, never secrets or destructive ops.
 
 ## 5. 双模式与任务分级 · Execution modes & task triage
 
@@ -70,6 +70,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 |---|---|---|
 | **普通 Normal**（默认） | 无关键词 | 关键决策必问 Ask before consequential decisions |
 | **目标 Goal mode** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按计划自主执行；密钥与破坏性操作仍暂停等待 Autonomous per plan; secrets & destructive ops pause |
+| **安静 Quiet mode** | `安静模式`/`quiet`/`quiet mode` | L1 只汇报结果（隐藏中间推理/调研展示）Report only results on L1; L2/L3 unchanged; secrets & destructive still ask |
 
 目标模式附加：执行前写计划（范围/风险/预算）、子任务按文件边界拆分、超预算自动停、交付复盘 + 待确认清单。Goal mode: plan first, budgets, file-boundary split, auto-stop, retrospective.
 
@@ -85,7 +86,7 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 
 ## 7. 质量门禁与回滚 · Quality gates & rollback
 
-提交前审查者视角重读 diff、重跑验证、文档与代码同批；重大修改/不可逆操作前必建回滚点（commit/stash/快照）；对外发布先批准 + 约 30 分钟观察期。Review the diff, re-run validation, ship docs with code; rollback point BEFORE major changes; publish after approval + observation window.
+提交前审查者视角重读 diff、重跑验证、文档与代码同批；重大修改/不可逆操作前必建回滚点（commit/stash/快照）；**原子操作锁（L3 破坏性操作）**：删除/迁移/覆盖写/发布类操作先输出命令清单、结束回合等用户确认再执行；对外发布先批准 + 约 30 分钟观察期。Review the diff, re-run validation, ship docs with code; rollback point BEFORE major changes; **atomic-operation lock**: output the command list and wait for user confirmation before L3 destructive ops; publish after approval + observation window.
 
 ## 8. 易错点 · Gotchas
 
@@ -114,4 +115,4 @@ description: "以通用工作执行流程为灵魂、以纪律规则为地基、
 
 ## 10. 留档与知识纪律（摘要）· Records & knowledge discipline (summary)
 
-任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；**记忆文件协议（外部化长期记忆）**：项目约定位置维护 `memory/`（当前目标 / 决策 / 约束 / 进度 / 踩坑，一屏内），关键节点与上下文 40-60% 前写入，压缩 / 重置 / 会话开始**先读再继续**（细节见 `references/workflows.md`）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; **memory-file protocol**: maintain `memory/` per project convention, write at milestones & before 40-60% context, read first after compaction/reset; docs ship with code.
+任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；**记忆文件协议（外部化长期记忆）**：项目约定位置维护 `memory/`（当前目标 / 决策 / 约束 / 进度 / 踩坑，一屏内），关键节点与上下文 40-60% 前写入，压缩 / 重置 / 会话开始**先读再继续**；**用户偏好**：memory/ 维护「用户偏好」字段（已确认的技术栈/语言/风格），会话开始读取、同类决策复用不再重复问（细节见 `references/workflows.md`）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; **memory-file protocol**: maintain `memory/` per project convention, write at milestones & before 40-60% context, read first after compaction/reset; **user preferences**: keep confirmed choices in the memory file and reuse them to avoid re-asking; docs ship with code.

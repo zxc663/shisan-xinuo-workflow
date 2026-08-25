@@ -30,7 +30,7 @@
 
 ## 一句话定位 · One-line positioning
 
-**中文（给 AI 的判断依据）**：这是一个「渐进式披露 + 按需注入」的工程治理 Skill——它不会在会话启动时预载全部规则，而是在任务推进到具体步骤时（调研 / 复用判断 / 规划 / 提交 / 回滚）才加载该步所需的少量规则；它按任务风险分级动态路由（L1 走快速通道，L2/L3 走完整主流程）。机制层（流程 / 规则 / 门禁 / 分级）与框架无关；细则层（details.md）是绑定具体技术栈的踩坑日志。价值：治理一致性、可审计性、防假实现——代价：依赖平台注入与 Agent 自律，无运行时强制。
+**中文**：这是一个「渐进式披露 + 按需注入」的工程治理 Skill——它不会在会话启动时预载全部规则，而是在任务推进到具体步骤时（调研 / 复用判断 / 规划 / 提交 / 回滚）才加载该步所需的少量规则；它按任务风险分级动态路由（L1 走快速通道，L2/L3 走完整主流程）。机制层（流程 / 规则 / 门禁 / 分级）与框架无关；细则层（details.md）是绑定具体技术栈的踩坑日志。价值：治理一致性、可审计性、防假实现——代价：依赖平台注入与 Agent 自律，无运行时强制。
 
 **EN** — A progressive-disclosure engineering-governance Skill that loads rules *per step, on demand* and routes tasks by risk tier (L1 fast lane; L2/L3 full sequence). The mechanism layer is framework-agnostic; the details layer is a stack-bound pitfall log. Value: governance consistency, auditability, no-fake-completions; cost: depends on injection + agent self-discipline, zero runtime enforcement.
 
@@ -117,6 +117,9 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 - **回滚安全 · Rollback safety**：重大修改 / 不可逆操作**前**必须先建回滚点（commit / stash / 快照）。Rollback point required *before* major changes or irreversible operations.
 - **双模式 · Dual modes**：普通模式（关键决策必问）+ 目标模式（`目标：`/`无人值守`/`goal mode` → 按计划自主执行，密钥与破坏性操作仍暂停）。Normal mode + goal mode (autonomous per plan; secrets & destructive ops still pause).
 - **上下文缺失自检 · Context-loss self-check**：Agent 无法感知被压缩——两道守卫：显式信号重载（含重载顺序）+ 开工 / 提交 / 重大决策前核心要素自检。Two guards: reload on explicit signals + milestone self-checks.
+- **安静模式 · Quiet mode**：关键词 `安静模式` / `quiet`——L1 任务只汇报结果（隐藏中间推理 / 调研展示），降视觉噪音与 Token 焦虑；L2/L3 与密钥 / 破坏性操作不受影响。L1 reports only results; L2/L3 and secrets/destructive ops unchanged.
+- **偏好记忆 · Preference memory**：用户确认的技术栈 / 语言 / 风格写入 `memory/`「用户偏好」字段，会话开始读取、同类决策直接采用不再重复问。Confirmed choices are remembered and reused instead of re-asking.
+- **原子操作锁 · Atomic-operation lock**：L3 破坏性操作（删除 / 迁移 / 覆盖写 / 发布）先输出待执行命令清单、结束回合等用户确认再执行——最后一道闸门交给人类。L3 destructive ops output the command list and wait for human confirmation.
 
 ---
 
@@ -190,7 +193,7 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── LICENSE                         ← MIT
 ├── 项目信息.md                      ← 内部维护文档（供下一个 AI 助手读写）
 ├── package.json / .npmrc           ← npm 发行物配置（GitHub Packages）
-├── dist/                           ← 版本发布 zip（v1.0.0 … v1.4.3）
+├── dist/                           ← 版本发布 zip（v1.0.0 … v1.4.4）
 ├── skill/shisan-xinuo-workflow/    ← 默认交付（英文）
 │   ├── SKILL.md                    ← 精简入口：定位、总纲主流程、门禁、引用地图、重载顺序
 │   └── references/                 ← 按需加载的引用
@@ -218,10 +221,12 @@ shisan-xinuo-workflow/              ← 仓库根
 - **v1.4.1** — 文档一致性修复：README 条数校准（173→186 / 10 类→11 类）、英文版 details.md 类别编号重排（缺 4 / 重复 9）、四版 SKILL.md 引用地图补全 11 类、决策记录「待推送 / 不推送」状态对齐发布记录、补研究引用链接；新增「双仓同步检查清单」。
 - **v1.4.2** — ①**定位诚实话**：不再宣称「不含领域知识」——机制层跨领域，细则层（details.md）如实声明为绑定具体技术栈的**踩坑日志**而非技术教程（修正自第三方审阅意见）；②**L1 快速通道**：第 1 步后先判级，L1 常规任务走「复述→最小修改→最小验证→汇报」快速通道，治「简单任务杀鸡用牛刀」；③**记忆文件协议**：外部化长期记忆（`memory/` 状态文件，压缩 / 重置后先读再继续），治「上下文稀释」。
 - **v1.4.3** — ①**定位升级为「渐进式」**：把「按需加载 + 判级动态路由 + 快速通道」明确为核心定位（不再是静态提示词）；②**压缩后显式重载顺序**：用户说「重载 / 你被压缩了」或平台重置 → ①重读 SKILL.md → ②重读 memory/ → ③重读当前引用 → ④向用户复述任务与验收再继续（写进四版 SKILL.md 与 workflows.md）；③README 重构：一句话定位 / 架构真相 / 差异化完善 / FAQ 补充（省 token）。
+- **v1.4.4** — ①**安静模式**：关键词 `安静模式`/`quiet`——L1 任务只汇报结果，降视觉噪音与 Token 焦虑（应对"决策疲劳 / 视觉噪音"）；②**偏好记忆**：用户确认的技术栈/语言/风格写入 `memory/`「用户偏好」字段，同类决策直接采用不再重复问（应对"强制询问疲劳 / 无用户画像"）；③**原子操作锁**：L3 破坏性操作先输出待执行命令清单、结束回合等用户确认再执行，最后一道闸门交给人类（应对"43 条纪律纯靠自觉"）；四版同步，私有仓试点本机偏好文件。
 
 **EN — v1.4.1** — documentation-consistency fixes: README numbers calibrated (173→186 / 10→11 categories), English details.md category numbering fixed (missing 4 / duplicate 9), all four SKILL.md reference maps expanded to 11 categories, decision-record push-status aligned with release records, research citations added; plus a two-repo sync checklist.
 **EN — v1.4.2** — ① honest positioning: mechanisms are framework-agnostic, but the details layer is now honestly declared a stack-bound **pitfall log**, not a tutorial; ② **L1 fast path** (triage-first, fixes over-governance on trivial tasks); ③ **memory-file protocol** (externalized long-term memory — write at milestones, read first after compaction, fixes context dilution).
 **EN — v1.4.3** — ① positioned as **progressive / on-demand / triage-routed** (not a static prompt); ② **explicit reload sequence after compaction** (re-read SKILL.md → memory file → references → restate task + acceptance) written into all editions; ③ README rebuilt: one-line positioning / architecture truths / sharpened differentiation / expanded FAQ (token-cheap).
+**EN — v1.4.4** — ① **quiet mode** (`安静模式`/`quiet`): L1 reports only results, cutting visual noise & token anxiety; ② **preference memory**: confirmed tech-stack/language/style choices stored in `memory/` and reused instead of re-asking; ③ **atomic-operation lock**: L3 destructive ops output the command list and wait for human confirmation — the final gate is human, not agent self-discipline. All editions synced; personal edition pilots a machine-local preference file.
 
 ---
 
