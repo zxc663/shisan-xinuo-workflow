@@ -26,7 +26,25 @@ Before starting any task, adapt this workflow to the current platform:
 4. **Pick the active asking mechanism** from the downgrade chain in section 4.
 5. Confirm to the user in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
 
-## 3. Ask-before-acting protocol
+## 3. Task operating sequence — research-driven lifecycle (run for EVERY task)
+
+Every task follows this order. It is the skill's core loop; skipping it is a workflow violation.
+
+1. **Receive the instruction** — understand the task with first principles: what is the essence, what is required, what is inertia.
+2. **Read the experience log first** — search the project experience log by symptom/keyword; if hit, execute per "solve / prevent" before anything else (rule 33).
+3. **Survey actual resources** — inspect the real code (status evidence: consumers/constants/switches + file/line conclusions, rule 42), the runtime environment, the workspace, and which skills/MCP tools are actually available this session.
+4. **Degraded research online** — if environment, capability, tool, skill, or MCP is unavailable: research online (docs / libraries / equivalents), load the needed skill, record the fallback and reason (rule 27).
+5. **Reuse survey** — rigorously look for reusable assets in the local project, then in similar/known projects (five-question reuse chain in `references/workflows.md`); only build new when the whole chain misses, and record the conclusion.
+6. **Restate understanding** — to the user, in 1-3 sentences: goal, boundaries, acceptance criteria; confirm alignment before continuing.
+7. **Ask on any doubt** — if execution is unclear or direction drifts (scope, conflict, ambiguity, risk): ask via section 4 chain and end the turn.
+8. **Product-view review + constraints + triage + rollback** — review from the product/UX view (rule 13), make constraints and hidden assumptions explicit (rule 9), assign L1/L2/L3 (section 5), and prepare a rollback point (rule 43) before risky work.
+9. **Plan & acceptance doc** — write a short plan plus 3-5 verifiable acceptance criteria (rule 16); for goal mode, add time/round/budget caps and file-boundary split.
+10. **Execute** — per triage; in goal mode follow the written plan autonomously, logging checkpoints, stopping over budget.
+11. **Self-check & archive** — minimal verification (lint/type-check/test baseline), self-check (rule 6), sync docs with code, distill session knowledge (dual-write, rule 35), commit/push with a note (rule 21).
+
+Details and per-task-type checklists: `references/workflows.md` (task operating sequence + 9 task types).
+
+## 4. Ask-before-acting protocol
 
 Consequential decisions must be confirmed with the user before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permissions/secret handling, destructive operations (deletion, migration, overwrite, external publishing), architecture or tech-stack choices, scope expansion, conflicting proposals.
 
@@ -37,7 +55,7 @@ Consequential decisions must be confirmed with the user before acting. Triggers:
 
 Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking.
 
-## 4. Execution modes & task triage
+## 5. Execution modes & task triage
 
 ### Dual modes (default = normal mode)
 
@@ -58,20 +76,20 @@ Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *be
 
 Judge by: blast radius, reversibility, rework cost, whether data or external publishing is touched.
 
-## 5. Minimal closed-loop delivery
+## 6. Minimal closed-loop delivery
 
 1. **Understand** — restate the goal, boundaries, and acceptance criteria in 1-3 sentences.
 2. **Minimal change** — modify only what the task requires. Prefer existing code, dependencies, platform-native capabilities, and existing open-source solutions over writing new ones (five-question reuse chain in `references/workflows.md`).
 3. **Minimal verification** — run the smallest check that proves the change works (lint / type-check / tests — the project's own baseline).
 4. **Deliver the finished thing** — no half-done work and no placeholders. Anything unfinished must be explicitly labeled (`TODO`, `NOT IMPLEMENTED`, `UNVERIFIED`). **Never fake completion.**
 
-## 6. Quality gates & rollback
+## 7. Quality gates & rollback
 
 - Before committing: re-read the diff as a reviewer (boundaries, security, readability, unverified claims, reuse), re-run validation, and ship docs in the same commit as code.
 - **Rollback rule — create a rollback point BEFORE major changes or irreversible operations.** Git-tracked files: confirm a clean worktree, then commit/stash the current state (or work on a separate branch). Non-git files: copy a snapshot first. Run high-risk commands only after a rollback point exists.
 - External publishing: user approval first, then an observation period (~30 min) monitoring errors/latency/alerts; roll back on anomaly.
 
-## 7. Gotchas
+## 8. Gotchas
 
 - **Trigger keywords are live switches.** Goal-mode keywords (`目标：`, `unattended`, …) silently change the decision model. Check every user message for them, including mid-task messages.
 - **Never overwrite an existing rule file** (`AGENTS.md`, `CLAUDE.md`, …). Backup + merge only.
@@ -82,7 +100,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 - **Secrets** (keys, tokens, passwords) never go into code, docs, commits, or chat. Scan before committing; rotate immediately on leak.
 - **Keep records at the time of analysis, not at cleanup.** Conclusions written late get lost in long sessions.
 
-## 8. Reference map — load on demand only
+## 9. Reference map — load on demand only
 
 | File | When to load |
 |---|---|
@@ -93,7 +111,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 Do not preload all references — load only the one the current step needs. **You cannot detect context compaction yourself — do not rely on sensing it; rely on two guards:** (a) explicit signal — the user says "reload / you were compacted / start fresh", or the platform visibly reset the context → immediately re-read this SKILL.md and any references you still need; (b) milestone self-check — before starting a task, committing, or a major decision, recite the core elements (task triage, current mode, rollback rule, ask-before-acting); if you cannot restate any of them in full, treat it as missing context and reload before continuing.
 
-## 9. Records & knowledge discipline (summary)
+## 10. Records & knowledge discipline (summary)
 
 Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`. Essentials:
 

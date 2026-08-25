@@ -2,6 +2,20 @@
 
 Load this file when starting work that matches one of the task types below, or when SKILL.md cites a workflow. Each flow is a checklist — track progress against it.
 
+## 0. Task operating sequence — research-driven (run before ANY task type)
+
+- [ ] 1. Receive instruction; first-principles understanding (essence / required / inertia)
+- [ ] 2. Read the experience log by symptom/keyword; hit → execute per "solve / prevent"
+- [ ] 3. Survey actual resources: real code (status evidence: consumers/constants/switches + file/line conclusions), runtime environment, workspace, available skills & MCP this session
+- [ ] 4. Degraded: environment/capability/tool/skill/MCP unavailable → research online (docs/libraries/equivalents), load needed skill, record fallback & reason
+- [ ] 5. Reuse survey: local project assets → similar/known project assets (five-question chain); record conclusion when building new
+- [ ] 6. Restate understanding to the user (goal / boundaries / acceptance); confirm alignment
+- [ ] 7. Ask on any doubt or direction drift (scope / conflict / ambiguity / risk); end the turn and wait
+- [ ] 8. Product-view review + explicit constraints/assumptions + L1/L2/L3 triage + prepare rollback point (rule 43)
+- [ ] 9. Plan & acceptance doc: 3-5 verifiable criteria; goal mode adds time/round/budget caps + file-boundary split
+- [ ] 10. Execute per triage (goal mode: autonomous per plan, log checkpoints, stop over budget)
+- [ ] 11. Self-check & archive: minimal verification → self-check → docs synced with code → dual-write knowledge → commit/push with note
+
 ## 1. New feature / new project (15 steps)
 
 - [ ] 1. Startup self-check (platform adapted, rule file active)

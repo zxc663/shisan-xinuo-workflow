@@ -34,6 +34,7 @@ Expected within one session: task triage, ask-before-acting, rollback before ris
 - **Dual modes** — normal (ask on consequential decisions) and goal mode (`目标：` / `goal mode` / `unattended` → autonomous per plan; secrets & destructive ops still pause).
 - **Context-loss self-check** — agents cannot detect their own context compaction, so instead of assuming, the skill installs two guards: reload on explicit signals (user says "reload" / platform reset) and a core-elements self-check before work starts, commits, or major decisions.
 - **Injection-point & injection mode** — Step 0 writes the rule into the location the agent app **actually auto-injects every session** (e.g. `CLAUDE.md`, `AGENTS.md`, `.cursor/rules`, app-managed project rules for Trae) — never a workspace file the app ignores. It asks whether you want **on-demand** (default, lean rule) or **forced per-session** (rule commands reading the full SKILL.md every session, no manual trigger needed), and guides you to enable the rule inside the app when the platform requires it (e.g. Trae).
+- **Research-driven task operating sequence** — every task follows an 11-step lifecycle: understand (first principles) → read the experience log → survey actual resources (real code / environment / workspace / available skills & MCP) → degraded online research when something is unavailable → reuse survey (local project, then similar projects) → restate understanding → ask on doubts → product-view review + L1/L2/L3 triage + rollback point → plan & acceptance doc → execute → self-check & archive (docs, dual-write knowledge, commit note).
 
 ### Use cases
 
@@ -148,6 +149,7 @@ MIT — see [LICENSE](LICENSE).
 - **双模式**：普通模式（关键决策必问）+ 目标模式（关键词 `目标：`/`目标模式`/`无人值守`/`goal mode` → 按计划自主执行，密钥与破坏性操作仍暂停等待确认）。
 - **上下文缺失自检**：Agent 无法感知自己被压缩，因此不靠感知、靠两道守卫——显式信号（用户说「重载」/ 平台重置）即重读；开工 / 提交 / 重大决策前默写核心要素，复述不全即重读。
 - **注入点与注入模式**：第 0 步把规则写入 agent 应用**每会话真正自动注入**的位置（如 `CLAUDE.md`、`AGENTS.md`、`.cursor/rules`、Trae 应用内项目规则）——绝不写进应用忽略的工作区文件。它会询问你选择**按需注入**（默认，精简规则）还是**强制注入**（规则命令每会话完整读取 SKILL.md，无需手动触发），并在平台要求时（如 Trae）**引导你在应用设置里启用规则**。
+- **调研驱动的任务主流程**：每个任务按 11 步生命周期推进——理解（第一性原理）→ 经验库必读 → 调研实际资源（真实代码 / 环境 / 工作区 / 可用 Skill 与 MCP）→ 不可用时降级联网调研 → 复用调研（本地项目 → 同类项目）→ 复述理解 → 疑问必问 → 产品视角审查 + L1/L2/L3 分级 + 回滚点 → 规划与验收文档 → 执行 → 自查与归档（文档、双写知识、提交附说明）。
 
 ### 使用场景
 
