@@ -71,7 +71,7 @@ Consequential decisions must be confirmed with the user before acting. Triggers:
 1. Platform-native asking tool (`request_user_input`, `AskUserQuestion`, `ask_user`, …)
 2. If unavailable: structured text protocol — present (a) understanding, (b) options with pros/cons, (c) risks and consequences, (d) a recommendation, then **end the turn and wait**. Full protocol in `references/platform-adaptation.md`.
 
-Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking.
+Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking. **Preference memory**: after the user makes a confirmed choice (e.g. tech-stack, language, style via the asking tool), write it to the memory file's *user preferences* field (§10) so the same class of decision is reused next time instead of re-asking — preference memory only covers confirmed repeated preferences, never secrets or destructive ops.
 
 ## 5. Execution modes & task triage
 
@@ -81,6 +81,7 @@ Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks a
 |---|---|---|
 | **Normal** (default) | no keyword | Ask before every consequential decision (section 4). |
 | **Goal mode** | keywords `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | Work autonomously from a written plan; secrets and destructive operations still pause and wait for the user. |
+| **Quiet mode** | keywords `安静模式` / `quiet` / `quiet mode` | L1 tasks: report only the result (skip intermediate reasoning / survey steps) to cut visual noise and token anxiety; L2/L3 unchanged; secrets & destructive ops still ask. |
 
 Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *before* executing; split subtasks by file boundaries; record progress as you go; stop automatically when the budget is exceeded; deliver a retrospective plus an open-questions list.
 
@@ -105,6 +106,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 - Before committing: re-read the diff as a reviewer (boundaries, security, readability, unverified claims, reuse), re-run validation, and ship docs in the same commit as code.
 - **Rollback rule — create a rollback point BEFORE major changes or irreversible operations.** Git-tracked files: confirm a clean worktree, then commit/stash the current state (or work on a separate branch). Non-git files: copy a snapshot first. Run high-risk commands only after a rollback point exists.
+- **Atomic-operation lock (L3 destructive ops)** — for deletion / migration / overwrite / publish-class operations, in addition to the rollback point: **first output the list of commands you intend to run, end the turn, and wait for the user to confirm**; execute only after confirmation. This puts the final gate in human hands, not agent self-discipline.
 - External publishing: user approval first, then an observation period (~30 min) monitoring errors/latency/alerts; roll back on anomaly.
 
 ## 8. Gotchas
@@ -140,4 +142,5 @@ Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`
 - At session end, distill 1-5 reusable knowledge points (default 3) in the form scenario → judgment → action; write the knowledge version to the project's knowledge doc, and give a plain-language version to the user.
 - An **experience log** (lessons learned, pitfalls) is mandatory reading at session start — search by symptom keywords. Its location is defined by the project; this skill does not impose one.
 - **Memory-file protocol (externalized long-term memory)** — maintain a project memory file by the project's convention (`memory/` — current goal / decisions / constraints / progress / pitfalls; ≤1 screen). Write at milestones and before the context reaches 40-60%; after any compaction / reset / reload signal, **read it first** before continuing (detail in `references/workflows.md`).
+- **User preferences** — the memory file also keeps a *user preferences* field (tech stack / language / style choices the user confirmed). Write it after a confirmed choice; read it at session start; reuse it to avoid re-asking the same class of decision. Never put secrets or destructive intent in preferences.
 - Docs ship in the same commit as code; a doc may be archived only after a current equivalent exists.

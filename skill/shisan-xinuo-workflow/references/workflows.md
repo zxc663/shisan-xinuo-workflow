@@ -203,6 +203,7 @@ Agents have no inherent long-term memory and cannot sense context compaction —
 
 - **Location** (project-defined): e.g. `memory/` at the repo root (or the project's agreed memory path). Keep it ≤ 1 screen (~20 lines) so it re-reads instantly.
 - **Minimal structure** — current goal ／ decisions made ／ constraints ／ progress + next step ／ pitfalls (link the experience log).
+- **User preferences field** — also keep a *user preferences* subsection (tech stack / language / style the user confirmed via the asking tool). Write it right after a confirmed choice; read at session start; reuse the same class of decision instead of re-asking. Never put secrets or destructive intent here.
 - **Write at**: ① goal confirmed (step 6); ② each task / milestone closed; ③ before the context reaches 40-60%; ④ at session end, before archiving.
 - **Read at**: ① session start; ② after any compaction / reset / reload signal — **read first, then continue**; ③ before starting a new task, scan the memory file.
 - **Layering**: memory file = *state* layer (session state); knowledge docs (step-11 dual-write) = *learning* layer; experience log = *pitfall* layer. They do not replace each other.

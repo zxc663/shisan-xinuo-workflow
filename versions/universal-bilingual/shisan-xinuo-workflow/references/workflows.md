@@ -203,6 +203,7 @@ Agent 无天生长期记忆、也无法感知上下文压缩——把会话状�
 
 - **位置 Location**（项目约定）：如仓库根 `memory/`，保持一屏内（约 20 行）。Project-defined, e.g. `memory/`; keep ≤ 1 screen (~20 lines).
 - **最小结构 Minimal structure**——当前目标 / 已做决策 / 约束 / 进度+下一步 / 踩坑。Current goal ／ decisions ／ constraints ／ progress+next ／ pitfalls.
+- **用户偏好字段 User preferences**——维护已确认的技术栈/语言/风格，确认后立即写入、会话开始读取、同类决策复用不重复问。Keep confirmed choices; reuse instead of re-asking. 密钥与破坏性意图绝不写入 Never secrets or destructive intent.
 - **写入 Write at**：①目标确认（第 6 步）；②任务/里程碑完成；③上下文 40-60% 前；④会话结束归档前。
 - **读取 Read at**：①会话开始；②压缩 / 重置 / 重载后——**先读再继续**；③新任务前扫一眼。Session start; after compaction/reset — **read first, then continue**; before new tasks.
 - **分层 Layering**：记忆文件 = 状态层；知识文档（第 11 步双写）= 学习层；经验库 = 踩坑层。Memory = *state*; knowledge docs = *learning*; experience log = *pitfall*. They do not replace each other.
