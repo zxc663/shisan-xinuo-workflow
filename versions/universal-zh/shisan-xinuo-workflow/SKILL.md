@@ -1,6 +1,27 @@
 ---
 name: shisan-xinuo-workflow
-description: "以通用工作执行流程为灵魂、以纪律规则为地基、以工程师与产品双视角为镜、以可信证据为依据、以安全为底线的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、产品完善度诊断与强制双调研、联网调研可信依据、开源安装强制校验、关键决策必问、质量门禁、重大修改前回滚点、留档纪律。当用户希望在 Trae、Codex、Claude Code、Cursor 或任意 CLI 智能体上获得纪律化、可审计、按流程推进的工作方式时使用。机制层跨领域；落地细则（details.md）为真实技术栈踩坑日志而非教程。"
+description: "跨平台工程执行 Skill（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / 通用 CLI）：为 AI 编码智能体提供纪律化、可审计、按流程推进的工作方式——强制通用任务主流程（调研驱动的 11 步 + 每步出口产物门禁 + 状态澄清前置）、L1/L2/L3 任务分级、关键必问、质量门禁、重大修改前回滚点、留档纪律、绝不假实现。内置 43 条纪律规则、203 条落地细则（12 类）、6 类模板、永不清单、会话钩子与审查子代理。当用户希望跨平台/跨项目获得一致性、可验证、防假交付的工程执行时使用。"
+version: 1.5.0
+license: MIT
+compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
+tags:
+  - agent-skill
+  - workflow-governance
+  - engineering-discipline
+  - quality-gates
+  - auditability
+  - codex
+  - claude-code
+  - trae
+  - cursor
+metadata:
+  author: zxc663
+  edition: universal-zh
+  homepage: https://github.com/zxc663/shisan-xinuo-workflow
+  topics:
+    - agent-skills
+    - ai-agent-workflow
+    - prompt-injection-defense
 ---
 
 # 十三希诺通用 Agent 工作流（Shisan Xinuo Agent Workflow）

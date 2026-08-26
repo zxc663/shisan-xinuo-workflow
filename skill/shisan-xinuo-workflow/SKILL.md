@@ -1,6 +1,27 @@
 ---
 name: shisan-xinuo-workflow
-description: "A cross-platform engineering-execution skill for AI coding agents with the workflow as its soul, the discipline rules as its foundation, dual engineer/product-manager eyes as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory universal task operating sequence (research-driven 11 steps, exit-artifact gates per step, status-clarification prelude), product-polish diagnosis & mandatory dual survey, verifiable online-survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback-before-major-changes, recordkeeping. Use when the user wants a disciplined, auditable, process-driven way of working on Trae, Codex, Claude Code, Cursor, or any CLI agent. Not domain tutorials — the workflow/rules layers are framework-agnostic; details.md is a pitfall log from real stacks."
+description: "Cross-platform engineering-execution Skill for AI coding agents (Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy, any CLI): enforces a disciplined, auditable, process-driven way of working — a mandatory research-driven 11-step task sequence with per-step exit-artifact gates and status-clarification prelude, L1/L2/L3 risk triage, ask-before-acting, quality gates, rollback-before-major-changes and recordkeeping. Ships 43 discipline rules, 203 pitfall-log details (12 categories), 6 templates, never-list, hooks and review sub-agents. Use when the user wants consistent, verifiable, no-fake-completion engineering work across projects and platforms."
+version: 1.5.0
+license: MIT
+compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
+tags:
+  - agent-skill
+  - workflow-governance
+  - engineering-discipline
+  - quality-gates
+  - auditability
+  - codex
+  - claude-code
+  - trae
+  - cursor
+metadata:
+  author: zxc663
+  edition: universal-en
+  homepage: https://github.com/zxc663/shisan-xinuo-workflow
+  topics:
+    - agent-skills
+    - ai-agent-workflow
+    - prompt-injection-defense
 ---
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)

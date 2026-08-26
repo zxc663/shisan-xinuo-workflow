@@ -1,6 +1,27 @@
 ---
 name: shisan-xinuo-workflow
-description: "以通用工作执行流程为灵魂、以纪律规则为地基、以工程师与产品双视角为镜、以可信证据为依据、以安全为底线的跨平台 AI 编码智能体工程执行 Skill：强制通用任务主流程（11 步 + 每步出口产物门禁 + 状态澄清前置）、产品完善度诊断与强制双调研、联网调研可信依据、开源安装强制校验、关键必问、质量门禁、回滚点、留档纪律。A cross-platform engineering-execution skill with the workflow as its soul, the rules as its foundation, dual engineer/product-manager views as the mirror, verifiable evidence as the basis, and safety as the baseline: a mandatory task operating sequence (11 steps, exit-artifact gates, clarification prelude), product-polish diagnosis & dual survey, verifiable survey trust signals, mandatory open-source install vetting, ask-before-acting, quality gates, rollback safety, recordkeeping. 不用于领域专属编码知识。Not for domain-specific coding help. 机制层跨领域；落地细则（details.md）为真实技术栈踩坑日志而非教程。Mechanisms framework-agnostic; details.md is a pitfall log, not a tutorial."
+description: "跨平台工程执行 Skill（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / 通用 CLI）：纪律化、可审计、按流程推进 —— 强制 11 步任务主流程（每步出口产物门禁）、L1/L2/L3 分级、关键必问、质量门禁、回滚、留档、绝不假实现。Cross-platform engineering-execution Skill: disciplined, auditable, process-driven — mandatory 11-step task sequence (exit-artifact gates), L1/L2/L3 triage, ask-before-acting, quality gates, rollback, recordkeeping, no fake completion. 内置 43 条规则、203 条落地细则（12 类）、6 类模板、永不清单、钩子与审查子代理。Ships 43 rules, 203 pitfall details (12 categories), 6 templates, never-list, hooks and review sub-agents. 当用户需要可验证、防假交付的工程执行时使用。Use when the user wants consistent, verifiable engineering work."
+version: 1.5.0
+license: MIT
+compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体 / any CLI encoding agent supporting Agent Skills"
+tags:
+  - agent-skill
+  - workflow-governance
+  - engineering-discipline
+  - quality-gates
+  - auditability
+  - codex
+  - claude-code
+  - trae
+  - cursor
+metadata:
+  author: zxc663
+  edition: universal-bilingual
+  homepage: https://github.com/zxc663/shisan-xinuo-workflow
+  topics:
+    - agent-skills
+    - ai-agent-workflow
+    - prompt-injection-defense
 ---
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
