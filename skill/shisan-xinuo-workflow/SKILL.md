@@ -1,7 +1,7 @@
 ---
 name: shisan-xinuo-workflow
-description: "Cross-platform engineering-execution Skill for AI coding agents (Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy, any CLI): enforces a disciplined, auditable, process-driven way of working — a mandatory research-driven 11-step task sequence with per-step exit-artifact gates and status-clarification prelude, L1/L2/L3 risk triage, ask-before-acting, quality gates, rollback-before-major-changes and recordkeeping. Ships 43 discipline rules, 203 pitfall-log details (12 categories), 6 templates, never-list, hooks and review sub-agents. Use when the user wants consistent, verifiable, no-fake-completion engineering work across projects and platforms."
-version: 1.5.0
+description: "One-line positioning: forces every engineering task through an auditable agent workflow — mandatory research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes (normal/goal), with platform-agnostic hard injection of the core discipline. Use on any hands-on task."
+version: 1.6.0
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 tags:
@@ -47,6 +47,7 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 ### 2.2 Mandatory 11-step master sequence (exit artifact per step)
 
 > **The iron law (reuse)**: the best code achieves the most complete function and experience with the least code while meeting the requirements. Reuse whenever possible — style adaptation or secondary development are both fine; **never hand-roll your own components.**
+> **The design-cost iron law**: good design is expensive, but bad design costs more — evaluate interface, interaction, and architecture decisions by their **future rework cost**, not by their immediate implementation cost; flashy effects are cheap to build, but poor usability or a hard-to-refactor design is expensive later.
 
 | Step | Action | Exit artifact (must exist before the next step) |
 |---|---|---|
@@ -72,16 +73,16 @@ Details and per-task-type checklists: `references/workflows.md` (master + clarif
 
 ## 3. Step 0: Platform detection & injection (on load / first run)
 
-Before starting tasks, adapt this workflow to the current platform:
+Before starting tasks, hard-load this workflow onto the current platform:
 
 1. **Detect the platform** using the feature checklist in `references/platform-adaptation.md` (directory markers, env vars, tool availability).
-2. **Ask the injection mode** — use the asking chain from section 4 and let the user choose:
+2. **Locate the platform's REAL injection point** per the injection-point table in `references/platform-adaptation.md` §2 — Trae: `~/.trae-cn/user_rules/*.md` (user-global; the file's mere existence injects it every session, no in-app enabling needed) or project `.trae/rules/project_rules.md`; Claude Code: `~/.claude/CLAUDE.md` or project `CLAUDE.md`; Codex: `AGENTS.md`; Cursor: `.cursor/rules/*.mdc`; Windsurf: `.windsurfrules`. A file written only into a workspace folder the app never reads is **useless**.
+3. **Ask the injection mode** — use the asking chain from section 4 and let the user choose:
    - **On-demand (default)** — the rule file holds a lean discipline and points back to this skill; the full skill activates when triggered. Lowest context cost.
-   - **Forced per-session** — the rule file additionally commands every session to fully read this skill's `SKILL.md` before starting work, so the discipline applies unconditionally each session (higher per-session context cost).
+   - **Forced injection (hard-load)** — write the full core from `references/injection-core.md` into the platform's injection point (backup the existing file first, merge without overwriting) — the workflow is unconditionally present every session and no longer depends on the model voluntarily loading this skill (a fixed ~2-3K tokens per session). **Do NOT implement forced injection as "every session must fully read this SKILL.md" — models do not reliably execute extra reads; write the core text itself into the injection point.**
    If no asking tool is available, default to on-demand and say so explicitly.
-3. **Configure the injection point — write the rule file into the location the agent app actually auto-injects every session** (see the injection-point table in `references/platform-adaptation.md`: e.g. `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex, `.cursor/rules/*.mdc` for Cursor, app-managed project rules for Trae). A file written only into a workspace folder the app never reads is **useless**. If the platform requires enabling the rule inside the app (e.g. Trae project rules), **guide the user to enable it in the app settings and confirm it is active**; do not claim success until the app confirms it injects the rule.
 4. **Pick the active asking mechanism** from the downgrade chain in section 4.
-5. Confirm to the user in one line: platform detected, injection mode, injection point confirmed active, asking tool active. Do not start the task until this is done.
+5. **Verify**: after writing, restate the active essentials (platform, injection point, injection mode, asking tool). Do not claim success until the injection is confirmed active. Do not start the task until this is done.
 
 ## 4. Ask-before-acting protocol
 
@@ -116,6 +117,13 @@ Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *be
 
 Judge by: blast radius, reversibility, rework cost, whether data or external publishing is touched.
 
+**Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)**:
+
+- **L3 closed list (exactly 6 items — anything outside the list is never L3; do not extend it)**: secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations.
+- **L1 quick call**: rename, copy, formatting, single-line edits and other reversible small changes → just do it; don't ask, don't elaborate.
+- **L2**: new feature, multi-file, cross-module → record, do, report key points.
+- Cannot triage within 10 seconds → default to L2 and proceed; state the level in one sentence — except for closed-list hits, never interrogate the user over triage itself or argue it out.
+
 ## 6. Minimal closed-loop delivery (the delivery principle of step 11)
 
 1. **Understand** — restate the goal, boundaries, and acceptance criteria in 1-3 sentences.
@@ -132,6 +140,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 ## 8. Gotchas
 
+- **Triage burnout**: settle trivial triage in one sentence — rename / copy / formatting questions are always L1, just do them; L3 honors ONLY the closed list in section 5, nothing outside it constitutes L3. Arguing over triage or agonizing repeatedly is one of the biggest token sinks.
 - **The sequence is unskippable.** Survey (step 3) and reuse survey (step 5) are the most-skipped steps — skipping breaks the sequence and is the most common violation.
 - **On repeated review requests, run the product-polish diagnosis first** — when the user keeps asking to review or keeps feeling something is off, locate the gap by product dimension (feature logic / code coupling / UI / interaction flow / other; workflows.md §0.3) before touching code; don't just re-check correctness as an engineer.
 - **Trigger keywords are live switches.** Goal-mode keywords (`目标：`, `unattended`, …) silently change the decision model. Check every user message for them, including mid-task messages.
@@ -147,7 +156,8 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 | File | When to load |
 |---|---|
-| `references/platform-adaptation.md` | Section 3 platform detection; asking-tool downgrade chain; full structured asking protocol |
+| `references/injection-core.md` | Section 3 forced injection (hard-load) — the platform-agnostic core template, written in full into the detected platform's injection point |
+| `references/platform-adaptation.md` | Section 3 platform detection; injection-point table; asking-tool downgrade chain; full structured asking protocol |
 | `references/rules.md` | The 43-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule |
 | `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details |
 | `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to |

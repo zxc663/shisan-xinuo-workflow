@@ -21,6 +21,8 @@
 
 每步出口产物见 SKILL.md §2.2；进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由。Exit artifacts in SKILL.md §2.2; the previous step's artifact must exist first; record reasons for legitimate skips.
 
+**判级速查 Triage quick reference（10 秒定论，一句话即止，禁止展开论证）**：L3 封闭清单（仅 6 项，清单外一律不是 L3）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作；L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做；10 秒判不了级默认按 L2 直接推进，判级结论一句话即止、不追问用户、不展开分析。Closed list of 6 for L3 (nothing outside is ever L3); L1 = reversible small changes, just do them; cannot triage in 10s → default L2, one-sentence verdict, no arguing.
+
 - [ ] 1. 接收指令 Receive（任务本质一句话 essence）
 - [ ] 2. 经验库必读 Experience log first（命中记录 hit record）
 - [ ] 3. 调研实际资源 Survey actual resources（现状事实清单 status fact list）

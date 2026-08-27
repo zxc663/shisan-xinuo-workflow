@@ -1,7 +1,7 @@
 ---
 name: shisan-xinuo-workflow
-description: "跨平台工程执行 Skill（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / 通用 CLI）：纪律化、可审计、按流程推进 —— 强制 11 步任务主流程（每步出口产物门禁）、L1/L2/L3 分级、关键必问、质量门禁、回滚、留档、绝不假实现。Cross-platform engineering-execution Skill: disciplined, auditable, process-driven — mandatory 11-step task sequence (exit-artifact gates), L1/L2/L3 triage, ask-before-acting, quality gates, rollback, recordkeeping, no fake completion. 内置 43 条规则、203 条落地细则（12 类）、6 类模板、永不清单、钩子与审查子代理。Ships 43 rules, 203 pitfall details (12 categories), 6 templates, never-list, hooks and review sub-agents. 当用户需要可验证、防假交付的工程执行时使用。Use when the user wants consistent, verifiable engineering work."
-version: 1.5.0
+description: "一句话定位：把任何工程任务强制按「调研驱动的 11 步主流程 + L1/L2/L3 封闭清单速判 + 双模式」推进的可审计 Agent 工程纪律工作流，核心纪律可平台无关硬注入。任何动手任务开工必用。One-line positioning: forces every engineering task through an auditable agent workflow — research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes, with platform-agnostic hard injection of the core. Use on any hands-on task."
+version: 1.6.0
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体 / any CLI encoding agent supporting Agent Skills"
 tags:
@@ -48,6 +48,7 @@ metadata:
 ### 2.2 强制 11 步主流程（每步含出口产物）· Mandatory 11-step master sequence (exit artifact per step)
 
 > **最铁铁律（复用铁律）The iron law (reuse)**：以最少的代码，实现最完整的功能和体验，并达到需求描述——就是最好的代码；能复用就复用，风格适配或二次开发都可以，**绝不自己自研组件**。The best code achieves the most complete function and experience with the least code while meeting the requirements; reuse whenever possible — style adaptation or secondary development both fine; never hand-roll your own components.
+> **设计成本铁律 The design-cost iron law**：好的设计是昂贵的，但糟糕的设计成本更高——界面、交互、架构决策按「后期改造成本」评估，不按「当下实现成本」评估。Good design is expensive, but bad design costs more — evaluate interface, interaction, and architecture decisions by their future rework cost, not their immediate implementation cost.
 
 | 步 Step | 动作 Action | 出口产物 Exit artifact（无则不进入下一步 must exist first） |
 |---|---|---|
@@ -74,10 +75,10 @@ metadata:
 ## 3. 第 0 步：平台检测与注入 · Step 0: Platform detection & injection
 
 1. **检测平台 Detect**（`references/platform-adaptation.md` 特征清单）
-2. **询问注入模式 Ask the injection mode**：**按需（默认）on-demand (default)**——精简纪律 + 回指；**强制（每会话）forced per-session**——追加「每会话完整读 SKILL.md」。无提问工具默认按需并告知。
-3. **配置注入点 Configure the injection point**：写入 agent 应用每会话真正自动注入的位置（CLAUDE.md / AGENTS.md / .cursor/rules / Trae 应用内项目规则）；只写工作区文件是**无效的**。平台要求应用内启用时（如 Trae）**引导用户在应用设置启用并确认生效**，未确认不得宣称成功。
+2. **定位该平台真实注入点 Locate the platform's REAL injection point**（platform-adaptation.md 第 2 节注入点表）：Trae `~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入）或 `.trae/rules/project_rules.md`；Claude Code `~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex `AGENTS.md`；Cursor `.cursor/rules/*.mdc`；Windsurf `.windsurfrules`。只写应用从不读取的工作区文件是**无效的**。A file written only into a folder the app never reads is useless.
+3. **询问注入模式 Ask the injection mode**：**按需（默认）on-demand (default)**——注入点只写约 9 行精简纪律 + 回指本 Skill；**强制注入（硬加载）forced injection (hard-load)**——把 `references/injection-core.md` 核心全文写入该平台注入点（先备份、合并不覆盖），工作流每会话无条件在场、不依赖模型自觉加载（每会话固定约 2-3K token）。**不要用「每会话完整读 SKILL.md」弱指令实现强制注入——模型不会可靠执行，必须直接写入核心全文。** Do NOT implement forced injection as "read the full SKILL.md every session" — models do not reliably execute extra reads; write the core text itself. 无提问工具默认按需并告知。
 4. **选定提问机制 Pick asking mechanism**（第 4 节降级链）
-5. **确认 Confirm**：平台 / 注入模式 / 注入点已生效 / 提问工具。未完成不得开工。
+5. **校验生效 Verify**：复述生效要点（平台 / 注入点 / 注入模式 / 提问工具），未确认生效不得宣称成功，未完成不得开工。Restate the active essentials (platform / injection point / mode / asking tool) before starting.
 
 ## 4. 关键必问协议 · Ask-before-acting protocol
 
@@ -101,6 +102,8 @@ metadata:
 | L2 中风险 medium | 新功能、多文件、跨模块 | 记录后做，汇报关键点 record & report | 按计划执行，节点记录 per plan |
 | L3 高风险 high | 密钥/权限/删除/迁移/发布/架构 | **先问再做 ask first** | 选推荐标注 `REVIEW:`；密钥与破坏性操作暂停留档 pick recommended, label REVIEW; pause on secrets/destructive |
 
+**判级速查（10 秒定论，一句话即止，禁止展开论证）Triage quick reference**：L3 封闭清单（仅 6 项，清单外一律不是 L3，不得自行扩展）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作。L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做。10 秒判不了级默认按 L2 直接推进；判级结论一句话即止，除命中 L3 清单外判级本身不追问用户、不展开分析。Closed list of 6 for L3 (nothing outside it is L3); L1 = reversible small changes, just do them; cannot triage in 10s → default L2, one-sentence verdict, no arguing.
+
 ## 6. 最小闭环交付（第 11 步交付原则）· Minimal closed-loop delivery (step-11 principle)
 
 理解 → 最小修改（复用优先）→ 最小验证 → 交付成品；不交半成品、不留占位、绝不假实现。Understand → minimal change (reuse first) → minimal verification → deliver finished work; no placeholders, never fake completion.
@@ -111,6 +114,7 @@ metadata:
 
 ## 8. 易错点 · Gotchas
 
+- **判级内耗 Triage burnout**：琐碎判级一句话定论——改名 / 文案 / 格式类一律 L1 直接做；L3 只认第 5 节封闭清单，清单外不构成 L3。为判级展开论证或反复纠结是 token 浪费的最大来源之一。Settle trivial triage in one sentence; L3 honors only the closed list in section 5.
 - **流程不可跳步**：调研（第 3 步）与复用调研（第 5 步）最常被跳过，是最常见违规。The sequence is unskippable; survey steps are the most-skipped.
 - **反复审查先做产品完善度诊断**：以产品角度定位缺陷（功能逻辑/代码耦合/UI/互动流程/其他，§0.3），别只查代码正确性。Diagnose by product dimension before code.
 - **触发关键词是活开关**：目标模式关键词会静默改变决策模型，每条消息都要检查。Goal-mode keywords are live switches.
@@ -126,6 +130,7 @@ metadata:
 
 | 文件 File | 何时加载 When to load |
 |---|---|
+| `references/injection-core.md` | 第 3 节强制注入（硬加载）时——平台无关核心模板，全文写入检测到的平台注入点 Section 3 forced injection — the platform-agnostic core template, written in full into the detected injection point |
 | `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
 | `references/rules.md` | 43 条纪律（地基）The 43-rule discipline (foundation) |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
