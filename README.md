@@ -5,6 +5,17 @@
 
 ![version](https://img.shields.io/badge/version-1.9.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
+> **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
+>
+> - **GitHub 主线** · https://github.com/zxc663/shisan-xinuo-workflow
+> - **Gitee 国内直连镜像** · https://gitee.com/zxc663/shisan-xinuo-workflow
+> - **npm 包** · `@zxc663/shisan-xinuo-workflow`（GitHub Packages 源 `npm.pkg.github.com`）
+> - **skills.sh 收录** · https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
+> - **ClawHub** · 搜索 `shisan-xinuo-workflow`
+> - 在线快速体验 · `npx skills add zxc663/shisan-xinuo-workflow`
+>
+> 一份仓库，多平台分发；任何入口均可读到本 README 与三语版本（英文 / 中文 / 中英双语）。
+
 ---
 
 ## 一句话定位 · One-line positioning
