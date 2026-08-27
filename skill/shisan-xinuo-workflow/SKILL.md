@@ -1,20 +1,20 @@
 ---
 name: shisan-xinuo-workflow
 description: "One-line positioning: forces every engineering task through an auditable agent workflow — mandatory research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes (normal/goal), with platform-agnostic hard injection of the core discipline. Use on any hands-on task."
-version: 1.8.0
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
-tags:
-  - agent-skill
-  - workflow-governance
-  - engineering-discipline
-  - quality-gates
-  - auditability
-  - codex
-  - claude-code
-  - trae
-  - cursor
 metadata:
+  version: 1.9.0
+  tags:
+    - agent-skill
+    - workflow-governance
+    - engineering-discipline
+    - quality-gates
+    - auditability
+    - codex
+    - claude-code
+    - trae
+    - cursor
   author: zxc663
   edition: universal-en
   homepage: https://github.com/zxc663/shisan-xinuo-workflow

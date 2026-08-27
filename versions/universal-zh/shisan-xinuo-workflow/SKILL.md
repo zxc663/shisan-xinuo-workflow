@@ -1,20 +1,20 @@
 ---
-name: shisan-xinuo-workflow
+name: shisan-xinuo-workflow-zh
 description: "一句话定位：把任何工程任务强制按「调研驱动的 11 步主流程 + L1/L2/L3 封闭清单速判 + 双模式」推进的可审计 Agent 工程纪律工作流，核心纪律可平台无关硬注入。任何动手任务开工必用。"
-version: 1.8.0
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
-tags:
-  - agent-skill
-  - workflow-governance
-  - engineering-discipline
-  - quality-gates
-  - auditability
-  - codex
-  - claude-code
-  - trae
-  - cursor
 metadata:
+  version: 1.9.0
+  tags:
+    - agent-skill
+    - workflow-governance
+    - engineering-discipline
+    - quality-gates
+    - auditability
+    - codex
+    - claude-code
+    - trae
+    - cursor
   author: zxc663
   edition: universal-zh
   homepage: https://github.com/zxc663/shisan-xinuo-workflow
