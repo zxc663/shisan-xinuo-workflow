@@ -21,6 +21,8 @@ Load this file when starting work that matches one of the task types below, or w
 
 Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must exist before the next step; legitimate skips must record the reason in the task record, never silently.
 
+**Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)**: L3 closed list (exactly 6 items — anything outside is never L3): secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations; L1 quick call: rename, copy, formatting, single-line edits and other reversible small changes — just do them; L2: new feature, multi-file, cross-module — record, do, report; cannot triage within 10 seconds → default to L2 and proceed, one-sentence verdict, no interrogating the user, no extended argument.
+
 - [ ] 1. Receive instruction (artifact: one-sentence task essence)
 - [ ] 2. Read the experience log first (hit record)
 - [ ] 3. Survey actual resources (status fact list)

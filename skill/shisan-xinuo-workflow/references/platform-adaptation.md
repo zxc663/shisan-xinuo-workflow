@@ -29,14 +29,14 @@ If uncertain, ask the user which platform this is — do not guess when a rule f
 | Claude Code | `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user-global) | No — auto-read | none native → text protocol |
 | Cursor | `.cursor/rules/*.mdc` or global Rules (app settings) | Usually auto-read; verify Rules toggle | none native → text protocol |
 | Windsurf | `.windsurfrules` (project) or global rules | No — auto-read | none native → text protocol |
-| Trae | app-managed project rules (set inside the Trae app: 设置 → 项目规则/Agent 规则) | **YES — user must enable/attach the rule in the app** | platform question tool if present, else text protocol |
+| Trae | `~/.trae-cn/user_rules/*.md` (user-global; auto-injected into every project every session) or project `.trae/rules/project_rules.md` | No — the file's mere existence injects it (verified in practice) | platform question tool if present, else text protocol |
 | WorkBuddy | `BOOTSTRAP.md` (project bootstrap) + connector config | Yes — attach in app config | `AskUserQuestion` |
 | Reasonix | `AGENTS.md` (plugin/rule input) | Per plugin config | none native → text protocol |
 | Generic CLI | no auto-injection | n/a | none native → text protocol |
 
-**For every platform**: after writing/merging the file, if the platform requires enabling it inside the app (e.g. Trae project rules), **guide the user to enable it in the app settings and wait for confirmation that it is active**. Do not claim "injected" until the app confirms the rule is loaded each session.
+**For every platform**: after writing/merging the file, restate the active essentials to the user (platform, injection point, injection mode, asking tool) and confirm no existing content was lost; if a platform is later shown to require in-app enabling, then guide the user to enable it in the app settings.
 
-**Forced mode** = write the rule into the injection point above **and** append the per-session read command (section 3.0), so every session loads the discipline without manual triggering.
+**Forced injection (hard-load)** = write the full core from `references/injection-core.md` into the detected platform's injection point above (backup first, merge without overwriting) — the workflow is unconditionally present every session. **Do NOT** implement forced injection as "read the full SKILL.md every session": models do not reliably execute extra read actions; write the core text itself into the injection point (field-tested lesson: under the weak-command mode, new sessions follow only the most generic few rules).
 
 Generic CLI (no auto-injection): tell the user to open the skill once per session, or wrap the rule in their custom prompt.
 
@@ -48,19 +48,15 @@ Before writing any rule file, use the asking chain in section 4 to let the user 
 
 | Mode | Rule file contains | Context cost | Use when |
 |---|---|---|---|
-| **On-demand (default)** | lean discipline + pointer to this skill | lowest | most projects; skill triggers when relevant |
-| **Forced per-session** | lean discipline + pointer + "read the full SKILL.md every session" | higher (full SKILL.md per session) | you want the discipline unconditionally active in every session, including contexts where the skill would not auto-trigger |
+| **On-demand (default)** | lean discipline (~9 lines) + pointer to this skill | lowest | most projects; skill triggers when relevant |
+| **Forced injection (hard-load)** | the full core from `references/injection-core.md` (triage quick reference + 11-step master sequence + design iron laws + dual modes + red lines + delivery & records) | a fixed ~2-3K tokens per session | you want the workflow unconditionally present every session, without depending on the model voluntarily loading the skill |
 
-Forced-mode extra line to append to the template below:
-```markdown
-- **Forced injection**: every session MUST fully read the shisan-xinuo-workflow
-  skill's SKILL.md before starting work and follow it; references load on demand.
-```
+Forced mode writes `references/injection-core.md`'s core in full into the injection point (backup + merge) — there is no extra "read every session" line: weak commands like that are not reliably executed by models and must not be the implementation of forced injection.
 
 ### 3.1 Steps
 
 1. **Backup first**: if the target file exists, copy it to `<file>.bak-<date>` before any change. Never edit an existing rule file in place without a backup.
-2. **Merge, never overwrite**: preserve every existing line of the user's rules. Append the condensed operating discipline below under a clearly separated section, e.g. (append the forced-injection line only if the user chose forced mode):
+2. **Merge, never overwrite**: preserve every existing line of the user's rules. Append the condensed operating discipline below under a clearly separated section — **on-demand mode** uses the lean block; **forced mode** writes the full core from `references/injection-core.md` instead. On-demand lean block:
 
 ```markdown
 ## Agent workflow discipline (shisan-xinuo-workflow)
@@ -119,4 +115,4 @@ Write the following four sections, then end the turn. Keep it tight.
 
 ## 6. Generated rule file size
 
-Keep the generated rule file under ~30 lines (the template above). The full 43 rules and workflows stay in this skill's `references/` and load on demand — writing everything into the project rule file inflates every session's context for all tasks. If the platform's rule mechanism only accepts a single short file, the condensed block above is sufficient.
+**On-demand**: keep the generated rule file under ~30 lines (the lean block above). **Forced injection (hard-load)**: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys the workflow being unconditionally present, no longer depending on the model voluntarily loading the skill). The full 43 rules and workflow details stay in this skill's `references/` and load on demand. If the platform's rule mechanism only accepts a single short file, the lean block is sufficient.

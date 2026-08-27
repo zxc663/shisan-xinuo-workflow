@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill for AI coding agents: it injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.5.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.6.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 ---
 
@@ -55,8 +55,8 @@ A progressive, on-demand, triage-routed governance meta-skill: **43 discipline r
 ## 工作原理（渐进式 / 状态机）· How it works
 
 ```
-平台适配（第 0 步：检测 → 注入点 → 按需 / 强制注入）
-Platform adaptation (Step 0: detect → injection point → on-demand / forced)
+平台硬加载（第 0 步：检测平台 → 定位该平台真实注入点 → 按需 / 强制注入核心）
+Platform hard-load (Step 0: detect → locate the REAL injection point → on-demand / forced core injection)
         │
         ▼
 任务判级（Triage-first，每任务开始）┐
@@ -85,9 +85,9 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 
 | 能力 Capability | 说明 Description | 入口 Entry |
 |---|---|---|
-| 第 0 步平台适配与注入 | 检测平台、写入应用真正注入的位置、按需/强制双模式 | `SKILL.md` §3 / `references/platform-adaptation.md` |
+| 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需（9 行精简）/ 强制（`injection-core.md` 核心全文硬加载）双模式 | `SKILL.md` §3 / `references/injection-core.md` / `platform-adaptation.md` |
 | 强制总纲主流程（11 步）| 每步出口产物门禁，可检查、可审计、不可跳步 | `SKILL.md` §2 / `references/workflows.md` |
-| L1 快速通道 | 判级先行，L1 走「复述→最小修改→最小验证→汇报」 | `SKILL.md` §2.3 |
+| L1 快速通道 + 判级速查 | 判级先行（L3 封闭清单 6 项，10 秒定论，判不了默认 L2）；L1 走「复述→最小修改→最小验证→汇报」 | `SKILL.md` §2.3 / §5 |
 | 43 条规则地基 | 工作纪律 / 思考 / 执行 / 协作 / 安全 / 交付 / 回滚 | `references/rules.md` |
 | 203 条落地细则（12 类）| 环境 / 前端 / 数据库 / 测试 / API / 运维 / 代码质量 / Git / 会话 / 深挖 / 铁律 / 源项目深挖 | `references/details.md` |
 | 永不清单 | 7 类明线禁止项（假完成 / 密钥 / 跳步 / Git / 复用 / 提问 / 提示注入）一页自查 | `references/never-list.md` |
@@ -135,7 +135,7 @@ Platform adaptation (Step 0: detect → injection point → on-demand / forced)
 **一分钟跑通**（需要支持 Skill 的 Agent 环境：Claude Code / Trae / Cursor / Codex 等）· **Try it in under a minute** (needs a skills-capable agent):
 
 1. **安装 Install**：把 `skill/shisan-xinuo-workflow/` 复制到平台技能目录（见下方安装）；或从 `dist/` 解压发布 zip。
-2. **加载 Load**：新开会话。Skill 自动执行**第 0 步平台适配**：检测平台、询问**按需 / 强制注入**、把约 30 行规则文件（`AGENTS.md`/`CLAUDE.md`/…）写入 agent 应用**每会话真正自动注入**的位置（已有规则先备份再合并，绝不覆盖）；平台要求应用内启用时（如 Trae）引导你在应用设置启用。
+2. **加载 Load**：新开会话。Skill 自动执行**第 0 步平台检测与注入**：检测平台 → 定位该平台**真实注入点**（Trae `~/.trae-cn/user_rules/`、Claude Code `CLAUDE.md`、Codex `AGENTS.md`、Cursor `.cursor/rules/`、Windsurf `.windsurfrules`）→ 询问**按需 / 强制注入**。选**按需**：写入约 9 行精简纪律 + 回指本 Skill；选**强制（硬加载）**：把 `references/injection-core.md` 核心全文（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线，约 55 行）写入注入点——此后每会话无条件生效，**不再依赖模型自觉加载本 Skill**（已有规则先备份再合并，绝不覆盖）。
 3. **感受它 Feel it**：给一个小任务观察——先复述理解、写 3-5 条验收标准、做完自查。给**风险任务**（如「把这个目录删了」）：必须**先问再动手**——这就是 L3 分级。
 4. **目标模式 Goal mode**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`，观察它写计划、设预算、按文件边界拆分、超预算自动停。
 
@@ -164,11 +164,12 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── LICENSE                         ← MIT
 ├── 项目信息.md                      ← 内部维护文档（供下一个 AI 助手读写）
 ├── package.json / .npmrc           ← npm 发行物配置（GitHub Packages）
-├── dist/                           ← 版本发布 zip（v1.0.0 … v1.5.0）
+├── dist/                           ← 版本发布 zip（v1.0.0 … v1.6.0）
 ├── skill/shisan-xinuo-workflow/    ← 默认交付（英文）
 │   ├── SKILL.md                    ← 精简入口：定位、总纲主流程、门禁、引用地图、重载顺序
 │   ├── templates/                  ← 配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子/审查子代理）
 │   └── references/                 ← 按需加载的引用
+│       ├── injection-core.md       ← 硬加载核心模板（强制注入时全文写入平台注入点）
 │       ├── rules.md                ← 43 条规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
 │       ├── details.md              ← 203 条落地细则 / 12 类（踩坑日志）
@@ -269,6 +270,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v1.6.0** — **平台无关硬加载核心**：三语新增 `references/injection-core.md`（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线的标准注入模板）；第 0 步升级为「检测平台 → 定位该平台真实注入点 → 写入核心全文」——任何平台首次加载一次即完成硬加载、每会话无条件生效；「每会话读 SKILL.md」弱指令全线降级（实测不可靠）；Trae 注入点实证修正为 `~/.trae-cn/user_rules/*.md`。**判级速查**：L3 封闭清单（仅 6 项）+ 10 秒定论 + 判不了默认 L2，根治琐碎判级 token 内耗。**设计成本铁律**：好的设计是昂贵的，但糟糕的设计成本更高（按后期改造成本评估）。description 改一句话核心定位。Platform-agnostic hard-load core (injection-core.md ×3), closed-list triage quick reference, design-cost iron law, one-line positioning.
 - **v1.5.0** — P0/P1 治理完整度补强：`templates/`（6 模板）+ `templates/hooks/`（会话钩子）+ `templates/agents/`（3 子代理）+ `references/never-list.md`（永不清单）+ security.md 提示注入防御与供应链/SBOM + README 重构（差异化 reposition + 参考项目章节）；三版同步。Governance completeness: templates, hooks, review sub-agents, never-list, security defenses; README rebuilt.
 - **v1.4.5** — 细则扩展至 **203 条 / 12 类**（源项目多文档审查提炼，新增第 12 类 17 条）。Details expanded to 203 rules / 12 categories.
 - **v1.4.4** — 安静模式（`安静模式`/`quiet`）+ 偏好记忆（memory/ 用户偏好字段）+ 原子操作锁（L3 先出命令清单等确认）。Quiet mode, preference memory, atomic-operation lock.

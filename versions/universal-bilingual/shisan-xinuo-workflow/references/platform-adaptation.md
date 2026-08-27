@@ -30,14 +30,14 @@
 | Claude Code | `CLAUDE.md`（项目 project）或 `~/.claude/CLAUDE.md`（用户全局 user-global） | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
 | Cursor | `.cursor/rules/*.mdc` 或应用设置全局 Rules / or global Rules in app settings | 通常自动读取；核对 Rules 开关 Usually auto-read; verify Rules toggle | 无原生 → 文本协议 none → text protocol |
 | Windsurf | `.windsurfrules`（项目）或全局规则 / or global rules | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
-| Trae | 应用内管理的项目规则（应用设置 → 项目规则 / Agent 规则）app-managed project rules (app settings) | **是——用户必须在应用内启用 / 挂载 YES — must enable/attach in the app** | 平台提问工具若存在，否则文本协议 platform tool if present, else text protocol |
+| Trae | `~/.trae-cn/user_rules/*.md`（用户全局，所有项目每会话自动注入 user-global, auto-injected every session）或项目 or project `.trae/rules/project_rules.md` | 否——文件存在即注入（已实证）No — the file's mere existence injects it (verified) | 平台提问工具若存在，否则文本协议 platform tool if present, else text protocol |
 | WorkBuddy | `BOOTSTRAP.md` + 连接器配置 + connector config | 是——应用配置中挂载 Yes — attach in app config | `AskUserQuestion` |
 | Reasonix | `AGENTS.md`（插件 / 规则输入 plugin/rule input） | 视插件配置 per plugin config | 无原生 → 文本协议 none → text protocol |
 | 通用 CLI | 无自动注入 no auto-injection | 不适用 n/a | 无原生 → 文本协议 none → text protocol |
 
-**对每个平台 For every platform**：写入 / 合并后，若平台要求应用内启用（如 Trae 项目规则），**引导用户在应用设置里启用并等待确认生效**；应用未确认每会话加载前，不得宣称「已注入」。After writing/merging, if the platform requires in-app enabling, guide the user to enable it and wait for confirmation; do not claim "injected" until the app confirms the rule loads each session.
+**对每个平台 For every platform**：写入 / 合并文件后，向用户复述生效要点（平台、注入点、注入模式、提问工具）并确认未丢失既有内容；若某平台后续证实需要应用内启用，再引导用户在应用设置里启用。After writing/merging, restate the active essentials (platform, injection point, injection mode, asking tool) and confirm no existing content was lost; if a platform is later shown to require in-app enabling, then guide the user.
 
-**强制注入 Forced mode** = 把规则写入上面的注入点 + 追加「每会话完整读取 SKILL.md」指令（第 3.0 节）——每会话自动生效，无需手动触发。Write into the injection point above AND append the per-session read command, so every session loads it without manual triggering.
+**强制注入（硬加载）Forced injection (hard-load)** = 把 `references/injection-core.md` 的核心全文写入上面检测到的平台注入点（先备份、合并不覆盖）——工作流每会话无条件在场。**不要**用「每会话完整读取 SKILL.md」这类弱指令实现强制注入：模型不会可靠执行额外读取动作，必须直接写入核心全文（实测教训：弱指令模式下新会话只遵循最通用的几条纪律）。Write the full core from `references/injection-core.md` into the detected platform's injection point (backup first, merge without overwriting) — the workflow is unconditionally present every session. Do NOT implement it as "read the full SKILL.md every session": models do not reliably execute extra reads (field-tested lesson).
 
 通用 CLI（无自动注入 Generic CLI, no auto-injection）：提示用户每会话打开一次本 Skill，或写入自定义提示词。Open the skill once per session or wrap it in your custom prompt.
 
@@ -50,21 +50,15 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 
 | 模式 Mode | 规则文件内容 Rule file contains | 上下文开销 Context cost | 适用 Use when |
 |---|---|---|---|
-| **按需注入（默认）On-demand (default)** | 精简纪律 + 回指本 Skill lean discipline + pointer | 最低 lowest | 多数项目；Skill 按触发激活 most projects; triggers when relevant |
-| **强制注入（每会话）Forced per-session** | 精简纪律 + 回指 + 「每会话必读完整 SKILL.md」 lean + pointer + "read the full SKILL.md every session" | 较高（每会话全量 SKILL.md） higher (full SKILL.md per session) | 要求每会话无条件纪律化 unconditional discipline in every session |
+| **按需注入（默认）On-demand (default)** | 精简纪律（约 9 行）+ 回指本 Skill lean discipline (~9 lines) + pointer | 最低 lowest | 多数项目；Skill 按触发激活 most projects; triggers when relevant |
+| **强制注入（硬加载）Forced injection (hard-load)** | `references/injection-core.md` 核心全文（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线 + 交付留档）the full core from injection-core.md | 每会话固定约 2-3K token a fixed ~2-3K tokens per session | 要求工作流每会话无条件在场、不依赖模型自觉 unconditional presence without depending on the model's discipline |
 
-强制模式需追加的一行（加在下方模板末尾）Forced-mode line to append:
-```markdown
-- **强制注入 Forced injection**：每个会话开工前必须完整读取 shisan-xinuo-workflow
-  Skill 的 SKILL.md 并按此执行；references 按需加载。
-  Every session MUST fully read this skill's SKILL.md before starting work
-  and follow it; references load on demand.
-```
+强制注入即把 `references/injection-core.md` 核心全文写入注入点（先备份、合并）——**没有**额外的「每会话必读」行：这类弱指令模型不可靠执行，不得作为强制注入的实现方式。There is no extra "read every session" line — weak commands like that are not reliably executed by models.
 
 ### 3.1 步骤 Steps
 
 1. **先备份 Backup first**：目标文件存在则复制为 `<文件名>.bak-<日期>` 再动。Copy to `<file>.bak-<date>` before any change. 绝不原地直改。Never edit in place without a backup.
-2. **合并而非覆盖 Merge, never overwrite**：完整保留已有每一行，把精简纪律追加到分隔区块。Preserve every existing line; append the condensed discipline in a separated section:
+2. **合并而非覆盖 Merge, never overwrite**：完整保留已有每一行——**按需注入**用下面的精简纪律块；**强制注入**用 `references/injection-core.md` 核心全文。Preserve every existing line — **on-demand mode** uses the lean block below; **forced mode** writes the full core from `references/injection-core.md` instead. 按需注入精简块 On-demand lean block:
 
 ```markdown
 ## Agent 工作流纪律（shisan-xinuo-workflow）· Agent workflow discipline
@@ -132,5 +126,4 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 
 ## 6. 生成规则文件的体量 · Generated rule file size
 
-控制在约 30 行内（上文模板）。完整 43 条与工作流保留在本 Skill 的 `references/` 按需加载——全量写入项目规则文件会让每个会话都背上上下文负担；平台只接受单短文件时，上文区块即足够。
-Keep the generated file under ~30 lines (the template above). The full rules stay in `references/` and load on demand — writing everything into the project rule file inflates every session's context; the condensed block suffices when the platform only accepts one short file.
+**按需注入 On-demand**：控制在约 30 行内（上文精简块）。**强制注入（硬加载）Forced injection (hard-load)**：写入 `references/injection-core.md` 核心全文（约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场）。完整 43 条与工作流保留在本 Skill 的 `references/` 按需加载；平台只接受单短文件时，精简块即足够。On-demand: under ~30 lines. Forced: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys unconditional presence). Full rules stay in `references/`; the lean block suffices when the platform only accepts one short file.
