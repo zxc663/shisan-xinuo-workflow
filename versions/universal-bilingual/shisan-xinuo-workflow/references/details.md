@@ -1,6 +1,6 @@
 # 落地细则——具体工程规范 · Landing Details — concrete engineering rules（中英双语 · Bilingual）
 
-> 执行某一步需要"具体怎么做"时按类加载。与 43 条基础规则互补：43 条是通用地基，本文件是落地细节与规范性。Load by category when a step needs the concrete how-to; complements the 43 foundational rules with fine-grained practice.
+> 执行某一步需要"具体怎么做"时按类加载。与 47 条基础规则互补：47 条是通用地基，本文件是落地细节与规范性。Load by category when a step needs the concrete how-to; complements the 47 foundational rules with fine-grained practice.
 
 ## 1. 环境与工具链 · Environment & toolchain
 

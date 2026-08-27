@@ -1,7 +1,7 @@
 ---
 name: shisan-xinuo-workflow
 description: "一句话定位：把任何工程任务强制按「调研驱动的 11 步主流程 + L1/L2/L3 封闭清单速判 + 双模式」推进的可审计 Agent 工程纪律工作流，核心纪律可平台无关硬注入。任何动手任务开工必用。One-line positioning: forces every engineering task through an auditable agent workflow — research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes, with platform-agnostic hard injection of the core. Use on any hands-on task."
-version: 1.7.0
+version: 1.8.0
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体 / any CLI encoding agent supporting Agent Skills"
 tags:
@@ -26,8 +26,8 @@ metadata:
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
 
-> **定位：流程为魂、规则为基。** 通用工作执行流程是灵魂（每个任务强制通用的推进骨架），43 条纪律规则是地基（约束每步该守什么）；二者强耦合、相互依托——流程承载规则落地，规则约束流程执行，缺一不可。
-> **Positioning: workflow is the soul, rules are the foundation.** The universal operating sequence is the soul (the mandatory skeleton every task advances along); the 43 rules are the foundation (what each step must observe). Strongly coupled and mutually dependent — the workflow carries the rules into execution; the rules govern the workflow.
+> **定位：流程为魂、规则为基。** 通用工作执行流程是灵魂（每个任务强制通用的推进骨架），47 条纪律规则是地基（约束每步该守什么）；二者强耦合、相互依托——流程承载规则落地，规则约束流程执行，缺一不可。
+> **Positioning: workflow is the soul, rules are the foundation.** The universal operating sequence is the soul (the mandatory skeleton every task advances along); the 47 rules are the foundation (what each step must observe). Strongly coupled and mutually dependent — the workflow carries the rules into execution; the rules govern the workflow.
 
 ## 1. 何时使用 / 何时不用 · When to use / when NOT to use
 
@@ -90,8 +90,8 @@ metadata:
 
 | 模式 Mode | 触发 Trigger | 行为 Behavior |
 |---|---|---|
-| **普通 Normal**（默认） | 无关键词 | 关键决策必问 Ask before consequential decisions |
-| **目标 Goal mode** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按计划自主执行；密钥与破坏性操作仍暂停等待 Autonomous per plan; secrets & destructive ops pause |
+| **普通 Normal**（默认） | 无关键词 | 关键决策必问；**关键决策即时复述确认 + 决策审计归档**（重要决策即时落盘供可解释）。Ask before consequential decisions; **immediately restate key decisions to the user for confirmation and log them to the decision-audit archive**. |
+| **目标 Goal mode** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按计划自主执行；**暂停仅两情形——重大决策（L3）/ 严重阻塞**；其余重要决策「先调研→按第一推荐推进→完整归档」；**每里程碑强制留档**；**回滚点本地备份、默认不 git push（省宽带+token）**；**本地快照就绪→破坏性/修改类可安全执行（L3 除外，仍暂停）**；密钥与破坏性操作仍暂停等待。Autonomous per plan; pause only for major decisions (L3) / severe blocking; every milestone forces a record; rollback points go local backup, no default git push; a local snapshot ready → destructive/modification ops safe (L3 excepted); secrets & destructive ops pause. |
 | **安静 Quiet mode** | `安静模式`/`quiet`/`quiet mode` | L1 只汇报结果（隐藏中间推理/调研展示）Report only results on L1; L2/L3 unchanged; secrets & destructive still ask |
 
 目标模式附加：执行前写计划（范围/风险/预算）、子任务按文件边界拆分、超预算自动停、交付复盘 + 待确认清单。Goal mode: plan first, budgets, file-boundary split, auto-stop, retrospective.
@@ -100,9 +100,11 @@ metadata:
 |---|---|---|---|
 | L1 常规 routine | 小改动、可逆、低影响 | 直接做 do | 直接做 do |
 | L2 中风险 medium | 新功能、多文件、跨模块 | 记录后做，汇报关键点 record & report | 按计划执行，节点记录 per plan |
-| L3 高风险 high | 密钥/权限/删除/迁移/发布/架构 | **先问再做 ask first** | 选推荐标注 `REVIEW:`；密钥与破坏性操作暂停留档 pick recommended, label REVIEW; pause on secrets/destructive |
+| L3 高风险 high | 密钥/权限/删除/迁移/发布/架构 | **先问再做 ask first** | **暂停留档等用户确认（即便本地备份就绪也不豁免——备份回滚覆盖不了对外影响与权限/安全面）；密钥与破坏性操作暂停留档等用户 Pause, log, and wait for user confirmation (not waived even when a local backup is ready — it cannot cover external impact and the permissions/security surface); secrets & destructive ops pause, log, wait** |
 
 **判级速查（10 秒定论，一句话即止，禁止展开论证）Triage quick reference**：L3 封闭清单（仅 6 项，清单外一律不是 L3，不得自行扩展）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作。L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做。10 秒判不了级默认按 L2 直接推进；判级结论一句话即止，除命中 L3 清单外判级本身不追问用户、不展开分析。Closed list of 6 for L3 (nothing outside it is L3); L1 = reversible small changes, just do them; cannot triage in 10s → default L2, one-sentence verdict, no arguing.
+
+**判级同步链 Triage sync chain（三处一致 unanimous in three places）**：本块是 L3 封闭清单与 L1/L2 速判的**唯一权威源**；`injection-core.md` 因注入环境自包含必须保留全文、且被部署为平台全局 `user_rules` 写入副本——**本块 → `injection-core.md` → 已注入的平台全局副本三级必须同步**；改判级先改本块，再同步 injection-core，最后重新部署到注入点，三处保持一致。This block is the single authoritative source; `injection-core.md` must keep the full text (injection is self-contained) and is deployed as a platform-global copy — this block → injection-core → the injected global copy must stay consistent. To change triage, change here first, then sync injection-core, then redeploy.
 
 ## 6. 最小闭环交付（第 11 步交付原则）· Minimal closed-loop delivery (step-11 principle)
 
@@ -133,7 +135,8 @@ metadata:
 |---|---|
 | `references/injection-core.md` | 第 3 节强制注入（硬加载）时——平台无关核心模板，全文写入检测到的平台注入点 Section 3 forced injection — the platform-agnostic core template, written in full into the detected injection point |
 | `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
-| `references/rules.md` | 43 条纪律（地基）The 43-rule discipline (foundation) |
+| `references/rules.md` | 47 条纪律（地基）The 47-rule discipline (foundation) |
+| `references/skill-usage.md` | Skill 能力发现 / 注册机制 + 加载决策路由 + 渐进 / 完整读取分类；任务涉及 Skill 选用、前端 / 设计类任务、本地无 Skill 获取、弱模型处理时加载 Skill capability discovery / registration + load-decision routing + progressive-vs-full-read classification; load when choosing a Skill, doing front-end/design work, getting a Skill when none is local, or weak-model handling |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
 | `references/details.md` | 落地细则（工程规范 / 具体做法）12 类：环境/前端/数据库/测试/API/部署运维/代码质量/Git/会话·备份·治理/深挖补充/铁律纪律/源项目深挖 Landing details, 12 categories (env/frontend/DB/testing/API/ops/code quality/git/sessions/deep-dive/iron laws/source-project), load by category |
 | `references/security.md` | 密钥红线、应急、回滚细节 Secrets, incident, rollback, prompt-injection, supply-chain |

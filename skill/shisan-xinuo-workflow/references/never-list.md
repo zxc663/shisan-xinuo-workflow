@@ -1,7 +1,7 @@
 # The NEVER List (explicit prohibitions)
 
 > Bright lines — general guidelines are too easy to rationalize around; these are hard stops.
-> Load for a quick self-check at task start / before committing / before risky operations. Mirrors the 43 rules; load `rules.md` for the full letter of each rule.
+> Load for a quick self-check at task start / before committing / before risky operations. Rule numbers correspond (each entry cites its rule); some landing details live in `details.md`; load `rules.md` for the full letter of each rule.
 
 ## 1. Honesty & delivery NEVER
 - NEVER fake completion — label anything not implemented / not verified as `NOT IMPLEMENTED` / `UNVERIFIED`; never present it as done (rule 1).

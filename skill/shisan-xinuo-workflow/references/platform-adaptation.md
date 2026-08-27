@@ -23,18 +23,20 @@ If uncertain, ask the user which platform this is — do not guess when a rule f
 
 > Writing a rule file into a workspace folder the app never reads is **useless** — the skill would still require manual triggering. Always target the platform's real injection point, and enable it in-app when required.
 
-| Platform | Injection point (auto-injected every session) | In-app enable needed? | Native asking tool |
-|---|---|---|---|
-| Codex | `AGENTS.md` (project root) | No — auto-read | `request_user_input` |
-| Claude Code | `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user-global) | No — auto-read | none native → text protocol |
-| Cursor | `.cursor/rules/*.mdc` or global Rules (app settings) | Usually auto-read; verify Rules toggle | none native → text protocol |
-| Windsurf | `.windsurfrules` (project) or global rules | No — auto-read | none native → text protocol |
-| Trae | `~/.trae-cn/user_rules/*.md` (user-global; auto-injected into every project every session) or project `.trae/rules/project_rules.md` | No — the file's mere existence injects it (verified in practice) | platform question tool if present, else text protocol |
-| WorkBuddy | `BOOTSTRAP.md` (project bootstrap) + connector config | Yes — attach in app config | `AskUserQuestion` |
-| Reasonix | `AGENTS.md` (plugin/rule input) | Per plugin config | none native → text protocol |
-| Generic CLI | no auto-injection | n/a | none native → text protocol |
+| Platform | Injection point (auto-injected every session) | Layer | In-app enable needed? | Native asking tool |
+|---|---|---|---|---|
+| Codex | `AGENTS.md` (project root) | project-app (global possible per policy) | No — auto-read | `request_user_input` |
+| Claude Code | `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user-global) | project-app / agent-app global | No — auto-read | none native → text protocol |
+| Cursor | `.cursor/rules/*.mdc` or global Rules (app settings) | project-app / agent-app global | Usually auto-read; verify Rules toggle | none native → text protocol |
+| Windsurf | `.windsurfrules` (project) or global rules | project-app / agent-app global | No — auto-read | none native → text protocol |
+| Trae | `~/.trae-cn/user_rules/*.md` (user-global; auto-injected into every project every session) or project `.trae/rules/project_rules.md` | agent-app global / project-app | No — the file's mere existence injects it (verified in practice) | platform question tool if present, else text protocol |
+| WorkBuddy | `BOOTSTRAP.md` (project bootstrap) + connector config | project-app | Yes — attach in app config | `AskUserQuestion` |
+| Reasonix | `AGENTS.md` (plugin/rule input) | project-app (per plugin config) | Per plugin config | none native → text protocol |
+| Generic CLI | no auto-injection | n/a | n/a | none native → text protocol |
 
 **For every platform**: after writing/merging the file, restate the active essentials to the user (platform, injection point, injection mode, asking tool) and confirm no existing content was lost; if a platform is later shown to require in-app enabling, then guide the user to enable it in the app settings.
+
+**Injection layering rule (normal vs. hard injection, see `rules.md` §47)**: **normal (on-demand / lean) injection writes only to the project-app layer** (project `AGENTS.md` / `.trae/rules/project_rules.md` / `CLAUDE.md`, etc.), never the global layer — avoids polluting unrelated sessions' context. **Hard injection (forced) writes to the agent-app global layer only**, and **must first remind the user to confirm** — state the platform, target injection point, content length (~number of lines), per-session token cost, and scope of impact (which projects / sessions); write only after confirmation.
 
 **Forced injection (hard-load)** = write the full core from `references/injection-core.md` into the detected platform's injection point above (backup first, merge without overwriting) — the workflow is unconditionally present every session. **Do NOT** implement forced injection as "read the full SKILL.md every session": models do not reliably execute extra read actions; write the core text itself into the injection point (field-tested lesson: under the weak-command mode, new sessions follow only the most generic few rules).
 
@@ -52,6 +54,8 @@ Before writing any rule file, use the asking chain in section 4 to let the user 
 | **Forced injection (hard-load)** | the full core from `references/injection-core.md` (triage quick reference + 11-step master sequence + design iron laws + dual modes + red lines + delivery & records) | a fixed ~2-3K tokens per session | you want the workflow unconditionally present every session, without depending on the model voluntarily loading the skill |
 
 Forced mode writes `references/injection-core.md`'s core in full into the injection point (backup + merge) — there is no extra "read every session" line: weak commands like that are not reliably executed by models and must not be the implementation of forced injection.
+
+**The install-time injection-mode choice is bilingual (中 + EN)**: present this "choose the injection mode" asking (option list and recommendation) in **both Chinese and English** — the question is a shared install step, so users / models in different languages can each pick the answer they really want. **This is the ONLY bilingual install-time question.** After install, daily interaction always follows the user's preferred language (per `preferences.md`) — no bilingual duplicate logging; this skill sets no "language bridge" clause.
 
 ### 3.1 Steps
 
@@ -119,4 +123,4 @@ Write the following four sections, then end the turn. Keep it tight.
 
 ## 6. Generated rule file size
 
-**On-demand**: keep the generated rule file under ~30 lines (the lean block above). **Forced injection (hard-load)**: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys the workflow being unconditionally present, no longer depending on the model voluntarily loading the skill). The full 43 rules and workflow details stay in this skill's `references/` and load on demand. If the platform's rule mechanism only accepts a single short file, the lean block is sufficient.
+**On-demand**: keep the generated rule file under ~30 lines (the lean block above). **Forced injection (hard-load)**: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys the workflow being unconditionally present, no longer depending on the model voluntarily loading the skill). The full 47 rules and workflow details stay in this skill's `references/` and load on demand. If the platform's rule mechanism only accepts a single short file, the lean block is sufficient.

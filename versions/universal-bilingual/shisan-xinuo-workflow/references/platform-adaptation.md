@@ -24,16 +24,18 @@
 > 只把规则文件写进应用从不读取的工作区目录是**无效的**——仍会被迫手动触发。必须对准平台真正的注入点；需应用内启用时先引导用户在应用里启用。
 > A rule file the app never reads is **useless** — you would still have to trigger the skill manually. Target the platform's real injection point and enable it in-app when required.
 
-| 平台 Platform | 注入点 Injection point（每会话自动注入 auto-injected every session） | 需应用内启用 In-app enable | 原生提问工具 Native asking tool |
-|---|---|---|---|
-| Codex | `AGENTS.md`（项目根 project root） | 否 No — auto-read | `request_user_input` |
-| Claude Code | `CLAUDE.md`（项目 project）或 `~/.claude/CLAUDE.md`（用户全局 user-global） | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
-| Cursor | `.cursor/rules/*.mdc` 或应用设置全局 Rules / or global Rules in app settings | 通常自动读取；核对 Rules 开关 Usually auto-read; verify Rules toggle | 无原生 → 文本协议 none → text protocol |
-| Windsurf | `.windsurfrules`（项目）或全局规则 / or global rules | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
-| Trae | `~/.trae-cn/user_rules/*.md`（用户全局，所有项目每会话自动注入 user-global, auto-injected every session）或项目 or project `.trae/rules/project_rules.md` | 否——文件存在即注入（已实证）No — the file's mere existence injects it (verified) | 平台提问工具若存在，否则文本协议 platform tool if present, else text protocol |
-| WorkBuddy | `BOOTSTRAP.md` + 连接器配置 + connector config | 是——应用配置中挂载 Yes — attach in app config | `AskUserQuestion` |
-| Reasonix | `AGENTS.md`（插件 / 规则输入 plugin/rule input） | 视插件配置 per plugin config | 无原生 → 文本协议 none → text protocol |
-| 通用 CLI | 无自动注入 no auto-injection | 不适用 n/a | 无原生 → 文本协议 none → text protocol |
+| 平台 Platform | 注入点 Injection point（每会话自动注入 auto-injected every session） | 层级 Layer | 需应用内启用 In-app enable | 原生提问工具 Native asking tool |
+|---|---|---|---|---|
+| Codex | `AGENTS.md`（项目根 project root） | 项目-应用层 project-app（按策略可设全局 global possible per policy） | 否 No — auto-read | `request_user_input` |
+| Claude Code | `CLAUDE.md`（项目 project）或 `~/.claude/CLAUDE.md`（用户全局 user-global） | 项目-应用层 / agent 应用全局层 project-app / agent-app global | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
+| Cursor | `.cursor/rules/*.mdc` 或应用设置全局 Rules / or global Rules in app settings | 项目-应用层 / agent 应用全局层 project-app / agent-app global | 通常自动读取；核对 Rules 开关 Usually auto-read; verify Rules toggle | 无原生 → 文本协议 none → text protocol |
+| Windsurf | `.windsurfrules`（项目）或全局规则 / or global rules | 项目-应用层 / agent 应用全局层 project-app / agent-app global | 否 No — auto-read | 无原生 → 文本协议 none → text protocol |
+| Trae | `~/.trae-cn/user_rules/*.md`（用户全局，所有项目每会话自动注入 user-global, auto-injected every session）或项目 or project `.trae/rules/project_rules.md` | agent 应用全局层（`~/.trae-cn/user_rules/*.md`）/ 项目-应用层（`.trae/rules/project_rules.md`）agent-app global / project-app | 否——文件存在即注入（已实证）No — the file's mere existence injects it (verified) | 平台提问工具若存在，否则文本协议 platform tool if present, else text protocol |
+| WorkBuddy | `BOOTSTRAP.md` + 连接器配置 + connector config | 项目-应用层 project-app | 是——应用配置中挂载 Yes — attach in app config | `AskUserQuestion` |
+| Reasonix | `AGENTS.md`（插件 / 规则输入 plugin/rule input） | 项目-应用层 project-app（按插件配置 per plugin config） | 视插件配置 per plugin config | 无原生 → 文本协议 none → text protocol |
+| 通用 CLI | 无自动注入 no auto-injection | 不适用 n/a | 不适用 n/a | 无原生 → 文本协议 none → text protocol |
+
+**注入分层规则（普通 vs 硬注入，见 `rules.md` 第 47 条）Injection layering rule (normal vs. hard injection, see `rules.md` §47)**：**普通（按需 / 精简）注入只写「项目-应用层」**（项目 `.trae/rules/project_rules.md` / `AGENTS.md` / `CLAUDE.md` 等），不写全局层——防污染无关会话上下文。**硬注入（强制）才写「agent 应用全局层」**，且执行前**必须先提醒用户确认**——给出：平台 / 目标注入点 / 内容长度（约行数）/ 每会话 token 成本 / 影响范围，确认后再写入。Normal (on-demand / lean) injection writes only to the project-app layer; hard injection (forced) writes only to the agent-app global layer, and must first remind the user to confirm — platform / target point / content length (~lines) / per-session token cost / scope of impact, then write.
 
 **对每个平台 For every platform**：写入 / 合并文件后，向用户复述生效要点（平台、注入点、注入模式、提问工具）并确认未丢失既有内容；若某平台后续证实需要应用内启用，再引导用户在应用设置里启用。After writing/merging, restate the active essentials (platform, injection point, injection mode, asking tool) and confirm no existing content was lost; if a platform is later shown to require in-app enabling, then guide the user.
 
@@ -54,6 +56,16 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 | **强制注入（硬加载）Forced injection (hard-load)** | `references/injection-core.md` 核心全文（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线 + 交付留档）the full core from injection-core.md | 每会话固定约 2-3K token a fixed ~2-3K tokens per session | 要求工作流每会话无条件在场、不依赖模型自觉 unconditional presence without depending on the model's discipline |
 
 强制注入即把 `references/injection-core.md` 核心全文写入注入点（先备份、合并）——**没有**额外的「每会话必读」行：这类弱指令模型不可靠执行，不得作为强制注入的实现方式。There is no extra "read every session" line — weak commands like that are not reliably executed by models.
+
+**安装期「注入模式选择提问」用双语 This install-time injection-mode choice is bilingual（中 + EN）**：这是安装共用的一步，本「先选注入模式」的提问（含选项单与推荐）以**中 + 英双语呈现**，让不同语言用户 / 模型都能看懂并各选其**自己想要的真正答案**——
+
+**请选注入模式（Please choose the injection mode）：**
+1. **按需注入（默认 On-demand, default）**——只写精简纪律并回指本 Skill，上下文开销最低（writes a compact discipline block and points back to the Skill; lowest context cost）。
+2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 2-3K token/会话（writes the core full-text into the injection point; the workflow is present every session; ~2-3K token/session）。
+
+**推荐 / Recommended**：默认按需注入（On-demand by default）；要求工作流每会话无条件在场时才用强制注入（choose force injection only when you need it present every session）。
+
+**仅此一个安装期提问双语 This is the ONLY bilingual install-time question**：安装完成后的日常交互一律用用户偏好语言（`memory/preferences.md` 择定），不做双语重复记录——本 Skill 不设"语言桥"条款。After install, daily interaction uses the user's preferred language — no bilingual duplicate logging; this skill sets no "language bridge" clause.
 
 ### 3.1 步骤 Steps
 
@@ -126,4 +138,4 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 
 ## 6. 生成规则文件的体量 · Generated rule file size
 
-**按需注入 On-demand**：控制在约 30 行内（上文精简块）。**强制注入（硬加载）Forced injection (hard-load)**：写入 `references/injection-core.md` 核心全文（约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场）。完整 43 条与工作流保留在本 Skill 的 `references/` 按需加载；平台只接受单短文件时，精简块即足够。On-demand: under ~30 lines. Forced: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys unconditional presence). Full rules stay in `references/`; the lean block suffices when the platform only accepts one short file.
+**按需注入 On-demand**：控制在约 30 行内（上文精简块）。**强制注入（硬加载）Forced injection (hard-load)**：写入 `references/injection-core.md` 核心全文（约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场）。完整 47 条与工作流保留在本 Skill 的 `references/` 按需加载；平台只接受单短文件时，精简块即足够。On-demand: under ~30 lines. Forced: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys unconditional presence). Full rules stay in `references/`; the lean block suffices when the platform only accepts one short file.

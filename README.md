@@ -3,15 +3,15 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill for AI coding agents: it injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.7.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.8.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 ---
 
 ## 一句话定位 · One-line positioning
 
-一个**渐进式披露 + 按需注入 + 判级动态路由**的工程治理元 Skill：把 **43 条纪律规则 + 11 步强制主流程（每步出口产物门禁）+ 203 条落地细则（12 类）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。价值：**治理一致性、可审计性、防假实现**；代价：依赖平台注入与 Agent 自律，无运行时强制。
+一个**渐进式披露 + 按需注入 + 判级动态路由**的工程治理元 Skill：把 **47 条纪律规则 + 11 步强制主流程（每步出口产物门禁）+ 203 条落地细则（12 类）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。价值：**治理一致性、可审计性、防假实现**；代价：依赖平台注入与 Agent 自律，无运行时强制。
 
-A progressive, on-demand, triage-routed governance meta-skill: **43 discipline rules + an 11-step mandatory master sequence (per-step exit-artifact gates) + 203 landing details (12 categories) + templates / prompt budget / session hooks / review sub-agents / NEVER list**, packaged into a cross-platform, auditable governance layer. Value: consistency, auditability, no-fake-completions; cost: injection-dependent, zero runtime enforcement.
+A progressive, on-demand, triage-routed governance meta-skill: **47 discipline rules + an 11-step mandatory master sequence (per-step exit-artifact gates) + 203 landing details (12 categories) + templates / prompt budget / session hooks / review sub-agents / NEVER list**, packaged into a cross-platform, auditable governance layer. Value: consistency, auditability, no-fake-completions; cost: injection-dependent, zero runtime enforcement.
 
 ---
 
@@ -69,12 +69,12 @@ Platform hard-load (Step 0: detect → locate the REAL injection point → on-de
       ├─ 1 接收 → 2 经验库必读 → 3 调研实际资源 → 4 联网调研（必须）
       ├─ 5 复用调研（铁律）→ 6 复述理解 → 7 疑问必问 → 8 产品视角+分级+回滚点
       ├─ 9 规划（双调研后，含 3-5 条可验证验收标准）→ 10 执行 → 11 自查与归档
-      └─ 规则（43 条，地基）Rules + 落地细则（203 条 / 12 类，按类按需加载）Details
+      └─ 规则（47 条，地基）Rules + 落地细则（203 条 / 12 类，按类按需加载）Details
 ```
 
 **渐进式（Progressive）体现在三层**：
 1. **入口精简**：平台只预加载 `name` + `description`（约几 KB）；激活才读 SKILL.md 正文（<500 行）。
-2. **按步加载**：`references/` 只在对应步骤需要时才读——`rules.md`（地基）、`details.md`（按类按需）、`workflows.md`、`security.md`、`platform-adaptation.md`、`never-list.md`。
+2. **按步加载**：`references/` 只在对应步骤需要时才读——`rules.md`（地基）、`details.md`（按类按需）、`workflows.md`、`security.md`、`platform-adaptation.md`、`never-list.md`、`skill-usage.md`。
 3. **动态路由**：任务判级前置 → L1 走快速通道（省上下文），L2/L3 走完整主流程（兜底线）；触发式诊断（反复审查 → 产品完善度诊断）。
 
 **上下文纪律**：`SKILL.md` 精简；生成的规则文件约 30 行；记忆文件（`memory/`）一屏内；压缩后先读记忆再继续。
@@ -88,7 +88,7 @@ Platform hard-load (Step 0: detect → locate the REAL injection point → on-de
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需（9 行精简）/ 强制（`injection-core.md` 核心全文硬加载）双模式 | `SKILL.md` §3 / `references/injection-core.md` / `platform-adaptation.md` |
 | 强制总纲主流程（11 步）| 每步出口产物门禁，可检查、可审计、不可跳步 | `SKILL.md` §2 / `references/workflows.md` |
 | L1 快速通道 + 判级速查 | 判级先行（L3 封闭清单 6 项，10 秒定论，判不了默认 L2）；L1 走「复述→最小修改→最小验证→汇报」 | `SKILL.md` §2.3 / §5 |
-| 43 条规则地基 | 工作纪律 / 思考 / 执行 / 协作 / 安全 / 交付 / 回滚 | `references/rules.md` |
+| 47 条规则地基 | 工作纪律 / 思考 / 执行 / 协作 / 安全 / 交付 / 回滚 | `references/rules.md` |
 | 203 条落地细则（12 类）| 环境 / 前端 / 数据库 / 测试 / API / 运维 / 代码质量 / Git / 会话 / 深挖 / 铁律 / 源项目深挖 | `references/details.md` |
 | 永不清单 | 7 类明线禁止项（假完成 / 密钥 / 跳步 / Git / 复用 / 提问 / 提示注入）一页自查 | `references/never-list.md` |
 | 记忆文件协议 + 压缩重载 | 外部化长期记忆，压缩/重置后先读再继续 | `SKILL.md` §10 / `workflows.md` |
@@ -170,12 +170,13 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── templates/                  ← 配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子/审查子代理）
 │   └── references/                 ← 按需加载的引用
 │       ├── injection-core.md       ← 硬加载核心模板（强制注入时全文写入平台注入点）
-│       ├── rules.md                ← 43 条规则地基
+│       ├── rules.md                ← 47 条规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
 │       ├── details.md              ← 203 条落地细则 / 12 类（踩坑日志）
 │       ├── platform-adaptation.md  ← 注入点、提问降级链、结构化协议、会话钩子协议
 │       ├── security.md             ← 安全红线、安装校验、回滚、提示注入、供应链/SBOM、残留扫描
-│       └── never-list.md           ← 永不清单（明线禁止，自查用）
+│       ├── never-list.md           ← 永不清单（明线禁止，自查用）
+│       └── skill-usage.md          ← Skill 使用：能力发现/注册、加载决策路由、渐进 vs 完整读取
 └── versions/
     ├── universal-zh/               ← 通用版 · 中文
     └── universal-bilingual/        ← 通用版 · 中英双语
@@ -270,6 +271,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v1.8.0** — **Skill 使用模块 + 决策审计归档 + 规则扩充至 47 条 + 目标模式窄化**：新增 `references/skill-usage.md`（能力发现/注册机制、加载决策路由、渐进 vs 完整读取分类、Agent 注册维度与 Skill 工具注册校验）；`rules.md` 新增 §44-47（决策分层与审计归档 / 备份纪律·本地优先 / 成本与资源意识 / 注入分层与硬注入提醒）；双模式补决策纪律（普通模式重大决策即时复述留档；目标模式仅 L3/严重阻塞暂停、每里程碑强制留档、本地备份优先不默认 git push）；判级同步链单一权威源（SKILL.md §5.2 → injection-core → 全局注入副本）；注入点「层级」列 + 分层注入规则；安装期「注入模式选择提问」中英双语；规则计数 43→47 全仓校正；双语版按增量注入保留整页排版。Skill-usage module, decision-audit archive, rules to 47, goal-mode narrowing, injection layering, triage sync chain.
 - **v1.7.0** — **流程路由地图 + 上下文预算法 + 工作区 memory/ 统一归档 + 偏好写后复核**：injection-core 升级为流程路由地图，写死「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」；**上下文预算法**（常驻小 / 开工读 memory 一屏 / 按需读 references 不预载 / 结束更新最小追加）根治上下文污染；**工作区 `memory/` 统一归档 + 自动建骨架**（state / experience / preferences / task-log，任何会话先扫、缺则自建，唯一覆盖点 `.agent-records/`）+ 新增 `templates/workspace-memory-template.md`（三语）；**偏好写后复核提醒**（写入 `memory/preferences.md` 后主动向用户复核大类方向，偏差由用户修正）；**完成更新序**（task-log → experience → preferences → 提交）；**必问强化 + 判级≠理解确认**（理解不尽确定也必问，问清楚比问少了更重要）。Process routing map, context budget, unified workspace `memory/`, post-write preference review, must-ask reinforcement, triage ≠ understanding.
 - **v1.6.0** — **平台无关硬加载核心**：三语新增 `references/injection-core.md`（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线的标准注入模板）；第 0 步升级为「检测平台 → 定位该平台真实注入点 → 写入核心全文」——任何平台首次加载一次即完成硬加载、每会话无条件生效；「每会话读 SKILL.md」弱指令全线降级（实测不可靠）；Trae 注入点实证修正为 `~/.trae-cn/user_rules/*.md`。**判级速查**：L3 封闭清单（仅 6 项）+ 10 秒定论 + 判不了默认 L2，根治琐碎判级 token 内耗。**设计成本铁律**：好的设计是昂贵的，但糟糕
 的设计成本更高（按后期改造成本评估）。description 改一句话核心定位。Platform-agnostic hard-load core (injection-core.md ×3), closed-list triage quick reference, design-cost iron law, one-line positioning.
