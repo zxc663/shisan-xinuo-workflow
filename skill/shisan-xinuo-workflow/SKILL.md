@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.9.0
+  version: 1.9.1
   tags:
     - agent-skill
     - workflow-governance
