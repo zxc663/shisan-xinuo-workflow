@@ -3,3 +3,9 @@ node_modules/
 npm-debug.log*
 dist/
 .trae/
+
+# 个人/本地记忆层（绝不上公开仓，防被技能市场扫描收录）
+versions/personal-zh/
+memory/
+*.bak
+*.bak-*
