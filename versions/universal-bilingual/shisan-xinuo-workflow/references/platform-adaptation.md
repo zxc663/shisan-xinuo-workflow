@@ -101,7 +101,7 @@ Before writing any rule file, let the user pick an injection mode via the sectio
 1. 平台原生提问工具（`request_user_input` / `AskUserQuestion` / `ask_user` / 平台提问工具）。Native asking tool.
 2. 结构化文本协议（见下），然后**结束回合等待答复**——所有平台通用兜底。Structured text protocol (below), then **end the turn and wait** — the universal fallback.
 
-适用：方向、歧义、风险（权限 / 密钥 / 破坏性操作 / 需求不明 / 架构选型 / 范围扩大 / 分歧 / 复杂任务）。L1 常规不问。Use on direction, ambiguity, and risk; do not ask for L1 routine work.
+适用：方向、歧义、风险（权限 / 密钥 / 破坏性操作 / 需求不明 / 架构选型 / 范围扩大 / 分歧 / 复杂任务）及**对需求理解不尽确定**。L1 常规不问。Use on direction, ambiguity, risk, and when **understanding is not fully certain**; do not ask for L1 routine work. **问清楚比问少了更重要，理解需求比模糊执行更重要 / Asking clearly beats asking less; understanding the need beats executing it vaguely.**
 
 ## 5. 结构化提问协议（文本兜底） · Structured asking protocol (text fallback)
 

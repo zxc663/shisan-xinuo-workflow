@@ -21,7 +21,7 @@
 
 每步出口产物见 SKILL.md §2.2；进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由。Exit artifacts in SKILL.md §2.2; the previous step's artifact must exist first; record reasons for legitimate skips.
 
-**判级速查 Triage quick reference（10 秒定论，一句话即止，禁止展开论证）**：L3 封闭清单（仅 6 项，清单外一律不是 L3）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作；L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做；10 秒判不了级默认按 L2 直接推进，判级结论一句话即止、不追问用户、不展开分析。Closed list of 6 for L3 (nothing outside is ever L3); L1 = reversible small changes, just do them; cannot triage in 10s → default L2, one-sentence verdict, no arguing.
+**判级速查 Triage quick reference（10 秒定论，一句话即止，禁止展开论证）**：L3 封闭清单（仅 6 项，清单外一律不是 L3）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作；L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做；10 秒判不了级默认按 L2 直接推进，判级结论一句话即止、不追问用户、不展开分析。Closed list of 6 for L3 (nothing outside is ever L3); L1 = reversible small changes, just do them; cannot triage in 10s → default L2, one-sentence verdict, no arguing. **判级 ≠ 理解确认 Triage ≠ understanding confirmation**：判级可快、一句话定论，但目标/边界/方向有歧义、理解不尽确定时，普通模式也必问清楚再推进。Triage can be fast, but when goal/boundaries/direction are ambiguous or understanding is not fully certain, normal mode asks to clarify before proceeding.
 
 - [ ] 1. 接收指令 Receive（任务本质一句话 essence）
 - [ ] 2. 经验库必读 Experience log first（命中记录 hit record）
@@ -141,7 +141,9 @@
 
 ## 6. 重大决策与复杂任务 · Major decisions & complex tasks
 
-- [ ] 1. 识别触发点 Recognize the trigger (direction / architecture / scope / conflict)
+> **必问强化 Must-ask reinforcement**：目标 / 边界 / 方向有歧义、或对需求**理解不尽确定**时，普通模式也必问（提问工具优先，无从则用结构化文本协议并**结束回合等待**）——**问清楚比问少了更重要，理解需求比模糊执行更重要**。When direction / boundaries are ambiguous or understanding of the need is not fully certain, normal mode asks too (asking tool first, else the text protocol and end the turn) — asking clearly beats asking less; understanding the need beats executing it vaguely.
+
+- [ ] 1. 识别触发点 Recognize the trigger (direction / architecture / scope / conflict / not-fully-certain understanding)
 - [ ] 2. 决策简报：理解 + 选项对比 + 优缺点 + 后果 + 推荐（TOC：先约束与假设再比方案）Build the decision brief (understanding, options, pros/cons, consequences, recommendation)
 - [ ] 3. 提问并结束回合等待 Ask via asking tool or text protocol; end the turn and wait
 - [ ] 4. 按确认方向执行 Execute the confirmed direction
@@ -204,11 +206,16 @@
 
 Agent 无天生长期记忆、也无法感知上下文压缩——把会话状态外部化到随时可重读的文件。Agents have no inherent long-term memory and cannot sense compaction — externalize the session state to a re-readable file.
 
-- **位置 Location**（项目约定）：如仓库根 `memory/`，保持一屏内（约 20 行）。Project-defined, e.g. `memory/`; keep ≤ 1 screen (~20 lines).
-- **最小结构 Minimal structure**——当前目标 / 已做决策 / 约束 / 进度+下一步 / 踩坑。Current goal ／ decisions ／ constraints ／ progress+next ／ pitfalls.
-- **用户偏好字段 User preferences**——维护已确认的技术栈/语言/风格，确认后立即写入、会话开始读取、同类决策复用不重复问。Keep confirmed choices; reuse instead of re-asking. 密钥与破坏性意图绝不写入 Never secrets or destructive intent.
+- **位置 / 结构 Location & structure（统一归档在项目根 `memory/`）**：任何会话（含下一个 AI）开工**先扫该目录**，不存在或缺失文件即自动创建骨架（模板 `templates/workspace-memory-template.md`）；每文件保持一屏内的精简度。Unified at the project root `memory/`; every session (incl. the next AI) scans it on start and auto-creates the missing skeleton from `templates/workspace-memory-template.md`; keep each file ≤ 1 screen.
+  - `memory/state.md`——当前目标 / 已做决策 / 约束 / 进度+下一步（一屏内）。Goal ／ decisions ／ constraints ／ progress+next.
+  - `memory/experience.md`——踩坑经验库（症状→根因→解决→预防）。Pitfall log (symptom→cause→fix→prevention).
+  - `memory/preferences.md`——已确认偏好（技术栈/语言/风格）。Confirmed preferences.
+  - `memory/task-log/`——任务记录 `YYYY-MM-DD-名称.md`。Task records (date-named).
+  - 项目业务恰用 `memory/` 时，在项目规则文件内改 `.agent-records/`（唯一合法覆盖点）。Override to `.agent-records/` on business conflict (only legal override point).
+- **用户偏好字段 User preferences**——维护已确认的技术栈/语言/风格，确认后立即写入、会话开始读取、同类决策复用不重复问；**写入后主动向用户复核大类方向**，偏离按其修正。Keep confirmed choices; reuse instead of re-asking; **after writing, actively remind the user to re-check the broad direction** (stack / language / style) and correct on deviation. 密钥与破坏性意图绝不写入 Never secrets or destructive intent.
 - **写入 Write at**：①目标确认（第 6 步）；②任务/里程碑完成；③上下文 40-60% 前；④会话结束归档前。
 - **读取 Read at**：①会话开始；②压缩 / 重置 / 重载后——**先读再继续**；③新任务前扫一眼。Session start; after compaction/reset — **read first, then continue**; before new tasks.
-- **分层 Layering**：记忆文件 = 状态层；知识文档（第 11 步双写）= 学习层；经验库 = 踩坑层。Memory = *state*; knowledge docs = *learning*; experience log = *pitfall*. They do not replace each other.
+- **完成后更新序 Completion update order（会话结束收尾，最小验证后依序）**：①最小验证 + 自查；②更新 `task-log/<日期>-<名称>.md`（理解→验收→决策→结果）；③更新 `experience.md`（新踩坑或重复坑，症状→根因→解决→预防）；④更新 `preferences.md`（写入后主动复核大类方向；密钥与破坏性意图绝不写入）；⑤文档与代码同批提交，会话结束提炼 1-5 条知识点（默认 3）。① minimal verification + self-check ② update task-log (understanding→acceptance→decisions→result) ③ update experience (new/recurring pitfalls) ④ update preferences (re-check with the user; no secrets) ⑤ ship docs+code, distill 1-5 knowledge points (default 3).
+- **分层 Layering**：记忆文件 = 状态层 + 踩坑层；知识文档（第 11 步双写）= 学习层；完整细则仍在 Skill `references/` 按需加载，互不替代。Memory = *state* + *pitfall*; knowledge docs = *learning*; full details load on demand from `references/`. They do not replace each other.
 - **压缩后显式重载顺序 Reload sequence after compaction**：用户说「重载 / 你被压缩了」或平台重置上下文 → ①重读 SKILL.md → ②重读记忆文件 → ③重读当前引用 → ④向用户复述任务与验收再继续。On reload/reset: re-read SKILL.md → memory file → needed references → restate task + acceptance, then continue.
 - **提示词预算（可选）Prompt budget (optional)**：见 `templates/prompt-budget.template.md`——设置档位（nano/minimal/standard/full），只加载任务所需引用；记忆文件与任务记录保持预算内。预算指引非强制。See `templates/prompt-budget.template.md`; budgets are guidance, not enforcement.

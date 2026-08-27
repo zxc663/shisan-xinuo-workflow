@@ -9,7 +9,15 @@
 
 # Global Agent Workflow Core (Shisan Xinuo Workflow · mandatory every session)
 
-> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's hard-load core. Full details load on demand from the skill "shisan-xinuo-workflow": 43 discipline rules / 9 task-type workflows / 203 pitfall-log details / security red lines.
+> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's **process routing map**: it tells you "which files to read first → what order to execute → which docs to update when done", with the context budget baked in to avoid polluting the context. Full details load on demand from the skill "shisan-xinuo-workflow": 43 discipline rules / 9 task-type workflows / 203 pitfall-log details / security red lines.
+
+## Context budget (order first, avoid pollution)
+
+The "what to read, when to read it" is fixed here; never blindly shove the whole library into context:
+- **Resident (always read, small)**: this core — triage quick reference / master sequence / must-ask / red lines / records.
+- **Session-start read (workspace `memory/`, read if present, keep to one screen)**: scan in order "state → experience → preferences → task-log"; for `experience`, search only the segment matching the current symptom, do not load it whole; `preferences` is for alignment.
+- **On demand (read at that step)**: the full skill's `references/` and historical `task-log/` — do not preload all references.
+- **End-of-session update (minimal append)**: see "Completion update order".
 
 ## Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)
 
@@ -17,11 +25,30 @@
 - **L1 quick call**: rename, copy, formatting, single-line edits and other reversible small changes → just do it; don't ask, don't elaborate.
 - **L2**: new feature, multi-file, cross-module → record, do, report key points.
 - Cannot triage within 10 seconds → default to L2 and proceed; state the level in one sentence — except for closed-list hits, never interrogate the user over triage itself or argue it out.
+- **Triage ≠ understanding confirmation**: triage can be fast, but when the goal / boundaries / direction are ambiguous or your understanding is not fully certain, you MUST ask via the question tool before proceeding — normal mode asks too (see Dual modes).
 
 ## Master sequence (mandatory for L2/L3; L1 takes the fast path: one-sentence restatement → minimal change → minimal verification → report)
 
-11 steps: 1 receive instruction (one-sentence essence) → 2 search the experience log & project knowledge base → 3 survey actual resources (status evidence incl. files/lines) → 4 online survey (mature open-source solutions + trust signals) → 5 reuse survey (reuse whenever possible, never hand-roll) → 6 restate understanding (goal/boundaries/acceptance) → 7 ask on any doubt → 8 product-view review + triage + rollback point → 9 plan & acceptance doc (dual survey + 3-5 verifiable acceptance criteria) → 10 execute → 11 self-check & archive (minimal verification + docs in same batch + records).
+11 steps: 1 receive instruction (one-sentence essence) → 2 search the experience log & project knowledge base (`memory/experience.md`) → 3 survey actual resources (status evidence incl. files/lines) → 4 online survey (mature open-source solutions + trust signals) → 5 reuse survey (reuse whenever possible, never hand-roll) → 6 restate understanding (goal/boundaries/acceptance) → 7 ask on any doubt → 8 product-view review + triage + rollback point → 9 plan & acceptance doc (dual survey + 3-5 verifiable acceptance criteria) → 10 execute → 11 self-check & archive (minimal verification + docs in same batch + records).
 Every step has an exit artifact; no artifact, no next step.
+
+## Completion update order (end-of-session, avoid pollution)
+
+1. **Minimal verification** + self-check (really usable / edges handled / rules followed / docs synced).
+2. **Update `memory/task-log/<YYYY-MM-DD>-<name>.md`**: understanding → acceptance → decisions → result; write conclusions down immediately.
+3. **Update `memory/experience.md`**: distill new or recurring pitfalls (symptom → root cause → fix → prevention); write duplicates in one place and cross-reference.
+4. **Update `memory/preferences.md`**: log the preferences confirmed this session (stack / language / style); **after writing, actively remind the user to re-check the broad direction**, and follow their correction if it drifted. Secrets and destructive intent never go into preferences.
+5. Commit docs and code in the same batch; at session end distill 1-5 reusable knowledge points (default 3).
+
+## Workspace `memory/` convention (unified cross-session memory)
+
+Project root `memory/` — task records / pitfall log / preferences / session state are all archived here. **Any session (including the next AI) must scan this directory on start**; create the directory or skeleton if missing:
+- `memory/state.md`: current goal / decisions / constraints / progress + next step (one screen, quick read)
+- `memory/experience.md`: pitfall log (symptom → root cause → fix → prevention) + general judgment standards
+- `memory/preferences.md`: confirmed stack / language / style preferences
+- `memory/task-log/`: task records, `YYYY-MM-DD-<name>.md`
+- If this project's real business already uses `memory/`, override the archive dir to `.agent-records/` in the project's rule file (the only legal override point).
+- `memory/` is the "state layer + pitfall layer"; full rule details still live in the skill's `references/` and load on demand — the two do not replace each other.
 
 ## Design iron laws
 
@@ -30,9 +57,9 @@ Every step has an exit artifact; no artifact, no next step.
 
 ## Dual modes
 
-- **Normal mode (default)**: ask before every consequential decision (direction / ambiguity / risk / destructive ops / architecture choice / scope expansion / conflicting proposals); after asking, end the turn and wait.
-- **Goal mode** (keywords: `目标：` / `目标模式` / `无人值守`): execute autonomously per the plan, stop automatically over budget; secrets and destructive operations still pause, log, and wait.
-- **Quiet mode** (keywords: `安静模式` / `quiet`): L1 tasks report only the result.
+- **Normal mode (default)**: ask before every consequential decision (direction / ambiguity / risk / destructive ops / architecture choice / scope expansion / conflicting proposals), and ask when your understanding is not fully certain; use the platform question tool (AskUserQuestion etc.), or the structured text protocol when no tool exists — then end the turn and wait. **Asking more clearly beats asking less; understanding the need beats executing it vaguely.**
+- **Goal mode** (keywords: `目标：` / `目标模式` / `无人值守`): execute autonomously per the plan, stop automatically over budget; secrets and destructive operations still pause, log, and wait; ask on direction/boundary ambiguity.
+- **Quiet mode** (keywords: `安静模式` / `quiet`): L1 tasks report only the result; L2/L3 and must-ask still apply.
 
 ## Red lines (unconditional)
 
@@ -43,5 +70,5 @@ Every step has an exit artifact; no artifact, no next step.
 ## Delivery & records
 
 - Minimal closed loop: understand → minimal change → minimal verification → deliver the finished thing.
-- Keep a task record every session (understanding → acceptance → decisions → results); write conclusions down immediately; distill 1-5 reusable knowledge points at session end.
+- Archive goes through `memory/` (state/task-log/experience/preferences); write conclusions down immediately; distill 1-5 reusable knowledge points at session end.
 - Follow the user's language; when the user's idea conflicts with code or measurable facts, say so plainly — never silently execute a wrong instruction.
