@@ -16,7 +16,8 @@
   "license": "MIT",
   "files": [
     "skill",
-    "versions",
+    "versions/universal-zh",
+    "versions/universal-bilingual",
     "README.md",
     "LICENSE"
   ],
