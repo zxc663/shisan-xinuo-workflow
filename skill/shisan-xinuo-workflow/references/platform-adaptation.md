@@ -63,16 +63,20 @@ Forced mode writes `references/injection-core.md`'s core in full into the inject
 
 1. Task triage L1/L2/L3; L3 (secrets / permissions / data deletion / migration /
    external publishing / architecture choice) requires asking the user first.
-2. Two modes: normal (ask on consequential decisions) and goal mode
+2. Two modes: normal (ask on consequential decisions — incl. when understanding is
+   not fully certain) and goal mode
    (keywords 目标：/ 目标模式 / 无人值守 / goal mode / unattended — autonomous per
    plan, but secrets & destructive ops pause and wait).
 3. Restate the task (goal / boundaries / acceptance) before acting; write 3-5
    verifiable acceptance criteria up front.
-4. Never fake completion — label unfinished work explicitly.
-5. Quality gates: review-diff, run the project's test baseline, ship docs with code.
-6. Rollback point (commit/stash or snapshot) BEFORE major changes or destructive ops.
-7. Keep a task record per session; read the experience log before troubleshooting.
-8. Full rules: see the shisan-xinuo-workflow skill (references/rules.md).
+4. Workspace memory: scan project root `memory/` (state / experience / preferences /
+   task-log) at session start, create it if missing; update at session end.
+   Full archive details in the skill's references.
+5. Never fake completion — label unfinished work explicitly.
+6. Quality gates: review-diff, run the project's test baseline, ship docs with code.
+7. Rollback point (commit/stash or snapshot) BEFORE major changes or destructive ops.
+8. Keep a task record per session; read the experience log before troubleshooting.
+9. Full rules: see the shisan-xinuo-workflow skill (references/rules.md).
 ```
 
 3. **Point back to the skill**: the rule file should reference where the full workflow lives (this skill's folder or repo URL), so details stay progressive-disclosure-friendly.
@@ -90,7 +94,7 @@ When the platform supports session-start hooks (e.g. Claude Code `SessionStart` 
 1. Native asking tool (`request_user_input` / `AskUserQuestion` / `ask_user` / platform question tool).
 2. Structured text protocol (below), then **end the turn and wait** — this works on every platform and is the universal fallback.
 
-Use asking on: direction, ambiguity, risk (permissions / secrets / destructive ops / unclear requirements / architecture & stack choice / scope expansion / conflicting proposals / complex tasks). Do not ask for L1 routine work.
+Use asking on: direction, ambiguity, risk (permissions / secrets / destructive ops / unclear requirements / architecture & stack choice / scope expansion / conflicting proposals / complex tasks), and **understanding not fully certain** (in normal mode too — asking more clearly beats asking less). Do not ask for L1 routine trivia, but ask when understanding is uncertain.
 
 ## 5. Structured asking protocol (text fallback)
 

@@ -1,7 +1,7 @@
 ---
 name: shisan-xinuo-workflow
 description: "One-line positioning: forces every engineering task through an auditable agent workflow — mandatory research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes (normal/goal), with platform-agnostic hard injection of the core discipline. Use on any hands-on task."
-version: 1.6.0
+version: 1.7.0
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 tags:
@@ -86,14 +86,14 @@ Before starting tasks, hard-load this workflow onto the current platform:
 
 ## 4. Ask-before-acting protocol
 
-Consequential decisions must be confirmed with the user before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permissions/secret handling, destructive operations (deletion, migration, overwrite, external publishing), architecture or tech-stack choices, scope expansion, conflicting proposals.
+Consequential decisions must be confirmed with the user before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permissions/secret handling, destructive operations (deletion, migration, overwrite, external publishing), architecture or tech-stack choices, scope expansion, conflicting proposals. **"Not-fully-certain understanding" is also a trigger — in normal mode too** (see §5): triage fast, but ask on understanding. Asking more clearly beats asking less.
 
 **Asking-tool downgrade chain** (use the first available):
 
 1. Platform-native asking tool (`request_user_input`, `AskUserQuestion`, `ask_user`, …)
 2. If unavailable: structured text protocol — present (a) understanding, (b) options with pros/cons, (c) risks and consequences, (d) a recommendation, then **end the turn and wait**. Full protocol in `references/platform-adaptation.md`.
 
-Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks always require asking. **Preference memory**: after the user makes a confirmed choice (e.g. tech-stack, language, style via the asking tool), write it to the memory file's *user preferences* field (§10) so the same class of decision is reused next time instead of re-asking — preference memory only covers confirmed repeated preferences, never secrets or destructive ops.
+Routine L1 tasks do not require asking — do not over-ask; but ask when your understanding is not fully certain. High-risk L3 tasks always require asking. **Preference memory**: after the user makes a confirmed choice (e.g. tech-stack, language, style via the asking tool), write it to `memory/preferences.md` (§10) so the same class of decision is reused next time instead of re-asking — preference memory only covers confirmed repeated preferences, never secrets or destructive ops.
 
 ## 5. Execution modes & task triage
 
@@ -101,8 +101,8 @@ Routine L1 tasks do not require asking — do not over-ask. High-risk L3 tasks a
 
 | Mode | Trigger | Behavior |
 |---|---|---|
-| **Normal** (default) | no keyword | Ask before every consequential decision (section 4). |
-| **Goal mode** | keywords `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | Work autonomously from a written plan; secrets and destructive operations still pause and wait for the user. |
+| **Normal** (default) | no keyword | Ask before every consequential decision, and when your understanding is not fully certain (section 4); use the platform question tool, or the structured text protocol when none exists, then end the turn and wait. Asking more clearly beats asking less. |
+| **Goal mode** | keywords `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | Work autonomously from a written plan; still ask on direction/boundary ambiguity; secrets and destructive operations still pause and wait for the user. |
 | **Quiet mode** | keywords `安静模式` / `quiet` / `quiet mode` | L1 tasks: report only the result (skip intermediate reasoning / survey steps) to cut visual noise and token anxiety; L2/L3 unchanged; secrets & destructive ops still ask. |
 
 Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *before* executing; split subtasks by file boundaries; record progress as you go; stop automatically when the budget is exceeded; deliver a retrospective plus an open-questions list.
@@ -123,6 +123,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 - **L1 quick call**: rename, copy, formatting, single-line edits and other reversible small changes → just do it; don't ask, don't elaborate.
 - **L2**: new feature, multi-file, cross-module → record, do, report key points.
 - Cannot triage within 10 seconds → default to L2 and proceed; state the level in one sentence — except for closed-list hits, never interrogate the user over triage itself or argue it out.
+- **Triage ≠ understanding confirmation**: triage can be fast, but when the goal / boundaries / direction are ambiguous or your understanding is not fully certain, ask via the question tool in normal mode too — ask clearly, proceed.
 
 ## 6. Minimal closed-loop delivery (the delivery principle of step 11)
 
@@ -141,6 +142,8 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 ## 8. Gotchas
 
 - **Triage burnout**: settle trivial triage in one sentence — rename / copy / formatting questions are always L1, just do them; L3 honors ONLY the closed list in section 5, nothing outside it constitutes L3. Arguing over triage or agonizing repeatedly is one of the biggest token sinks.
+- **Triage ≠ understanding confirmation**: triage is fast, but "goal / boundaries / direction ambiguous or understanding not fully certain" must be asked — in normal mode too. Use "asking more clearly beats asking less" to offset misuse of "over-asking kills adoption": do not ask on reversible L1 trivia, but ALWAYS ask when understanding is uncertain.
+- **Follow the context budget**: don't shove all of `references/` into context — resident (this core) → session-start read (one screen of `memory/`) → on demand (`references/`, historical `task-log/`) → end-of-session minimal append. `injection-core.md` bakes this in; honor it.
 - **The sequence is unskippable.** Survey (step 3) and reuse survey (step 5) are the most-skipped steps — skipping breaks the sequence and is the most common violation.
 - **On repeated review requests, run the product-polish diagnosis first** — when the user keeps asking to review or keeps feeling something is off, locate the gap by product dimension (feature logic / code coupling / UI / interaction flow / other; workflows.md §0.3) before touching code; don't just re-check correctness as an engineer.
 - **Trigger keywords are live switches.** Goal-mode keywords (`目标：`, `unattended`, …) silently change the decision model. Check every user message for them, including mid-task messages.
@@ -163,17 +166,20 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 | `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to |
 | `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM |
 | `references/never-list.md` | The bright-line "never" list — quick self-check before starting, committing, or risky operations |
+| `templates/workspace-memory-template.md` | Initialize a project's `memory/` skeleton (state/experience/preferences/task-log) when the session-start scan finds it missing |
 
 Do not preload all references — load only the one the current step needs. **You cannot detect context compaction yourself — do not rely on sensing it; rely on two guards:** (a) explicit signal — the user says "reload / you were compacted / start fresh", or the platform visibly reset the context → **follow the reload sequence immediately**: ① re-read this SKILL.md; ② re-read the memory file (`memory/`, see §10); ③ re-read any reference the current step still needs; ④ restate the current task + acceptance criteria to the user before continuing; (b) milestone self-check — before starting a task, committing, or a major decision, recite the core elements (master-sequence steps, current mode, rollback rule, ask-before-acting); if you cannot restate any of them in full, treat it as missing context and reload before continuing.
 
 ## 10. Records & knowledge discipline (summary)
 
-Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`. Essentials:
+Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md` (memory-file protocol). **Unified archive location = project root `memory/`** (default; a project may override to `.agent-records/` in its rule file). Any session (incl. the next AI) scans this directory on start; create the directory / skeleton if missing.
 
-- Every session keeps a **task record** in the project's defined location: understanding → acceptance criteria → decisions → results. Write conclusions immediately; archive each step's exit artifacts with the task record.
+- **Workspace `memory/` unified cross-session memory**: `state.md` (goal / decisions / constraints / progress, ≤1 screen), `experience.md` (pitfall log: symptom → root cause → fix → prevention), `preferences.md` (confirmed stack / language / style), `task-log/` (records `YYYY-MM-DD-<name>.md`).
+- Every session keeps a **task record** (`memory/task-log/`): understanding → acceptance criteria → decisions → results. Write conclusions immediately; archive each step's exit artifacts with the task record.
+- An **experience log** is mandatory reading at session start — search `memory/experience.md` by symptom keywords and read only the matching segment; distill recurring / high-rework pitfalls into it.
 - At session end, distill 1-5 reusable knowledge points (default 3) in the form scenario → judgment → action; write the knowledge version to the project's knowledge doc, and give a plain-language version to the user.
-- An **experience log** (lessons learned, pitfalls) is mandatory reading at session start — search by symptom keywords. Its location is defined by the project; this skill does not impose one.
-- **Memory-file protocol (externalized long-term memory)** — maintain a project memory file by the project's convention (`memory/` — current goal / decisions / constraints / progress / pitfalls; ≤1 screen). Write at milestones and before the context reaches 40-60%; after any compaction / reset / reload signal, **read it first** before continuing (detail in `references/workflows.md`).
-- **User preferences** — the memory file also keeps a *user preferences* field (tech stack / language / style choices the user confirmed). Write it after a confirmed choice; read it at session start; reuse it to avoid re-asking the same class of decision. Never put secrets or destructive intent in preferences.
+- **Preference memory + post-write check** — after logging a confirmed preference to `memory/preferences.md`, **actively remind the user to re-check the broad direction**; follow their correction if it drifted. Never put secrets or destructive intent in preferences.
+- **Context order (anti-pollution)**: resident (this core) → session-start read (one screen of `memory/`) → on demand (`references/`, historical `task-log/`) → end-of-session minimal append. `injection-core.md` bakes this in.
+- **Completion update order (end-of-session, anti-pollution)** — on finishing: ① minimal verification + self-check → ② update `memory/task-log/<YYYY-MM-DD>-<name>.md` (understanding → acceptance → decisions → result; write conclusions immediately) → ③ update `memory/experience.md` (new or recurring pitfalls; duplicate content lives in one place with cross-reference) → ④ update `memory/preferences.md` (with the preference-review reminder) → ⑤ commit docs and code in the same batch; then distill 1-5 reusable knowledge points (default 3) at session end.
 - Docs ship in the same commit as code; a doc may be archived only after a current equivalent exists.
-- **Templates** — ready-to-fill templates live in `templates/`: step-9 plan, acceptance criteria, task records, retrospectives, rollback points, prompt-budget, session-start hooks (`templates/hooks/`) and review sub-agents (`templates/agents/`) — copy & fill; never edit in place.
+- **Templates** — ready-to-fill templates live in `templates/`: step-9 plan, acceptance criteria, task records, retrospectives, rollback points, prompt-budget, session-start hooks (`templates/hooks/`), review sub-agents (`templates/agents/`) and the workspace-`memory/` skeleton (`templates/workspace-memory-template.md`) — copy & fill; never edit in place.

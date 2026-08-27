@@ -2,3 +2,4 @@ node_modules/
 *.tgz
 npm-debug.log*
 dist/
+.trae/
