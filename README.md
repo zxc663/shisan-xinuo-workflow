@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill for AI coding agents: it injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.6.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.7.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 ---
 
@@ -164,7 +164,7 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── LICENSE                         ← MIT
 ├── 项目信息.md                      ← 内部维护文档（供下一个 AI 助手读写）
 ├── package.json / .npmrc           ← npm 发行物配置（GitHub Packages）
-├── dist/                           ← 版本发布 zip（v1.0.0 … v1.6.0）
+├── dist/                           ← 版本发布 zip（v1.0.0 … v1.7.0）
 ├── skill/shisan-xinuo-workflow/    ← 默认交付（英文）
 │   ├── SKILL.md                    ← 精简入口：定位、总纲主流程、门禁、引用地图、重载顺序
 │   ├── templates/                  ← 配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子/审查子代理）
@@ -270,7 +270,9 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
-- **v1.6.0** — **平台无关硬加载核心**：三语新增 `references/injection-core.md`（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线的标准注入模板）；第 0 步升级为「检测平台 → 定位该平台真实注入点 → 写入核心全文」——任何平台首次加载一次即完成硬加载、每会话无条件生效；「每会话读 SKILL.md」弱指令全线降级（实测不可靠）；Trae 注入点实证修正为 `~/.trae-cn/user_rules/*.md`。**判级速查**：L3 封闭清单（仅 6 项）+ 10 秒定论 + 判不了默认 L2，根治琐碎判级 token 内耗。**设计成本铁律**：好的设计是昂贵的，但糟糕的设计成本更高（按后期改造成本评估）。description 改一句话核心定位。Platform-agnostic hard-load core (injection-core.md ×3), closed-list triage quick reference, design-cost iron law, one-line positioning.
+- **v1.7.0** — **流程路由地图 + 上下文预算法 + 工作区 memory/ 统一归档 + 偏好写后复核**：injection-core 升级为流程路由地图，写死「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」；**上下文预算法**（常驻小 / 开工读 memory 一屏 / 按需读 references 不预载 / 结束更新最小追加）根治上下文污染；**工作区 `memory/` 统一归档 + 自动建骨架**（state / experience / preferences / task-log，任何会话先扫、缺则自建，唯一覆盖点 `.agent-records/`）+ 新增 `templates/workspace-memory-template.md`（三语）；**偏好写后复核提醒**（写入 `memory/preferences.md` 后主动向用户复核大类方向，偏差由用户修正）；**完成更新序**（task-log → experience → preferences → 提交）；**必问强化 + 判级≠理解确认**（理解不尽确定也必问，问清楚比问少了更重要）。Process routing map, context budget, unified workspace `memory/`, post-write preference review, must-ask reinforcement, triage ≠ understanding.
+- **v1.6.0** — **平台无关硬加载核心**：三语新增 `references/injection-core.md`（判级速查 + 11 步主流程 + 设计铁律 + 双模式 + 红线的标准注入模板）；第 0 步升级为「检测平台 → 定位该平台真实注入点 → 写入核心全文」——任何平台首次加载一次即完成硬加载、每会话无条件生效；「每会话读 SKILL.md」弱指令全线降级（实测不可靠）；Trae 注入点实证修正为 `~/.trae-cn/user_rules/*.md`。**判级速查**：L3 封闭清单（仅 6 项）+ 10 秒定论 + 判不了默认 L2，根治琐碎判级 token 内耗。**设计成本铁律**：好的设计是昂贵的，但糟糕
+的设计成本更高（按后期改造成本评估）。description 改一句话核心定位。Platform-agnostic hard-load core (injection-core.md ×3), closed-list triage quick reference, design-cost iron law, one-line positioning.
 - **v1.5.0** — P0/P1 治理完整度补强：`templates/`（6 模板）+ `templates/hooks/`（会话钩子）+ `templates/agents/`（3 子代理）+ `references/never-list.md`（永不清单）+ security.md 提示注入防御与供应链/SBOM + README 重构（差异化 reposition + 参考项目章节）；三版同步。Governance completeness: templates, hooks, review sub-agents, never-list, security defenses; README rebuilt.
 - **v1.4.5** — 细则扩展至 **203 条 / 12 类**（源项目多文档审查提炼，新增第 12 类 17 条）。Details expanded to 203 rules / 12 categories.
 - **v1.4.4** — 安静模式（`安静模式`/`quiet`）+ 偏好记忆（memory/ 用户偏好字段）+ 原子操作锁（L3 先出命令清单等确认）。Quiet mode, preference memory, atomic-operation lock.
