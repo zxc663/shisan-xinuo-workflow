@@ -5,6 +5,12 @@
         "type": "command",
         "command": "bash .hooks/session-start.example.sh"
       }
+    ],
+    "SessionEnd": [
+      {
+        "type": "command",
+        "command": "bash .hooks/session-end.example.sh"
+      }
     ]
   }
 }
