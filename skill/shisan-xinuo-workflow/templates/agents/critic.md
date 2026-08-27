@@ -14,7 +14,7 @@ The plan doc / diff / task record from the main agent (see templates/plan-templa
 1. Over-engineering — more complex than the problem requires? (five-question reuse chain / rule 4)
 2. Hidden coupling — implicit cross-module dependencies not declared?
 3. Missing edge cases — inputs, states, failure modes not covered? (empty / loading / error / boundary)
-4. Constraint violations — contradicts the 43 rules, the never-list, or project constraints?
+4. Constraint violations — contradicts the 47 rules, the never-list, or project constraints?
 5. Rollback difficulty — if this fails, how hard to undo? (rule 43)
 6. Scope creep — quietly expands beyond the original request?
 7. Assumption gaps — unstated assumptions the plan relies on?

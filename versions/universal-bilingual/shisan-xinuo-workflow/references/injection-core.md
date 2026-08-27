@@ -9,7 +9,7 @@
 
 # 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）· Global Agent Workflow Core
 
-> 本文件由平台注入机制每会话自动注入，即工作流硬加载核心 = **流程路由地图**：告诉你「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」，并在上下文里写死防污染。完整细节按需加载技能「shisan-xinuo-workflow」：43 条纪律 / 9 类工作流 / 203 条落地细则 / 安全红线。This file is auto-injected every session — the workflow's **process routing map**: "which files to read first → what order to execute → which docs to update when done", with the context budget baked in. Full details load on demand from the skill "shisan-xinuo-workflow".
+> 本文件由平台注入机制每会话自动注入，即工作流硬加载核心 = **流程路由地图**：告诉你「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」，并在上下文里写死防污染。完整细节按需加载技能「shisan-xinuo-workflow」：47 条纪律 / 9 类工作流 / 203 条落地细则 / 安全红线。This file is auto-injected every session — the workflow's **process routing map**: "which files to read first → what order to execute → which docs to update when done", with the context budget baked in. Full details load on demand from the skill "shisan-xinuo-workflow".
 
 ## 上下文预算法 Context budget（先定序，防污染 order first, avoid pollution）
 
@@ -20,6 +20,8 @@
 - **结束更新（最小追加）End-of-session (minimal append)**：见「完成后更新序」。See completion order.
 
 ## 判级速查 Triage quick reference（10 秒定论，一句话即止，禁止展开论证 decide in 10 seconds, one sentence max）
+
+> **判级同步链 Triage sync chain（三处一致 unanimous in three places）**：权威源是 SKILL.md 第 5 节（任务分级）；本文件因注入环境自包含必须保留全文、且被部署为平台全局 `user_rules` 写入副本——**本块 → `injection-core.md` → 已注入的平台全局副本三级必须同步**；改判级先改 SKILL.md → 同步本块 → 重新部署到全局注入副本，三处保持一致。The authoritative source is SKILL.md §5; this file keeps the full text (injection is self-contained) and is deployed as a platform-global copy — this block → injection-core → the injected global copy stay consistent; change triage in SKILL.md first, then sync here, then redeploy.
 
 - **L3 封闭清单（仅 6 项，不在清单内一律不是 L3，不得自行扩展）Closed list of exactly 6**：密钥/权限 secrets/permissions｜数据删除 data deletion｜数据或服务迁移 data or service migration｜对外发布 external publishing｜架构选型 architecture choice｜超预算破坏性操作 over-budget destructive ops。
 - **L1 速判 L1 quick call**：改名、文案、格式、单行修改等可逆小改动 → 直接做，不问、不展开。Reversible small changes → just do them.
@@ -33,10 +35,10 @@
 ## 完成后更新序 Completion update order（结束收尾，避免污染）
 
 1. **最小验证** + 自查。Minimal verification + self-check.
-2. **更新 `memory/task-log/<YYYY-MM-DD>-<名称>.md`**：理解→验收→决策→结果。Understanding→acceptance→decisions→result.
+2. **更新 `memory/task-log/<YYYY-MM-DD>-<名称>.md`**：理解→验收→决策→结果，结论即时落盘；**并为此类重要决策落盘一份决策审计归档（现象/依据/被否候选与取舍/选择/影响/运行状态）**。Understanding→acceptance→decisions→result, written immediately; **plus a decision-audit archive entry for every important decision**.
 3. **更新 `memory/experience.md`**：新踩坑或重复坑（症状→根因→解决→预防）。Distill new or recurring pitfalls.
 4. **更新 `memory/preferences.md`**：偏好写入后**主动提醒用户复核大类方向**，偏离按其修正。After writing preferences, actively remind the user to re-check the broad direction. 密钥与破坏性意图绝不写入。Secrets never go into preferences.
-5. 文档与代码同批提交；会话结束提炼 1-5 条可复用知识点。Docs + code in the same batch; distill 1-5 knowledge points.
+5. 文档与代码同批提交；**关键回滚本地备份优先、仅在需远程保护 / 交付时才 push**；会话结束提炼 1-5 条可复用知识点。Docs + code in the same batch; rollbacks go local backup first, push only when remote protection / delivery is needed; distill 1-5 knowledge points.
 
 ## 工作区 `memory/` 约定（跨会话记忆统一归档）Workspace `memory/` convention (unified cross-session memory)
 

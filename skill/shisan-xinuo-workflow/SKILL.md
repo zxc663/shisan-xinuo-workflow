@@ -1,7 +1,7 @@
 ---
 name: shisan-xinuo-workflow
 description: "One-line positioning: forces every engineering task through an auditable agent workflow — mandatory research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes (normal/goal), with platform-agnostic hard injection of the core discipline. Use on any hands-on task."
-version: 1.7.0
+version: 1.8.0
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 tags:
@@ -26,7 +26,7 @@ metadata:
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)
 
-> **Positioning: workflow is the soul, rules are the foundation.** The universal task operating sequence is this skill's soul — the mandatory skeleton every task advances along. The 43 discipline rules are the foundation — they constrain what each step must observe. The two are **strongly coupled and mutually dependent**: the workflow carries the rules into execution; the rules govern the workflow's steps. Neither can be spared. Skipping the workflow discards the soul; ignoring the rules undermines the foundation.
+> **Positioning: workflow is the soul, rules are the foundation.** The universal task operating sequence is this skill's soul — the mandatory skeleton every task advances along. The 47 discipline rules are the foundation — they constrain what each step must observe. The two are **strongly coupled and mutually dependent**: the workflow carries the rules into execution; the rules govern the workflow's steps. Neither can be spared. Skipping the workflow discards the soul; ignoring the rules undermines the foundation.
 
 ## 1. When to use / when NOT to use
 
@@ -86,7 +86,7 @@ Before starting tasks, hard-load this workflow onto the current platform:
 
 ## 4. Ask-before-acting protocol
 
-Consequential decisions must be confirmed with the user before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permissions/secret handling, destructive operations (deletion, migration, overwrite, external publishing), architecture or tech-stack choices, scope expansion, conflicting proposals. **"Not-fully-certain understanding" is also a trigger — in normal mode too** (see §5): triage fast, but ask on understanding. Asking more clearly beats asking less.
+Consequential decisions must be confirmed with the user before acting. Triggers: unclear direction or ambiguity, conflicting requirements, permissions/secret handling, destructive operations (deletion, migration, overwrite, external publishing), architecture or tech-stack choices, scope expansion, conflicting proposals. **"Not-fully-certain understanding" is also a trigger — in normal mode too** (see §5.1): triage fast, but ask on understanding. Asking more clearly beats asking less.
 
 **Asking-tool downgrade chain** (use the first available):
 
@@ -97,33 +97,34 @@ Routine L1 tasks do not require asking — do not over-ask; but ask when your un
 
 ## 5. Execution modes & task triage
 
-### Dual modes (default = normal mode)
+### 5.1 Dual modes (default = normal mode)
 
 | Mode | Trigger | Behavior |
 |---|---|---|
-| **Normal** (default) | no keyword | Ask before every consequential decision, and when your understanding is not fully certain (section 4); use the platform question tool, or the structured text protocol when none exists, then end the turn and wait. Asking more clearly beats asking less. |
-| **Goal mode** | keywords `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | Work autonomously from a written plan; still ask on direction/boundary ambiguity; secrets and destructive operations still pause and wait for the user. |
+| **Normal** (default) | no keyword | Ask before every consequential decision, and when your understanding is not fully certain (section 4); use the platform question tool, or the structured text protocol when none exists, then end the turn and wait. **Log every important decision to the decision-audit archive, and immediately restate it to the user and request confirmation before continuing** (the record is restated now, not after the fact). Asking more clearly beats asking less. |
+| **Goal mode** | keywords `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | Execute autonomously from a written plan; **pause (stop and wait) only in two cases — major decisions (L3) / severe blocking problems**; every other important decision follows "investigate → push the first recommendation → **fully archive the decision record for audit**"; **every milestone forces a record landing**; still ask on direction/boundary ambiguity; secrets and destructive operations still pause and wait for the user. |
 | **Quiet mode** | keywords `安静模式` / `quiet` / `quiet mode` | L1 tasks: report only the result (skip intermediate reasoning / survey steps) to cut visual noise and token anxiety; L2/L3 unchanged; secrets & destructive ops still ask. |
 
-Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *before* executing; split subtasks by file boundaries; record progress as you go; stop automatically when the budget is exceeded; deliver a retrospective plus an open-questions list.
+Goal-mode extra duties: write a plan (scope, risk rating, time/round budget) *before* executing; split subtasks by file boundaries; record progress and every milestone as you go; stop automatically when the budget is exceeded; deliver a retrospective plus an open-questions list. **Rollback points go local backup and do NOT `git push` by default (saves bandwidth + tokens); a ready local snapshot makes destructive / modification-class operations safe to execute and relieves the deferral (L3 excepted — still pauses).**
 
-### Task triage L1 / L2 / L3
+### 5.2 Task triage L1 / L2 / L3
 
 | Level | Criteria | Normal mode | Goal mode |
 |---|---|---|---|
 | L1 routine | small, reversible, low impact | do it directly | do it directly |
 | L2 medium risk | new feature, multi-file, cross-module changes | record, do, report key points | execute per plan, log checkpoints |
-| L3 high risk | secrets, permissions, data deletion, migration, external publishing, architecture choice | **ask first** | pick the recommended option, label it `REVIEW:` and log it; secrets / destructive ops: pause, log, wait for the user |
+| L3 high risk | secrets, permissions, data deletion, migration, external publishing, architecture choice | **ask first** | **pause, log, and wait for the user to confirm** (even when a local backup is ready — a backup rollback cannot cover the external impact and the permissions / security surface); secrets and destructive ops: pause, log, wait |
 
 Judge by: blast radius, reversibility, rework cost, whether data or external publishing is touched.
 
 **Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)**:
 
-- **L3 closed list (exactly 6 items — anything outside the list is never L3; do not extend it)**: secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations.
+- **L3 closed list (exactly 6 items — anything outside the list is never L3; do not extend it)**: secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations. **This block is the single authoritative source for the closed list and the L1/L2 quick calls**; citations in `rules.md` / `workflows.md` only summarize and point back here — change the triage only here.
 - **L1 quick call**: rename, copy, formatting, single-line edits and other reversible small changes → just do it; don't ask, don't elaborate.
 - **L2**: new feature, multi-file, cross-module → record, do, report key points.
 - Cannot triage within 10 seconds → default to L2 and proceed; state the level in one sentence — except for closed-list hits, never interrogate the user over triage itself or argue it out.
 - **Triage ≠ understanding confirmation**: triage can be fast, but when the goal / boundaries / direction are ambiguous or your understanding is not fully certain, ask via the question tool in normal mode too — ask clearly, proceed.
+- **Triage sync chain (unanimous in three places)**: `injection-core.md` must keep this block in full because the injection environment is self-contained, and it is deployed as a platform-global `user_rules` written copy — this block → `injection-core.md` → the injected platform-global copy must stay consistent. To change the triage, change this block first, then sync `injection-core.md`, then redeploy the global copy, keeping all three aligned.
 
 ## 6. Minimal closed-loop delivery (the delivery principle of step 11)
 
@@ -161,7 +162,8 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 |---|---|
 | `references/injection-core.md` | Section 3 forced injection (hard-load) — the platform-agnostic core template, written in full into the detected platform's injection point |
 | `references/platform-adaptation.md` | Section 3 platform detection; injection-point table; asking-tool downgrade chain; full structured asking protocol |
-| `references/rules.md` | The 43-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule |
+| `references/rules.md` | The 47-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule |
+| `references/skill-usage.md` | Skill capability discovery / registration mechanism + load-decision routing + progressive vs. full-read classification; load when a task involves choosing a Skill, front-end / design work, getting a Skill when none is local, or weak-model handling |
 | `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details |
 | `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to |
 | `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM |

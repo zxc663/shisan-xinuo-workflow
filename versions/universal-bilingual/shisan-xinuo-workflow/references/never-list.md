@@ -1,6 +1,6 @@
 # 永不清单（明确禁止项）· The NEVER List (explicit prohibitions)
 
-> 明线——泛泛规范易被合理化，这些是硬性禁止。开工前 / 提交前 / 风险操作前快速自查。Bright lines — hard stops; quick self-check before start / commit / risky ops. 对应 43 规则，全文见 `rules.md`。
+> 明线——泛泛规范易被合理化，这些是硬性禁止。开工前 / 提交前 / 风险操作前快速自查。Bright lines — hard stops; quick self-check before start / commit / risky ops. 条文编号对应 `rules.md`，部分细则见 `details.md`。Rule numbers correspond to `rules.md`; some landing details live in `details.md`; load `rules.md` for the full letter of each rule.
 
 ## 1. 诚实与交付 · Honesty & delivery
 - 永不假完成——未实现/未验证必标注 `未实现/待验证`。NEVER fake completion; label unfinished work.

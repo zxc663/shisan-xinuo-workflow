@@ -1,6 +1,6 @@
 # Landing Details — concrete engineering rules (progressive disclosure)
 
-> Load this file when executing a task and a step needs the concrete how-to (environment, frontend, DB, testing, API contracts, ops, code quality, git). These are the fine-grained operational rules distilled from real development history — they complement the 43 foundational rules with **specific, verifiable practice**. Load by category on demand; do not preload.
+> Load this file when executing a task and a step needs the concrete how-to (environment, frontend, DB, testing, API contracts, ops, code quality, git). These are the fine-grained operational rules distilled from real development history — they complement the 47 foundational rules with **specific, verifiable practice**. Load by category on demand; do not preload.
 
 ## 1. Environment & toolchain
 

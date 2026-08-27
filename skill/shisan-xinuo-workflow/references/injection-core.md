@@ -9,7 +9,7 @@
 
 # Global Agent Workflow Core (Shisan Xinuo Workflow · mandatory every session)
 
-> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's **process routing map**: it tells you "which files to read first → what order to execute → which docs to update when done", with the context budget baked in to avoid polluting the context. Full details load on demand from the skill "shisan-xinuo-workflow": 43 discipline rules / 9 task-type workflows / 203 pitfall-log details / security red lines.
+> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's **process routing map**: it tells you "which files to read first → what order to execute → which docs to update when done", with the context budget baked in to avoid polluting the context. Full details load on demand from the skill "shisan-xinuo-workflow": 47 discipline rules / 9 task-type workflows / 203 pitfall-log details / security red lines.
 
 ## Context budget (order first, avoid pollution)
 
@@ -20,6 +20,8 @@ The "what to read, when to read it" is fixed here; never blindly shove the whole
 - **End-of-session update (minimal append)**: see "Completion update order".
 
 ## Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)
+
+> The authoritative source is SKILL.md §5.2; this file keeps the full block because the injection environment is self-contained. To change the triage, change SKILL.md §5.2 first, then sync this block, then redeploy the platform-global copy — all three stay consistent.
 
 - **L3 closed list (exactly 6 items — anything outside the list is never L3; do not extend it)**: secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations.
 - **L1 quick call**: rename, copy, formatting, single-line edits and other reversible small changes → just do it; don't ask, don't elaborate.
@@ -36,9 +38,10 @@ Every step has an exit artifact; no artifact, no next step.
 
 1. **Minimal verification** + self-check (really usable / edges handled / rules followed / docs synced).
 2. **Update `memory/task-log/<YYYY-MM-DD>-<name>.md`**: understanding → acceptance → decisions → result; write conclusions down immediately.
-3. **Update `memory/experience.md`**: distill new or recurring pitfalls (symptom → root cause → fix → prevention); write duplicates in one place and cross-reference.
-4. **Update `memory/preferences.md`**: log the preferences confirmed this session (stack / language / style); **after writing, actively remind the user to re-check the broad direction**, and follow their correction if it drifted. Secrets and destructive intent never go into preferences.
-5. Commit docs and code in the same batch; at session end distill 1-5 reusable knowledge points (default 3).
+3. **Decision-audit archive (general)**: log every important decision as one entry (phenomenon / basis / rejected candidates / choice / impact), alongside the task record; in goal mode, other important decisions follow "investigate → first recommendation → full archive" (**only an L3 major decision / severe blocking problem pauses**; unattended runs do not waive record-keeping; a ready local backup relieves the destructive / modification deferral).
+4. **Update `memory/experience.md`**: distill new or recurring pitfalls (symptom → root cause → fix → prevention); write duplicates in one place and cross-reference.
+5. **Update `memory/preferences.md`**: log the preferences confirmed this session (stack / language / style); **after writing, actively remind the user to re-check the broad direction**, and follow their correction if it drifted. Secrets and destructive intent never go into preferences.
+6. Commit docs and code in the same batch; at session end distill 1-5 reusable knowledge points (default 3). **All key rollbacks go local backup first; push only when remote protection / delivery is genuinely needed.**
 
 ## Workspace `memory/` convention (unified cross-session memory)
 

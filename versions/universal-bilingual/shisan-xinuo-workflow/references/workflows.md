@@ -152,10 +152,10 @@
 ## 7. 目标模式 · 无人值守 · Goal mode / unattended
 
 - [ ] 1. 确认目标与模式 Confirm goal and mode
-- [ ] 2. 执行前写计划与风险评级入任务记录（时间 / 轮次 / 花费预算；按文件边界拆子任务）Write plan + risk rating into the task record (budgets; split by file boundaries)
-- [ ] 3. 按 L1/L2/L3 分级决策（SKILL.md 第 4 节）Triage decisions by L1/L2/L3 (SKILL.md §4)
-- [ ] 4. 自主执行、全程记录；超预算自动停 Execute autonomously, record everything; stop past budget
-- [ ] 5. 复盘交付 + 待确认清单；提交推送附说明 Retrospective + open-questions list; commit with explanation
+- [ ] 2. 执行前写计划与风险评级入任务记录（时间 / 轮次 / 花费预算；按文件边界拆子任务）Write plan + risk rating into the task record (budgets; split by file boundaries)**；回滚点本地备份优先、默认不 git push（第 45 条）rollback points use local backup first, no git push by default (rule 45)**
+- [ ] 3. 按 L1/L2/L3 分级决策（SKILL.md 第 5 节）Triage decisions by L1/L2/L3 (SKILL.md §5)
+- [ ] 4. 自主执行、全程记录；超预算自动停 Execute autonomously, record everything; stop past budget**；暂停仅两种情形——重大决策（L3）/ 严重阻塞问题；其余重要决策「先调研 → 按第一推荐推进 → 完整归档决策记录」；每里程碑强制落盘 task-log；本地快照就绪 → 破坏性 / 修改类操作可安全执行（L3 除外，仍暂停）Pause only in two cases — major decisions (L3) / severe blocking problems; other decisions follow "investigate → first recommendation → full archive"; every milestone forces a landing in the task log; a local snapshot ready → destructive / modification-class ops are safe to execute (L3 excepted, still pauses)**
+- [ ] 5. 复盘交付 + 待确认清单；提交推送附说明 Retrospective + open-questions list; commit with explanation**（目标模式达成后用户统一决定是否推送 the user decides together whether to push after a goal-mode run)**
 
 ## 8. 多会话编排 · Multi-session orchestration
 
@@ -198,8 +198,8 @@
 
 ## 工具与技能策略（通用） · Tools & skills strategy (generic)
 
-- 每次任务最多加载 1-3 个技能，先按目录筛选。Load at most 1-3 skills per task, filtered by catalog first.
-- 无技能不阻塞：通用能力 + 官方文档兜底，降级留痕。No skill does not block: fall back to general capability + official docs; record the fallback.
+- 每次任务最多加载 1-3 个技能，先按目录筛选，再按 `skill-usage.md` §4 读取分类加载——默认**渐进式**（先主 SKILL.md 再按需读 references）；**前端 / UI / 设计类、核心治理 / 工作流类无条件强制完整读取**（上下文充足 / 无预算限制也不减少）。Load at most 1-3 skills per task, filtered by catalog, then per the read classification in `skill-usage.md` §4 — progressive by default; front-end / UI / design and core-governance classes are unconditionally fully read.
+- 无技能不阻塞；**本地无 Skill 时先问用户（`skill-usage.md` §3）**：是否寻找权威 Skill 源安装 / 本机其他 Skill 安装目录可复用，安装必走 `security.md` 校验——再降级通用能力 + 官方文档兜底，降级留痕。No skill does not block; when none is local, ask the user first (§3) — authoritative source or another local install dir, vetting per `security.md` — before degrading to general capability; record the fallback.
 - 反复需要（2-3 次）的能力按工作流 9 沉淀为新技能。Repeated needs (2-3×) become new skills via workflow 9.
 
 ## 记忆文件协议（外部化长期记忆）· Memory-file protocol (externalized long-term memory)
@@ -212,10 +212,10 @@ Agent 无天生长期记忆、也无法感知上下文压缩——把会话状�
   - `memory/preferences.md`——已确认偏好（技术栈/语言/风格）。Confirmed preferences.
   - `memory/task-log/`——任务记录 `YYYY-MM-DD-名称.md`。Task records (date-named).
   - 项目业务恰用 `memory/` 时，在项目规则文件内改 `.agent-records/`（唯一合法覆盖点）。Override to `.agent-records/` on business conflict (only legal override point).
-- **用户偏好字段 User preferences**——维护已确认的技术栈/语言/风格，确认后立即写入、会话开始读取、同类决策复用不重复问；**写入后主动向用户复核大类方向**，偏离按其修正。Keep confirmed choices; reuse instead of re-asking; **after writing, actively remind the user to re-check the broad direction** (stack / language / style) and correct on deviation. 密钥与破坏性意图绝不写入 Never secrets or destructive intent.
-- **写入 Write at**：①目标确认（第 6 步）；②任务/里程碑完成；③上下文 40-60% 前；④会话结束归档前。
+- **用户偏好字段 User preferences**——维护已确认的技术栈/语言/风格，确认后立即写入、会话开始读取、同类决策复用不重复问；**用户偏好语言记入 `preferences.md`，决定模型输出的思考 / 表述使用什么语言**（未记录默认跟随会话输入语言）；**写入后主动向用户复核大类方向**，偏离按其修正。Keep confirmed choices; reuse instead of re-asking; **record the preferred language, which decides your thinking/output language** (default: follow the session's input language); **after writing, actively remind the user to re-check the broad direction** (stack / language / style) and correct on deviation. 密钥与破坏性意图绝不写入 Never secrets or destructive intent.
+- **写入 Write at**：①目标确认（第 6 步）；②任务/里程碑完成；**③每项重要决策 → 决策审计归档（现象 / 依据 / 被否候选与取舍 / 选择 / 影响 / 运行状态，与 task-log 并列；目标模式尤其逐条记）every important decision → a decision-audit archive entry**；④上下文 40-60% 前；⑤会话结束归档前。
 - **读取 Read at**：①会话开始；②压缩 / 重置 / 重载后——**先读再继续**；③新任务前扫一眼。Session start; after compaction/reset — **read first, then continue**; before new tasks.
-- **完成后更新序 Completion update order（会话结束收尾，最小验证后依序）**：①最小验证 + 自查；②更新 `task-log/<日期>-<名称>.md`（理解→验收→决策→结果）；③更新 `experience.md`（新踩坑或重复坑，症状→根因→解决→预防）；④更新 `preferences.md`（写入后主动复核大类方向；密钥与破坏性意图绝不写入）；⑤文档与代码同批提交，会话结束提炼 1-5 条知识点（默认 3）。① minimal verification + self-check ② update task-log (understanding→acceptance→decisions→result) ③ update experience (new/recurring pitfalls) ④ update preferences (re-check with the user; no secrets) ⑤ ship docs+code, distill 1-5 knowledge points (default 3).
+- **完成后更新序 Completion update order（会话结束收尾，最小验证后依序）**：①最小验证 + 自查；②更新 `task-log/<日期>-<名称>.md`（理解→验收→决策→结果）**并为此类重要决策落盘一份决策审计归档**；③更新 `experience.md`（新踩坑或重复坑，症状→根因→解决→预防）；④更新 `preferences.md`（写入后主动复核大类方向；密钥与破坏性意图绝不写入）；⑤文档与代码同批提交，会话结束提炼 1-5 条知识点（默认 3）；**关键回滚本地备份优先、仅在需远程保护 / 交付时才 push**。① minimal verification + self-check ② update task-log (understanding→acceptance→decisions→result) plus a decision-audit archive entry for every important decision ③ update experience (new/recurring pitfalls) ④ update preferences (re-check with the user; no secrets) ⑤ ship docs+code, distill 1-5 knowledge points (default 3); rollbacks go local backup first, push only when remote protection / delivery is genuinely needed.
 - **分层 Layering**：记忆文件 = 状态层 + 踩坑层；知识文档（第 11 步双写）= 学习层；完整细则仍在 Skill `references/` 按需加载，互不替代。Memory = *state* + *pitfall*; knowledge docs = *learning*; full details load on demand from `references/`. They do not replace each other.
 - **压缩后显式重载顺序 Reload sequence after compaction**：用户说「重载 / 你被压缩了」或平台重置上下文 → ①重读 SKILL.md → ②重读记忆文件 → ③重读当前引用 → ④向用户复述任务与验收再继续。On reload/reset: re-read SKILL.md → memory file → needed references → restate task + acceptance, then continue.
 - **提示词预算（可选）Prompt budget (optional)**：见 `templates/prompt-budget.template.md`——设置档位（nano/minimal/standard/full），只加载任务所需引用；记忆文件与任务记录保持预算内。预算指引非强制。See `templates/prompt-budget.template.md`; budgets are guidance, not enforcement.
