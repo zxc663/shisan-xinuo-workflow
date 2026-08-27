@@ -89,12 +89,12 @@
 3. **回指本 Skill**：规则文件中注明完整工作流的所在位置（本 Skill 目录或仓库 URL），让细节保持渐进式披露。
 4. **校验**：写完后用一句话向用户复述生效要点（分级、双模式、注入模式、密钥红线、回滚规则、留档纪律），并确认未丢失既有内容。
 
-### 3.2 会话启动钩子（可选，仅平台支持时）
+### 3.2 会话钩子（可选，仅平台支持时）
 
-平台支持会话启动钩子时（如 Claude Code 的 `SessionStart`，经 `.claude/settings.json` 或 `hooks.json`），可让纪律**自动**加载，而不只依赖规则文件文本——这是「强制」模式的最强形态。
+平台支持会话钩子时（如 Claude Code 的 `SessionStart`/`SessionEnd`，经 `.claude/settings.json` 或 `hooks.json`），可让纪律**自动**加载，而不只依赖规则文件文本——这是「强制」模式的最强形态。
 
-- **效果**：每个新会话启动时，钩子打印纪律横幅（分级 / 双模式 / 密钥红线 / 回滚 / 留档纪律），并指向规则文件与记忆文件，让 Agent 在任何工作前重新锚定。
-- **方式**：模板位于 `templates/hooks/`——`session-start.example.sh`（横幅脚本）+ `hooks.example.json`（Claude Code 配置：`SessionStart` → 运行脚本）。复制并按平台适配。
+- **效果**：每个新会话启动时，start 钩子打印纪律横幅（分级 / 双模式 / 密钥红线 / 回滚 / 留档纪律），并指向规则文件与记忆文件，让 Agent 在任何工作前重新锚定；会话结束前，end 钩子重新锚定收尾事项（最终验证 / 任务记录 / 记忆同步 / 密钥红线 / 回滚 / 显式安全清理）。
+- **方式**：模板位于 `templates/hooks/`——`session-start.example.sh`（横幅脚本）+ `session-end.example.sh`（收尾脚本）+ `hooks.example.json`（Claude Code 配置：`SessionStart`/`SessionEnd` → 运行脚本）。复制并按平台适配。
 - **契约**：钩子**可选且受平台门控**——它是配置示例，不是捆绑运行时；本 Skill 保持零脚本。无 hooks 的平台跳过。
 ## 4. 提问工具降级链
 

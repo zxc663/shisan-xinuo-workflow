@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill for AI coding agents: it injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.9.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.9.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 ---
 
@@ -274,6 +274,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v1.9.1** — **SessionEnd 钩子三语补齐（漂移修复）**：中文/双语版补齐 `session-end.example.sh` + `hooks.example.json` 的 `SessionEnd` 条目 + `platform-adaptation.md §3.2` 文档（此前仅英文主版完整）；三语版本统一 bump 1.9.1；本地重建 dist v1.9.1.zip（git archive pathspec，泄漏 0——personal/memory 检测全 0）。SessionEnd hook sync to zh/bilingual (drift fix) + bump 1.9.1.
 - **v1.9.0** — **推广先导 + 元数据规范化**：SKILL.md frontmatter 规范化（顶层 `version`/`tags` 迁入 `metadata.*`，符合 Agent Skills 标准可移植字段，`metadata.tags` 供 [skills.sh](https://skills.sh/) 按分类收录）；README「安装」新增**开放式技能生态（skills.sh）一键安装入口**（`npx skills add zxc663/shisan-xinuo-workflow --skill shisan-xinuo-workflow`，中文版 `--skill shisan-xinuo-workflow-zh`、双语版 `--skill shisan-xinuo-workflow-bilingual`）；`.gitignore` 增加 `versions/personal-zh/` 与 `memory/` 防护，杜绝个人版被技能市场扫描收录。Promo-first release: frontmatter metadata spec-normalization, skills.sh one-click install entry, personal-edition leak guard via .gitignore.
 - **v1.8.0** — **Skill 使用模块 + 决策审计归档 + 规则扩充至 47 条 + 目标模式窄化**：新增 `references/skill-usage.md`（能力发现/注册机制、加载决策路由、渐进 vs 完整读取分类、Agent 注册维度与 Skill 工具注册校验）；`rules.md` 新增 §44-47（决策分层与审计归档 / 备份纪律·本地优先 / 成本与资源意识 / 注入分层与硬注入提醒）；双模式补决策纪律（普通模式重大决策即时复述留档；目标模式仅 L3/严重阻塞暂停、每里程碑强制留档、本地备份优先不默认 git push）；判级同步链单一权威源（SKILL.md §5.2 → injection-core → 全局注入副本）；注入点「层级」列 + 分层注入规则；安装期「注入模式选择提问」中英双语；规则计数 43→47 全仓校正；双语版按增量注入保留整页排版。Skill-usage module, decision-audit archive, rules to 47, goal-mode narrowing, injection layering, triage sync chain.
 - **v1.7.0** — **流程路由地图 + 上下文预算法 + 工作区 memory/ 统一归档 + 偏好写后复核**：injection-core 升级为流程路由地图，写死「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」；**上下文预算法**（常驻小 / 开工读 memory 一屏 / 按需读 references 不预载 / 结束更新最小追加）根治上下文污染；**工作区 `memory/` 统一归档 + 自动建骨架**（state / experience / preferences / task-log，任何会话先扫、缺则自建，唯一覆盖点 `.agent-records/`）+ 新增 `templates/workspace-memory-template.md`（三语）；**偏好写后复核提醒**（写入 `memory/preferences.md` 后主动向用户复核大类方向，偏差由用户修正）；**完成更新序**（task-log → experience → preferences → 提交）；**必问强化 + 判级≠理解确认**（理解不尽确定也必问，问清楚比问少了更重要）。Process routing map, context budget, unified workspace `memory/`, post-write preference review, must-ask reinforcement, triage ≠ understanding.

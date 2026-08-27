@@ -1,6 +1,6 @@
 {
   "name": "@zxc663/shisan-xinuo-workflow",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Shisan Xinuo Agent Workflow — cross-platform engineering-governance Agent Skill (L1/L2/L3 task triage, dual modes, ask-before-acting, quality gates, rollback safety, no fake completion). 十三希诺通用 Agent 工作流。",
   "keywords": [
     "agent",
