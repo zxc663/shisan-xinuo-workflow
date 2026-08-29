@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.9.1
+  version: 1.10.0
   tags:
     - agent-skill
     - workflow-governance
@@ -26,7 +26,7 @@ metadata:
 
 # Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)
 
-> **Positioning: workflow is the soul, rules are the foundation.** The universal task operating sequence is this skill's soul — the mandatory skeleton every task advances along. The 47 discipline rules are the foundation — they constrain what each step must observe. The two are **strongly coupled and mutually dependent**: the workflow carries the rules into execution; the rules govern the workflow's steps. Neither can be spared. Skipping the workflow discards the soul; ignoring the rules undermines the foundation.
+> **Positioning: workflow is the soul, rules are the foundation.** The universal task operating sequence is this skill's soul — the mandatory skeleton every task advances along. The numbered discipline rules (`references/rules.md`) are the foundation — they constrain what each step must observe. The two are **strongly coupled and mutually dependent**: the workflow carries the rules into execution; the rules govern the workflow's steps. Neither can be spared. Skipping the workflow discards the soul; ignoring the rules undermines the foundation.
 
 ## 1. When to use / when NOT to use
 
@@ -54,7 +54,7 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 | 1 | **Receive the instruction** — first-principles understanding (essence / required / inertia) | One-sentence task essence |
 | 2 | **Read the experience log first** — search by symptom / keyword | Hit record (hit → execute per "solve / prevent") |
 | 3 | **Survey actual resources** — real code (status evidence) + environment + workspace + available skills / MCP | Status fact list (file / line / conclusion) |
-| 4 | **Online survey (mandatory)** — research mature open-source projects / libraries / solutions (not a fallback; a required step for every task); collect **verifiable trust signals** (stars / downloads / maintenance activity / adoption evidence / community feedback / security advisories), never "it's popular online" — listing heat is only a discoverability reference, not a quality signal; what & how to survey in `references/workflows.md` §0.2; record degradation when environment/capability/tool/skill/MCP is missing | Market solution survey record (candidates + trust signals + feedback + security risk + degradation notes) |
+| 4 | **Online survey (mandatory)** — research mature open-source projects / libraries / solutions (not a fallback; a required step for every task); collect **verifiable trust signals** (stars / downloads / maintenance activity / adoption evidence / community feedback / security advisories), never "it's popular online" — listing heat is only a discoverability reference, not a quality signal; what & how to survey in `references/workflows.md` §0.2; record degradation when environment/capability/tool/skill/MCP is missing. **Offline / no-network is a legitimate degradation**: skip the remote survey, mark the exit artifact `degraded-offline`, substitute step-3 local evidence + the experience log — never block the sequence on network | Market solution survey record (candidates + trust signals + feedback + security risk + degradation notes) |
 | 5 | **Reuse survey (iron law)** — local project → mature open-source projects; reuse whenever possible, style adaptation or secondary development both fine, **never hand-roll components** (five-question chain) | Reuse conclusion (candidates + adaptation plan + build-new reason, only when the whole chain misses) |
 | 6 | **Restate understanding** — goal / boundaries / acceptance criteria | User confirmation (continue only when aligned) |
 | 7 | **Ask on any doubt** — unclear execution or direction drift → ask and end the turn | Ask / confirmation record |
@@ -94,6 +94,16 @@ Consequential decisions must be confirmed with the user before acting. Triggers:
 2. If unavailable: structured text protocol — present (a) understanding, (b) options with pros/cons, (c) risks and consequences, (d) a recommendation, then **end the turn and wait**. Full protocol in `references/platform-adaptation.md`.
 
 Routine L1 tasks do not require asking — do not over-ask; but ask when your understanding is not fully certain. High-risk L3 tasks always require asking. **Preference memory**: after the user makes a confirmed choice (e.g. tech-stack, language, style via the asking tool), write it to `memory/preferences.md` (§10) so the same class of decision is reused next time instead of re-asking — preference memory only covers confirmed repeated preferences, never secrets or destructive ops.
+
+**Conflict arbitration order** — when two instruction sources disagree (skill guidance vs project discipline vs a design brief vs another skill's defaults), pick by this fixed order and **keep only the winner** (delete the loser's citation from your working notes — never obey both, never merge into a hybrid):
+
+1. user / project discipline (project rule files, confirmed D-series decisions, design contracts) — the brief wins;
+2. platform hard-injected core (injection point text);
+3. the design draft / brief of the current deliverable;
+4. this skill's defaults;
+5. any other loaded skill's defaults.
+
+Record one arbitration line in the task record (`source A vs source B → followed X, because …`). A conflict resolved twice for the same reason is a standing decision: write it into `memory/preferences.md`, not into ad-hoc notes.
 
 ## 5. Execution modes & task triage
 
@@ -142,9 +152,8 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 ## 8. Gotchas
 
-- **Triage burnout**: settle trivial triage in one sentence — rename / copy / formatting questions are always L1, just do them; L3 honors ONLY the closed list in section 5, nothing outside it constitutes L3. Arguing over triage or agonizing repeatedly is one of the biggest token sinks.
-- **Triage ≠ understanding confirmation**: triage is fast, but "goal / boundaries / direction ambiguous or understanding not fully certain" must be asked — in normal mode too. Use "asking more clearly beats asking less" to offset misuse of "over-asking kills adoption": do not ask on reversible L1 trivia, but ALWAYS ask when understanding is uncertain.
-- **Follow the context budget**: don't shove all of `references/` into context — resident (this core) → session-start read (one screen of `memory/`) → on demand (`references/`, historical `task-log/`) → end-of-session minimal append. `injection-core.md` bakes this in; honor it.
+- **Triage burnout**: settle trivial triage in one sentence — rename / copy / formatting questions are always L1, just do them; L3 honors ONLY the closed list in section 5, nothing outside it constitutes L3. Arguing over triage or agonizing repeatedly is one of the biggest token sinks. (Triage ≠ understanding confirmation — that distinction lives in section 5 and is authoritative there.)
+- **Same-session reload is pure waste**: a skill / reference already loaded in the current session is NOT re-read for the next task in the same session — per-session reload discipline applies across sessions (fresh context), not within one. Reload only after compaction, an explicit reload signal, or when the source file changed. (Context order and load-on-demand map: sections 9-10.)
 - **The sequence is unskippable.** Survey (step 3) and reuse survey (step 5) are the most-skipped steps — skipping breaks the sequence and is the most common violation.
 - **On repeated review requests, run the product-polish diagnosis first** — when the user keeps asking to review or keeps feeling something is off, locate the gap by product dimension (feature logic / code coupling / UI / interaction flow / other; workflows.md §0.3) before touching code; don't just re-check correctness as an engineer.
 - **Trigger keywords are live switches.** Goal-mode keywords (`目标：`, `unattended`, …) silently change the decision model. Check every user message for them, including mid-task messages.
@@ -158,17 +167,19 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 
 ## 9. Reference map — load on demand only
 
-| File | When to load |
-|---|---|
-| `references/injection-core.md` | Section 3 forced injection (hard-load) — the platform-agnostic core template, written in full into the detected platform's injection point |
-| `references/platform-adaptation.md` | Section 3 platform detection; injection-point table; asking-tool downgrade chain; full structured asking protocol |
-| `references/rules.md` | The 47-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule |
-| `references/skill-usage.md` | Skill capability discovery / registration mechanism + load-decision routing + progressive vs. full-read classification; load when a task involves choosing a Skill, front-end / design work, getting a Skill when none is local, or weak-model handling |
-| `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details |
-| `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to |
-| `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM |
-| `references/never-list.md` | The bright-line "never" list — quick self-check before starting, committing, or risky operations |
-| `templates/workspace-memory-template.md` | Initialize a project's `memory/` skeleton (state/experience/preferences/task-log) when the session-start scan finds it missing |
+**Loading discipline**: open a reference only on (a) its **trigger symptom** below, (b) the step that names it, or (c) an explicit user request. Never preload. When a reference changed a decision, cite it in one line in the task record — this is what keeps the detail layer alive instead of decorative.
+
+| File | When to load | Trigger symptoms (open it when you see these) |
+|---|---|---|
+| `references/injection-core.md` | Section 3 forced injection (hard-load) — the platform-agnostic core template, written in full into the detected platform's injection point | "write it into my platform rules" / injection-mode setup |
+| `references/platform-adaptation.md` | Section 3 platform detection; injection-point table; asking-tool downgrade chain; full structured asking protocol | unknown platform / no native asking tool / injection point in doubt |
+| `references/rules.md` | The numbered-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule | discipline dispute / "which rule says that" |
+| `references/skill-usage.md` | Skill capability discovery / registration mechanism + load-decision routing + progressive vs. full-read classification | choosing among skills / front-end or design work / no skill available locally / weak-model handling |
+| `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details | fuzzy state / unknown task type / plan-quality doubt / product-polish diagnosis |
+| `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to | symptom keyword matches a pitfall category (build tool / framework version / a11y / API shape / deploy …) — **check here BEFORE improvising in an unfamiliar area** |
+| `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM | secrets touched / suspected leak / publishing / dependency procurement |
+| `references/never-list.md` | The bright-line "never" list — quick self-check before starting, committing, or risky operations | before commit / before any L3 operation |
+| `templates/workspace-memory-template.md` | Initialize a project's `memory/` skeleton (state/experience/preferences/task-log) when the session-start scan finds it missing | project has no `memory/` yet |
 
 Do not preload all references — load only the one the current step needs. **You cannot detect context compaction yourself — do not rely on sensing it; rely on two guards:** (a) explicit signal — the user says "reload / you were compacted / start fresh", or the platform visibly reset the context → **follow the reload sequence immediately**: ① re-read this SKILL.md; ② re-read the memory file (`memory/`, see §10); ③ re-read any reference the current step still needs; ④ restate the current task + acceptance criteria to the user before continuing; (b) milestone self-check — before starting a task, committing, or a major decision, recite the core elements (master-sequence steps, current mode, rollback rule, ask-before-acting); if you cannot restate any of them in full, treat it as missing context and reload before continuing.
 
@@ -177,10 +188,12 @@ Do not preload all references — load only the one the current step needs. **Yo
 Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md` (memory-file protocol). **Unified archive location = project root `memory/`** (default; a project may override to `.agent-records/` in its rule file). Any session (incl. the next AI) scans this directory on start; create the directory / skeleton if missing.
 
 - **Workspace `memory/` unified cross-session memory**: `state.md` (goal / decisions / constraints / progress, ≤1 screen), `experience.md` (pitfall log: symptom → root cause → fix → prevention), `preferences.md` (confirmed stack / language / style), `task-log/` (records `YYYY-MM-DD-<name>.md`).
-- Every session keeps a **task record** (`memory/task-log/`): understanding → acceptance criteria → decisions → results. Write conclusions immediately; archive each step's exit artifacts with the task record.
+- **`state.md` is a skeleton, not a diary — hard cap ≈ one screen (~10KB)**. It holds current phase / next step / leftovers / redlines only. When the session-start scan finds it over one screen: **archive milestone history to `memory/archive-YYYY-MM.md` before starting work** (move, not delete) — a bloated state file is the single largest standing attention cost every future session pays.
+- Every session keeps a **task record** (`memory/task-log/`): understanding → acceptance criteria → decisions → results; **each record carries the platform session id (when exposed) and the commit hash(es) it produced** — this is what makes session→commit→quality traceable without re-deriving it from logs. Write conclusions immediately; archive each step's exit artifacts with the task record.
 - An **experience log** is mandatory reading at session start — search `memory/experience.md` by symptom keywords and read only the matching segment; distill recurring / high-rework pitfalls into it.
 - At session end, distill 1-5 reusable knowledge points (default 3) in the form scenario → judgment → action; write the knowledge version to the project's knowledge doc, and give a plain-language version to the user.
 - **Preference memory + post-write check** — after logging a confirmed preference to `memory/preferences.md`, **actively remind the user to re-check the broad direction**; follow their correction if it drifted. Never put secrets or destructive intent in preferences.
+- **Experience backflow (two-strike promotion)** — project-level pitfalls live in the project's `experience.md` first. When the same pitfall is confirmed **twice in one project or in two projects** (symptom matches, root cause same), promote it: distill `symptom → root cause → fix → prevention` in a category-compatible form and file it into **this skill's `references/details.md`** (submit to the skill repo), so every future project's step-2 symptom search hits it. Backflow is a promotion of a stabilized lesson, not a first-instance write — one-off noise never enters the skill.
 - **Context order (anti-pollution)**: resident (this core) → session-start read (one screen of `memory/`) → on demand (`references/`, historical `task-log/`) → end-of-session minimal append. `injection-core.md` bakes this in.
 - **Completion update order (end-of-session, anti-pollution)** — on finishing: ① minimal verification + self-check → ② update `memory/task-log/<YYYY-MM-DD>-<name>.md` (understanding → acceptance → decisions → result; write conclusions immediately) → ③ update `memory/experience.md` (new or recurring pitfalls; duplicate content lives in one place with cross-reference) → ④ update `memory/preferences.md` (with the preference-review reminder) → ⑤ commit docs and code in the same batch; then distill 1-5 reusable knowledge points (default 3) at session end.
 - Docs ship in the same commit as code; a doc may be archived only after a current equivalent exists.
