@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「调研驱动的
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 1.10.0
+  version: 1.11.0
   tags:
     - agent-skill
     - workflow-governance
@@ -175,7 +175,7 @@ metadata:
 | `references/skill-usage.md` | Skill 能力发现/注册机制 + 加载决策路由 + 渐进/完整读取分类 | Skill 选型纠结 / 前端设计类任务 / 本地无 Skill 可用 / 弱模型场景 |
 | `references/rules.md` | 编号工作纪律（地基）；引用具体规则编号或需查规则原文时 | 纪律争议 /「哪条规则这么说的」 |
 | `references/workflows.md` | 总纲流程细节、状态澄清流程、9 类分类型工作流、复用五问、质量门禁细节 | 现状模糊 / 任务类型不明 / 规划质量存疑 / 产品完善度诊断 |
-| `references/details.md` | 落地细则（工程规范 / 具体做法）——12 类（环境 / 前端 / 数据库 / 测试 / API / 部署运维 / 代码质量 / Git / 会话·备份·治理 / 开发日志深挖 / 铁律与纪律补充 / 源项目深挖补充），执行到对应场景时按类加载 | 症状关键词命中踩坑类别（构建工具链 / 框架版本 / 无障碍 / API 形态 / 部署 …）——**在不熟悉领域即兴发挥前，先查这里** |
+| `references/details.md` | 落地细则（工程规范 / 具体做法）——13 类（环境 / 前端 / 数据库 / 测试 / API / 部署运维 / 代码质量 / Git / 会话·备份·治理 / 开发日志深挖 / 铁律与纪律补充 / 源项目深挖补充 / 博客回流），执行到对应场景时按类加载 | 症状关键词命中踩坑类别（构建工具链 / 框架版本 / 无障碍 / API 形态 / 部署 …）——**在不熟悉领域即兴发挥前，先查这里** |
 | `references/security.md` | 密钥红线、应急响应、安全生产红线、回滚流程细节、提示注入防御、供应链/SBOM | 接触密钥 / 疑似泄露 / 对外发布 / 依赖引入 |
 | `references/never-list.md` | 永不清单（明确禁止项）——开工前 / 提交前 / 风险操作前快速自查 | 提交前 / 任何 L3 操作前 |
 | `templates/workspace-memory-template.md` | 第 10 节工作区 `memory/` 骨架——初始化项目根 `memory/` 目录（state / experience / preferences / task-log） | 项目尚无 `memory/` 目录 |

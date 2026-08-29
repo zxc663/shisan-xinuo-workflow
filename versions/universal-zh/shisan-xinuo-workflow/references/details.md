@@ -268,3 +268,32 @@
 201. [Git] 一次性令牌推送成功后，remote 改回无令牌 URL（安全）。
 202. [AI] 推理型模型默认 `max_tokens ≥ 512`：否则 token 全花在思考过程，输出为空。
 203. [AI] LLM / 视觉 API「HTTP 200 但内容为空」一律按失败处理并自动切换，不当作成功结果。
+
+## 13. 博客 CMS FR 阶段回流（2026-08-29 · 审计驱动晋升，条目 204-227）
+
+> 来源：某项目前端重做阶段的全量 agent 日志审计（8.2MB 事件流 + 53MB 会话转录，8 个页面会话）；按 SKILL.md §10 双击晋升制准入。技术栈标签标注绑定范围，失败「形态」本身可跨项目迁移。
+
+204. [构建] 「build 成功」≠ 新代码在线：monorepo 任务缓存命中会跳过 dist 重编（共享包改导出后下游读到旧类型/旧产物）——发布级改动一律 `--force` 重编，且重编后必须重启常驻进程（`node dist/main.js` 非 watch 模式，不重启新端点一直 404）。
+205. [构建] 杀掉包装进程后 node 子进程孤儿存活占端口，新实例静默绑定失败、冒烟全程打到旧构建——重启固定流程：按端口定位 PID → kill → 确认端口空 → 启动 → 核对新 PID；冒烟断言里放一个可观测的「新构建标志」。
+206. [前端] Tailwind v4 默认不扫 workspace 包源码：只在组件库内使用的工具类（任意值/尺寸类）会出现在 DOM 上但 CSS 不生成——各应用 globals 显式 `@source` 指向包源码；组件库新增 variant 后走查必须抽查 computed style，不能只看 DOM 类名。
+207. [前端] 共享包同时被 node(require) 与 Vite(import) 消费时，单 CJS 产物会被 Rollup 命名导出探测拦下（"X is not exported"）——双格式（CJS+ESM）+ `exports` 条件导出是正解；ESM 产物被 require 需带 .js 扩展。
+208. [前端] 自封装交互组件（Button 等）必须 forwardRef——不透传 ref 时 Radix `asChild` 接线静默断链：组件渲染了，但下拉/弹层永远打不开。
+209. [前端] sonner 等运行时注入「非 @layer 样式」会覆盖 @layer 里的自定义皮肤——皮肤选择器用双属性选择器提特异性。
+210. [前端] cva className 字符串内嵌单引号（如 `[class*='size-']`）会破坏外层引号——改选择器内引号，而非外层定界符。
+211. [前端] lucide-react 高版本移除品牌图标（`Github` 导出 TS2305）——品牌 mark 用内联 svg 替代，不为此降级图标库。
+212. [Next] RSC/SSR 的 fetch 必须绝对 base（相对 URL 直接 ERR_INVALID_URL）；`next build` 会对无 searchParams 的路由静态预渲染并真实执行取数——动态页面 `connection()` 转动态；实时钟点/问候语勿依赖 build 期求值（冻结在构建当刻）。
+213. [Next] middleware 默认全站拦截，必须 `matcher` 显式限定路径（否则 ISR 路由每请求添 edge 开销）；dev 的 Origin 白名单过严时只出 HTML 壳、React 永不水合。
+214. [契约] 响应形态分层断言：成功=裸数据；校验失败=2xx+`{ok:false,code:V1000}` 信封；真 404/403=真状态码；Nest POST 默认 201；PATCH 常为全量 Upsert——冒烟断言按层、按方法写，绝不一刀切 200/400。
+215. [契约] 信封客户端消费铁律：query 用 `data?.ok ? data.data : undefined`、mutation `!res.ok` throw——新页面漏解包 = 白屏或静默吞失败（高频复现缺陷）。
+216. [契约] query 参数契约层 `z.coerce.number()` 收口；契约新增必填字段同批改单测夹具；「动作→状态」用显式映射常量、禁 `toUpperCase()` 直转；DB Date 出库统一 toRow 序列化；契约枚举与 DB 枚举先对齐再写端点。
+217. [后端] 框架静态子路由必须注册在 `:id` 参数路由之前（`x/import` 在 `x/:id` 前），否则被参数路由吞掉。
+218. [DB] Prisma「已应用迁移被文本修改」drift 会要求 reset（=删库红线）——用 `migrate deploy` / `migrate resolve --applied` 对账绕过；`db push` 先落库未登记迁移的表，须手写对齐迁移 + resolve 补登记，否则生产 deploy 不建表。
+219. [DB] seed「空表才写」是幂等假象（占位数据静默挡住真实种子）——改 deleteMany+createMany 全量重建；Json 列直接存数组勿再 stringify（双重编码读回是字符串）。
+220. [E2E] Radix 系组件无原生 input（Checkbox = `button[role=checkbox]`）——按 role 选元素，`input[type=checkbox]` 定位必超时；对 Radix Dialog 确认按钮的快速点击可能被动画/焦点时序吞掉。
+221. [E2E] 删除类闭环断言以 API 复核后端状态为准，UI 文本断言会假阳（时序吞点击察觉不到残留）；走查数据验收后清回 seed 态（delete 而非改 seed）；触内存态的冒烟（限流计数/nonce）结束必须重启进程清态。
+222. [测试] 安全用例恶意夹具必须 raw 字节级构造——规矩库构造器会净化攻击载荷造成假绿；内存夹具 `new Array(n).fill(1)` 每槽实占 8B（名义 1MB 实占 8MB）——一律 `Buffer.alloc` 表达真实字节。
+223. [测试] 守卫类冒烟「只读化」设计：不存在的 id + 空 body 断言 403——RED 阶段即可全端点开跑且零数据变更。
+224. [Windows] PowerShell 五坑：`-Body` 字符串非 UTF-8（中文落库变 `?`）；here-string 触发 `$` 插值破坏围栏代码；`node -e` 内联含 `$` 被吞（改临时 .cjs 文件）；无 heredoc（DB 执行用 --file）；直启 CLI 报 not recognized（经 `pnpm exec`）。
+225. [Windows] Hyper-V 保留端口段会静默吞掉容器端口映射（容器起不来）——换端口绕行；Node 原生 fetch 取 Set-Cookie 只能用 `getSetCookie()`。
+226. [安全] 验证「未登录态」先删服务端会话而非只清浏览器 cookie（残留会话伪装已登录）；IP 落库与 IP 标注必须共用同一提取函数（req.ip 与代理头解析分叉会让「已赞标注」永不命中）。
+227. [流程] 复刻/重做类规格先以源码/现状为证呈报、由用户裁定方向再动手；测试脚本调后端前先读契约字段名（直觉命名必翻车：留言板是 `name` 不是 `nickname`）。
