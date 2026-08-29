@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.10.0
+  version: 1.11.0
   tags:
     - agent-skill
     - workflow-governance
@@ -176,7 +176,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 | `references/rules.md` | The numbered-rule discipline (foundation); whenever a numbered rule is cited, or when you need the letter of the rule | discipline dispute / "which rule says that" |
 | `references/skill-usage.md` | Skill capability discovery / registration mechanism + load-decision routing + progressive vs. full-read classification | choosing among skills / front-end or design work / no skill available locally / weak-model handling |
 | `references/workflows.md` | Master-sequence details, status-clarification flow, 9 task-type workflows, reuse chain, quality-gate details | fuzzy state / unknown task type / plan-quality doubt / product-polish diagnosis |
-| `references/details.md` | Landing details — concrete engineering rules in 12 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive); load by category when a step needs the specific how-to | symptom keyword matches a pitfall category (build tool / framework version / a11y / API shape / deploy …) — **check here BEFORE improvising in an unfamiliar area** |
+| `references/details.md` | Landing details — concrete engineering rules in 13 categories (environment / frontend / DB / testing / API contracts / ops / code quality / git / sessions·backup·governance / deep-dive from real dev logs / iron laws & agent discipline / source-project deep-dive / blog-CMS backflow); load by category when a step needs the specific how-to | symptom keyword matches a pitfall category (build tool / framework version / a11y / API shape / deploy …) — **check here BEFORE improvising in an unfamiliar area** |
 | `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM | secrets touched / suspected leak / publishing / dependency procurement |
 | `references/never-list.md` | The bright-line "never" list — quick self-check before starting, committing, or risky operations | before commit / before any L3 operation |
 | `templates/workspace-memory-template.md` | Initialize a project's `memory/` skeleton (state/experience/preferences/task-log) when the session-start scan finds it missing | project has no `memory/` yet |

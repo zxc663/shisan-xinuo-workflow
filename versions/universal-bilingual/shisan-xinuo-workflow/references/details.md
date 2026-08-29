@@ -268,3 +268,32 @@
 201. [Git] 一次性令牌推送成功后 remote 改回无令牌 URL。Restore token-less remote URL after a one-time-token push.
 202. [AI] 推理型模型 `max_tokens ≥ 512`，否则思考吃光预算输出为空。Reasoning models need max_tokens >= 512.
 203. [AI] LLM/视觉 API「HTTP 200 但内容为空」按失败处理并切换。Treat HTTP-200-empty as failure; switch/retry.
+
+## 13. 博客 CMS FR 阶段回流 · Blog-CMS FR-phase backflow（2026-08-29 · 审计驱动晋升 audit-driven promotion，条目 204-227）
+
+> 来源：全量 agent 日志审计（8.2MB 事件流 + 53MB 转录，8 个页面会话），按 §10 双击晋升制准入。From a full agent-log audit of one project's FR phase; promoted under the two-strike rule.
+
+204. [构建 Build] build 成功 ≠ 新代码在线：缓存命中跳过重编 + 常驻进程不重启则新端点 404——发布级改动 --force 重编 + 重启进程。Build success ≠ new code online: force-rebuild, then RESTART the resident process.
+205. [构建 Build] 杀包装进程后 node 子进程孤儿占端口，新实例静默绑失败——按端口定位 PID→kill→确认空→启动→核对新 PID。Orphaned child holds the port; verify new PID after restart.
+206. [前端 FE] Tailwind v4 不扫 workspace 包源码：组件库独有类在 DOM 上但 CSS 不生成——应用 globals 补 `@source` 指向包源码，新 variant 走查查 computed style。TW4 skips workspace sources — add `@source`; spot-check computed styles.
+207. [前端 FE] 共享包双消费（require+import）：单 CJS 被 Rollup 命名导出探测拦——双格式 + exports 条件导出。Dual CJS+ESM with conditional exports is the fix.
+208. [前端 FE] 自封装交互组件必须 forwardRef——否则 Radix asChild 静默断链（组件在、弹层永不开）。Self-wrapped interactive components must forwardRef.
+209. [前端 FE] sonner 等运行时非 @layer 注入覆盖皮肤——双属性选择器提特异性。Runtime-injected styles override @layer skins — raise specificity.
+210. [前端 FE] cva className 内嵌单引号破坏外层引号——换内层引号。Single quotes inside cva strings break outer quoting.
+211. [前端 FE] lucide 高版本移除品牌图标（TS2305）——内联品牌 svg。Brand icons removed upstream — inline the SVG.
+212. [Next] SSR fetch 须绝对 base；build 期静态预渲染真执行取数——动态页 connection()；实时时钟勿 build 期求值。Absolute fetch base; connection() for dynamic pages; no build-time clocks.
+213. [Next] middleware 必须 matcher 限定路径；dev Origin 白名单过严只出 HTML 壳不水合。Narrow middleware with matcher; strict dev Origin blocks hydration.
+214. [契约 Contract] 响应形态分层断言：裸数据 / 2xx+ok:false 信封 / 真 404·403；POST=201、PATCH=全量 Upsert——按层按方法写断言。Assert response shapes per layer and method.
+215. [契约 Contract] 信封消费铁律：query `data?.ok ? data.data : undefined`、mutation `!res.ok` throw——漏解包必白屏。Envelope unwrapping iron law.
+216. [契约 Contract] query 参数 z.coerce 收口；契约加字段同批改夹具；动作→状态显式映射禁 toUpperCase；Date 出库 toRow。Coerce at contract layer; fixtures in same commit; explicit mappings; toRow dates.
+217. [后端 BE] 静态子路由注册在 :id 参数路由前，否则被吞。Static subroutes before :id routes.
+218. [DB] Prisma 迁移 drift 禁 reset（删库红线）——deploy/resolve --applied 对账；db push 未登记的表补手写迁移。Never reset on drift; reconcile instead.
+219. [DB] seed 空表才写是幂等假象——全量重建；Json 列直接存数组勿 stringify。Seed by full rebuild; store arrays raw in Json columns.
+220. [E2E] Radix 无原生 input（用 role 选择器）；Dialog 确认钮快速点击可被吞。Radix has no native inputs — select by role; dialog clicks can be swallowed.
+221. [E2E] 删除闭环以 API 复核为准（UI 文本断言假阳）；走查数据清回 seed 态；内存态冒烟结束重启进程。Assert delete-flows via API; reset data; restart after memory-state smokes.
+222. [测试 Test] 恶意夹具 raw 字节级构造（构造器净化载荷造假绿）；内存夹具 Buffer.alloc（名义字节≠实占）。Raw-byte malicious fixtures; Buffer.alloc memory fixtures.
+223. [测试 Test] 守卫冒烟只读化：不存在 id + 空 body 断言 403，零数据变更。Read-only guard smokes: 403 with nonexistent id.
+224. [Windows] 五坑：-Body 非 UTF-8；here-string $ 插值；node -e $ 被吞（用 .cjs 文件）；无 heredoc（--file）；CLI 直启需 pnpm exec。Five PowerShell pits.
+225. [Windows] Hyper-V 保留端口段吞容器端口——换端口；fetch 取 Set-Cookie 用 getSetCookie()。Excluded port ranges eat mappings; getSetCookie().
+226. [安全 Security] 验证未登录态先删服务端会话（清 cookie 不够）；IP 落库与标注同口径提取。Server-side session delete; one IP extraction function.
+227. [流程 Process] 复刻规格先以源码为证呈报用户裁定；测试脚本调后端前先读契约字段名。Verify specs against source first; read contracts before calling APIs.

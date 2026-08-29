@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「调研驱动的
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体 / any CLI encoding agent supporting Agent Skills"
 metadata:
-  version: 1.10.0
+  version: 1.11.0
   tags:
     - agent-skill
     - workflow-governance
@@ -140,7 +140,7 @@ metadata:
 | `references/rules.md` | 编号纪律（地基）The numbered-rule discipline (foundation)；引用规则编号 / 需查原文时 a numbered rule is cited |
 | `references/skill-usage.md` | Skill 能力发现 / 注册机制 + 加载决策路由 + 渐进 / 完整读取分类；任务涉及 Skill 选用、前端 / 设计类任务、本地无 Skill 获取、弱模型处理时加载 Skill capability discovery / registration + load-decision routing + progressive-vs-full-read classification; load when choosing a Skill, doing front-end/design work, getting a Skill when none is local, or weak-model handling |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
-| `references/details.md` | 落地细则（工程规范 / 具体做法）12 类：环境/前端/数据库/测试/API/部署运维/代码质量/Git/会话·备份·治理/深挖补充/铁律纪律/源项目深挖 Landing details, 12 categories (env/frontend/DB/testing/API/ops/code quality/git/sessions/deep-dive/iron laws/source-project), load by category |
+| `references/details.md` | 落地细则（工程规范 / 具体做法）13 类：环境/前端/数据库/测试/API/部署运维/代码质量/Git/会话·备份·治理/深挖补充/铁律纪律/源项目深挖 Landing details, 13 categories (env/frontend/DB/testing/API/ops/code quality/git/sessions/deep-dive/iron laws/source-project/blog backflow), load by category |
 | `references/security.md` | 密钥红线、应急、回滚细节 Secrets, incident, rollback, prompt-injection, supply-chain |
 | `references/never-list.md` | 永不清单（明线）Never list — 开工/提交/风险前自查 quick self-check before start/commit/risky ops |
 | `templates/workspace-memory-template.md` | 初始化工作区 `memory/` 骨架（state / experience / preferences / task-log），会话开工自动创建时用它 Initialize the workspace `memory/` skeleton (state / experience / preferences / task-log); use it when auto-creating on session start |

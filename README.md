@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill for AI coding agents: it injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.9.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.11.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
@@ -20,9 +20,9 @@
 
 ## 一句话定位 · One-line positioning
 
-一个**渐进式披露 + 按需注入 + 判级动态路由**的工程治理元 Skill：把 **47 条纪律规则 + 11 步强制主流程（每步出口产物门禁）+ 203 条落地细则（12 类）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。价值：**治理一致性、可审计性、防假实现**；代价：依赖平台注入与 Agent 自律，无运行时强制。
+一个**渐进式披露 + 按需注入 + 判级路由 + 冲突仲裁**的工程治理元 Skill：把 **11 步强制主流程（每步出口产物门禁）+ 编号纪律规则 + 227 条落地细则（13 类，带触发症状索引）+ 冲突仲裁序 + 双模式（普通/目标/安静）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**v1.10 起的规则增量全部由真实项目的全量 agent 日志审计实证驱动**（工具调用量、失败率、细则命中率、上下文成本均有数据可查，见 `EVIDENCE.md` §七）。价值：**治理一致性、可审计性、防假实现、注意力经济**（state 硬上限 / 同会话禁重载 / 按需加载）；代价：依赖平台注入与 Agent 自律，无运行时强制。
 
-A progressive, on-demand, triage-routed governance meta-skill: **47 discipline rules + an 11-step mandatory master sequence (per-step exit-artifact gates) + 203 landing details (12 categories) + templates / prompt budget / session hooks / review sub-agents / NEVER list**, packaged into a cross-platform, auditable governance layer. Value: consistency, auditability, no-fake-completions; cost: injection-dependent, zero runtime enforcement.
+A progressive, on-demand, triage-routed governance meta-skill with conflict arbitration: **an 11-step mandatory master sequence (per-step exit-artifact gates) + numbered discipline rules + 227 landing details (13 categories, symptom-triggered index) + conflict arbitration order + dual modes + templates / prompt budget / session hooks / review sub-agents / NEVER list**, packaged into a cross-platform, auditable governance layer. **Rule growth since v1.10 is evidence-driven** — every addition traces to a full agent-log audit of real projects (tool-call volume, failure rates, detail-layer hit rate, context cost; see `EVIDENCE.md`). Value: consistency, auditability, no-fake-completions, attention economy (state caps / no same-session reloads / on-demand loading); cost: injection-dependent, zero runtime enforcement.
 
 ---
 
@@ -80,7 +80,8 @@ Platform hard-load (Step 0: detect → locate the REAL injection point → on-de
       ├─ 1 接收 → 2 经验库必读 → 3 调研实际资源 → 4 联网调研（必须）
       ├─ 5 复用调研（铁律）→ 6 复述理解 → 7 疑问必问 → 8 产品视角+分级+回滚点
       ├─ 9 规划（双调研后，含 3-5 条可验证验收标准）→ 10 执行 → 11 自查与归档
-      └─ 规则（47 条，地基）Rules + 落地细则（203 条 / 12 类，按类按需加载）Details
+      └─ 规则（编号纪律，地基）+ 落地细则（227 条 / 13 类，触发症状按需）+ 冲突仲裁序
+      │   Rules + details (symptom-triggered, on demand) + arbitration order
 ```
 
 **渐进式（Progressive）体现在三层**：
@@ -99,8 +100,8 @@ Platform hard-load (Step 0: detect → locate the REAL injection point → on-de
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需（9 行精简）/ 强制（`injection-core.md` 核心全文硬加载）双模式 | `SKILL.md` §3 / `references/injection-core.md` / `platform-adaptation.md` |
 | 强制总纲主流程（11 步）| 每步出口产物门禁，可检查、可审计、不可跳步 | `SKILL.md` §2 / `references/workflows.md` |
 | L1 快速通道 + 判级速查 | 判级先行（L3 封闭清单 6 项，10 秒定论，判不了默认 L2）；L1 走「复述→最小修改→最小验证→汇报」 | `SKILL.md` §2.3 / §5 |
-| 47 条规则地基 | 工作纪律 / 思考 / 执行 / 协作 / 安全 / 交付 / 回滚 | `references/rules.md` |
-| 203 条落地细则（12 类）| 环境 / 前端 / 数据库 / 测试 / API / 运维 / 代码质量 / Git / 会话 / 深挖 / 铁律 / 源项目深挖 | `references/details.md` |
+| 编号规则地基 | 工作纪律 / 思考 / 执行 / 协作 / 安全 / 交付 / 回滚；细则带触发症状索引 | `references/rules.md` / `details.md` §9 索引 |
+| 227 条落地细则（13 类）| 环境 / 前端 / 数据库 / 测试 / API / 运维 / 代码质量 / Git / 会话 / 深挖 / 铁律 / 源项目深挖 / 博客回流（审计驱动晋升） | `references/details.md` |
 | 永不清单 | 7 类明线禁止项（假完成 / 密钥 / 跳步 / Git / 复用 / 提问 / 提示注入）一页自查 | `references/never-list.md` |
 | 记忆文件协议 + 压缩重载 | 外部化长期记忆，压缩/重置后先读再继续 | `SKILL.md` §10 / `workflows.md` |
 | 关键必问 + 原子操作锁 | L3 先问；破坏性操作先出命令清单等确认 | `SKILL.md` §4 / §7 |
@@ -108,6 +109,7 @@ Platform hard-load (Step 0: detect → locate the REAL injection point → on-de
 | 可信联网调研 + 安装强制校验 | 可信信号分级；「开源 ≠ 安全」强制校验 | `workflows.md` §0.2 / `security.md` §1.5 |
 | 提示注入防御 + 供应链/SBOM | 信任边界、指令层级、依赖校验、扫描、SBOM | `security.md` §6-7 |
 | 双模式（普通 / 目标）+ 安静模式 | 关键必问 vs 无人值守；L1 只汇报结果 | `SKILL.md` §5 |
+| 冲突仲裁序 + 经验回流 | 指令源冲突五级取最优；踩坑双击晋升进细则 | `SKILL.md` §4 / §10 |
 | 配套模板 | 规划 / 验收 / 任务记录 / 复盘 / 回滚点 / 提示词预算 6 类模板 | `templates/` |
 | 会话启动钩子 | 平台支持时自动打印纪律横幅（配置示例） | `templates/hooks/` |
 | 审查 / 风险 / 安全子代理 | critic / risk-reviewer / security-auditor 子代理模板 | `templates/agents/` |
@@ -184,9 +186,9 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── templates/                  ← 配套模板（规划/验收/任务记录/复盘/回滚点/提示词预算/会话钩子/审查子代理）
 │   └── references/                 ← 按需加载的引用
 │       ├── injection-core.md       ← 硬加载核心模板（强制注入时全文写入平台注入点）
-│       ├── rules.md                ← 47 条规则地基
+│       ├── rules.md                ← 编号规则地基
 │       ├── workflows.md            ← 前置 0.0-0.4 + 9 类任务 + 门禁 + 记忆文件协议 + 重载顺序
-│       ├── details.md              ← 203 条落地细则 / 12 类（踩坑日志）
+│       ├── details.md              ← 227 条落地细则 / 13 类（踩坑日志 + 审计回流）
 │       ├── platform-adaptation.md  ← 注入点、提问降级链、结构化协议、会话钩子协议
 │       ├── security.md             ← 安全红线、安装校验、回滚、提示注入、供应链/SBOM、残留扫描
 │       ├── never-list.md           ← 永不清单（明线禁止，自查用）
@@ -246,7 +248,7 @@ shisan-xinuo-workflow/              ← 仓库根
 - **依赖强提示词注入 Strong-prompt-injection dependent**：本质是规范而非工具——无运行时、无强制；注入被跳过或描述未命中时，它什么也不会做。It is a specification, not a tool; if injection is skipped or the description fails to match, it does nothing.
 - **依赖 Agent 自律 Agent self-discipline**：无脚本强制执行；懒惰的 Agent 可以不遵守规则，也无法感知自己被压缩——用自检双守卫 + 显式重载顺序缓解。No scripts enforce anything; mitigated by self-check guards + explicit reload sequence.
 - **上下文成本 Context cost**：即使渐进式，治理层仍消耗上下文——这是换取一致性的代价；规则文件约 30 行、记忆文件一屏内。A governance layer consumes context — the trade-off for consistency.
-- **细则体量大 Detail volume**：落地细则 203 条较多——这正是按类按需加载的原因。203 rules is heavy — hence per-category on-demand loading.
+- **细则体量大 Detail volume**：落地细则 227 条较多——这正是「触发症状索引 + 按类按需加载」存在的原因；且 v1.10 起新增细则须经双击晋升制审计准入，不做无据膨胀。227 rules is heavy — hence the symptom-triggered index and per-category loading; since v1.10 new details enter only via the audited two-strike backflow rule.
 - **平台检测是启发式 Detection heuristics**：靠目录 / 环境变量信号判断；无法确定时直接问用户，不猜。Best-effort; asks rather than guesses when ambiguous.
 - **不捆绑工具 Zero tooling bundled**：刻意零脚本 / 零依赖 / 零网络；能力缺口用「兜底」解决。Deliberately zero scripts / dependencies / network; gaps handled by fallbacks.
 - **规范演进 Spec evolution**：基于 Agent Skills 开放标准构建；不支持 Skill 的旧平台需手动加载。Built on the Agent Skills open standard; older platforms need manual loading.
@@ -267,7 +269,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Sources
 
-**数据口径（实测）**——本 Skill 的 203 条落地细则 / 12 类，提炼自作者真实生产开发沉淀；源文档存放于独立工作项目目录，**不随本公开仓 / zip / npm 分发**，此处给出可核实的实测数据：
+**数据口径（实测）**——本 Skill 的 227 条落地细则 / 13 类（其中 204-227 为 2026-08-29 博客项目全量日志审计回流），提炼自作者真实生产开发沉淀；源文档存放于独立工作项目目录，**不随本公开仓 / zip / npm 分发**，此处给出可核实的实测数据：
 
 | 源文档（工作项目目录） | 实测大小 | 内容 |
 |---|---|---|
@@ -277,14 +279,16 @@ shisan-xinuo-workflow/              ← 仓库根
 | `踩坑经验库.md` | 59.8 KB / ≈3.6 万字符 / 323 行 | 踩坑条目库 |
 | `AGENTS.md` / `TRAE.md` / `README-工作区导航.md` 等 | — | 工作区规则文档（去敏提炼增量） |
 
-提炼方式：分片子代理审查（覆盖开发日志 / 踩坑库 / AI 知识沉淀 / 交接清单 / 规则文档）→ 去重 → 泛化脱敏 → 形成 `details.md` 203 条 / 12 类 + 个人经验手册。机制部分按 [Agent Skills 开放规范](https://agentskills.io/)及其[最佳实践](https://agentskills.io/skill-creation/best-practices)重写（渐进式披露、Gotchas、Checklist、Plan-Validate-Execute）。
+提炼方式：分片子代理审查（覆盖开发日志 / 踩坑库 / AI 知识沉淀 / 交接清单 / 规则文档）→ 去重 → 泛化脱敏 → 形成 `details.md` 前 203 条 / 12 类 + 个人经验手册（v1.11.0 起第 13 类由项目审计回流增补）。机制部分按 [Agent Skills 开放规范](https://agentskills.io/)及其[最佳实践](https://agentskills.io/skill-creation/best-practices)重写（渐进式披露、Gotchas、Checklist、Plan-Validate-Execute）。
 
-**EN** — 203 landing details in 12 categories are distilled from real production work (source docs live in a separate working-directory, not shipped here). The main dev-log is **863.6 KB / ~501K chars / 8,299 lines** (the basis of the "800KB+ development history" claim); mechanics rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
+**EN** — the first 203 landing details in 12 categories are distilled from real production work (entries 204-227 added in v1.11.0 via audit-driven backflow) (source docs live in a separate working-directory, not shipped here). The main dev-log is **863.6 KB / ~501K chars / 8,299 lines** (the basis of the "800KB+ development history" claim); mechanics rewritten against the [Agent Skills specification](https://agentskills.io/) and its [best practices](https://agentskills.io/skill-creation/best-practices).
 
 ---
 
 ## 版本历史 · Changelog
 
+- **v1.11.0** — **细则第 13 类：博客项目审计回流**：依 SKILL.md §10 双击晋升制，从博客 CMS 前端重做阶段的全量 agent 日志审计（8.2MB 事件流 + 53MB 会话转录 / 8 页面会话 / 走查断言 90+）蒸馏 24 条新细则（204-227），覆盖构建缓存与常驻进程 / Tailwind v4 workspace 扫描 / 共享包双消费 / 契约分层断言 / Prisma drift / Radix 走查工具链 / Windows 工具链 / 安全会话验证八组；「12 类」全仓改「13 类」；README 定位重构为证据驱动叙事。Details category 13: 24 audit-promoted entries from a real project's agent-log audit; counts updated repo-wide.
+- **v1.10.0** — **冲突仲裁序 + 细则触发症状索引 + state 硬上限 + 经验回流制 + 同会话重载禁令 + 离线降级**：§4 新增五级冲突仲裁序（项目纪律 > 注入核心 > 设计稿 > 本 Skill 默认 > 其他 Skill 默认，只保留胜者）；§9 引用地图升级为触发症状索引（修复细则层零命中）；§10 state.md 一屏硬上限 + `archive-YYYY-MM` 归档协议、任务记录必附会话 id + 提交哈希、经验回流双击晋升制；§8 新增同会话重载禁令并删除两条跨节重复；§2.2 第 4 步离线降级合法化（`degraded-offline`）；「47 条」计数漂移全仓清除。Conflict arbitration order, symptom-triggered reference index, state.md hard cap, experience backflow, same-session reload ban, offline degradation — all evidence-driven (EVIDENCE.md §七).
 - **v1.9.1** — **SessionEnd 钩子三语补齐（漂移修复）**：中文/双语版补齐 `session-end.example.sh` + `hooks.example.json` 的 `SessionEnd` 条目 + `platform-adaptation.md §3.2` 文档（此前仅英文主版完整）；三语版本统一 bump 1.9.1；本地重建 dist v1.9.1.zip（git archive pathspec，泄漏 0——personal/memory 检测全 0）。SessionEnd hook sync to zh/bilingual (drift fix) + bump 1.9.1.
 - **v1.9.0** — **推广先导 + 元数据规范化**：SKILL.md frontmatter 规范化（顶层 `version`/`tags` 迁入 `metadata.*`，符合 Agent Skills 标准可移植字段，`metadata.tags` 供 [skills.sh](https://skills.sh/) 按分类收录）；README「安装」新增**开放式技能生态（skills.sh）一键安装入口**（`npx skills add zxc663/shisan-xinuo-workflow --skill shisan-xinuo-workflow`，中文版 `--skill shisan-xinuo-workflow-zh`、双语版 `--skill shisan-xinuo-workflow-bilingual`）；`.gitignore` 增加 `versions/personal-zh/` 与 `memory/` 防护，杜绝个人版被技能市场扫描收录。Promo-first release: frontmatter metadata spec-normalization, skills.sh one-click install entry, personal-edition leak guard via .gitignore.
 - **v1.8.0** — **Skill 使用模块 + 决策审计归档 + 规则扩充至 47 条 + 目标模式窄化**：新增 `references/skill-usage.md`（能力发现/注册机制、加载决策路由、渐进 vs 完整读取分类、Agent 注册维度与 Skill 工具注册校验）；`rules.md` 新增 §44-47（决策分层与审计归档 / 备份纪律·本地优先 / 成本与资源意识 / 注入分层与硬注入提醒）；双模式补决策纪律（普通模式重大决策即时复述留档；目标模式仅 L3/严重阻塞暂停、每里程碑强制留档、本地备份优先不默认 git push）；判级同步链单一权威源（SKILL.md §5.2 → injection-core → 全局注入副本）；注入点「层级」列 + 分层注入规则；安装期「注入模式选择提问」中英双语；规则计数 43→47 全仓校正；双语版按增量注入保留整页排版。Skill-usage module, decision-audit archive, rules to 47, goal-mode narrowing, injection layering, triage sync chain.
