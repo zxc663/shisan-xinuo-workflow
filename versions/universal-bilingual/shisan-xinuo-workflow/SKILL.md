@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「调研驱动的
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体 / any CLI encoding agent supporting Agent Skills"
 metadata:
-  version: 1.9.1
+  version: 1.10.0
   tags:
     - agent-skill
     - workflow-governance
@@ -26,8 +26,8 @@ metadata:
 
 # 十三希诺通用 Agent 工作流 · Shisan Xinuo Agent Workflow
 
-> **定位：流程为魂、规则为基。** 通用工作执行流程是灵魂（每个任务强制通用的推进骨架），47 条纪律规则是地基（约束每步该守什么）；二者强耦合、相互依托——流程承载规则落地，规则约束流程执行，缺一不可。
-> **Positioning: workflow is the soul, rules are the foundation.** The universal operating sequence is the soul (the mandatory skeleton every task advances along); the 47 rules are the foundation (what each step must observe). Strongly coupled and mutually dependent — the workflow carries the rules into execution; the rules govern the workflow.
+> **定位：流程为魂、规则为基。** 通用工作执行流程是灵魂（每个任务强制通用的推进骨架），编号纪律规则（`references/rules.md`）是地基（约束每步该守什么）；二者强耦合、相互依托——流程承载规则落地，规则约束流程执行，缺一不可。
+> **Positioning: workflow is the soul, rules are the foundation.** The universal operating sequence is the soul (the mandatory skeleton every task advances along); the numbered discipline rules (`references/rules.md`) are the foundation (what each step must observe). Strongly coupled and mutually dependent — the workflow carries the rules into execution; the rules govern the workflow.
 
 ## 1. 何时使用 / 何时不用 · When to use / when NOT to use
 
@@ -55,7 +55,7 @@ metadata:
 | 1 | 接收指令：第一性原理（本质 / 必要 / 惯性）Receive; first principles | 任务本质一句话 One-sentence essence |
 | 2 | 经验库必读：按症状检索 Experience log first | 命中记录 Hit record |
 | 3 | 调研实际资源：代码 + 环境 + 工作区 + Skill/MCP Survey actual resources | 现状事实清单 Status fact list |
-| 4 | 联网调研·必须 Online survey (mandatory)：调研市面开源成熟项目 / 库 / 方案，收集**可验证可信信号**（stars / 下载量 / 维护 / 被采用 / 口碑 / 安全通告），不以「网上都说火」为依据；清单见 workflows.md §0.2 research mature open-source projects; collect verifiable trust signals, never "it's popular"; see §0.2 | 市面方案调研记录 Market solution survey record（候选 + 可信信号 + 安全风险） |
+| 4 | 联网调研·必须 Online survey (mandatory)：调研市面开源成熟项目 / 库 / 方案，收集**可验证可信信号**（stars / 下载量 / 维护 / 被采用 / 口碑 / 安全通告），不以「网上都说火」为依据；清单见 workflows.md §0.2 research mature open-source projects; collect verifiable trust signals, never "it's popular"; see §0.2。**离线 / 无网络是合法降级**：跳过远程调研、产物标注 `degraded-offline`、以第 3 步本地证据 + 经验库替代 offline is a legitimate degradation: mark `degraded-offline`, substitute local evidence + experience log | 市面方案调研记录 Market solution survey record（候选 + 可信信号 + 安全风险 + 降级 degradation） |
 | 5 | 复用调研·铁律 Reuse survey (iron law)：能复用就复用，风格适配 / 二次开发皆可，绝不自研组件 reuse, adapt, or second-dev; never hand-roll | 复用结论 Reuse conclusion |
 | 6 | 复述理解：目标 / 边界 / 验收 Restate understanding | 用户确认 User confirmation |
 | 7 | 疑问必问：不理解 / 方向偏移→提问 Ask on doubt | 提问记录 Ask record |
@@ -85,6 +85,8 @@ metadata:
 影响重大的决策必须在行动前与用户确认。触发：方向不明或歧义、需求冲突、权限/密钥、破坏性操作（删除/迁移/覆盖/发布）、架构选型、范围扩大、方案分歧，**及对需求理解不尽确定**。Consequential decisions must be confirmed before acting. Triggers: ambiguity, **not-fully-certain understanding**, conflict, permissions/secrets, destructive ops, architecture, scope, proposals. **问清楚比问少了更重要，理解需求比模糊执行更重要 / Asking clearly beats asking less; understanding the need beats executing it vaguely.**
 
 **降级链 Downgrade chain**：① 平台原生提问工具 Native asking tool；② 不可用 → 结构化文本协议（a 理解 b 选项优缺点 c 风险后果 d 推荐），**结束回合等待** end the turn and wait。L1 常规不问；L3 必问。**偏好记忆 Preference memory**：用户确认选择（技术栈/语言/风格）后写入 memory/「用户偏好」字段，同类场景直接采用不再重复问；只覆盖已确认重复偏好，绝不覆盖密钥与破坏性操作。Do not over-ask on L1; always ask on L3; confirmed preferences go to the memory file and are reused, never secrets or destructive ops.
+
+**冲突仲裁序 Conflict arbitration order**——两个指令源相抵触时按固定顺序取最优、**只保留胜者**（删败方引用，绝不两听、不折中）：① 用户/项目纪律（项目规则文件、已确认 D 系决策、设计契约）the brief wins → ② 平台硬注入核心 injected core → ③ 当前设计稿/brief → ④ 本 Skill 默认值 this skill's defaults → ⑤ 其他 Skill 默认 other skills' defaults。任务记录留一行仲裁（来源 A vs B → 采用 X，因为…）；同一理由裁决两次即升格为常设决策，写入 `memory/preferences.md`。When two sources disagree, follow this fixed order, keep only the winner, log one arbitration line; a conflict resolved twice for the same reason becomes a standing preference.
 
 ## 5. 双模式与任务分级 · Execution modes & task triage
 
@@ -116,8 +118,8 @@ metadata:
 
 ## 8. 易错点 · Gotchas
 
-- **判级内耗 Triage burnout**：琐碎判级一句话定论——改名 / 文案 / 格式类一律 L1 直接做；L3 只认第 5 节封闭清单，清单外不构成 L3。为判级展开论证或反复纠结是 token 浪费的最大来源之一。Settle trivial triage in one sentence; L3 honors only the closed list in section 5.
-- **判级 ≠ 理解确认 Triage ≠ understanding confirmation**：判级可快、一句话定论；但目标/边界/方向有歧义、理解不尽确定时，**普通模式也必须用提问工具问清楚再推进**——别因「已判级 L2」就埋头直冲。Triage is fast and one-sentence, but when goal/boundaries/direction are ambiguous or understanding is not fully certain, normal mode must ask and clarify before proceeding — don't rush past on "already triaged".
+- **判级内耗 Triage burnout**：琐碎判级一句话定论——改名 / 文案 / 格式类一律 L1 直接做；L3 只认第 5 节封闭清单，清单外不构成 L3。为判级展开论证或反复纠结是 token 浪费的最大来源之一。Settle trivial triage in one sentence; L3 honors only the closed list in section 5.（判级 ≠ 理解确认 Triage ≠ understanding confirmation——以第 5 节为权威，authoritative there.）
+- **同会话重载是纯浪费 Same-session reload is waste**：当前会话已加载的 Skill / 引用，同会话下一任务不再重读；「每会话重载」适用于跨会话，仅压缩后 / 显式要求 / 源变更时重读。Skills already loaded in this session are not re-read for the next task in it; reload only after compaction, explicit request, or source change.
 - **流程不可跳步**：调研（第 3 步）与复用调研（第 5 步）最常被跳过，是最常见违规。The sequence is unskippable; survey steps are the most-skipped.
 - **反复审查先做产品完善度诊断**：以产品角度定位缺陷（功能逻辑/代码耦合/UI/互动流程/其他，§0.3），别只查代码正确性。Diagnose by product dimension before code.
 - **触发关键词是活开关**：目标模式关键词会静默改变决策模型，每条消息都要检查。Goal-mode keywords are live switches.
@@ -135,7 +137,7 @@ metadata:
 |---|---|
 | `references/injection-core.md` | 第 3 节强制注入（硬加载）时——平台无关核心模板，全文写入检测到的平台注入点 Section 3 forced injection — the platform-agnostic core template, written in full into the detected injection point |
 | `references/platform-adaptation.md` | 第 3 节平台检测；提问降级链；结构化协议全文 Section 3 detection; asking chain; protocol |
-| `references/rules.md` | 47 条纪律（地基）The 47-rule discipline (foundation) |
+| `references/rules.md` | 编号纪律（地基）The numbered-rule discipline (foundation)；引用规则编号 / 需查原文时 a numbered rule is cited |
 | `references/skill-usage.md` | Skill 能力发现 / 注册机制 + 加载决策路由 + 渐进 / 完整读取分类；任务涉及 Skill 选用、前端 / 设计类任务、本地无 Skill 获取、弱模型处理时加载 Skill capability discovery / registration + load-decision routing + progressive-vs-full-read classification; load when choosing a Skill, doing front-end/design work, getting a Skill when none is local, or weak-model handling |
 | `references/workflows.md` | 总纲细节、澄清流程、9 类工作流、复用五问、质量门禁 Master details, clarification, task types, reuse, gates |
 | `references/details.md` | 落地细则（工程规范 / 具体做法）12 类：环境/前端/数据库/测试/API/部署运维/代码质量/Git/会话·备份·治理/深挖补充/铁律纪律/源项目深挖 Landing details, 12 categories (env/frontend/DB/testing/API/ops/code quality/git/sessions/deep-dive/iron laws/source-project), load by category |
@@ -145,9 +147,11 @@ metadata:
 
 **上下文缺失自检（压缩不可感知）Context-loss self-check**：显式信号（用户提示重载/平台重置）→ **立即按重载顺序执行 Reload sequence**：①重读本 SKILL.md；②重读记忆文件 `memory/`；③重读当前步骤引用；④向用户复述任务与验收再继续；关键节点（开工/提交/重大决策）先默写核心要素（总纲步序、模式、回滚、必问），复述不全即重读。On explicit reload/reset signals: ① re-read SKILL.md → ② re-read memory file → ③ re-read needed references → ④ restate task + acceptance to the user; self-check core elements (master steps, mode, rollback, ask) before key milestones.
 
+**加载纪律 Loading discipline**：只在（a）命中引用行内的触发症状、（b）走到点名步骤、（c）用户显式要求时打开引用，绝不预载；某份引用影响决策时在任务记录留一行引用。Open a reference only on its trigger symptom, the step naming it, or explicit user request — never preload; cite it one-line in the task record when it changed a decision.
+
 ## 10. 留档与知识纪律（摘要）· Records & knowledge discipline (summary)
 
-任务记录随会话维护（理解 → 验收 → 决策 → 结果），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；**记忆文件协议（外部化长期记忆）**：项目约定位置维护 `memory/`（当前目标 / 决策 / 约束 / 进度 / 踩坑，一屏内），关键节点与上下文 40-60% 前写入，压缩 / 重置 / 会话开始**先读再继续**；**用户偏好**：memory/ 维护「用户偏好」字段（已确认的技术栈/语言/风格），会话开始读取、同类决策复用不再重复问（细节见 §11 与 `references/workflows.md`）；文档与代码同批、归档前有现行等价物。Task record per session with step artifacts; dual-write knowledge at session end; experience log mandatory at start; **memory-file protocol**: maintain `memory/` per project convention, write at milestones & before 40-60% context, read first after compaction/reset; **user preferences**: keep confirmed choices in the memory file and reuse them to avoid re-asking; docs ship with code. **配套模板 Templates**：规划 / 验收 / 任务记录 / 复盘 / 回滚点 / 提示词预算模板 + 会话钩子（`templates/hooks/`）+ 审查子代理（`templates/agents/`）+ 工作区记忆骨架（`templates/workspace-memory-template.md`）位于 `templates/`（复制填写）。Templates (plan/acceptance/task-record/retrospective/rollback/prompt-budget), hooks, review sub-agents, and the workspace-memory skeleton live in `templates/` (copy & fill).
+任务记录随会话维护（理解 → 验收 → 决策 → 结果），**每条记录附带平台会话 id（暴露时）与产出提交哈希**（使会话→提交→质量可追溯），各步出口产物随记录留档；会话结束双写知识（知识版 + 个人版）；经验库开工必读（按症状检索，路径项目自定）；**记忆文件协议（外部化长期记忆）**：项目约定位置维护 `memory/`（当前目标 / 决策 / 约束 / 进度 / 踩坑，一屏内），关键节点与上下文 40-60% 前写入，压缩 / 重置 / 会话开始**先读再继续**；**用户偏好**：memory/ 维护「用户偏好」字段（已确认的技术栈/语言/风格），会话开始读取、同类决策复用不再重复问（细节见 §11 与 `references/workflows.md`）；文档与代码同批、归档前有现行等价物。Task record per session (carrying session id + commit hashes for traceability) with step artifacts; dual-write knowledge at session end; experience log mandatory at start; **memory-file protocol**: maintain `memory/` per project convention, write at milestones & before 40-60% context, read first after compaction/reset; **user preferences**: keep confirmed choices in the memory file and reuse them to avoid re-asking; docs ship with code. **配套模板 Templates**：规划 / 验收 / 任务记录 / 复盘 / 回滚点 / 提示词预算模板 + 会话钩子（`templates/hooks/`）+ 审查子代理（`templates/agents/`）+ 工作区记忆骨架（`templates/workspace-memory-template.md`）位于 `templates/`（复制填写）。Templates (plan/acceptance/task-record/retrospective/rollback/prompt-budget), hooks, review sub-agents, and the workspace-memory skeleton live in `templates/` (copy & fill).
 
 ## 11. 上下文预算与工作区 `memory/` 约定 · Context budget & workspace `memory/` convention
 
@@ -160,11 +164,12 @@ metadata:
 
 **工作区 `memory/` 约定（跨会话记忆统一归档）Workspace `memory/` convention**：项目根 `memory/`——任务记录 / 踩坑库 / 偏好 / 会话状态统一归档，**任何会话（含下一个 AI）开工必扫该目录**，不存在则自动创建骨架（模板 `templates/workspace-memory-template.md`）。Project root `memory/` — task records / pitfall log / preferences / session state archived in one place; **any session (incl. the next AI) must scan it on start**; auto-create the skeleton from the template if missing:
 
-- `memory/state.md`：当前目标 / 已做决策 / 约束 / 进度 + 下一步（一屏内，秒读）。Goal / decisions / constraints / progress + next (one screen).
+- `memory/state.md`：当前目标 / 已做决策 / 约束 / 进度 + 下一步（一屏内，秒读）。Goal / decisions / constraints / progress + next (one screen).**骨架非日记——硬上限约一屏（~10KB）**：开工扫描发现超一屏，先把里程碑史迁入 `memory/archive-YYYY-MM.md` 再开工（移动非删除）Skeleton, not diary — hard cap one screen (~10KB); archive milestone history before starting when over。
 - `memory/experience.md`：踩坑经验库（症状→根因→解决→预防）。Pitfall log (symptom→cause→fix→prevention).
 - `memory/preferences.md`：已确认偏好（技术栈/语言/风格）。Confirmed stack / language / style preferences.
 - `memory/task-log/`：任务记录，`YYYY-MM-DD-名称.md`。Task records (date-named).
 - 若本项目真实业务恰用 `memory/`，可在项目规则文件内改 `.agent-records/`（唯一合法覆盖点）。If the project's business uses `memory/`, override to `.agent-records/` in the project rule file (the only legal override point).
+- **经验回流（双击晋升制）Experience backflow (two-strike promotion)**：同一踩坑单项目两次 / 跨项目各一次（症状符、根因同）→ 提炼「症状→根因→解决→预防」提交进本 Skill `references/details.md`；回流是稳定教训的晋升，首例噪音永不进 Skill。A pitfall confirmed twice in one project or once in two gets promoted into the skill's details.md — promotion of stabilized lessons only.
 - memory 是「状态层 + 踩坑层」，完整细则仍在 `references/` 按需加载，互不替代。`memory/` is the state + pitfall layer; full details still load on demand from `references/`.
 
 **完成后更新序 Completion update order（结束收尾，避免污染）**——最小验证后依序收尾：
