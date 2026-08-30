@@ -5,6 +5,12 @@
 
 ![version](https://img.shields.io/badge/version-2.0.4-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
+> **作者的话 · A word from the author**
+>
+> 本仓库实质上就是一个**规范工程化的大模型 Agent 提示词注入标范与标本合集**——你可以直接拿本 Skill 的内容当**工作流样本**来打磨你自己的 Agent 工程规范。版本路线：预计 **v2.0.5 之后进入稳定的「细则类小更新」**，不再做破坏性的大版本改动；但**不做绝对保证**（可能仍有意外情况）。感谢加星 ⭐。
+>
+> *At its core this repo is a specimen collection of disciplined, engineering-grade prompt-injection standards for LLM agents — use it as a sample workflow to polish your own. After v2.0.5 expect stable, fine-grained updates; no breaking releases planned (but no hard guarantee). Thanks for the star.*
+
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
 > - GitHub 主线 · https://github.com/zxc663/shisan-xinuo-workflow
