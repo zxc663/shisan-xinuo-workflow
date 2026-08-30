@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.16.0
+  version: 1.17.0
   tags:
     - agent-skill
     - workflow-governance
@@ -102,6 +102,15 @@ metadata:
 3. After write: re-read injected copy → three-way consistency (SKILL §5.2 block = injection-core = injected copy).
 **Boundary**: never preload references.
 
+### 3.1 Skill self-update protocol (three-way merge, user-local wins)
+
+**Trigger**: this skill updated upstream; user asks to pull/update (or status surface shows version mismatch).
+1. Run `python scripts/syncer.py` (repo root): it does ① health-diff (finds user-owned files in the installed copy) ② backup `.bak-<ts>` ③ migrate non-source files (e.g. `personal-playbook.md` → `user-notes/`) ④ overwrite upstream (SKILL/references/templates) ⑤ write change-list + dual task-log (repo `memory/task-log` AND installed-copy `memory/task-log`).
+2. Merge policy (layer table): source-authoritative (triage block/red lines/ask protocol — three-way consistency) → upstream wins; **user rules in `user-notes/` + `memory/` → NEVER touched (local user wins)**; coexist files → both kept; unresolvable conflict → keep local + mark `CONFLICT` in list for user.
+3. Never edit in place by hand: any manual edit to installed copy belongs in `user-notes/` (else the next sync overwrites it).
+**Check**: □ script ran with exit=0 □ change-list exists (both logs) □ user-notes/ & memory/.bak untouched □ version line updated in both copies.
+
+
 ## 4. Ask-before-acting protocol
 
 **Trigger**: direction/boundary/conflict/permission/secrets/destructive/architecture/scope-expansion fuzzy — or "triage ≠ understanding confirmed".
@@ -190,9 +199,10 @@ metadata:
 ## 11. Session status surface (end-of-session consistency report — user review; NOT compliant/effective claim)
 
 ```
-注入版本: 1.16.0
+注入版本: 1.17.0
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <session outputs> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩+重载序）
+版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py）
 未验证/待办: <exempt 与未完成项——必须是真待办，不得留「已完成却未清」的陈旧注记>
 ```
 **Rules**: evidence-based not self-claimed; timestamps to seconds; pending items must be real.
@@ -224,7 +234,7 @@ metadata:
 | R6 | record grows | >120 lines or >3 blocks → new file/archive | `-名称-2.md` | — |
 | DC | module has log module | design line in integration table; catch triple; five-check #5 | log+fallback+audit | console-only/silent = violation |
 | TS | any record | timestamp `YYYY-MM-DD HH:mm:ss` | seconds required | day-only incomplete |
-| ZE | user types meaningless `zxc663` | self-check only: reply「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）」 | no action, no network/files touched | pure test trigger |
+| ZE | user types meaningless `zxc663` | self-check reply:「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）｜源库 vX vs 副本 vY（不一致 → 建议跑 syncer.py）」 | no action beyond version compare | pure test trigger |
 
 ## Templates
 
