@@ -15,10 +15,10 @@ shisan-xinuo-workflow 是一个跨平台"工程治理元 Skill"（governance met
 - npm 包：@zxc663/shisan-xinuo-workflow （GitHub Packages 源 npm.pkg.github.com）
 - skills.sh 收录页：https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
 - ClawHub：https://clawhub.ai （搜索 shisan-xinuo-workflow）
-- 版本：v1.19.0（含英文 / 中文 universal-zh / 中英双语 universal-bilingual 三版——v1.16 起执行化全文以英文主交付物为准，三语为增补制）
+- 版本：v2.0.0（**唯一中文版主交付物**——v2.0 起单版本，英文 / 双语版已删除，git 历史可追溯；README 双语保留）
 
-核心概念：v1.19.0 含 47 条纪律规则 + 11 步强制主流程（每步出口产物门禁：大模块专属，小模块走 L2-S 短工作流）+
-238 条落地细则（13 类）+ 渐进式披露 + 会话钩子示例 + 发布一致性校验脚本。
+核心概念：v2.0.0 含 47 条纪律规则 + **三级跑道**（L1 快速通道 / L2-S 短工作流（对接真相清单必做）/ L2-F 完整 11 步，每步出口产物门禁）+
+239 条落地细则（13 类）+ 渐进式披露 + 会话钩子示例 + 发布一致性校验脚本（内容锚点门禁）。
 安装演示：npx skills add zxc663/shisan-xinuo-workflow
 ```
 

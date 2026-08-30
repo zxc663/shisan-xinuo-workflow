@@ -1,0 +1,25 @@
+name: verify-release
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "skill/**"
+      - "versions/**"
+      - "scripts/**"
+      - "package.json"
+      - "README.md"
+      - "CHANGELOG.md"
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify release consistency
+        shell: pwsh
+        run: pwsh scripts/verify-release.ps1

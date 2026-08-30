@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.19.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-2.0.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
@@ -13,7 +13,7 @@
 > - skills.sh 收录 · https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
 > - ClawHub · 搜索 `shisan-xinuo-workflow` ｜ 在线快速体验 · `npx skills add zxc663/shisan-xinuo-workflow`
 >
-> 一份仓库，多平台分发；任何入口均可读到本 README 与三语增补版（英文主交付物 / 中文 / 中英双语）。**语言声明：本 README 中文优先（展示门面）；英文见文首定位段与 `versions/universal-bilingual` 双语版。**
+> 一份仓库，多平台分发；任何入口均可读到本 README 与**唯一主交付物（中文版 Skill，v2.0 起单版本——不再有多语版与增补制同步）**。**语言声明：本 README 双语保留（中文优先做展示门面，英文见文首定位段）；Skill 本体为中文，为唯一权威全量。**
 
 ---
 
@@ -21,7 +21,7 @@
 
 一个**「让规则被消费」的执行手册型工程治理元 Skill**：把「大模块专属的完整 11 步流程 + 小模块短工作流（L2-S）+ L1/L2/L3 判级路由 + 携带推荐理由的必问 + GATE 可复跑验证 + 五段式细则（触发/步骤/模子/自检/边界）＋ 经验强制预读 ＋ 上下文主动管理」打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**设计意图不是「写更多规则」，而是给规则装触达端口**（错误必经句 / 预读 TOP / 命中取证 / 三路合并），并用可复跑工件（GATE 块 / syncer.py）让「做过 ≠ 说过」——每条规则都能被照着做，不靠领会。
 
-**真实口径（2026-08-30 实证）**：细则层（238 条 / 13 类）**工程消费命中此前 = 0**（v1.13 全平台审计）；v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复，已转**有命中**（#228×3 / #229×2 / #233×1）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。仍有一个诚实声明：**规则能否改变 AI 行为——未验证假设**（T-027 式对照实验列下一轮；verify 绿 = 体系与自身一致，非行为变好）。
+**真实口径（2026-08-30 实证）**：细则层（239 条 / 13 类）**工程消费命中此前 = 0**（v1.13 全平台审计）；v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复，已转**有命中**（#228×3 / #229×2 / #233×1）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。仍有一个诚实声明：**规则能否改变 AI 行为——未验证假设**（T-027 式对照实验列下一轮；verify 绿 = 体系与自身一致，非行为变好）。
 
 *(EN) A "rules-must-be-consumed", execution-manual governance meta-skill. Not more rules — touchpoints: error-time entry point, must-read top, hit evidence-line, three-way self-update merge; verifiable artifacts (GATE / syncer.py) make "done" ≠ "claimed". Real numbers: detail-layer engineering hits were 0 before v1.13 (now converts to hits); platform cumulative input 947M tokens (3 long sessions = 81%); assumption that rules change AI behavior is still unverified.*
 
@@ -29,7 +29,7 @@
 
 ## 目录 · Contents
 
-[为什么用它](#为什么用它--why-this) · [它为谁解决什么](#它为谁解决什么--who-its-for) · [工作原理](#工作原理渐进式--状态机--how-it-works) · [功能全景](#功能全景--feature-map) · [差异化优势](#差异化优势--differentiation) · [架构真相（诚实）](#架构真相诚实--architecture-truths) · [快速体验](#快速体验--quick-start) · [安装](#安装--install) · [仓库结构](#仓库结构--repository-layout) · [版本差异（三语）](#版本差异三语--editions) · [参考项目](#参考项目--reference-projects) · [局限与代价](#局限与代价--limitations) · [常见问题](#常见问题--faq) · [来源与依据](#来源与依据--sources) · [版本历史](#版本历史--changelog) · [贡献者与许可](#贡献者与许可--contributors--license)
+[为什么用它](#为什么用它--why-this) · [它为谁解决什么](#它为谁解决什么--who-its-for) · [工作原理](#工作原理渐进式--状态机--how-it-works) · [功能全景](#功能全景--feature-map) · [差异化优势](#差异化优势--differentiation) · [架构真相（诚实）](#架构真相诚实--architecture-truths) · [快速体验](#快速体验--quick-start) · [安装](#安装--install) · [仓库结构](#仓库结构--repository-layout) · [版本说明（单版）](#版本说明单版--editions) · [参考项目](#参考项目--reference-projects) · [局限与代价](#局限与代价--limitations) · [常见问题](#常见问题--faq) · [来源与依据](#来源与依据--sources) · [版本历史](#版本历史--changelog) · [贡献者与许可](#贡献者与许可--contributors--license)
 
 ---
 
@@ -71,7 +71,7 @@
 （RE：关键决定即时「决定X｜依据｜影响」；块尾总复述仅提炼要点）→ 状态面（证据制，0 照报 0）
         │
         ▼
-规则（+ 编号纪律，地基）+ 落地细则（238 条/13 类，症状索引）+ 冲突仲裁序
+规则（+ 编号纪律，地基）+ 落地细则（239 条/13 类，症状索引）+ 冲突仲裁序
         │
         ▼
 自更新（syncer.py 三路合并：体检→备份→迁移 user-notes/ →覆盖→双落盘；user-notes/memory/.bak 永不碰）
@@ -84,8 +84,8 @@
 | 能力 | 说明 | 入口 |
 |---|---|---|
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需(精简) / 强制(injection-core 全文)，备份后合并绝不覆盖 | SKILL §3 · injection-core.md · platform-adaptation.md |
-| **三级跑道（v1.16+）** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 11 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.2-2.3 · workflows §0.6 |
-| **对接真相清单（强制）** | 跨包/新端点/新依赖先产「模块\|API\|对接方式\|证据来源」表，禁凭命名直觉 | SKILL §2.5 · details #233 |
+| **三级跑道（v1.16+，2.0 起唯一版全量）** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 11 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.2-2.4 · workflows §0.6 |
+| **对接真相清单（强制）** | 跨包/新端点/新依赖先产「模块\|API\|对接方式\|证据来源」表，禁凭命名直觉 | SKILL §2.3 · details #233 |
 | 必问协议 | 问题必带推荐+理由+后果；超时空答→调研+待确认标注 | SKILL §4 |
 | **GATE 完成块** | 任务块一行可复跑验证（cmd+exit+files+lessons+exempt）；验收权在用户 | SKILL §7 · 模板 task-record |
 | **复述增强 RE** | 关键决定即时子复述（依据+影响）；块尾总复述仅提炼要点 | SKILL §4.1 · §12 RE |
@@ -95,7 +95,7 @@
 | **上下文主动管理（v1.19 四项）** | **两步式**（读→提炼→全文落盘→只留指针+摘要）；盘点按**信号**触发；**会话级账本**；**重置点**（5 块回引或成本 2× → 建议新会话） | SKILL §12 P3 · details #235 |
 | 双模式（普通/目标/安静） | 关键必问 vs 无人值守（计划/预算/文件边界/超预算停）；安静 L1 只报结果 | SKILL §5 |
 | 冲突仲裁序 + 经验回流 | 五级仲裁取最优；踩坑双击晋升细则 | SKILL §4 · §10 |
-| **项目信息文档** | 新项目无文档→建六节导航（架构/目标/模块真实状态/调研导航/参考资源/复述签章） | SKILL §2.4 · new-project-bootstrap.md |
+| **项目信息文档** | 新项目无文档→建六节导航（架构/目标/模块真实状态/调研导航/参考资源/复述签章） | SKILL §2.5 · new-project-bootstrap.md |
 | **日志对接** | 有日志模块的项目：设计期对接行 + catch 三件套 + 五查含日志 | SKILL §7 · details #238 |
 | **skill 自更新** | syncer.py 三路合并（用户规则目录永不碰）；彩蛋+状态面版本一致检查 | scripts/syncer.py · SKILL §3.1 |
 | 配套模板/钩子/子代理 | 规划/验收/任务记录/复盘/回滚点/预算/钩子/审查子代理 | templates/ |
@@ -127,7 +127,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：`npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow` → 立即**重命名为 `agent-shisan-xinuo-workflow`**（agent- 前缀=按字母序在技能列表最前——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/shisan-xinuo-workflow-v1.19.1.zip`。
+1. **安装**：`npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow` → 立即**重命名为 `agent-shisan-xinuo-workflow`**（agent- 前缀=按字母序在技能列表最前——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，最新版随下次发布重建）。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -137,12 +137,12 @@
 
 | 平台 | 位置 |
 |---|---|
-| skills.sh | `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（英文主交付物；中文 `-zh` / 双语 `-bilingual`；**命名均加 agent- 前缀**） |
+| skills.sh | `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（唯一版：中文主交付物；**安装后加 agent- 前缀**） |
 | Claude Code | `~/.claude/skills/agent-shisan-xinuo-workflow/` |
 | Codex / 通用 | 克隆本仓，技能发现指向 `skill/shisan-xinuo-workflow`；或解压 `dist/` zip |
 | Trae / Cursor 等 | 按平台技能目录约定放置；Trae 需在应用设置启用项目规则 |
 
-**更新与自维护**：上游更新后跑 `python scripts/syncer.py`（体检→备份→迁移→覆盖→双落盘）；**你的本地规则写 `user-notes/`，永不随上游覆盖**；手动改副本只许写在 user-notes/。发布前置校验：`powershell -File scripts/verify-release.ps1`（增补制一致/hooks/版本+package/泄漏全绿才可发布）。
+**更新与自维护**：上游更新后跑 `python scripts/syncer.py`（体检→备份→迁移→覆盖→双落盘；备份落 `skill-backups/`——平台扫描路径之外，验收以平台解析到的 Base directory 为准）；**你的本地规则写 `user-notes/`，永不随上游覆盖**；手动改副本只许写在 user-notes/。发布前置校验：`powershell -File scripts/verify-release.ps1`（内容锚点/hooks/版本+package/泄漏全绿才可发布）。
 
 ## 仓库结构 · Repository layout
 
@@ -150,29 +150,27 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（v1.19.1）· docs/reference-sources.md
-├── dist/                           ← 发布 zip（v1.19.1 · gitignore 产物）
-├── scripts/syncer.py               ← 自更新三路合并（体检/备份/迁移/覆盖/双落盘）
-├── scripts/verify-release.ps1      ← 发布校验（增补制一致/hooks/版本+package/泄漏）
-├── skill/shisan-xinuo-workflow/    ← 主交付物（英文执行化全文 v1.19）
-│   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级 · §7 门禁 · §9 引用表
-│   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 20+ 行）
-│   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理）
-│   └── references/（injection-core · workflows · details 238条 · rules 47条 ·
+├── package.json（v2.0.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
+├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
+├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
+├── skill/shisan-xinuo-workflow/    ← 唯一主交付物（中文执行化全文 v2.0 · 单版本权威）
+│   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
+│   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 29 行）
+│   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/memory 骨架五件套）
+│   └── references/（injection-core · workflows · details 239条 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap）
-└── versions/（universal-zh · universal-bilingual=增补制同步；personal-zh=私有工作台版不进公开仓）
+└── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
 
-## 版本差异（三语） · Editions
+## 版本说明（单版） · Editions
 
 | 版本 | 路径 | 语言 |
 |---|---|---|
-| 英文（主交付物） | `skill/shisan-xinuo-workflow/` | 英文（标题保留「十三希诺」） |
-| 中文 | `versions/universal-zh/` | 中文 |
-| 双语 | `versions/universal-bilingual/` | 段落级中英对照 |
-| 工作台版（私有） | 独立私有仓 | 中英混合 + 内嵌个人经验手册 |
+| **唯一主交付物** | `skill/shisan-xinuo-workflow/` | 中文（唯一权威全量，v2.0 起单版本） |
+| 工作台版（私有） | 独立私有仓 + 本地 `versions/personal-zh/`（gitignore） | 中英混合 + 内嵌个人经验手册 |
 
-> **同步口径（诚实）**：v1.16 起执行化全文以英文主交付物为权威；三语（zh/bilingual）以**增补制**同步（v1.12-1.19 增补节 + details #228-238），并按 `verify-release` 校验版本/标记一致——不伪装全量同文。
+> **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 
 ## 参考项目 · Reference projects
 
@@ -186,10 +184,10 @@ shisan-xinuo-workflow/              ← 仓库根
 
 - 依赖强提示词注入与 Agent 自律：无运行时强制；注入跳过/描述未命中 = 什么也不做。
 - 上下文成本：治理层仍消耗上下文——用三级跑道 + L2-S + 上下文卫生（两步式/信号化盘点/账本核算）换取一致性。
-- 细则体量大（238 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经——从「可加载」升级为「必经站」。
+- 细则体量大（239 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经——从「可加载」升级为「必经站」。
 - 平台检测启发式：不确定时问用户不猜。
 - 未验证假设：规则能否改变行为（对照实验列下一轮）；verify=一致性≠有效性。
-- 三语为增补制（非全量同文）——已如实标注。
+- 单版本（v2.0 起）：唯一中文版为权威全量；删除的英文/双语版在 git 历史可回溯——不再有增补制同步面。
 - 自更新/校验两脚本属**发布/维护工具**，非运行时强制。
 
 ## 常见问题 · FAQ
@@ -206,11 +204,13 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Sources
 
-- **细则 238 条/13 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类 24 条（204-227）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）；**228-238** = 2026-08-30 全会话审计回流（跨包 dist/常驻旧 dist/走查三陷阱/断更防呆/上下文阈值/对接假绿/提问超时/上下文卫生/项目信息文档/秒级时间戳/日志对接）。
+- **细则 239 条/13 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）。
 - **成本/命中实证（2026-08-30）**：ZCode 平台 `model_usage` 全量——累计 input 947,218,098 / output 2,188,313 / reasoning 249,823；19 会话 context_exceeded=0；细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。
 
 ## 版本历史 · Changelog
 
+- **v2.0.0（2026-08-30）**：**单版本化重构**——①仓库只维护一份中文版 Skill（`skill/`，frontmatter name=`shisan-xinuo-workflow`），删除英文版与双语版（git 历史可追溯）；②中文版吸收三版全部强项并补齐全部疏漏：三级跑道（L1/L2-S/L2-F + 三问分流）、对接真相清单、§12 速查表（29 行，修复 A4/A5 重复 ID）、§11 会话状态面、§3.1 自更新协议、§4.1 复述增强 RE、新项目 bootstrap、注入核心三级跑道对齐、红线↔必问映射表；「增补节 v1.12-1.19」全部并轨进正文后删除；③门禁修复：verify-release 改为**内容锚点校验**（P1-2，终结「版本对、内容降级仍 5/5 PASS」）；④syncer 修复四项：首次安装必崩（P0-2）、备份外置 `skill-backups/`（WorkBuddy 实测：备份污染平台扫描路径致加载旧版）、死代码清理、dry-run 语义；⑤口径全量同步（README 双语保留 / 项目信息 / CHANGELOG / EVIDENCE / package.json 2.0.0 / About GitHub+Gitee）；⑥细节：details 编号校正 204-238 + 新增 #239（平台加载目录判据，跨平台晋升）、template 补 experience-mustread、新增 `.github/workflows/verify-release.yml`；⑦三级同步链：平台注入副本（~/.zcode/AGENTS.md、~/.trae-cn、~/.workbuddy/AGENTS.md）与部署副本同步至 v2.0.0。
+- **v1.19.1**：复核第三方审计 F-1/2/3/5/6 并升版发行——英文细则 #236-238、英文 injection-core 补译、syncer 路径相对化 + 泄漏扫描收敛（无歧义特征、纳入 scripts/）、dist 打包 redesign；全渠道发行（GitHub / npm 1.19.1 / Gitee / ClawHub 1.0.4）。
 - **v1.19.0**：上下文管理四缺口修复——**两步式**（读→提炼→落盘→上下文只留指针+摘要）/盘点按**信号**触发/会话级**上下文账本**（入状态面）/重置点（5 块回引或成本 2× → 建议新会话）/信息单一源（盘点只写状态面）。
 - **v1.18.0**：README 门面重构（定位=执行手册 + 触达端口论 + 真实数据节）；**RE 复述增强**（子复述即时/总复述仅提炼要点）；A4 决策改判/A5 验收漂移留档；三语增补制同步；verify 改造跑绿；发行物就绪（CHANGELOG/dist/RELEASE-CHECKLIST）。
 - **v1.17.0**：skill 自更新协议——syncer.py 三路合并；user-notes/ 永不碰；彩蛋+状态面版本一致检查。
