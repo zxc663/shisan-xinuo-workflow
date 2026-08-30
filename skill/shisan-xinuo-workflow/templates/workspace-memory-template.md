@@ -75,3 +75,7 @@ memory/
 ```
 
 返回须遵守：会话开始读 `experience-mustread.md`（先读）+ `state.md` + `experience.md` + `preferences.md`，上下文到 40-60% 前与会话结束前更新。
+
+## 可选：记忆层锚点位（平台有记忆文件时）
+
+若所在平台存在**每会话读取的记忆文件**（WorkBuddy `~/.workbuddy/MEMORY.md`、Trae `~/.trae-cn/memory/user_profile.md` 等，见 platform-adaptation §2.2），且用户选择硬注入：把 `templates/memory-anchor.md` 的锚点块（**首行为「在场提示 · 工作流 Skill 现已在场」**）整体复制进该记忆文件（先备份 `.bak-<ts>`，追加不覆盖）。这是硬注入「记忆层」的载体；本工作区 `memory/` 是项目级状态层，两者互补、不互替。

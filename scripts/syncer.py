@@ -18,7 +18,7 @@ v2.0 修复（实测驱动）：
 
 用法：python syncer.py [--dry] [--src <path>] [--dest <path>] [--backup-dir <path>]
 """
-import argparse, os, shutil, sys, time
+import argparse, os, re, shutil, sys, time
 from datetime import datetime
 
 # 永不碰的顶层子目录（副本侧）；巡检/覆盖时一律跳过
@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--src", default=os.path.join(REPO_ROOT, "skill", "shisan-xinuo-workflow"))
     ap.add_argument("--dest", default=os.path.expanduser(r"~\.agents\skills\shisan-xinuo-workflow"))
     ap.add_argument("--backup-dir", default="", help="备份目录（默认：dest 的上级父目录下 skill-backups/，位于平台扫描路径之外）")
+    ap.add_argument("--memory-target", default="", help="硬注入记忆层目标文件（如 ~/.workbuddy/MEMORY.md）：把 templates/memory-anchor.md 锚点块合并写入（先备份 .bak-<ts>）；留空则不写记忆层。默认行为保持纯 skill 副本同步。")
     a = ap.parse_args()
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fmt = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -125,8 +126,38 @@ def main():
     # 5) 变更清单
     if first_install and not a.dry and not changed:
         changed = ["首次安装全量复制（详见 src=skill/）"]
+
+    # 5.5) 记忆层同步（可选：--memory-target 显式指定平台记忆文件；硬注入第三层）
+    mem_note = ""
+    if a.memory_target:
+        anchor = os.path.join(a.src, "templates", "memory-anchor.md")
+        if not os.path.isfile(anchor):
+            print(f"E: 源缺少 templates/memory-anchor.md: {anchor}")
+            return 1
+        # 提取模板中代码块内的锚点正文（首行为在场提示），避免模板头部注释落入记忆文件
+        txt = open(anchor, encoding="utf-8").read()
+        m = re.search(r"```markdown\r?\n(.*?)\r?\n```", txt, re.S)
+        body = m.group(1) if m else txt
+        mem_ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+        mem_bak = a.memory_target + f".bak-{mem_ts}"
+        mem_prev = ""
+        if os.path.exists(a.memory_target):
+            if not a.dry:
+                shutil.copy2(a.memory_target, mem_bak)
+            mem_prev = open(a.memory_target, encoding="utf-8").read()
+        sep = "\n\n---\n" if mem_prev.strip() else ""
+        mem_new = mem_prev.rstrip() + sep + body
+        changed.append(f"~ 记忆层@{os.path.abspath(a.memory_target)}（锚点块合并" + ("，dry" if a.dry else f"，备份 {os.path.basename(mem_bak)}") + "）")
+        mem_note = f"\n## 记忆层（hard-inject 第 3 层）\n- {os.path.abspath(a.memory_target)} ← templates/memory-anchor.md\n- 在场提示首行：工作流 Skill 现已在场"
+        if not a.dry:
+            open(a.memory_target, "w", encoding="utf-8").write(mem_new)
+            print(f"[记忆] 已合并锚点块 → {a.memory_target}（备份 {mem_bak}）")
+        else:
+            print(f"[记忆] (dry) 将合并锚点块 → {a.memory_target}")
+
     lines = [f"# sync-skill {ts}", "",
              "## 上游变更", *[f"- {c}" for c in changed or ["(dry) 无变更"]],
+             mem_note,
              "", "## 保留本地（user-notes/ 等未动）", "- user-notes/ (含迁移件)", "- memory/ (skill 自身 task-log)", "- .bak-*"]
     out = "\n".join(lines)
     if not a.dry:

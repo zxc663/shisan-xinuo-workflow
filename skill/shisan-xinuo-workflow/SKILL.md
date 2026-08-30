@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「三级跑道（
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 2.0.3
+  version: 2.0.4
   tags:
     - agent-skill
     - workflow-governance
@@ -122,10 +122,11 @@ metadata:
 
 0. **安装名前缀自检**：检测安装目录名——无 `agent-` 前缀 → 一行提示「可运行 `scripts/install-skill.ps1` 一键带前缀重装（自适配到目标平台技能目录）；不愿改名则靠 description 触发，按需注入平台不强制」；带 `agent-` 前缀 → 静默通过。前缀意义：技能列表按字母序置顶，便于按需注入用户发现（README FAQ）。
 1. **检测平台**：按 `references/platform-adaptation.md` 的特征清单判断（目录标志、环境变量、工具可用性）。
-2. **定位该平台真实注入点**：按 `platform-adaptation.md` 注入点表——Trae：`~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入，无需应用内启用）或项目 `.trae/rules/project_rules.md`；Claude Code：`~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex：`AGENTS.md`；Cursor：`.cursor/rules/*.mdc`；Windsurf：`.windsurfrules`；WorkBuddy：agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）。只写进应用从不读取的工作区文件是**无效的**。**硬注入承载面 = 规则文件 + 平台配置文件（hooks / 全局设置），见 platform-adaptation.md 第 2.1 节**——先实测可用性再部署。
+1.5. **识别与调研注入点（不猜）**：识别当前 Agent 平台后，联网调研该平台官方注入点（记忆文件 / 规则文件 / hooks 支持，官网 docs 优先；离线降级 `degraded-offline` + 本地经验库），再按官方机制注入——**禁止凭习惯猜注入点**。
+2. **定位该平台真实注入点**：按 `platform-adaptation.md` 注入点表——Trae：`~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入，无需应用内启用）或项目 `.trae/rules/project_rules.md`；Claude Code：`~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex：`AGENTS.md`；Cursor：`.cursor/rules/*.mdc`；Windsurf：`.windsurfrules`；WorkBuddy：agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）。只写进应用从不读取的工作区文件是**无效的**。**硬注入承载面 = 记忆层（每会话在场锚点，首行在场提示）+ 规则文件 + 平台配置文件（hooks / 全局设置），见 platform-adaptation.md 第 2.2 / 2.1 节**——先实测可用性再部署。
 3. **询问注入模式**（写规则文件前，用 §4 降级链提问，让用户选择）：
-   - **按需注入（默认）**：注入点只写精简纪律并回指本 Skill（约 9 行），完整 Skill 由平台按触发激活——上下文开销最低。
-   - **强制注入（硬加载）**：把 `references/injection-core.md` 的核心全文写入该平台注入点（**先备份既有文件、合并不覆盖**）——工作流每会话无条件在场，不依赖模型自觉加载本 Skill（每会话固定约 2-3K token）。**注意：不要用「每个会话开工前必须完整读取本 Skill 的 SKILL.md」这类弱指令实现强制注入——模型不会可靠执行，必须直接写入核心全文。**
+   - **按需注入（默认）**：只写**应用层**——注入点写精简纪律并回指本 Skill（约 9 行），写前询问用户是否也写规则层；**不写记忆层**。完整 Skill 由平台按触发激活——上下文开销最低。
+   - **强制注入（硬加载）**：**三层同时写**——记忆层锚点块（`templates/memory-anchor.md`，首行为「在场提示 · 工作流 Skill 现已在场」——新会话读到即识别本 Skill 在场）＋ 规则层（把 `references/injection-core.md` 的核心全文写入规则文件）＋ 配置文件层（hooks/全局设置，平台支持才写，§2.1）——每步**先备份既有文件、合并不覆盖**。写前必须**提醒用户授权**（平台 / 三层目标 / 内容长度 / 每会话成本 / 影响范围）。工作流每会话无条件在场，不依赖模型自觉加载本 Skill（每会话固定约 2-3K token）。**注意：不要用「每个会话开工前必须完整读取本 Skill 的 SKILL.md」这类弱指令实现强制注入——模型不会可靠执行，必须直接写入核心全文与在场锚点。**
    无提问工具可用时默认按需注入，并明确告知用户。
 4. **选定生效的提问机制**：按 §4 的降级链取第一个可用项。
 5. **校验生效**：写入后**回读注入副本 → 核对三级一致**（SKILL §5.2 判级块 = injection-core.md = 平台注入副本）；复述生效要点（平台、注入点、注入模式、提问工具）；注入未确认生效前不得宣称成功。未完成前不得开始任务。
@@ -155,6 +156,7 @@ metadata:
 | 数据删除 / 迁移 | 暂停；先列命令清单 → 等确认再执行 |
 | 数据或服务迁移 | 暂停；先问迁移方案与回滚点 |
 | 对外发布 | 暂停；先获用户批准，再进入约 30 分钟观察期 |
+| 硬注入三层写入（记忆层/规则层/配置层） | 暂停；先提醒用户授权（平台 / 三层目标 / 内容长度 / 每会话成本 / 影响范围），确认后才写 |
 | 架构选型 | 暂停；先给选型对比 + 推荐 + 理由 |
 | 超预算破坏性操作 | 暂停；列命令清单 → 等确认 |
 
@@ -275,6 +277,7 @@ metadata:
 | `references/never-list.md` | 永不清单（明确禁止项）——7 类硬性红线 | 开工、提交、任何 L3 操作前**三读逐条核对**；有命中即停下修正 |
 | `references/new-project-bootstrap.md` | 新项目 4 步引导（骨架 / 引用槽 / 严格度 / 首日经验） | 首次任务 / 无 `memory/` 目录 / 迁移的工作区 |
 | `templates/workspace-memory-template.md` | 工作区 `memory/` 骨架（§10）——初始化 state / experience-mustread / experience / preferences / task-log | 项目尚无 `memory/` 目录 |
+| `templates/memory-anchor.md` | 记忆层锚点块（硬注入第三层）——首行为「在场提示 · 工作流 Skill 现已在场」，约 15–20 行精简锚块 | §3 硬注入三层时；平台支持记忆文件（WorkBuddy MEMORY.md / Trae user_profile.md 等）仍需确定记忆内容时 |
 
 **错误时强制入口**：遇到错误 / API 意外形态 / 未知字段或端点 / 新依赖不生效 → **先按症状类搜 `details.md`**（如 build-tool、[Contract]、[Ops]），再改代码；命中 → 任务记录留一行引用（`细则 #N 命中：…`）。
 
@@ -297,8 +300,9 @@ metadata:
 ## 11. 会话状态面（会话末一致性报告——给用户复核；不是「合规 / 有效」自证）
 
 ```
-注入版本: <2.0.3>
-细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <会话产物> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
+注入版本: <2.0.4>
+细则命中: grep -cE 'references/details|details[ #]+[0-9]{2,3}|细则[ #]*[0-9]{2,3}|#[0-9]{3}' <会话产物> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
+                   （取证对象=任务记录/会话产物中的细则引用，如 `details #239` / `细则 #233` / 行内裸 `#228×3`；非 details.md 自身条目 `1.–254.` 有序列表——带井号+句点的旧命令 `#2[0-9][0-9]\.` 对实引形态恒 0 假阴性，已于 v2.0.4 修复）
 上下文预算: ~X tokens（阈值 150-200K → 压缩 + 重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py；**并核对平台解析到的 Base directory**）
 上下文账本: 本会话 input 增量 ~X ｜ 最大单次 ~Y ｜ 工具占比 Bash a% / Read b% / 其他 c% ｜ 盘点 N 次（按信号触发）
