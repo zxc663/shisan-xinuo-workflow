@@ -52,7 +52,16 @@ Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must
 
 **Authority note**: daily-top / skills rankings (skills.sh, Glama, etc.) are based on install telemetry — discoverability, not quality. Quality is judged by evidence from items 2/3/4/5 plus item 7's local verification.
 
-### 0.3 Product-polish diagnosis (run first on repeated-review / legacy-restlessness triggers)
+### 0.3 Product-perspective review (step 8 — MANDATORY for every L2/L3 plan; deep diagnosis on repeated-review / legacy-restlessness triggers)
+
+**Base (mandatory lite five questions — no plan submitted without it):**
+- [ ] a. One-sentence user-request decomposition: what does this module fundamentally solve for the user, and what should the experience be at this step
+- [ ] b. ≥1 explicitly rejected alternative (naming the loser and why)
+- [ ] c. Rework-cost assessment (per the design-cost iron law: evaluate by future rework cost, not today's build cost)
+- [ ] d. Boundaries & not-do list (what is explicitly out of scope this round)
+- [ ] e. 3-5 verifiable acceptance criteria
+
+**Deep mode (replace the base when the trigger fires)**: the triggers below upgrade the review to the full product-polish diagnosis — module decomposition → five-question frame (feature logic / code coupling / UI / humanized flow / other) → diagnosis report → confirm with user → carry the report as step-8 gate artifact.
 
 **Triggers**: the user keeps asking to review ("check again / anything else wrong / something feels off"); a lasting sense of insufficiency in a legacy codebase; "I know it's not good enough but can't say why".
 
@@ -78,6 +87,16 @@ Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must
 - [ ] 3. Combine both surveys to locate "planning gaps": feature logic / design plan / UI / interaction / technical feasibility / other
 - [ ] 4. Produce a **detailed plan doc**: goal & boundaries / dual-survey conclusions / feature list & priorities / acceptance criteria (3-5 verifiable) / risks & rollback point / (goal mode adds budgets & file boundaries)
 - [ ] 5. After user confirmation of the plan, proceed to execution (master step 9 gate artifact)
+
+### 0.5 Research-scaled matrix (task size × project strictness) & prior-takeaway reuse
+
+> Purpose: stop token waste. Small-module tasks must not repeat full dual research; confirmations already made in THIS session / THIS project must never be re-researched.
+
+- [ ] 1. **Project strictness tier** (set at bootstrap; change it in the project rule file): **S3 strict** — production / external-facing / security / financial / multi-collaborator / user-named strict · **S2 standard** (default) · **S1 loose** — personal / prototype / short-lived.
+- [ ] 2. **Task-size tier**: **L1** no research · **small-module L2** (≤2 files, single domain, same shape as existing patterns) → code-level research (master step 3) + reuse prior takeaways; internet survey (step 4) only for new tech / new dependency / team requirement · **normal L2 / L3** full dual survey (steps 3-5).
+- [ ] 3. **Matrix rule**: S3 × even-small-module = still full research (strict projects trust nothing implicitly); S2 × small-module = light (skip internet unless new dep/tech); S1 × small-module = no internet survey.
+- [ ] 4. **Prior-takeaway reuse (step 2.5)**: confirmed conclusions from this session or this project's memory are research inputs too — reuse them and record a one-line reference; do not re-run the same survey, install checks, or web fetch. (Same-session no-reload discipline applies to research as well.)
+- [ ] 5. **L2 entry without a plan directive** (user drops a multi-file request with no `/plan`-style directive): restate goal+boundary in 1-3 sentences → 3 acceptance criteria → one-line triage; at S3 strictness, ask before starting.
 
 ## 1. New feature / new project (15 steps)
 
@@ -186,6 +205,14 @@ Before building anything new, answer in order; only a full miss allows self-buil
 5. **Can it be done with the least code?** Prefer composing existing components (ideally one-line-level composition).
 
 ## Quality gates
+
+### GATE completion block (mandatory step-11 artifact)
+Every task block ends with one line: `GATE: {v=<scope>, cmd=<re-runnable command>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims>}`. Re-runnable artifacts outrank self-narration; acceptance authority stays with the user; `approval:never` exempts tool-level approval, never the confirmation duty. The task-record template carries this field.
+
+### ExitPlanMode four-item self-check (do not submit a plan missing any)
+① acceptance criteria 3-5 · ② one-line triage (L1/L2/L3) · ③ rollback point (or explicit "current clean baseline is the point") · ④ boundaries & not-do list.
+
+
 
 - **Pre-commit:** lint / type-check / unit+integration tests (project baseline is authoritative; baseline regression blocks) / coverage (core ≥ 80% target) / dependency audit (before release) / commit message (header ≤ 100 chars) / docs shipped with code (`git status` check).
 - **CI:** every push runs lint + type-check + guardrails + unit + integration; releases additionally run E2E + performance.

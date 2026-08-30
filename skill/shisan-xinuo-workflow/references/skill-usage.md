@@ -37,6 +37,7 @@
 - **Force full read (not progressive) — 3 exceptions**:
   1. **Core governance / workflow Skills** — the process gate cannot be skipped (Shisan Xinuo Agent Workflow itself is one such class).
   2. **Front-end / UI / design Skills always force a full read** (explicitly mandated) — **unconditional: not reduced even when context is ample or the user explicitly sets no budget limit**; design work depends on the complete spec / constraints, and progressive reading tends to miss component specs, design tokens, and usability / accessibility rules, producing non-compliant output.
+     - *Post-load check*: when the user names a skill category ("aesthetics + front-end design"), load at least 2-3 items from that category's registry — never stop at 1 (observed failure 2026-08-30: user asked for aesthetic/front-end skills, only anti-ui-slop was loaded).
   3. **The user explicitly allows no budget limit**: read in full directly (if it is a front-end class, it is already an unconditional full read — see #2). "Ample context" is the natural default state and is not a front-end waiver.
 - **No full read needed**: tool-like / helper / trigger-on-demand Skills → progressive.
 - **Front-end / UI / design Skill examples (illustrative)**: `frontend-design`, `frontend-skill`, `html-report`, `html-deck`, `canvas-design`, `web-artifacts-builder`, `shadcn`, `web-design-guidelines`, `theme-factory`, `brand-guidelines`, etc. — when triggered, read their SKILL.md and the needed references in full.
