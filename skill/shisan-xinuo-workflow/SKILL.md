@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.11.0
+  version: 1.12.0
   tags:
     - agent-skill
     - workflow-governance
@@ -180,6 +180,7 @@ Judge by: blast radius, reversibility, rework cost, whether data or external pub
 | `references/security.md` | Secrets red line, incident response, production safety red lines, rollback procedure details, prompt-injection defenses, supply-chain/SBOM | secrets touched / suspected leak / publishing / dependency procurement |
 | `references/never-list.md` | The bright-line "never" list — quick self-check before starting, committing, or risky operations | before commit / before any L3 operation |
 | `templates/workspace-memory-template.md` | Initialize a project's `memory/` skeleton (state/experience/preferences/task-log) when the session-start scan finds it missing | project has no `memory/` yet |
+| `references/new-project-bootstrap.md` | First task of a NEW project (no `memory/`, no reference project known): create memory skeleton, register reference repos/skills, set the project strictness tier (S1-S3), and write first-experience on day one | project root has no `memory/` / new project / migrated workspace |
 
 Do not preload all references — load only the one the current step needs. **You cannot detect context compaction yourself — do not rely on sensing it; rely on two guards:** (a) explicit signal — the user says "reload / you were compacted / start fresh", or the platform visibly reset the context → **follow the reload sequence immediately**: ① re-read this SKILL.md; ② re-read the memory file (`memory/`, see §10); ③ re-read any reference the current step still needs; ④ restate the current task + acceptance criteria to the user before continuing; (b) milestone self-check — before starting a task, committing, or a major decision, recite the core elements (master-sequence steps, current mode, rollback rule, ask-before-acting); if you cannot restate any of them in full, treat it as missing context and reload before continuing.
 
@@ -198,3 +199,23 @@ Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`
 - **Completion update order (end-of-session, anti-pollution)** — on finishing: ① minimal verification + self-check → ② update `memory/task-log/<YYYY-MM-DD>-<name>.md` (understanding → acceptance → decisions → result; write conclusions immediately) → ③ update `memory/experience.md` (new or recurring pitfalls; duplicate content lives in one place with cross-reference) → ④ update `memory/preferences.md` (with the preference-review reminder) → ⑤ commit docs and code in the same batch; then distill 1-5 reusable knowledge points (default 3) at session end.
 - Docs ship in the same commit as code; a doc may be archived only after a current equivalent exists.
 - **Templates** — ready-to-fill templates live in `templates/`: step-9 plan, acceptance criteria, task records, retrospectives, rollback points, prompt-budget, session-start hooks (`templates/hooks/`), review sub-agents (`templates/agents/`) and the workspace-`memory/` skeleton (`templates/workspace-memory-template.md`) — copy & fill; never edit in place.
+
+## 11. v1.12 additions — audit-driven refinements (2026-08-30)
+
+> Source: full-session audit (sess_c0f4df2b, 8 task blocks / 7.5h) + comparison with a mature self-discipline system (GATE / status-surface / P99-style honesty critique). The audit found: soft clauses (memory-first, plan template, product-perspective) degrade without hard hooks; the strongest executions this session were the ones with forced signals (ask-before-acting tool, ci gate, commit discipline). **Each addition below binds a mechanism to a checkable artifact.**
+
+1. **GATE completion block (step-11 exit contract, mandatory).** Every task block ends with one line:
+   `GATE: {v=<scope>, cmd=<re-runnable command>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims}`
+   Re-runnable artifacts outrank self-narration; acceptance authority stays with the user; `approval:never` exempts only tool-level approval, never the confirmation duty. The task-record template carries this as a required field.
+2. **Session status surface (end-of-session consistency report, for the user to review — NOT a pass/fail self-declaration).** Report: injected version number; this session's detail-rule hits (which rule class, how many times, symptom-index matched); context budget estimate with the compaction threshold reminder (~150-200K input); unverified claims and open todos. Fixed output shape; nothing here claims "compliant/effective".
+3. **A1 — Product-perspective review (step 8) is now mandatory**, not conditional: every L2/L3 plan passes the light five questions — (a) one-sentence user-request decomposition, (b) ≥1 rejected alternative, (c) rework-cost assessment, (d) boundaries & not-do list, (e) 3-5 verifiable acceptance criteria. L3 deepens with the risk-layer evidence (#186).
+4. **A2 — Research-scaled matrix (task size × project strictness).**
+   - Project strictness tier: **S3 strict** (production / external / security / financial / multi-collaborator / user-named) · **S2 standard** (default) · **S1 loose** (personal / prototype / short-lived).
+   - Task size tier: L1 no research · **small-module L2** (≤2 files, single domain, same-shape as existing patterns → code-level research + reuse prior takeaways; internet research only for new tech/new deps/team requirement) · normal L2 / L3 full dual research.
+   - Matrix: S3 × small-module = still full research; S2 × small-module = light; S1 × small-module = no internet research. Authoritative section: `references/workflows.md`.
+5. **A3 — Prior-takeaway reuse (step 2.5):** confirmed conclusions from this session / this project must be explicitly reused (record a reference line), never re-researched. This is the token-waste fix.
+6. **A4 — L2 entry without a plan directive:** user drops a multi-file/cross-module request with no `/plan`-style directive → restate (goal/boundary) + 3 acceptance criteria + one-line triage first; at S3 strictness, ask before starting.
+7. **A5 — ExitPlanMode four-item self-check:** acceptance criteria 3-5 / one-line triage / rollback point (or explicit "current clean baseline is the point") / boundaries & not-do list — do not submit the plan missing any.
+8. **B — New-project bootstrap:** new reference (`references/new-project-bootstrap.md`): create memory skeleton → register reference repos/skills (may be empty) → set strictness tier S1-S3 → day-one first-experience write ("no experience → normal research → same-day pitfall write-back").
+9. **C — Fixed end-of-session back-reference in the injected core** (self-optimization hook): every session end reminds — same pitfall ≥2 times / high-rework experience → backflow into this skill (`references/details.md` two-strike promotion, source repo `D:\Agent工作流启动包\shisan-xinuo-workflow`) AND write this skill's own `memory/task-log`; below threshold → workspace memory only; judgment rule = section 10 above.
+10. **Declined (arbitration record):** zero-reference retirement + meta-work KPI (元工作占比) — judged a self-replicating metric (the compared system itself never met its own ≤10% meta-work cap; our audit agrees it is a pitfall, not a remedy). The fixed back-reference (item 9) covers self-optimization without another metric layer.

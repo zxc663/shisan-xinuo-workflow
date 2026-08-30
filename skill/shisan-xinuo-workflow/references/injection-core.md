@@ -9,7 +9,7 @@
 
 # Global Agent Workflow Core (Shisan Xinuo Workflow · mandatory every session)
 
-> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's **process routing map**: it tells you "which files to read first → what order to execute → which docs to update when done", with the context budget baked in to avoid polluting the context. Full details load on demand from the skill "shisan-xinuo-workflow": 47 discipline rules / 9 task-type workflows / 203 pitfall-log details / security red lines.
+> This file is auto-injected by the platform's injection mechanism every session — it is the workflow's **process routing map**: it tells you "which files to read first → what order to execute → which docs to update when done", with the context budget baked in to avoid polluting the context. Full details load on demand from the skill "shisan-xinuo-workflow": 47 discipline rules / 9 task-type workflows / 227 pitfall-log details (13 classes) / security red lines.
 
 ## Context budget (order first, avoid pollution)
 
@@ -83,3 +83,14 @@ Project root `memory/` — task records / pitfall log / preferences / session st
 - **经验回流（双击晋升）**：同坑单项目两次 / 跨项目一次 → 晋升进 Skill 的 details.md。
 - **同会话禁重载**：本会话已加载的技能/引用不因换任务而重读；仅压缩后、显式要求、源变更时重读。
 - **离线降级**：联网调研步骤离线/无网络时合法降级——跳过远程调研、产物标注 degraded-offline、以本地证据 + 经验库替代，不卡流程。
+
+## v1.12 增补条款（2026-08-30 审计驱动 · 与 SKILL.md 同四级一致）
+
+- **GATE 完成块（步骤 11 出口，强制）**：每任务块收尾一行 `GATE: {v=范围, cmd=可复跑命令, exit=退出码, files=改动清单, lessons=知识点, exempt=未验证声明}`；可复跑工件优先于自述；验收权在用户；approval:never 只豁免工具级审批、不豁免确认义务。
+- **会话状态面（结束输出，供用户复核的一致性报告，非达标声明）**：注入版本号 / 本会话命中细则类与次数 / 上下文预算估值与压缩阈值提醒（~150-200K）/ 未验证声明与待办。
+- **步骤 8 产品视角审视=默认强制**（L2/L3 计划必经轻量五问：诉求拆解/被否候选≥1/返工成本/边界清单/验收 3-5；L3 加深）；反复要审查/老代码不对劲 → 升级完整产品诊断五问。
+- **调研按矩阵降级**：项目严格度 S3（生产/对外/安全/金融/多协作者/用户点名）·S2 标准（默认）·S1 宽松 × 规模 L1 免调研/小模块 L2（≤2 文件单域→代码级+复用前文，联网仅新技术新依赖）/普通 L2·L3 全量；S3×小模块=仍全量；已确认前文要点显式复用不重跑（步骤 2.5）。
+- **无计划指令的 L2 入口**：复述（目标/边界）+3 条验收+判级；S3 必问才开工。
+- **新项目 bootstrap**：第一任务建 memory 骨架、登记参考位、设严格度档位（见 references/new-project-bootstrap.md）。
+- **会话末回指（自优化钩子）**：本会话同坑≥2 次/高返工成本经验 → 回流本 skill（双击晋升 details.md，源库 D:\Agent工作流启动包\shisan-xinuo-workflow）并写 skill 自身 memory/task-log；未达阈值 → 只沉淀工作区 memory。
+- **不采纳（仲裁记录）**：零引用退役 + 元工作占比 KPI → 判为自我繁殖指标（对比体系自评从未达标；审计同判为坑），不以新指标层替代回指钩子。
