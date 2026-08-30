@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「调研驱动的
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 1.19.0
+  version: 1.19.1
   tags:
     - agent-skill
     - workflow-governance

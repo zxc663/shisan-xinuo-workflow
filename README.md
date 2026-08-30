@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.19.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.19.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
@@ -127,7 +127,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：`npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow` → 立即**重命名为 `agent-shisan-xinuo-workflow`**（agent- 前缀=按字母序在技能列表最前——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/shisan-xinuo-workflow-v1.19.0.zip`。
+1. **安装**：`npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow` → 立即**重命名为 `agent-shisan-xinuo-workflow`**（agent- 前缀=按字母序在技能列表最前——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/shisan-xinuo-workflow-v1.19.1.zip`。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -150,8 +150,8 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（v1.19.0）· docs/reference-sources.md
-├── dist/                           ← 发布 zip（v1.19.0 · 271KB/72 条目，gitignore 产物）
+├── package.json（v1.19.1）· docs/reference-sources.md
+├── dist/                           ← 发布 zip（v1.19.1 · gitignore 产物）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（增补制一致/hooks/版本+package/泄漏）
 ├── skill/shisan-xinuo-workflow/    ← 主交付物（英文执行化全文 v1.19）
