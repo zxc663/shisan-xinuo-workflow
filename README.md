@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.0.5-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.0.6-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -200,6 +200,7 @@ shisan-xinuo-workflow/              ← 仓库根
 - 未验证假设：规则能否改变行为（对照实验列下一轮）；verify=一致性≠有效性。
 - 单版本（v2.0 起）：唯一中文版为权威全量；删除的英文/双语版在 git 历史可回溯——不再有增补制同步面。
 - 自更新/校验两脚本属**发布/维护工具**，非运行时强制。
+- **非「自动做对」（2026-08-31 实证）**：纪律提供的是可追溯/可审计/**点破后快速恢复**机制（补全+声明+复盘），不是保证 Agent 自动做对的魔法；两轮 A/B 未观察到显著差异——价值主张对齐此边界，不夸大。
 
 ## 常见问题 · FAQ
 
@@ -221,6 +222,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v2.0.6**（2026-08-31）：**项目承载 + 授权边界修复批次（本地执行，未推送未发行）**——WorkBuddy 新工作区实测（执行会话自述 5 问题）驱动：①**部署第五层「项目承载检查」**（SKILL §3 第 6 步）：硬注入三层之外检查项目工作区——无 `memory/` 骨架 → 自动建五件套；无 docs/project-info.md 且多文件 → 建索引式六节；②**授权边界分级**（§4 映射表 + injection-core 红线）：项目工作区内写文件（memory/ 骨架、docs/、代码）= **自动动作，不触发授权停**；授权仅限平台全局注入 / 密钥 / 破坏性 / 发布 / 超预算——修复「自动建 memory 被误当需授权」根因；③**§2.5 触发改存在性判定**：无 memory/ 骨架 或 无 docs → 触发，不做「算不算新项目」主观判定；④**开工「项目承载探测」写死**（injection-core 开工四动作 + SKILL §10 会话始）：ls 项目根 → 无骨架自动建 → 再扫 memory/ → 判级选道；⑤**现场修复**：`~/.agents/skills` 下 6 个 `.bak-*` 备份在平台扫描路径内（**Base directory 落旧版根因**）→ 迁移至 skill-backups/；`~/.workbuddy/skills` 副本停在 b8d1022（缺本次触达条款）→ syncer 同步至 2.0.6；⑥诚实补句：纪律 = 可追溯 / 可审计 / 恢复机制，非「自动做对」。verify 4/4 PASS；本地 commit 不推送；注入副本 ×4 重部署 v2.0.6（先备份）。
 - **v2.0.5（2026-08-31）**：**路测回流 + 触达强化批次（本地执行，未推送未发行）**——①**取证命令二次修复**：v2.0.4 裸 `#[0-9]{3}` 分支无法区分细则编号与 GitHub issue 编号（三口径实证：v2.0.3=1 假阴性 / v2.0.4=10 假阳性（9 为 issue 编号）/ 严格=1 且自指，真实语义命中=1）→ 废弃裸编号分支，只认完整前缀形态 `details #NNN` / `细则 #NNN` / `references/details`，details 引用规范同步禁裸编号、injection-core 引用条款同约束；②**前缀自检改每会话触发**（用户拍板）：SKILL §3 第 0 步重写（权威源，含两个合规出口：目录名未知→不猜不阻塞 / 用户拒绝改名→state.md 记录后静默）+ injection-core「开工一行自检」+ memory-anchor 锚点行——三层触达承载；③**「跳过必声明」元规则**（用户拍板）：任何规则/步骤/纪律被跳过（含 L2-S 边界豁免、L1 整体标注）→ 复述 + 记录依据 + 提醒；「跳过 + 声明」合法、静默跳过违规（SKILL §0 + §12 SK 行 + injection-core 主流程门禁）；④**details §15 一轮路测回流 13 条**（#255-267：12 项漏检全收 + 「不复现」判定举证纪律，T5 判据失误实证）+ **§16 二轮路测回流 4 条**（#268-271：chalk level 污染根实例 / 响应体只消费一次 / 配置继承拼接 vs 替换 / 非 TTY 环境查询 undefined——只收通用性强者，终端渲染等绑定领域者不入通用版）；口径 254→271 条 / 14→16 类全仓同步；⑤**负向结论举证升红线**（四要件权威源 SKILL §8 + injection-core 红线 + details #255 交叉引用）——「不复现」举证责任高于「复现」（T5/T9 双失误实证）；⑥**触达机制强化（二轮核心发现「已安装 ≠ 被加载」）**：在场提示/injection-core 首行改「读到即执行 + 缺失即报告」；SKILL §3 注入第五步升可重跑触达验收；高命中细则 TOP 内联进 injection-core 错误段（#233/#214/#163/#256·#270/#262）；description 重构为场景化触发词；**子代理委托纪律包**（rules §28 + skill-usage §0 修正「子代理自扫 L0/L1/L2」错误假设——二轮实证提醒可读仍 0 加载，改为「委托时主代理必须内联最小纪律包」+ SKILL §8/§12 AG + templates/agents 模板）；⑦**有效性诚实声明更新**（§6.6）：纳入二轮（未观察到带规则的正确性优势 + T5/T9 双纠错被无规则轨纠正 + 背答案 7/14 + 8 类零命中/111 条无贡献 + 触达瓶颈；只读作「B 轨未劣于 A 轨」）；§8 易错点 +2（不复现举证 / 子代理纪律直送）；⑧版本 bump 2.0.5 全口径（package.json / README / CHANGELOG / 项目信息 / EVIDENCE §十/§十一）。verify 4/4 PASS。**下一步**：换项目池（zod/vitest/esbuild/prettier/tsx/unbuild）+ 面1·面3 分会话 + 转测触发率，由新会话以本版为基线执行。
 - **v2.0.4（2026-08-31）**：**三层承载化 + 取证命令修复（执行批次，已全渠道发行）**——①硬注入升级为「记忆层（每会话在场锚点，首行在场提示）+ 规则层（注入核心全文）+ 配置文件层（§2.1）」三层强制写入，写前提醒用户授权；按需注入只写应用层、询问是否写规则层（不写记忆层）；②新增 §3 步骤 1.5「识别与调研注入点（不猜）」——识别 Agent 平台后联网调研官方注入点再注入；③新增 `templates/memory-anchor.md`（记忆层锚点块，首行「在场提示 · 工作流 Skill 现已在场」）+ platform-adaptation §2.2 平台记忆层；④install-skill.ps1 增 `-MemoryFile`、syncer.py 增 `--memory-target`（记忆层同步，先备份合并）；⑤**取证命令缺陷修复**：状态面 `grep -cE 'references/details|#2[0-9][0-9]\.'` 对 details.md `1.–254.` 有序列表与任务记录 `#228×3` 形态恒 0 假阴性→改为匹配真实引用形态，details.md 补引用规范，EVIDENCE §七「0→有命中」复测校准；⑥本机三层实测注入（WorkBuddy MEMORY.md / Trae user_profile.md / Codex AGENTS.md 注记 + 注入副本 ×4 重部署，均备份 `.bak-20260831-pre-v204`）。verify 4/4 PASS + **全渠道发行**（GitHub Release / npm 2.0.4 / Gitee / ClawHub 1.0.6 / About 双端）。
 - **v2.0.3（2026-08-31）**：**前缀自适配 + 平台配置文件层（执行批次，未发布）**——①新增 `scripts/install-skill.ps1` 一键安装（自动带 `agent-` 前缀、幂等、`-Dry` 干跑 / `-Link` 软链 / `-Force` 备份覆盖 / `-HardInject` 注入配置层，输出「Base directory 判据」验收提示）；②SKILL §3 新增第 0 步「安装名前缀自检」（无前缀一行提示，带前缀静默）；③README 安装话术改「一条命令自动带前缀」，FAQ 前缀条目改述为官方已适配；④platform-adaptation 新增 §2.1 平台配置文件层（Claude Code settings.json hooks / Codex config.toml / Cursor 应用 Rules / Trae 应用设置 / WorkBuddy settings.json+BOOTSTRAP / ZCode AGENTS.md，每平台经实测如实标注——本机 bash 不可用故 hooks 降级、Codex/WorkBuddy 无 hooks 槽位）；⑤SKILL §3 注入点补「硬注入承载面 = 规则文件 + 平台配置文件」；templates/hooks/ 新增多平台说明 README；⑥本机配置层全激活（~/.codex AGENTS.md 由 v1.19.1 重写为 v2.0.3、部署副本 ×2 syncer 同步、注入副本 ×4 重部署，均先备份 `.bak-20260831-pre-v203`）。verify 4/4 PASS。
