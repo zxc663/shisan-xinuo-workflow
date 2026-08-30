@@ -40,7 +40,25 @@
 
 **强制注入（硬加载）** = 把 `references/injection-core.md` 的核心全文（含上下文预算法 + 工作区 `memory/` 约定）写入上面检测到的平台注入点（先备份、合并不覆盖）——工作流每会话无条件在场。**不要**用「每会话完整读取 SKILL.md」这类弱指令实现强制注入：模型不会可靠执行额外读取动作，必须直接写入核心全文（实测教训：弱指令模式下新会话只遵循最通用的几条纪律）。
 
+**硬注入承载面 = 规则文件 + 平台配置文件（hooks / 全局设置）**：除上面的规则文件注入点外，平台配置层的承载点与实测能力见下节「平台配置文件层」——先实测可用性再部署，不支持的如实标注（见 `templates/hooks/` 多平台说明）。
+
 通用 CLI（无自动注入）：提示用户每会话打开一次本 Skill，或将规则写入其自定义提示词。
+
+## 2.1 平台配置文件层（规则文件之外的承载点；硬注入承载面之一）
+
+> 规则文件（上表）是自动注入的主体；本层是**加固面**——平台支持时把纪律/钩子挂到配置文件，让行为更接近「自动在场」。**先实测再部署**：配置格式、hooks 支持度、Windows 下脚本执行环境（如 .sh 需 bash）各平台不同；不支持的如实标注「平台可选/不可用」，不硬撑。
+
+| 平台 | 配置文件承载点 | 实测能力（2026-08-31 本机） | 备注 |
+|---|---|---|---|
+| Claude Code | `~/.claude/settings.json`（hooks：`SessionStart`/`SessionEnd`） | hooks 模板就绪（`templates/hooks/`）；**本机实测 bash 不可用（`bash.exe` 为 WSL 启动器且无发行版 → `execvpe(/bin/bash)` 失败），.sh hooks 无法运行 → 本机不创建 hooks，降级为「规则文件/注入核心已在场」**；有 bash/WSL 的环境可按模板启用 | 钩子属「强制模式最强形态」（§3.2）；不可行则降级，如实标注 |
+| Codex | `~/.codex/config.toml`（事件 / hooks 支持） | **实测：config.toml 仅 `notify`（turn-ended 外部程序），无 SessionStart/SessionEnd hooks 槽位 → 如实标注「不支持 hooks，AGENTS.md 为唯一硬注入承载」**；不清洗既有字段 | config.toml 含凭据时走环境变量，不落明文 |
+| Cursor | 应用**全局 Rules**（无目录时放应用设置） | 本机无 `.cursor/` 目录 → 文档指引「应用内全局 Rules」 | 规则文件自动读取；配置层按应用设置启用 |
+| Trae | 应用设置启用（`user_rules/*.md` 文件即注入，无需启用） | 已激活（全局注入副本每会话在场） | 文件存在即注入（已实证） |
+| WorkBuddy | `settings.json` + `BOOTSTRAP.md`（平台机制要求时作启动锚定） | **实测：settings.json 无 hooks 字段（仅 sandbox/plugins/claw）→ 不支持 hooks；BOOTSTRAP.md 为身份锚定会话模板（非纪律锚定，当前未启用）→ 以 `~/.workbuddy/AGENTS.md` 注入为承载** | 全局规则文件已注入 |
+| ZCode | 全局 `AGENTS.md` | 已注入（全局副本每会话在场） | 与 Codex 同构（AGENTS.md 规则输入） |
+| 通用 CLI | 无 | — | 每会话手动加载或写入自定义提示词 |
+
+**凭据纪律**：平台配置（config.toml / settings.json 等）若含凭据字段（token / key / 加密后凭据），绝不写入明文——一律走环境变量注入，配置文件内只放 `${VAR}` 引用；本层文档与模板也不得出现真实令牌样例。
 
 ## 3. 生成 / 合并规则文件
 
