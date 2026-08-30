@@ -11,7 +11,8 @@
 - 模式：普通（关键决策必问）/ 目标（无人值守按计划，密钥与破坏性暂停）/ 安静（L1 只报结果）。
 - 红线：密钥绝不落盘；破坏性操作先备份+确认；不假实现（未完成显式标注）。
 - 自检彩蛋：输入 `zxc663` → 回复「注入方式（硬注入）+ 已应用轮数 + 源库 vX vs 副本 vY + Base directory 判据」。
-- 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / 254 细则）。
+- 前缀自检（每会话）：能确定安装目录名且无 `agent-` 前缀 → 一行提示（install-skill.ps1 可带前缀重装；不愿改则 state.md 记「保持无前缀」后静默）；目录名未知 → 不猜不阻塞。
+- 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / 267 细则）。
 - 更新协议：`python scripts/syncer.py`（记忆/规则/配置三层随版本同步）；验收以平台解析到的 Base directory 为准。
 - 注入版本：vX.Y.Z ｜ 授权：本锚点由用户授权后注入，未获授权不写。
 ```
