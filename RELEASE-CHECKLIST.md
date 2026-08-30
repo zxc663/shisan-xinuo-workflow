@@ -1,24 +1,24 @@
 # 发行执行清单（v2.0.6）——项目承载 + 授权边界修复批次全渠道发行
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
-> **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3、v2.0.4 已全渠道发行（2026-08-31）；v2.0.5（路测回流批次）与 v2.0.6（项目承载+授权边界批次）为本地批次（本台账为 **v2.0.6 发行面**），详情见 项目信息.md §五 与 memory/task-log。
+> **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3、v2.0.4 已全渠道发行（2026-08-31）；**v2.0.5（路测回流批次）与 v2.0.6（项目承载+授权边界批次）内容已随 v2.0.6 全渠道发行（2026-08-31）**（本台账为 **v2.0.6 发行面**），详情见 项目信息.md §五 与 memory/task-log。
 
 ## A. 本仓已备（随 git 提交）
 - [x] 版本锁 2.0.6（package.json / SKILL frontmatter / README 徽章与版本历史行 / CHANGELOG v2.0.6 行 / 项目信息 §三·§五 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七）
-- [x] 项目承载 + 授权边界修复源码（本地 commit 56ee989，**未推送**）：部署第五层「项目承载检查」、授权边界分级（项目内写文件=自动动作）、§2.5 触发存在性判定、开工四动作写死、Base directory 根因现场修复（`.bak-*` 迁 skill-backups/）
+- [x] 项目承载 + 授权边界修复源码（本地 commit 56ee989，已随 HEAD=df8dc98 推送双端）：部署第五层「项目承载检查」、授权边界分级（项目内写文件=自动动作）、§2.5 触发存在性判定、开工四动作写死、Base directory 根因现场修复（`.bak-*` 迁 skill-backups/）
 - [x] 本机注入副本 ×4 重部署 v2.0.6（先备份，含在场提示）
 - [x] verify-release 4/4 PASS（base=2.0.6，零泄漏）
 - [x] dist/shisan-xinuo-workflow-v2.0.6.zip（staging 暂存目录法重建，Set-diff 双检）
-- [ ] 提交并推送双端 main（origin GitHub / gitee Gitee，本地 85 commits vs 远端 78，领先 7）；tag v2.0.6 待推
+- [x] 提交并推送双端 main + tag v2.0.6（commit df8dc98，双端已推送）
 
 ## B. 全渠道发行回执（待用户批准后执行）
 | 渠道 | 产物/URL | 状态 |
 |---|---|---|
-| GitHub | Release v2.0.6（附 dist v2.0.6.zip，走代理） | ⏳ 待批 |
-| npm | `@zxc663/shisan-xinuo-workflow@2.0.6`（GitHub Packages） | ⏳ 待批 |
-| Gitee | Release tag v2.0.6 + zip 附件（直连） | ⏳ 待批 |
-| ClawHub | `shisan-xinuo-workflow@1.0.7`（内容 v2.0.6） | ⏳ 待批 |
-| About | GitHub+Gitee 仓库描述 PATCH v2.0.6 | ⏳ 待批 |
+| GitHub | Release v2.0.6（附 dist v2.0.6.zip，走代理） | ✅ id=379414556，zip 177,425B |
+| npm | `@zxc663/shisan-xinuo-workflow@2.0.6`（GitHub Packages） | ✅ 29 文件 118.6 kB（shasum 188db3b3…） |
+| Gitee | Release tag v2.0.6 + zip 附件（直连） | ✅ id=1017339，附件 id=3120337 |
+| ClawHub | `shisan-xinuo-workflow@1.0.7`（内容 v2.0.6） | ✅ pending security scans |
+| About | GitHub+Gitee 仓库描述 PATCH v2.0.6 | ✅ 200/200 |
 | skills.sh | 等待遥测/爬虫收录 | ⏳ |
 
 ## C. 复用要点
