@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.13.0
+  version: 1.14.0
   tags:
     - agent-skill
     - workflow-governance
@@ -235,3 +235,34 @@ Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`
 8. **B — New-project bootstrap:** new reference (`references/new-project-bootstrap.md`): create memory skeleton → register reference repos/skills (may be empty) → set strictness tier S1-S3 → day-one first-experience write ("no experience → normal research → same-day pitfall write-back").
 9. **C — Fixed end-of-session back-reference in the injected core** (self-optimization hook): every session end reminds — same pitfall ≥2 times / high-rework experience → backflow into this skill (`references/details.md` two-strike promotion, source repo `D:\Agent工作流启动包\shisan-xinuo-workflow`) AND write this skill's own `memory/task-log`; below threshold → workspace memory only; judgment rule = section 10 above.
 10. **Declined (arbitration record):** zero-reference retirement + meta-work KPI (元工作占比) — judged a self-replicating metric (the compared system itself never met its own ≤10% meta-work cap; our audit agrees it is a pitfall, not a remedy). The fixed back-reference (item 9) covers self-optimization without another metric layer.
+
+
+## 12. v1.14 additions — user preference set, must-read experience tier, context management (2026-08-30)
+
+> Source: user preference directive (11 clauses, merged; user ratified promotion to **skill default** 2026-08-30) + 0-hit audit fallout + this-session verified high-frequency pit families. **These are skill DEFAULTS** — every project starts from them; in the user's own projects the user/project discipline still ranks first per the arbitration order (harmless: the defaults and that rank agree).
+
+### 12.1 Requirement communication has top priority (may exceed platform tooling defaults)
+- If the directive is fuzzy — or the user has not yet figured out what they want — **communicate first; do not code until fully understood and confident**. When it matters, this outranks the platform's ask-tool and plan-mode defaults.
+- Ask-tool timeout/missed-answer: **prefer cancelling the timeout** where the host supports it; otherwise (host can't) — do not treat the empty answer as an approval: **proceed by researching the project's real implementation + the user's known intent, prepare the closest-to-project optimal/recommended solution, and mark it "pending user confirmation"** for one-shot confirm on return.
+- **Every question carries the model's recommended option + the reason.** No open-ended "what do you want"; the core reason = "insufficient preparation + fuzzy requirement is the real pain point of the LLM era" (user's own words, internalized).
+- Merge positions: "triage ≠ understanding confirmation" + ask-before-acting + §12.1 = the single highest-tier clause (user-POV rank #1).
+
+### 12.2 Read before writing; restate; then act
+- Read the existing project structure & code logic first; never assume from thin air (with the v1.13 §2.5 integration-truth list). Restate a SHORT plan + impact scope: 改哪 (what changes) / 影响什么 (what it affects) / 怎么验 (how verified).
+- Details that don't affect core requirements: decide autonomously and **keep going — do not stop frequently to ask**; but **log every autonomous decision + reason** into the task record (§10). The "over-asking kills adoption rate" gotcha applies; red lines never exempted.
+
+### 12.3 Simplest solution, minimal change, root-cause errors, run & walk through, final four-check
+- YAGNI hardened: features beyond the request are explicitly rejected and noted ("considered, out of scope") in the task record. Minimal change; never touch unrelated code; verify existing features unaffected.
+- Errors: find and explain the root cause FIRST, then fix — bypassing validation or hiding errors is a violation the moment the temptation appears.
+- After completion: actually run the core flow (no run = not done); then **walk through as a real user once** (L2-F always; L2-S = smoke the referenced path) and keep fixing usability issues until really usable.
+- Before delivery: full four-check — missing requirements / edge cases / temporary code / unrelated modifications (upgrades the pre-commit diff re-read into this checklist).
+
+### 12.4 Experience must-read tier (prevention > cure)
+- New `memory/experience-mustread.md`: **TOP ≤10 forced pre-read entries** (hard limit one screen): one-line symptom + one-line countermeasure each (e.g. "@tx/contracts-ui edited → rebuild dist before dependents typecheck"; "api behavior ≠ new code → check uptime/dist then restart ritual"; "ci flaky failure → isolate and run twice to type").
+- Promotion rule: same pit **≥3 times** or high-rework cost (higher frequency than the two-strike details promotion) → promote into must-read; demotions/backflows per workflows.md.
+- Injection core gains: "session start reads the high-frequency experience TOP list (one screen) BEFORE symptom search — prevention first". The must-read file itself counts in the status-surface hit evidence.
+
+### 12.5 Context management (rule-level, not model self-sensing)
+- **Proactively discard**: big outputs (>~40 lines build/test/log) → write file for record, keep only summary + exit code in context; subagent/remote reports → conclusions to record, report body NOT in context; already-archived/committed content → cite path, don't re-paste.
+- **Proactively refetch fuzzy things**: uncertain about an earlier decision/field/API/number → check task record/contract/source FIRST; guessing from memory is forbidden (same origin as the integration-truth rule); memory-fuzzy triggers the reload sequence.
+- **Periodic context census**: every ~5 task blocks or when tokens hit 40-60% budget — list the biggest context consumers, decide discard/archive, emit one line to the status surface (paired with the v1.13 budget threshold).
