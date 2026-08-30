@@ -200,7 +200,7 @@ metadata:
 - **配套模板**：规划、验收标准、任务记录、复盘、回滚点、提示词预算、工作区 `memory/` 骨架（`templates/workspace-memory-template.md`）模板，以及会话钩子（`templates/hooks/`）与审查子代理（`templates/agents/`）均位于 `templates/`（复制后填写，不原地编辑）。
 
 
-## 增补节 · v1.12-1.18（增补制 · 2026-08-30 同步）
+## 增补节 · v1.12-1.19（增补制 · 2026-08-30 同步）
 > 与英文主交付物（v1.16 起执行化全文）保持增补同步；主交付物为权威全量，本版为其要点增补。
 
 GATE 完成块：每任务块一行 `GATE: {v,cmd,exit,files,lessons,exempt}`（可复跑工件>自述；验收权在用户；approval:never 只豁免工具级审批不豁免确认）。

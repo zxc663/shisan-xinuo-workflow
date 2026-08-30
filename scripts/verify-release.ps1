@@ -3,7 +3,7 @@
     Shisan Xinuo Workflow — 发布前一致性/泄漏门禁校验（P0 机制）
 .DESCRIPTION
     校验三语通用版（en / universal-zh / universal-bilingual）在发布前满足：
-      A. 增补制一致（v1.16-1.18）：三语 SKILL 均 version=1.18.0 且含「v1.12-1.18」增补标记；主交付物 version=1.19(基准)（v1.16 起执行化全文以英文主交付物为准，三语为增补制——不再要求全量文件对称）
+      A. 增补制一致：三语 SKILL version 均 == 主交付物 version（动态基准）且含「v1.12-1.19」增补标记（v1.16 起执行化全文以英文主交付物为准，三语为增补制——不再要求全量文件对称）
       B. hooks 三层齐全（主交付物）：templates/hooks/ 含 session-start / session-end / hooks.json，且 hooks.json 同时声明 SessionStart 与 SessionEnd
       C. 版本一致：三版 SKILL.md 的 metadata.version 相等，且 == package.json version
       D. 泄漏红线：发布物范围内不出现个人版路径 / memory / 令牌原文（ghp_/gho_/github_pat_）
@@ -57,7 +57,7 @@ $Root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
 $sk = @{ en = (Join-Path $Root "skill\shisan-xinuo-workflow"); zh = (Join-Path $Root "versions\universal-zh\shisan-xinuo-workflow"); bi = (Join-Path $Root "versions\universal-bilingual\shisan-xinuo-workflow"); pe = (Join-Path $Root "versions\personal-zh\shisan-xinuo-workflow") }
 $missing = @()
 foreach ($k in $sk.Keys) { if (-not (Test-Path (Join-Path $sk[$k] "SKILL.md"))) { $missing += "$k/SKILL.md" } }
-# ---------- A. 增补制一致（version 1.18 + v1.12-1.18 标记；主交付物权威） ----------
+# ---------- A. 增补制一致（version 1.19 + v1.12-1.19 标记；主交付物权威） ----------
 $root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
 $main = Join-Path $root "skill\shisan-xinuo-workflow\SKILL.md"
 $langs = @("universal-zh","universal-bilingual")   # personal-zh 为私有工作台版，非发布物，版本不检
@@ -65,14 +65,14 @@ $verM = [regex]::Match((Get-Content $main -Raw), "(?s)version\s*:\s*([0-9]+\.[0-
 $baseVer = $verM.Groups[1].Value
 $verOK = ($baseVer -ne "")
 $probs = @()
-if (-not $verOK) { $probs += "主交付物 version=${($verM.Groups[1].Value)}(≠1.18.0)" }
+if (-not $verOK) { $probs += "主交付物 version=${($verM.Groups[1].Value)}(≠$baseVer)" }
 foreach ($l in $langs) {
     $sk = Join-Path $root "versions\$l\shisan-xinuo-workflow\SKILL.md"
     if (-not (Test-Path $sk)) { $probs += "$l 缺 SKILL"; continue }
     $txt = Get-Content $sk -Raw
     $vm = [regex]::Match($txt, "(?s)version:\s*([0-9]+\.[0-9]+\.[0-9]+)")
     if ($vm.Groups[1].Value -ne $baseVer) { $probs += "$l version=$($vm.Groups[1].Value)(base=$baseVer)" }
-    if ($txt -notmatch "v1.12-1.18") { $probs += "$l 缺增补标记" }
+    if ($txt -notmatch "v1.12-1.19") { $probs += "$l 缺增补标记" }
 }
 Add-Result ($probs.Count -eq 0) "A 增补制一致（主交付物 base + 三语增补标记）" $(if($probs.Count -eq 0){"OK"}else{$probs -join ";"})
 # ---------- B. hooks 三层齐全（主交付物） ----------

@@ -181,11 +181,11 @@ metadata:
 5. 文档与代码同批提交；会话结束提炼 1-5 条可复用知识点（默认 3）。Docs + code in the same batch; distill 1-5 knowledge points (default 3).
 
 
-## Sync Additions · v1.12-1.18 (additive sync · 2026-08-30)
+## Sync Additions · v1.12-1.19 (additive sync · 2026-08-30)
 > 与英文主交付物增补同步（增补制）；主交付物为权威全量。
 
 
-### 增补节 · v1.12-1.18（增补制 · 2026-08-30 同步）
+### 增补节 · v1.12-1.19（增补制 · 2026-08-30 同步）
 > 与英文主交付物（v1.16 起执行化全文）保持增补同步；主交付物为权威全量，本版为其要点增补。
 
 GATE 完成块：每任务块一行 `GATE: {v,cmd,exit,files,lessons,exempt}`（可复跑工件>自述；验收权在用户；approval:never 只豁免工具级审批不豁免确认）。
