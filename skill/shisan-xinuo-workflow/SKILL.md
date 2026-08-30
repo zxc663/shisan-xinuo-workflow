@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.19.0
+  version: 1.19.1
   tags:
     - agent-skill
     - workflow-governance
@@ -210,7 +210,7 @@ metadata:
 ## 11. Session status surface (end-of-session consistency report — user review; NOT compliant/effective claim)
 
 ```
-注入版本: 1.19.0
+注入版本: 1.19.1
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <session outputs> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩+重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py）
