@@ -1,30 +1,26 @@
-# 发行执行清单（v1.19.0）——区分「本仓已备」与「你在另一端执行」
+# 发行执行清单（v1.19.1）——复核第三方审计 F-1/2/3/5/6 后升版全渠道重发
 
-> 本 Agent 无发行 MCP：**外部发布动作由你在另一平台执行**（L3 红线：命令清单先行、由你确认后逐条执行）。本仓严禁代为推送。
+> 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
 
-## A. 本仓已备（随 git 提交，不 push）
-- [x] 版本锁 1.19.0（package.json / SKILL frontmatter / README 徽章）
-- [x] README.md 重构（8 节：定位意图/安装适配/执行路径/治理件/参考层/自更新合并/真实数据/发行验证）
-- [x] CHANGELOG.md（v1.9→v1.19）
-- [x] docs/reference-sources.md（v1.19 版本行 + 三语增补制说明）
-- [x] scripts/syncer.py · scripts/verify-release.ps1
-- [x] dist/shisan-xinuo-workflow-v1.19.0.zip（skill 全量 + README + CHANGELOG + scripts + RELEASE-CHECKLIST）
-- [x] EVIDENCE.md §七 更新（0 命中→触达后转有 + 成本真账指向）
-- [x] versions/ 三语增补同步（随本 commit 完成；增补制，非全量重写——README 已如实标注）
+## A. 本仓已备（随 git 提交）
+- [x] 版本锁 1.19.1（package.json / SKILL frontmatter 三语 / README 徽章）
+- [x] CHANGELOG.md（v1.9→v1.19.1，新增 v1.19.1 行）
+- [x] 项目信息.md 发布记录表补 v1.19.1 行
+- [x] scripts/syncer.py · scripts/verify-release.ps1（F-2/F-3/F-6 修复 + 泄漏扫描收敛）
+- [x] dist/shisan-xinuo-workflow-v1.19.1.zip（暂存目录法重建，排除 personal-zh，75 文件+2 空目录，293.7KB）
+- [x] verify-release 门禁 ALL PASS（base=1.19.1）+ 负向注入 `C:\Users\fakeuser` 正确 FAIL
+- [x] 提交 06e37df（F-fix）+ 84fadb6（升版口径），GitHub/Gitee 双端 main + tag v1.19.1 同步
 
-## B. 你在另一端执行（按序）
-1. **快检**：`python scripts/verify-release.ps1`（或对应验证）→ 资产清单核对绿。
-2. **GitHub**：`git tag v1.19.0` → push tag → Release 附 `dist/…zip` + CHANGELOG 摘要。
-3. **npm**：`npm publish`（@zxc663/shisan-xinuo-workflow）——先 `npm version 1.19.0` 已锁定。
-4. **Gitee**：同步主线 + 发布镜像（对应 Release）。
-5. **skills.sh / ClawHub**：上传台账入口（zip 路径 + 版本号 + README 链接）。
-6. **回执**：把各渠道产物 URL 回填到本文件中「回执」节（或 task-log），供审计。
-
-## 回执（发行完成后填）
-| 渠道 | 产物/URL | 时间 |
+## B. 全渠道发行回执（2026-08-30，已执行）
+| 渠道 | 产物/URL | 状态 |
 |---|---|---|
-| GitHub | https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v1.19.0 （asset 297791B） | 2026-08-30 |
-| npm | `@zxc663/shisan-xinuo-workflow@1.19.0`（latest，dist-tags: latest=1.19.0） | 2026-08-30 |
-| Gitee | https://gitee.com/zxc663/shisan-xinuo-workflow/releases （id=1003884，附 zip） | 2026-08-30 |
-| skills.sh | 等待遥测/爬虫收录 | — |
-| ClawHub | `shisan-xinuo-workflow@1.0.3`（pending security scans） | 2026-08-30 |
+| GitHub | https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v1.19.1 （附 dist v1.19.1.zip） | ✅ |
+| npm | `@zxc663/shisan-xinuo-workflow@1.19.1`（GitHub Packages，latest，70 文件 194.8kB，shasum ad6f436…） | ✅ |
+| Gitee | https://gitee.com/zxc663/shisan-xinuo-workflow/releases （Release id=1004434，zip 附件 id=3119299） | ✅ |
+| ClawHub | `shisan-xinuo-workflow@1.0.4`（pending security scans，内容 v1.19.1） | ✅ 待公开 |
+| skills.sh | 等待遥测/爬虫收录 | ⏳ |
+
+## C. 复用要点
+- 令牌供给：GitHub/github PAT 与 Gitee token 从机密文档经正则提取注入 env，命令串与输出全程不含明文，用毕即清 env；回显仅 len/前缀。
+- Gitee 建 Release 必须带 `target_commitish=main`（否则 400）；**附件上传 `POST /releases/{id}/attach_files` 用 `curl.exe -F access_token=… -F file=@…zip`**，勿用 `Invoke-RestMethod -Form`（PS7 该 multipart 文件字段会致 Gitee 返回 40001 登录失效）。
+- ClawHub 发布路径= skill 子目录（含 SKILL.md，`versions\universal-zh` 根不含会报 "SKILL.md required"）；走红海代理 `127.0.0.1:33210`。
