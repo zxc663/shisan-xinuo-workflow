@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.0.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.0.2-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
@@ -150,15 +150,15 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（v2.0.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.0.2）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
 ├── skill/shisan-xinuo-workflow/    ← 唯一主交付物（中文执行化全文 v2.0 · 单版本权威）
 │   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
-│   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 29 行）
+│   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 28 行）
 │   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/memory 骨架五件套）
-│   └── references/（injection-core · workflows · details 239条 · rules 47条 ·
+│   └── references/（injection-core · workflows · details 254条/14类 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
@@ -171,6 +171,8 @@ shisan-xinuo-workflow/              ← 仓库根
 | 工作台版（私有） | 独立私有仓 + 本地 `versions/personal-zh/`（gitignore） | 中英混合 + 内嵌个人经验手册 |
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
+>
+> **发布面注记（诚实）**：v2.0.x 为**源码与口径批次（未对外发布）**——npm / GitHub Release / Gitee Release / ClawHub / dist 目前仍发行至 v1.19.1，v2.0.x 发布另行批准后执行；本仓库（GitHub/Gitee）是最新来源。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -209,7 +211,9 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
-- **v2.0.0（2026-08-30）**：**单版本化重构**——①仓库只维护一份中文版 Skill（`skill/`，frontmatter name=`shisan-xinuo-workflow`），删除英文版与双语版（git 历史可追溯）；②中文版吸收三版全部强项并补齐全部疏漏：三级跑道（L1/L2-S/L2-F + 三问分流）、对接真相清单、§12 速查表（29 行，修复 A4/A5 重复 ID）、§11 会话状态面、§3.1 自更新协议、§4.1 复述增强 RE、新项目 bootstrap、注入核心三级跑道对齐、红线↔必问映射表；「增补节 v1.12-1.19」全部并轨进正文后删除；③门禁修复：verify-release 改为**内容锚点校验**（P1-2，终结「版本对、内容降级仍 5/5 PASS」）；④syncer 修复四项：首次安装必崩（P0-2）、备份外置 `skill-backups/`（WorkBuddy 实测：备份污染平台扫描路径致加载旧版）、死代码清理、dry-run 语义；⑤口径全量同步（README 双语保留 / 项目信息 / CHANGELOG / EVIDENCE / package.json 2.0.0 / About GitHub+Gitee）；⑥细节：details 编号校正 204-238 + 新增 #239（平台加载目录判据，跨平台晋升）、template 补 experience-mustread、新增 `.github/workflows/verify-release.yml`；⑦三级同步链：平台注入副本（~/.zcode/AGENTS.md、~/.trae-cn、~/.workbuddy/AGENTS.md）与部署副本同步至 v2.0.0。
+- **v2.0.2（2026-08-31）**：**审查批次（未发布）**——①审计修复三级同步链断裂：v2.0.1 机制「决策三层分界」（SKILL §5.2）未同步 injection-core.md 判级速查块与三份平台注入副本；强制完整读取「三类例外」仅 workflows.md 落地，skill-usage.md §4 / rules.md §26 仍为 2 类——已补齐并重部署注入副本；②口径清理：README 版本历史补 v2.0.1/v2.0.2 行、仓库结构行（package.json 2.0.2 / details 254 条 14 类 / 速查表 28 行）、reference-sources / scripts-README / EVIDENCE §九（重测注入核心字符数）同步、发布面注记（v2.0.x 未对外发布，v1.19.1 为各渠道最新）；③细节：details §13 标题补 #239 归属、SKILL §11 状态面模板版本号。verify 4/4 PASS。
+- **v2.0.1（2026-08-31）**：**个人工作台版差异化并入（用户拍板四项全并；未发布）**——details §14 回流 15 条（#240-254 MCP/视觉/前端测试）+ 机制四项（L1 跳步豁免 / NEVER 三读自检 / 子代理规则 / 决策三层分界）+ 小增量四项（知识点五条细则 / 强制完整读取三类例外 / 顾问措辞 / 默认中文）。
+- **v2.0.0（2026-08-30）**：**单版本化重构**——①仓库只维护一份中文版 Skill（`skill/`，frontmatter name=`shisan-xinuo-workflow`），删除英文版与双语版（git 历史可追溯）；②中文版吸收三版全部强项并补齐全部疏漏：三级跑道（L1/L2-S/L2-F + 三问分流）、对接真相清单、§12 速查表（28 行，修复 A4/A5 重复 ID）、§11 会话状态面、§3.1 自更新协议、§4.1 复述增强 RE、新项目 bootstrap、注入核心三级跑道对齐、红线↔必问映射表；「增补节 v1.12-1.19」全部并轨进正文后删除；③门禁修复：verify-release 改为**内容锚点校验**（P1-2，终结「版本对、内容降级仍 5/5 PASS」）；④syncer 修复四项：首次安装必崩（P0-2）、备份外置 `skill-backups/`（WorkBuddy 实测：备份污染平台扫描路径致加载旧版）、死代码清理、dry-run 语义；⑤口径全量同步（README 双语保留 / 项目信息 / CHANGELOG / EVIDENCE / package.json 2.0.0 / About GitHub+Gitee）；⑥细节：details 编号校正 204-238 + 新增 #239（平台加载目录判据，跨平台晋升）、template 补 experience-mustread、新增 `.github/workflows/verify-release.yml`；⑦三级同步链：平台注入副本（~/.zcode/AGENTS.md、~/.trae-cn、~/.workbuddy/AGENTS.md）与部署副本同步至 v2.0.0。
 - **v1.19.1**：复核第三方审计 F-1/2/3/5/6 并升版发行——英文细则 #236-238、英文 injection-core 补译、syncer 路径相对化 + 泄漏扫描收敛（无歧义特征、纳入 scripts/）、dist 打包 redesign；全渠道发行（GitHub / npm 1.19.1 / Gitee / ClawHub 1.0.4）。
 - **v1.19.0**：上下文管理四缺口修复——**两步式**（读→提炼→落盘→上下文只留指针+摘要）/盘点按**信号**触发/会话级**上下文账本**（入状态面）/重置点（5 块回引或成本 2× → 建议新会话）/信息单一源（盘点只写状态面）。
 - **v1.18.0**：README 门面重构（定位=执行手册 + 触达端口论 + 真实数据节）；**RE 复述增强**（子复述即时/总复述仅提炼要点）；A4 决策改判/A5 验收漂移留档；三语增补制同步；verify 改造跑绿；发行物就绪（CHANGELOG/dist/RELEASE-CHECKLIST）。

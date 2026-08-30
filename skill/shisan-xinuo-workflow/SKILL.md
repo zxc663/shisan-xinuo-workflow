@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「三级跑道（
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 2.0.1
+  version: 2.0.2
   tags:
     - agent-skill
     - workflow-governance
@@ -296,7 +296,7 @@ metadata:
 ## 11. 会话状态面（会话末一致性报告——给用户复核；不是「合规 / 有效」自证）
 
 ```
-注入版本: <2.0.0>
+注入版本: <2.0.2>
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <会话产物> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩 + 重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py；**并核对平台解析到的 Base directory**）
