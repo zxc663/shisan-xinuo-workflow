@@ -134,6 +134,10 @@ grep -cE 'references/details|#2[0-9][0-9]\.|#1[0-9][0-9]\.' <session outputs/tas
 - [ ] 14. Implement
 - [ ] 15. Verify (lint / type-check / baseline tests), safety & performance gates, independent review, commit code+docs together, confirm acceptance, update docs/log
 
+
+### 1.1 New-project info doc (first load, no docs) — see SKILL.md §2.4
+Six sections (architecture / goal from user description / module status table done-planned-not-started / research navigation / reference resources / restate-confirm). Session: minimal-diff update. Timestamps `YYYY-MM-DD HH:mm:ss` everywhere; record cap >120 lines or >3 blocks → new file.
+
 ## 2. Bug fix & troubleshooting (7 steps)
 
 - [ ] 1. Search the experience log by current symptom keywords (mandatory; on hit apply "solution / prevention")
