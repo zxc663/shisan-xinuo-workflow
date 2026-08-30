@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.12.0
+  version: 1.13.0
   tags:
     - agent-skill
     - workflow-governance
@@ -69,7 +69,23 @@ When the user cannot sort out the project state, the goal is unclear, or step 1 
 
 Right after step 1, triage the task level: **L1 routine** (small, reversible, low impact — typo fix, single-line change, doc tweak) → take the **L1 fast path**: one-sentence restatement → minimal change → minimal verification → report. Explicitly mark it as "L1 fast path" in the task record (a named lane, not a silent skip). L2 / L3 keep the full 11-step sequence (triage is finalized again at step 8).
 
+### 2.4 L2 flow split (v1.13 — the 11-step master is for LARGE modules)
+
+Answer three questions FIRST: ① touches ≥3 packages / spans api+contracts+frontend? ② touches contracts / architecture / migration / external-publish / security? ③ user named "follow the workflow / strict analysis"? **≥2 yes → L2-F (full 11-step master)**; otherwise **L2-S short workflow** (default). L3 always L2-F + pause line.
+
+- **L2-F trigger examples (written in to stop boundary drift)**: new endpoint + contract + two pages · architecture selection · migration · secrets/publish involvement · multi-module joint change.
+- **L2-S short workflow (small module)**: ① integration-truth survey (mandatory, see §2.5) ② restate + 3-5 verifiable acceptance criteria ③ no plan doc: single file → do directly; ≤3 files → one line "change + acceptance + rollback baseline" ④ execute + minimal verification ⑤ GATE line + status-surface line. **Explicitly skipped**: internet dual-survey, deep product five questions, plan document, repeated asking (except direction/boundary ambiguity — ask-before-acting is NOT waived; red lines never waived).
+- Ask-before-acting & red lines are NEVER waived by the split.
+
 Details and per-task-type checklists: `references/workflows.md` (master + clarification + 9 task types).
+
+### 2.5 Integration-truth survey (MANDATORY at every level, never scaled away)
+
+Before touching code that crosses packages / calls an API / adds a dependency / uses a new endpoint: produce the **module-API integration checklist table**:
+
+| 模块/Module | API/端点 | 对接方式 (path/method/envelope/fields/package) | 证据来源 (source:line / contract schema / official docs) |
+
+**Never write the integration from naming intuition.** 2026-08-30 audit counter-examples (all four cost rework): @tx/contracts envelope vs direct return; `api.get` returns `ApiResponse` (unwrap before `.data`); recharts belongs to apps/admin, not apps/api; Nest constructor-injected name must match the imported provider. Fix method: grep call sites → read schema/type → confirm package ownership → then write. One line of this checklist is required even in L1 restatement when the change touches integration.
 
 ## 3. Step 0: Platform detection & injection (on load / first run)
 
@@ -207,7 +223,7 @@ Full detail in `references/rules.md` (rules 30-38) and `references/workflows.md`
 1. **GATE completion block (step-11 exit contract, mandatory).** Every task block ends with one line:
    `GATE: {v=<scope>, cmd=<re-runnable command>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims}`
    Re-runnable artifacts outrank self-narration; acceptance authority stays with the user; `approval:never` exempts only tool-level approval, never the confirmation duty. The task-record template carries this as a required field.
-2. **Session status surface (end-of-session consistency report, for the user to review — NOT a pass/fail self-declaration).** Report: injected version number; this session's detail-rule hits (which rule class, how many times, symptom-index matched); context budget estimate with the compaction threshold reminder (~150-200K input); unverified claims and open todos. Fixed output shape; nothing here claims "compliant/effective".
+2. **Session status surface (end-of-session consistency report, for the user to review — NOT a pass/fail self-declaration).** Report: injected version number; **this session's detail-rule hits — MANDATORY, evidence-based (re-runnable grep line; report 0 as 0 — the 2026-08-30 audit found engineering consumption of details.md = 0)**; symptom-index classes actually opened ([Contract]/[Ops]/...); context budget estimate with the compaction threshold reminder (~150-200K input); unverified claims and open todos. Fixed output shape; nothing here claims "compliant/effective".
 3. **A1 — Product-perspective review (step 8) is now mandatory**, not conditional: every L2/L3 plan passes the light five questions — (a) one-sentence user-request decomposition, (b) ≥1 rejected alternative, (c) rework-cost assessment, (d) boundaries & not-do list, (e) 3-5 verifiable acceptance criteria. L3 deepens with the risk-layer evidence (#186).
 4. **A2 — Research-scaled matrix (task size × project strictness).**
    - Project strictness tier: **S3 strict** (production / external / security / financial / multi-collaborator / user-named) · **S2 standard** (default) · **S1 loose** (personal / prototype / short-lived).

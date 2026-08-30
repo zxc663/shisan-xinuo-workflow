@@ -20,7 +20,7 @@
 
 ## 一句话定位 · One-line positioning
 
-一个**渐进式披露 + 按需注入 + 判级路由 + 冲突仲裁**的工程治理元 Skill：把 **11 步强制主流程（每步出口产物门禁）+ 编号纪律规则 + 227 条落地细则（13 类，带触发症状索引）+ 冲突仲裁序 + 双模式（普通/目标/安静）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**v1.10 起的规则增量全部由真实项目的全量 agent 日志审计实证驱动**（工具调用量、失败率、细则命中率、上下文成本均有数据可查，见 `EVIDENCE.md` §七）。价值：**治理一致性、可审计性、防假实现、注意力经济**（state 硬上限 / 同会话禁重载 / 按需加载）；代价：依赖平台注入与 Agent 自律，无运行时强制。
+一个**渐进式披露 + 按需注入 + 判级路由 + 冲突仲裁**的工程治理元 Skill：把 **11 步强制主流程（每步出口产物门禁）+ 编号纪律规则 + 233 条落地细则（13 类，带触发症状索引）+ 冲突仲裁序 + 双模式（普通/目标/安静）+ 配套模板 / 提示词预算 / 会话钩子 / 审查子代理 / 永不清单**，打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**v1.10 起的规则增量全部由真实项目的全量 agent 日志审计实证驱动**（工具调用量、失败率、细则命中率、上下文成本均有数据可查，见 `EVIDENCE.md` §七）。价值：**治理一致性、可审计性、防假实现、注意力经济**（state 硬上限 / 同会话禁重载 / 按需加载）；代价：依赖平台注入与 Agent 自律，无运行时强制。
 
 A progressive, on-demand, triage-routed governance meta-skill with conflict arbitration: **an 11-step mandatory master sequence (per-step exit-artifact gates) + numbered discipline rules + 227 landing details (13 categories, symptom-triggered index) + conflict arbitration order + dual modes + templates / prompt budget / session hooks / review sub-agents / NEVER list**, packaged into a cross-platform, auditable governance layer. **Rule growth since v1.10 is evidence-driven** — every addition traces to a full agent-log audit of real projects (tool-call volume, failure rates, detail-layer hit rate, context cost; see `EVIDENCE.md`). Value: consistency, auditability, no-fake-completions, attention economy (state caps / no same-session reloads / on-demand loading); cost: injection-dependent, zero runtime enforcement.
 
