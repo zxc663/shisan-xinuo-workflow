@@ -175,7 +175,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：v2.0.4 源码与口径批次（三层承载化：记忆层在场提示 + 规则层 + 配置文件层）已推 GitHub/Gitee 主线；**发行面仍为 v2.0.3（2026-08-31 全渠道：GitHub Release / npm 2.0.3 / Gitee / ClawHub 1.0.5 / About 双端）**，v2.0.4 发行另行批准后执行。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：v2.0.4 源码与口径批次（三层承载化 + 取证命令修复）已推 GitHub/Gitee 主线，**并存全渠道发行（2026-08-31：GitHub Release v2.0.4 / npm 2.0.4 / Gitee Release / ClawHub 1.0.6 / About 双端）**。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -215,7 +215,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
-- **v2.0.4（2026-08-31）**：**三层承载化 + 取证命令修复（执行批次，未发布）**——①硬注入升级为「记忆层（每会话在场锚点，首行在场提示）+ 规则层（注入核心全文）+ 配置文件层（§2.1）」三层强制写入，写前提醒用户授权；按需注入只写应用层、询问是否写规则层（不写记忆层）；②新增 §3 步骤 1.5「识别与调研注入点（不猜）」——识别 Agent 平台后联网调研官方注入点再注入；③新增 `templates/memory-anchor.md`（记忆层锚点块，首行「在场提示 · 工作流 Skill 现已在场」）+ platform-adaptation §2.2 平台记忆层；④install-skill.ps1 增 `-MemoryFile`、syncer.py 增 `--memory-target`（记忆层同步，先备份合并）；⑤**取证命令缺陷修复**：状态面 `grep -cE 'references/details|#2[0-9][0-9]\.'` 对 details.md `1.–254.` 有序列表与任务记录 `#228×3` 形态恒 0 假阴性→改为匹配真实引用形态，details.md 补引用规范，EVIDENCE §七「0→有命中」复测校准；⑥本机三层实测注入（WorkBuddy MEMORY.md / Trae user_profile.md / Codex AGENTS.md 注记 + 注入副本 ×4 重部署，均备份 `.bak-20260831-pre-v204`）。verify 4/4 PASS。
+- **v2.0.4（2026-08-31）**：**三层承载化 + 取证命令修复（执行批次，已全渠道发行）**——①硬注入升级为「记忆层（每会话在场锚点，首行在场提示）+ 规则层（注入核心全文）+ 配置文件层（§2.1）」三层强制写入，写前提醒用户授权；按需注入只写应用层、询问是否写规则层（不写记忆层）；②新增 §3 步骤 1.5「识别与调研注入点（不猜）」——识别 Agent 平台后联网调研官方注入点再注入；③新增 `templates/memory-anchor.md`（记忆层锚点块，首行「在场提示 · 工作流 Skill 现已在场」）+ platform-adaptation §2.2 平台记忆层；④install-skill.ps1 增 `-MemoryFile`、syncer.py 增 `--memory-target`（记忆层同步，先备份合并）；⑤**取证命令缺陷修复**：状态面 `grep -cE 'references/details|#2[0-9][0-9]\.'` 对 details.md `1.–254.` 有序列表与任务记录 `#228×3` 形态恒 0 假阴性→改为匹配真实引用形态，details.md 补引用规范，EVIDENCE §七「0→有命中」复测校准；⑥本机三层实测注入（WorkBuddy MEMORY.md / Trae user_profile.md / Codex AGENTS.md 注记 + 注入副本 ×4 重部署，均备份 `.bak-20260831-pre-v204`）。verify 4/4 PASS + **全渠道发行**（GitHub Release / npm 2.0.4 / Gitee / ClawHub 1.0.6 / About 双端）。
 - **v2.0.3（2026-08-31）**：**前缀自适配 + 平台配置文件层（执行批次，未发布）**——①新增 `scripts/install-skill.ps1` 一键安装（自动带 `agent-` 前缀、幂等、`-Dry` 干跑 / `-Link` 软链 / `-Force` 备份覆盖 / `-HardInject` 注入配置层，输出「Base directory 判据」验收提示）；②SKILL §3 新增第 0 步「安装名前缀自检」（无前缀一行提示，带前缀静默）；③README 安装话术改「一条命令自动带前缀」，FAQ 前缀条目改述为官方已适配；④platform-adaptation 新增 §2.1 平台配置文件层（Claude Code settings.json hooks / Codex config.toml / Cursor 应用 Rules / Trae 应用设置 / WorkBuddy settings.json+BOOTSTRAP / ZCode AGENTS.md，每平台经实测如实标注——本机 bash 不可用故 hooks 降级、Codex/WorkBuddy 无 hooks 槽位）；⑤SKILL §3 注入点补「硬注入承载面 = 规则文件 + 平台配置文件」；templates/hooks/ 新增多平台说明 README；⑥本机配置层全激活（~/.codex AGENTS.md 由 v1.19.1 重写为 v2.0.3、部署副本 ×2 syncer 同步、注入副本 ×4 重部署，均先备份 `.bak-20260831-pre-v203`）。verify 4/4 PASS。
 - **v2.0.2（2026-08-31）**：**审查批次（未发布）**——①审计修复三级同步链断裂：v2.0.1 机制「决策三层分界」（SKILL §5.2）未同步 injection-core.md 判级速查块与三份平台注入副本；强制完整读取「三类例外」仅 workflows.md 落地，skill-usage.md §4 / rules.md §26 仍为 2 类——已补齐并重部署注入副本；②口径清理：README 版本历史补 v2.0.1/v2.0.2 行、仓库结构行（package.json 2.0.2 / details 254 条 14 类 / 速查表 28 行）、reference-sources / scripts-README / EVIDENCE §九（重测注入核心字符数）同步、发布面注记（v2.0.x 未对外发布，v1.19.1 为各渠道最新）；③细节：details §13 标题补 #239 归属、SKILL §11 状态面模板版本号。verify 4/4 PASS；源码已推送 GitHub/Gitee 主线（发行面另行批准）。
 - **v2.0.1（2026-08-31）**：**个人工作台版差异化并入（用户拍板四项全并；未发布）**——details §14 回流 15 条（#240-254 MCP/视觉/前端测试）+ 机制四项（L1 跳步豁免 / NEVER 三读自检 / 子代理规则 / 决策三层分界）+ 小增量四项（知识点五条细则 / 强制完整读取三类例外 / 顾问措辞 / 默认中文）。
