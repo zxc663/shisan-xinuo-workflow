@@ -32,6 +32,11 @@
 .PARAMETER HardInject
   安装后按平台注入点表写注入（先备份合并）。需与 -Platform 同用；省略时按探测到的平台。
 
+.PARAMETER MemoryFile
+  硬注入第三层「记忆层」：把 references/templates/memory-anchor.md 锚点块写进该平台记忆文件
+  （如 ~/.workbuddy/MEMORY.md、~/.trae-cn/memory/user_profile.md）。先备份 .bak-<ts> 再合并（追加，保留既有内容）。
+  仅与 -HardInject 同用；省略 = 只写规则层 + 配置文件层（向后兼容）。
+
 .PARAMETER Dry
   只列出将要执行的动作，不写盘。
 
@@ -39,7 +44,7 @@
   powershell -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Dry
 
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Platform workbuddy -Link -HardInject
+  powershell -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Platform workbuddy -Link -HardInject -MemoryFile "$HOME\.workbuddy\MEMORY.md"
 
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Platform claude -Force
@@ -53,6 +58,7 @@ param(
     [switch]$Force,
     [string]$Target = "",
     [switch]$HardInject,
+    [string]$MemoryFile = "",
     [switch]$Dry
 )
 
@@ -175,9 +181,43 @@ if ($HardInject) {
     }
 }
 
+# ---------- 记忆层（硬注入第三层；-HardInject -MemoryFile 时）----------
+if ($MemoryFile) {
+    if (-not $HardInject) {
+        Write-Warning "[记忆] -MemoryFile 需要与 -HardInject 同用（记忆层是硬注入第三层）；本次跳过记忆层，仅做安装。"
+    } else {
+        # readme 说明：硬注入 = 记忆层 + 规则层 + 配置文件层三层（SKILL.md §3 / platform-adaptation §2.2）
+        $anchor = Join-Path $Source "templates\memory-anchor.md"
+        if (-not (Test-Path $anchor)) {
+            Write-Warning "[记忆] 源缺少 templates\memory-anchor.md，跳过记忆层（安装/规则层已完成）。"
+        } else {
+            $ts = Get-Date -Format "yyyyMMdd-HHmmss"
+            if ($Dry) {
+                Write-Host "[干跑] 备份记忆文件 → $MemoryFile.bak-$ts ；写入 memory-anchor 锚点块至 $MemoryFile（在场提示首行）"
+            } else {
+                $anchorText = Get-Content -Raw -Encoding UTF8 $anchor
+                # 提取模板中代码块内的锚点（首行为在场提示）；避免把模板说明注释写进记忆文件
+                $m = [regex]::Match($anchorText, '(?s)```markdown\r?\n(.*?)\r?\n```')
+                if ($m.Success) { $anchorBody = $m.Groups[1].Value } else { $anchorBody = $anchorText }
+                $prev = ""
+                if (Test-Path $MemoryFile) {
+                    Copy-Item -Path $MemoryFile -Destination "$MemoryFile.bak-$ts" -Force
+                    $prev = Get-Content -Raw -Encoding UTF8 $MemoryFile
+                    Write-Host "[记忆] 备份既有记忆文件 → $MemoryFile.bak-$ts"
+                }
+                $sep = if ($prev.Trim().Length -gt 0) { "`n`n---`n" } else { "" }
+                Set-Content -Path $MemoryFile -Value ($prev.TrimEnd() + $sep + $anchorBody) -Encoding UTF8
+                Write-Host "[记忆] $(if ($prev.Trim().Length -gt 0) { '合并（既有内容保留在上方）' } else { '新建' }) → $MemoryFile"
+                Write-Host "[记忆] 在场提示已写入首行 —— 新会话读到即识别「工作流 Skill 现已在场」"
+            }
+        }
+    }
+}
+
 # ---------- 验收 ----------
 Write-Host ""
 Write-Host "[完成] 安装目录：$dest"
 Write-Host "[验收] 平台加载时的 Base directory 应指向：$dest（不是文件版本号；若平台扫描到 skill-backups\ 目录，请确认其位于扫描路径之外）"
+if ($MemoryFile -and $HardInject) { Write-Host "[三层] 硬注入三层状态：记忆层=$($MemoryFile) ｜ 规则层=$injectFile ｜ 配置文件层=$(if ($injectCfgFile) { $injectCfgFile } else { '无（平台不支持/未指定）' })" }
 Write-Host "[提示] 安装名已带 $Prefix 前缀 → SKILL.md §3 第 0 步安装名前缀自检将静默通过；无前缀安装会收到一行适配提示。"
 exit 0
