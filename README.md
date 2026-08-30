@@ -149,6 +149,7 @@
 ```
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
+├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
 ├── package.json（v1.19.0）· docs/reference-sources.md
 ├── dist/                           ← 发布 zip（v1.19.0 · 271KB/72 条目，gitignore 产物）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份/迁移/覆盖/双落盘）
