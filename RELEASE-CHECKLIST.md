@@ -23,8 +23,8 @@
 ## 回执（发行完成后填）
 | 渠道 | 产物/URL | 时间 |
 |---|---|---|
-| GitHub | | |
-| npm | | |
-| Gitee | | |
-| skills.sh | | |
-| ClawHub | | |
+| GitHub | https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v1.19.0 （asset 297791B） | 2026-08-30 |
+| npm | `@zxc663/shisan-xinuo-workflow@1.19.0`（latest，dist-tags: latest=1.19.0） | 2026-08-30 |
+| Gitee | https://gitee.com/zxc663/shisan-xinuo-workflow/releases （id=1003884，附 zip） | 2026-08-30 |
+| skills.sh | 等待遥测/爬虫收录 | — |
+| ClawHub | `shisan-xinuo-workflow@1.0.3`（pending security scans） | 2026-08-30 |
