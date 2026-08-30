@@ -3,7 +3,7 @@
     Shisan Xinuo Workflow — 发布前一致性/泄漏门禁校验（P0 机制）
 .DESCRIPTION
     校验三语通用版（en / universal-zh / universal-bilingual）在发布前满足：
-      A. 增补制一致（v1.16-1.18）：三语 SKILL 均 version=1.18.0 且含「v1.12-1.18」增补标记；主交付物 version=1.18.0（v1.16 起执行化全文以英文主交付物为准，三语为增补制——不再要求全量文件对称）
+      A. 增补制一致（v1.16-1.18）：三语 SKILL 均 version=1.18.0 且含「v1.12-1.18」增补标记；主交付物 version=1.19(基准)（v1.16 起执行化全文以英文主交付物为准，三语为增补制——不再要求全量文件对称）
       B. hooks 三层齐全（主交付物）：templates/hooks/ 含 session-start / session-end / hooks.json，且 hooks.json 同时声明 SessionStart 与 SessionEnd
       C. 版本一致：三版 SKILL.md 的 metadata.version 相等，且 == package.json version
       D. 泄漏红线：发布物范围内不出现个人版路径 / memory / 令牌原文（ghp_/gho_/github_pat_）
@@ -62,7 +62,8 @@ $root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
 $main = Join-Path $root "skill\shisan-xinuo-workflow\SKILL.md"
 $langs = @("universal-zh","universal-bilingual")   # personal-zh 为私有工作台版，非发布物，版本不检
 $verM = [regex]::Match((Get-Content $main -Raw), "(?s)version\s*:\s*([0-9]+\.[0-9]+\.[0-9]+)")
-$verOK = ($verM.Groups[1].Value -eq "1.18.0")
+$baseVer = $verM.Groups[1].Value
+$verOK = ($baseVer -ne "")
 $probs = @()
 if (-not $verOK) { $probs += "主交付物 version=${($verM.Groups[1].Value)}(≠1.18.0)" }
 foreach ($l in $langs) {
@@ -70,10 +71,10 @@ foreach ($l in $langs) {
     if (-not (Test-Path $sk)) { $probs += "$l 缺 SKILL"; continue }
     $txt = Get-Content $sk -Raw
     $vm = [regex]::Match($txt, "(?s)version:\s*([0-9]+\.[0-9]+\.[0-9]+)")
-    if ($vm.Groups[1].Value -ne "1.18.0") { $probs += "$l version=$($vm.Groups[1].Value)" }
+    if ($vm.Groups[1].Value -ne $baseVer) { $probs += "$l version=$($vm.Groups[1].Value)(base=$baseVer)" }
     if ($txt -notmatch "v1.12-1.18") { $probs += "$l 缺增补标记" }
 }
-Add-Result ($probs.Count -eq 0) "A 增补制一致（主交付物 1.18.0 + 三语增补标记）" $(if($probs.Count -eq 0){"OK"}else{$probs -join ";"})
+Add-Result ($probs.Count -eq 0) "A 增补制一致（主交付物 base + 三语增补标记）" $(if($probs.Count -eq 0){"OK"}else{$probs -join ";"})
 # ---------- B. hooks 三层齐全（主交付物） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
 $hDir = Join-Path $root "skill/shisan-xinuo-workflow/templates/hooks"
@@ -92,12 +93,12 @@ foreach ($k in $verMap.Keys) {
     $raw = Get-Content $verMap[$k] -Raw -ErrorAction SilentlyContinue
     if ($null -ne $raw -and $raw -match '(?s)version\s*:\s*([\d.]+)') { $ver[$k] = $Matches[1] } else { $ver[$k] = '' }
 }
-$versOk = ($ver.en -eq '1.18.0') -and ($ver.zh -eq '1.18.0') -and ($ver.bi -eq '1.18.0')
-Add-Result $versOk "C 四版版本一致(=1.18.0)" ("en=$($ver.en) zh=$($ver.zh) bi=$($ver.bi)")
+$versOk = ($ver.en -eq $baseVer) -and ($ver.zh -eq $baseVer) -and ($ver.bi -eq $baseVer)
+Add-Result $versOk "C 四版版本一致(=base)" ("en=$($ver.en) zh=$($ver.zh) bi=$($ver.bi)")
 $pkgVersion = ''
 $pkg = Join-Path $Root "package.json"
 if (Test-Path $pkg) { $pkgVersion = ((Get-Content $pkg -Raw | ConvertFrom-Json).version) }
-Add-Result ($versOk -and $ver.en -eq $pkgVersion) "C 与 package.json 一致" "package.json version=$pkgVersion"
+Add-Result ($versOk -and $ver.en -eq $pkgVersion) "C 与 package.json 一致" "package.json version=$pkgVersion (base=$baseVer)"
 
 # ---------- D. 泄漏红线（发布物范围） ----------
 if (-not $SkipLeak) {

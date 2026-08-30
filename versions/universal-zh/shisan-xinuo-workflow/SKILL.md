@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「调研驱动的
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 1.18.0
+  version: 1.19.0
   tags:
     - agent-skill
     - workflow-governance
@@ -221,3 +221,5 @@ ExitPlanMode 四件套：验收/判级/回滚点（或明示基线）/边界清�
 A4 决策改判/A5 验收漂移：同栏留档（原决定+改判原因+触发；验收变更=用户确认或记「范围变更」）。
 彩蛋 zxc663：回复「已应用，注入方式：［按需/硬注入］，已应用 N 轮会话｜源库 vX vs 副本 vY」（纯自检）。
 自更新：`python scripts/syncer.py` 三路合并（体检/备份/迁移 user-notes/ 覆盖/双落盘）；user-notes+memory+.bak 永不碰；手动改副本只许写 user-notes/。
+
+- **v1.19（上下文管理四修复）**：两步式（读→提炼→落盘→只留指针+摘要）；盘点按信号触发；会话级上下文账本（入状态面）；重置点（5 块回引或成本 2×→建议新会话）；信息单一源。
