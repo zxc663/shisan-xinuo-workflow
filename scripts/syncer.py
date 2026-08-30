@@ -23,7 +23,8 @@ def log_dir(dest):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry", action="store_true")
-    ap.add_argument("--src", default=r"D:\Agent工作流启动包\shisan-xinuo-workflow\skill\shisan-xinuo-workflow")
+    REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    ap.add_argument("--src", default=os.path.join(REPO_ROOT, "skill", "shisan-xinuo-workflow"))
     ap.add_argument("--dest", default=os.path.expanduser(r"~\.agents\skills\shisan-xinuo-workflow"))
     a = ap.parse_args()
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
