@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.18.0
+  version: 1.19.0
   tags:
     - agent-skill
     - workflow-governance
@@ -210,10 +210,11 @@ metadata:
 ## 11. Session status surface (end-of-session consistency report — user review; NOT compliant/effective claim)
 
 ```
-注入版本: 1.18.0
+注入版本: 1.19.0
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <session outputs> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩+重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py）
+上下文账本: 本会话 input 增量 ~X ｜ 最大单次 ~Y ｜ 工具占比 Bash a%/Read b%/其他 c% ｜ 盘点 N 次(signal-based)
 未验证/待办: <exempt 与未完成项——必须是真待办，不得留「已完成却未清」的陈旧注记>
 ```
 **Rules**: evidence-based not self-claimed; timestamps to seconds; pending items must be real.
@@ -232,7 +233,7 @@ metadata:
 | B | new project, no docs | project-info.md six sections (§2.4) | user confirms restate | index, not duplicate |
 | P1 | fuzzy intent | communicate first; ask with recommendation+reason; empty-answer → research+pending-confirm | §4 | never treat empty answer as approval |
 | P2 | same pit ≥3 | promote to experience-mustread.md; 2 clean periods → demote | one-line symptom + one-line countermeasure | one copy only (cross-ref) |
-| P3 | big output >~40 lines / subagent report | file + summary only; conclusions only; cite path instead of re-paste; census per ~5 blocks | context-census line | fuzzy → refetch record/contract/source |
+| P3 | big output >~40 lines / subagent report | **TWO-STEP: read → distill to file (full report kept) → context keeps pointer + summary only**; refetch from file when needed; census per ~5 blocks on **signal** (token delta / tool-count), not vibes | census line ONLY to §11 (single source of info); **reset point: 5 consecutive blocks re-citing old content, or per-block cost >2× session mean → propose new session (handover + reload sequence)** | fuzzy → refetch record/contract/source |
 | P4 | non-core detail | decide + keep going | log decision+reason | core/boundary/red-line → ask |
 | P5 | error found | root cause first, then fix | grep zero tolerance | bypass/hide = violation |
 | P6 | done | real run + real-user walk (L2-F) / smoke referenced path (L2-S) | fix until usable | no run = not done |

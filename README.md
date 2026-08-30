@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-1.18.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
+![version](https://img.shields.io/badge/version-1.19.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 > - GitHub 主线 · https://github.com/zxc663/shisan-xinuo-workflow
@@ -199,6 +199,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v1.19.0**：上下文管理四缺口修复——两步式（读→提炼→落盘→只留指针）/盘点按信号触发/会话级上下文账本入状态面/重置点（5 块回引或成本 2×→建议新会话）/信息单一源（盘点只写状态面）。
 - **v1.18.0**：README 门面重构（定位=执行手册 + 触达端口论 + 真实数据节）；**RE 复述增强**（子复述即时/总复述仅提炼要点）；A4 决策改判/A5 验收漂移留档；三语增补制同步；verify 改造跑绿；发行物就绪（CHANGELOG/dist/RELEASE-CHECKLIST）。
 - **v1.17.0**：skill 自更新协议——syncer.py 三路合并；user-notes/ 永不碰；彩蛋+状态面版本一致检查。
 - **v1.16.0**：全文执行化改写（五段式 + §12 速查表 + 禁用孤立副词 + 纸面盲测）；项目信息文档示范。
