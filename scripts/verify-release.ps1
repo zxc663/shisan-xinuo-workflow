@@ -53,10 +53,6 @@ if ($missing.Count -gt 0) {
     Add-Result $false "B路径存在" "缺失版: $($missing -join ',')"
 }
 
-$Root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
-$sk = @{ en = (Join-Path $Root "skill\shisan-xinuo-workflow"); zh = (Join-Path $Root "versions\universal-zh\shisan-xinuo-workflow"); bi = (Join-Path $Root "versions\universal-bilingual\shisan-xinuo-workflow"); pe = (Join-Path $Root "versions\personal-zh\shisan-xinuo-workflow") }
-$missing = @()
-foreach ($k in $sk.Keys) { if (-not (Test-Path (Join-Path $sk[$k] "SKILL.md"))) { $missing += "$k/SKILL.md" } }
 # ---------- A. 增补制一致（version 1.19 + v1.12-1.19 标记；主交付物权威） ----------
 $root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
 $main = Join-Path $root "skill\shisan-xinuo-workflow\SKILL.md"
@@ -102,14 +98,15 @@ Add-Result ($versOk -and $ver.en -eq $pkgVersion) "C 与 package.json 一致" "p
 
 # ---------- D. 泄漏红线（发布物范围） ----------
 if (-not $SkipLeak) {
-    # 发布物 = 三语通用版 + 根级交付文件（.gitignore 已屏蔽 personal-zh / memory）
+    # 发布物 = 三语通用版 + 根级交付文件 + scripts/（.gitignore 已屏蔽 personal-zh / memory）
     $leakPaths = @(
         (Join-Path $Root "skill"),
         (Join-Path $Root "versions\universal-zh"),
         (Join-Path $Root "versions\universal-bilingual"),
         (Join-Path $Root "README.md"),
         (Join-Path $Root "package.json"),
-        (Join-Path $Root "LICENSE")
+        (Join-Path $Root "LICENSE"),
+        (Join-Path $Root "scripts")
     )
     $tokenPats = @('ghp_[A-Za-z0-9]{20,}', 'gho_[A-Za-z0-9]{20,}', 'github_pat_[A-Za-z0-9_]{20,}')
     $leakHits = @()
@@ -118,9 +115,11 @@ if (-not $SkipLeak) {
         Get-ChildItem -Path $lp -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
             $rel = $_.FullName.Substring($Root.Length + 1)
             $text = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
-            # 1) 外部个人机密路径（D:\Agent个人资源\机密资源 等）——绝对路径泄漏
-            if ($text -match 'D:\\Agent个人资源|机密资源\\02-Gitee|Agent个人资源\\机密资源') {
-                $leakHits += "$rel :: 引外部机密文件路径"
+            # 1) 无歧义的真实泄漏特征：作者机密目录 / 本仓真实路径 / 真实用户主目录。
+            #    不匹配 `…` 占位符（文档示例 `C:\Users\…` 不是 [A-Za-z]），
+            #    也不匹配本脚本自身定义的正则文本，故无自引用误报。
+            if ($text -match 'D:\\Agent个人资源|Agent个人资源\\02-Gitee|Agent个人资源\\机密资源|D:\\Agent工作流启动包|C:\\Users\\[A-Za-z]') {
+                $leakHits += "$rel :: 引外部磁盘/个人路径"
             }
             # 2) 令牌原文
             foreach ($tp in $tokenPats) { if ($text -match $tp) { $leakHits += "$rel :: 疑似令牌明文(已掩码)" ; break } }
