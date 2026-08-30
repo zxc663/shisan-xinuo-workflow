@@ -224,6 +224,7 @@ metadata:
 | R6 | record grows | >120 lines or >3 blocks → new file/archive | `-名称-2.md` | — |
 | DC | module has log module | design line in integration table; catch triple; five-check #5 | log+fallback+audit | console-only/silent = violation |
 | TS | any record | timestamp `YYYY-MM-DD HH:mm:ss` | seconds required | day-only incomplete |
+| ZE | user types meaningless `zxc663` | self-check only: reply「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）」 | no action, no network/files touched | pure test trigger |
 
 ## Templates
 
