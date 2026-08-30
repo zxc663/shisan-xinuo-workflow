@@ -181,7 +181,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.0.5）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.0.6）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -203,7 +203,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：v2.0.4 已全渠道发行（2026-08-31：GitHub Release v2.0.4 / npm 2.0.4 / Gitee Release / ClawHub 1.0.6 / About 双端）。**v2.0.5（路测回流批次）为本地批次：已本地 commit、未推送、未发行**——发行面（dist 重建 / npm / Release / ClawHub）与注入副本重部署另行批准。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：v2.0.4 已全渠道发行（2026-08-31：GitHub Release v2.0.4 / npm 2.0.4 / Gitee Release / ClawHub 1.0.6 / About 双端）。**v2.0.5（路测回流批次）与 v2.0.6（项目承载+授权边界批次）为本地批次：已本地 commit、未推送、未发行**——发行面（dist 重建 / npm / Release / ClawHub）与注入副本重部署另行批准。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 

@@ -21,9 +21,9 @@
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：state/experience-mustread/experience/preferences/task-log |
-| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.0.4；v2.0.5/v2.0.6 待发行时重建） |
+| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.0.6，staging 重建 + Set-diff 双检） |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） |
-| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.0.4；v2.0.5/v2.0.6 未登记发行） |
+| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.0.6；发行面待批准执行） |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） |
 
 ## ④ 调研导航（改什么 → 查哪）
