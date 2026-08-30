@@ -98,6 +98,24 @@ Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must
 - [ ] 4. **Prior-takeaway reuse (step 2.5)**: confirmed conclusions from this session or this project's memory are research inputs too — reuse them and record a one-line reference; do not re-run the same survey, install checks, or web fetch. (Same-session no-reload discipline applies to research as well.)
 - [ ] 5. **L2 entry without a plan directive** (user drops a multi-file request with no `/plan`-style directive): restate goal+boundary in 1-3 sentences → 3 acceptance criteria → one-line triage; at S3 strictness, ask before starting.
 
+### 0.6 L2 flow split decision table (v1.13 — anti-fiddling; answer in one pass)
+
+| 三问 (three questions) | 命中 | 走哪条 |
+|---|---|---|
+| ① ≥3 包 / 跨 api+contracts+前端 ② 契约·架构·迁移·对外发布·安全 ③ 用户点名"按流程/严格分析" | **≥2 项命中** → | **L2-F 完整 11 步**（master） |
+| | 其余 → | **L2-S 短工作流**（默认） |
+
+**L2-S：何时走**（小模块：≤3 文件、单域、与既有模式同构、无契约/架构/发布面；哪怕涉 1 个新端点+1 个新依赖，仍走 L2-S——但**必须走 §2.5 对接真相清单**）。
+**L2-S：怎么走**：①对接真相清单（必做）②复述+3-5 条可验证验收 ③免 plan：单文件直做；≤3 文件一行"改动+验收+回滚基线" ④执行+最小验证 ⑤GATE 一行 + 状态面行。
+**L2-S：省什么**（明确列出防浪费时间）：联网双调研（S2/S1 档）· 产品五问深度 · plan 文档 · 多轮提问（方向/边界有歧义除外——必问不豁免；红线永不豁免）。
+
+**Integration-truth checklist (mandatory, see SKILL.md §2.5)** — every cross-package call / new endpoint / new dependency: small table `模块 | API | 对接方式 | 证据来源`; writing from naming intuition is forbidden (2026-08-30 counter-examples: envelope unwrap, ApiResponse, recharts package ownership, Nest DI name).
+
+**Evidence-gathering line for the status surface (self-report → checkpoint):**
+```
+grep -cE 'references/details|#2[0-9][0-9]\.|#1[0-9][0-9]\.' <session outputs/task records>   # count detail-rule hits; report 0 as 0
+```
+
 ## 1. New feature / new project (15 steps)
 
 - [ ] 1. Startup self-check (platform adapted, rule file active)
