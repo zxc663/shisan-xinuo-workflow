@@ -4,7 +4,7 @@ description: "One-line positioning: forces every engineering task through an aud
 license: MIT
 compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
 metadata:
-  version: 1.17.0
+  version: 1.18.0
   tags:
     - agent-skill
     - workflow-governance
@@ -122,6 +122,17 @@ metadata:
 5. After answer: confirmed → act; redirected → re-split (§5); rejected (not what they wanted / workflow wrong) → **rejection log** (§12 R1).
 **Check**: □ recommendation+reason in question □ no implementation before clarity □ empty-answer path = research+pending-confirm, never silent action.
 
+### 4.1 Restatement amplification (RE) — sub & total restate, user knows the "why" continuously
+
+**Trigger**: a key decision is made / direction changes / a caliber (口径) is confirmed — do NOT wait for task end.
+1. **Sub-restate (immediately, one line)**: `决定 X｜依据：<evidence / user wording / root cause>｜影响：<scope>` → append to task-record decision row.
+2. **Total restate (block end)**: summarize decision chain / evidence chain / impact / open points; **sub-restates distill to bullet points only** — no full-text repetition, no log stacking.
+3. Sub-restate tells the user *what the model decided from what*; total restate is the compact map of the block.
+**Template**: `决定：对 X 采用 A（评分/理由一句话） ｜ 依据：<…> ｜ 影响：<…>`
+**Check**: □ every key decision has an evidence sentence □ total covers all sub points (bullets) □ no duplicated paragraphs.
+**Boundary**: trivial detail decisions (§12 P4) do not need sub-restate — only their log line.
+
+
 ## 5. Execution modes & task triage
 
 ### 5.1 Modes
@@ -199,7 +210,7 @@ metadata:
 ## 11. Session status surface (end-of-session consistency report — user review; NOT compliant/effective claim)
 
 ```
-注入版本: 1.17.0
+注入版本: 1.18.0
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <session outputs> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩+重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py）
@@ -234,6 +245,9 @@ metadata:
 | R6 | record grows | >120 lines or >3 blocks → new file/archive | `-名称-2.md` | — |
 | DC | module has log module | design line in integration table; catch triple; five-check #5 | log+fallback+audit | console-only/silent = violation |
 | TS | any record | timestamp `YYYY-MM-DD HH:mm:ss` | seconds required | day-only incomplete |
+| RE | key decision / direction change / caliber confirmed | sub-restate one line `决定X｜依据…｜影响…` → task record; block end → total restate (bullets distilled) | □ evidence sentence each decision □ total covers all subs | trivial details use P4 log only |
+| A4 | a previously logged decision is changed | change-log: original decision + change reason + trigger | so later sessions see both | — |
+| A5 | acceptance criteria shift during execution | confirm with user OR log as「范围变更」 (who changed what, why) | criteria owner recorded | — |
 | ZE | user types meaningless `zxc663` | self-check reply:「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）｜源库 vX vs 副本 vY（不一致 → 建议跑 syncer.py）」 | no action beyond version compare | pure test trigger |
 
 ## Templates
