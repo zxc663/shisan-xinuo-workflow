@@ -298,15 +298,15 @@
 226. [安全] 验证「未登录态」先删服务端会话而非只清浏览器 cookie（残留会话伪装已登录）；IP 落库与 IP 标注必须共用同一提取函数（req.ip 与代理头解析分叉会让「已赞标注」永不命中）。
 227. [流程] 复刻/重做类规格先以源码/现状为证呈报、由用户裁定方向再动手；测试脚本调后端前先读契约字段名（直觉命名必翻车：留言板是 `name` 不是 `nickname`）。
 
-228. [Contract] 改 @tx/contracts/@tx/ui/prisma → 先 `pnpm -C <包> build`（或 db:generate）再验依赖方 typecheck（跨包 dist 是类型真相；旧 dist 让依赖方报旧类型/缺导出）。*晋升：会话单项目 3 次（2026-08-30）。*
-229. [Ops] 常驻进程旧 dist 三症状（新字段 404/「未登记键」/端点缺失）+ 重启仪式（重建 dist→停监听→node dist/main.js→curl health→grep 新路由）。*晋升：3 次。*
-230. [E2E] 浏览器走查三陷阱：滚动容器=main 非 window；Radix 弹层 hover 需 move+settle；CI 负载下真实 worker 偶发超时→单跑两遍定性（勿改测试）。*晋升：各≥2 次。*
-231. [Process] 长会话归档防呆：最后一个 commit 前回验 state/experience 与既成事实一致（清「待走查」类过时注记）；skill 自身 task-log 同写。*反例 1 次，预防条款。*
+228. [Contract] 改 @tx/contracts/@tx/ui/prisma → 先 `pnpm -C <包> build`（或 db:generate）再验依赖方 typecheck（跨包 dist 是类型真相；旧 dist 让依赖方报旧类型/缺导出）。*晋升：会话单项目 3 次（2026-08-30）；家族 #113/#19/#31/#38/#49。*
+229. [Ops] 常驻进程旧 dist：API 行为与新代码不符（新字段 404/「未登记键」/端点缺失/磁盘状态统计失败）时**先查 `process uptime` 与 dist 时间戳**（判别先行，勿先改代码）→ 再走重启仪式（重建 dist→停监听→node dist/main.js→curl health→grep 新路由）。*晋升：同会话 3 次（disk watermark / settings registry key / monitor endpoint）；家族 #48/#57/#61/#62/#94/#109。*
+230. [E2E] 浏览器走查三陷阱：滚动容器=main 非 window；Radix 弹层 hover 需 move+settle（其 tooltip 内容可能不出现在 body.elText）；CI 负载下真实 worker 偶发超时→单跑两遍定性（勿改测试）。*晋升：各≥2 次；家族 #101/#102/#104/#105/#110/#111/#112。*
+231. [Process] 长会话归档防呆（最后任务块跨小时 barrier 时 state/experience 会过时）：最后一个 commit 前回验 state/experience 与既成事实一致（清「待走查」类过时注记）+ 追加最后任务块；skill 自身 task-log 同写。*反例 1 次，预防条款。*
 232. [Process] 上下文预算硬路标：长会话悄过 400-600K（审计峰值 652K）→ ~150-200K 或 40-60% 预算显式触发压缩→重载序；状态面记 token 估值。
-233. [Contract] 凭命名直觉写对接=假绿：信封解包（api.get→ApiResponse）/包归属（recharts 装 apps/api 错误）/DI 注入名与导入一致；修复=先 grep 调用点→读 schema→确认包→再写。
-234. [Process] 提问带推荐+理由；超时/空答→能取消则取消，否则按实况推荐方案+「待确认」标注——空答不当批准。
-235. [Process] 上下文卫生：大输出>~40 行→文件+摘要；子代理只留结论；已归档引用路径；模糊先重取；~5 块盘点。
-236. [Process] 新项目无文档→docs/project-info.md 六节（含模块真实状态表与调研导航）；已有文档→索引不重复。
-237. [Process] 时间戳统一 `YYYY-MM-DD HH:mm:ss`（秒级）；日级=不完整；活头部校验；记录上限 >120 行/跨 >3 块开新文件。
-238. [Process] 有日志模块→报错必经日志：catch 三件套（记日志+降级提示+审计）、五查含「已接日志」、console/空 catch 零容忍。
+233. [Contract] 凭命名直觉写对接=假绿：信封解包（api.get→ApiResponse）/包归属（recharts 装 apps/api 错误）/DI 注入名与导入一致/SSR 与绝对 URL、Next fetch 规则；修复=先 grep 调用点→读 schema→确认包→再写。*晋升：同会话 4 反例（2026-08-30）；家族 #228。*
+234. [Process] 提问带推荐+理由；超时/空答→能取消则取消，否则按实况推荐方案+「待确认」标注——空答不当批准。*来源：用户偏好（第一优先），2026-08-30。*
+235. [Process] 上下文卫生：大输出>~40 行→文件+摘要；子代理只留结论；已归档引用路径；模糊先重取；~5 块盘点。*来源：2026-08-30 审计（峰值 652K、零压缩）+ 用户指令。*
+236. [Process] 新项目无文档→docs/project-info.md 六节（含模块真实状态表与调研导航）；已有文档→索引不重复。*来源：v1.16 执行化改写；家族 #119/#121。*
+237. [Process] 时间戳统一 `YYYY-MM-DD HH:mm:ss`（秒级）；日级=不完整；活头部校验；记录上限 >120 行/跨 >3 块开新文件。*来源：v1.16 执行化改写；家族 #119。*
+238. [Process] 有日志模块→报错必经日志：catch 三件套（记日志+降级提示+审计）、五查含「已接日志」、console/空 catch 零容忍。*来源：v1.16 执行化改写；家族 #121。*
 239. [Ops] Skill 升级验收看平台解析到的加载目录：文件版本号一致 ≠ 平台加载新版——syncer 备份若落在平台扫描路径内（如 skill 目录同级 `<dest>.bak-<ts>`），会被平台收录为第二个同名 Skill 并可能选中旧版（WorkBuddy 2026-08-30 实测：升级后行为完全没变）。修复：备份移出扫描路径（`skill-backups/`）+ 用「加载时的 Base directory」验证而非版本号。
