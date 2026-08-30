@@ -9,17 +9,18 @@
 - [x] SKILL §3 第 0 步安装名前缀自检 + 注入点承载面句；platform-adaptation §2.1 平台配置文件层（逐项实测标注）；templates/hooks/README.md 多平台说明
 - [x] 本机配置层全激活：~/.codex AGENTS.md 重写 v2.0.3（原 v1.19.1 英文旧版）、注入副本 ×4 重部署（~/.zcode、~/.trae-cn、~/.workbuddy、~/.codex）、部署副本 ×2 syncer 同步（~/.agents/skills、~/.workbuddy/skills），均先备份 `.bak-20260831-pre-v203`
 - [x] verify-release 4/4 PASS（base=2.0.3，零泄漏）
-- [x] dist/shisan-xinuo-workflow-v2.0.3.zip（staging 暂存目录法重建，Set-diff 双检）
-- [x] 提交 <COMMIT>（A 批次源码+口径+台账），GitHub/Gitee 双端 main + tag v2.0.3 待推送
+- [x] dist/shisan-xinuo-workflow-v2.0.3.zip（staging 暂存目录法重建，Set-diff 双检：预期=zip=35 文件零差异，146,617B）
+- [x] 提交 d1c3bdd（A 批次源码+口径+台账），GitHub/Gitee 双端 main + tag v2.0.3 已推送
 
-## B. 全渠道发行回执（2026-08-31，待执行）
+## B. 全渠道发行回执（2026-08-31，已执行）
 | 渠道 | 产物/URL | 状态 |
 |---|---|---|
-| GitHub | https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v2.0.3 （附 dist v2.0.3.zip） | ⏳ |
-| npm | `@zxc663/shisan-xinuo-workflow@2.0.3`（GitHub Packages，latest） | ⏳ |
-| Gitee | https://gitee.com/zxc663/shisan-xinuo-workflow/releases （tag v2.0.3 + zip 附件） | ⏳ |
-| ClawHub | `shisan-xinuo-workflow@1.0.5`（pending scans，内容 v2.0.3） | ⏳ |
-| skills.sh | 等待遥测/爬虫收录 | ⏳ |
+| GitHub | https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v2.0.3 （Release id=379355466，附 dist v2.0.3.zip） | ✅ |
+| npm | `@zxc663/shisan-xinuo-workflow@2.0.3`（GitHub Packages，latest，27 文件 97.2kB，shasum 77ef8ec…） | ✅ |
+| Gitee | https://gitee.com/zxc663/shisan-xinuo-workflow/releases （Release id=1009846，tag v2.0.3，zip 附件 id=3120102） | ✅ |
+| ClawHub | `shisan-xinuo-workflow@1.0.5`（pending security scans，内容 v2.0.3） | ✅ 待公开 |
+| About | GitHub+Gitee 仓库描述 PATCH v2.0.3 ✅（200/200） | ✅ |
+| skills.sh | 等待遥测/爬虫收录（`npx skills add` 遥测自动收录） | ⏳ |
 
 ## C. 复用要点
 - 令牌供给：GitHub/github PAT 与 Gitee token 从机密文档经正则提取注入 env，命令串与输出全程不含明文，用毕即清 env；回显仅 len/前缀。

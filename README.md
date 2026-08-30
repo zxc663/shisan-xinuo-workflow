@@ -173,7 +173,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：v2.0.3 源码与口径批次（含 install-skill.ps1 前缀自适配、平台配置文件层）已推送 GitHub/Gitee 主线；**发行面**（npm / GitHub Release / Gitee Release / ClawHub / dist）仍为 v1.19.1，v2.0.3 发行另行批准后执行。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：v2.0.3 源码与口径批次（含 install-skill.ps1 前缀自适配、平台配置文件层）已推送 GitHub/Gitee 主线，**并存全渠道发行（2026-08-31：GitHub Release / npm 2.0.3 / Gitee Release / ClawHub 1.0.5 / About 双端）**。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
