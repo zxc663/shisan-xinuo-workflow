@@ -32,12 +32,6 @@
 ## 关键决策 · Key decisions（决策 + 理由）
 - ___
 
-## 验证块 GATE（必填，每任务块一行）· Required completion block
-
-```
-GATE: {v=<scope>, cmd=<re-runnable cmd>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims>}
-```
-
 ## 执行结果 · Results
 - ___
 

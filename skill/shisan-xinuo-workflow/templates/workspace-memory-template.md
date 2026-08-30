@@ -1,66 +1,77 @@
-# Workspace `memory/` skeleton (Shisan Xinuo Agent Workflow · unified cross-session memory)
+# 工作区 memory 骨架（shisan-xinuo-workflow · 跨会话记忆统一归档）
 
-> This template is the initialization skeleton for the project-root `memory/` directory. Any session (including the next AI / a new session) **scans this directory first**; create it (or any missing file) from this template. If this project's real business already uses `memory/`, override the archive directory to `.agent-records/` inside the project rule file (the only legal override point).
-> Note: `memory/` is the "state layer + pitfall layer" — the context reads only one screen of it; full rule details still load on demand from the skill's `references/`.
+> 本模板是项目根 `memory/` 目录的初始化骨架。任何会话（含下一个 AI / 新会话）开工**先扫该目录**；目录或任一文件不存在即按此创建。本项目若真实业务恰用 `memory/`，可在项目规则文件内把归档目录改为 `.agent-records/`（唯一合法覆盖点）。
+> 注意：`memory/` 是「状态层 + 踩坑层」，上下文只读一屏；完整细则仍在 Skill `references/` 按需加载。
 
 ```
 memory/
-├── state.md          # Session state (one screen, quick read)
-├── experience.md     # Pitfall log (symptom → root cause → fix → prevention) + general judgment standards
-├── preferences.md    # Confirmed preferences (stack / language / style)
-└── task-log/         # Task records (YYYY-MM-DD-<name>.md)
+├── state.md              # 会话状态（一屏内，秒读）
+├── experience-mustread.md # 高频必读 TOP≤10（一行症状 + 一行对策；先于症状检索）
+├── experience.md         # 踩坑经验库（症状→根因→解决→预防）+ 通用判断标准
+├── preferences.md        # 已确认偏好（技术栈/语言/风格）
+└── task-log/             # 任务记录（YYYY-MM-DD-名称.md）
 ```
 
-Skeleton for each file:
+各文件骨架：
 
 ## `memory/state.md`
 
 ```markdown
-# Session state (Shisan Xinuo Agent Workflow)
+# 会话状态（shisan-xinuo-workflow）
 
-- Current goal: <one sentence>
-- Decisions made: <list>
-- Constraints: <list>
-- Progress + next step: <list>
+- 当前目标：<一句话>
+- 已做决策：<列表>
+- 约束：<列表>
+- 进度 + 下一步：<列表>
+```
+
+## `memory/experience-mustread.md`
+
+```markdown
+# 高频必读经验（shisan-xinuo-workflow）
+
+> TOP≤10：一行症状 + 一行对策。同一踩坑单项目 ≥3 次（或高返工）→ 晋升进此列表；2 个干净周期无命中 → 降级回 experience.md。先于症状检索读取，且只写一处（每行交叉引用 experience.md 条目编号）。
+
+- <症状关键词> → <对策一行>
 ```
 
 ## `memory/experience.md`
 
 ```markdown
-# Pitfall log (Shisan Xinuo Agent Workflow)
+# 踩坑经验库（shisan-xinuo-workflow）
 
-> Symptom → root cause → fix → prevention. Search by symptom keyword; on a hit, follow "fix / prevention"; write duplicates in one place and cross-reference.
+> 症状→根因→解决→预防。按症状关键词检索，命中即按「解决/预防」执行；重复内容只写一处并交叉引用。
 
-## <symptom keyword>
+## <症状关键词>
 
-- Symptom: <description>
-- Root cause: <description>
-- Fix: <steps>
-- Prevention: <steps>
+- 症状：<描述>
+- 根因：<描述>
+- 解决：<步骤>
+- 预防：<步骤>
 ```
 
 ## `memory/preferences.md`
 
 ```markdown
-# Project preferences (Shisan Xinuo Agent Workflow)
+# 项目偏好（shisan-xinuo-workflow）
 
-> Confirmed stack / language / style preferences. **After writing, actively remind the user to re-check the broad direction**, and follow their correction if it drifted. Secrets and destructive intent never go into preferences.
+> 已确认的技术栈 / 语言 / 风格偏好。**写入后主动向用户复核大类方向**，用户指出偏离则按其修正。密钥与破坏性意图绝不写入。
 
-- Stack: <list>
-- Language / expression: <list>
-- Style / conventions: <list>
+- 技术栈：<列表>
+- 语言 / 表达：<列表>
+- 风格 / 约定：<列表>
 ```
 
-## `memory/task-log/` task records
+## `memory/task-log/` 任务记录
 
 ```markdown
-# <YYYY-MM-DD> <Task name>
+# <YYYY-MM-DD> <任务名>
 
-- Understanding: <goal / boundaries / acceptance, 1-3 sentences>
-- Acceptance criteria: <3-5 verifiable>
-- Decisions: <key decisions + reasons>
-- Result: <completion status / minimal verification outcome>
-- Knowledge points (0-5): <trigger scenario | judgment | action>
+- 理解：<目标 / 边界 / 验收口径，1-3 句>
+- 验收标准：<3-5 条可验证>
+- 决策：<关键决策 + 理由>
+- 结果：<完成情况 / 最小验证结论>
+- 知识点（0-5 条）：<触发场景｜判断｜行动>
 ```
 
-Follow-up rule: read `state.md` + `experience.md` + `preferences.md` at session start; update before context reaches 40-60% and at session end.
+返回须遵守：会话开始读 `experience-mustread.md`（先读）+ `state.md` + `experience.md` + `preferences.md`，上下文到 40-60% 前与会话结束前更新。

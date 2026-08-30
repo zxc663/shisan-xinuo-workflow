@@ -1,276 +1,266 @@
-# Task-Type Workflows & Quality Gates (English)
+# 分类型工作流与质量门禁（中文）
 
-Load this file when starting work that matches one of the task types below, or when SKILL.md cites a workflow. Each flow is a checklist — track progress against it.
+开始与下列任务类型匹配的工作、或 SKILL.md 引用到具体流程时加载本文件。每个流程都是清单，逐项打勾推进。
 
-## 0. Prelude & master — mandatory sequence (run before ANY task type)
+## 0. 前置与总纲——强制流程（任何任务类型前先执行）
 
-> **Prelude selector**: 0.0 status clarification (start — when goals/state are fuzzy) → 0.1 master sequence (every task) → 0.2 online survey (details for master step 4) → 0.3 product-polish diagnosis (triggered: repeated-review / legacy restlessness) → 0.4 mandatory dual survey (required before every task's planning, master step 9 gate). 0.3 and 0.4 are complementary: 0.3 locates existing defects, 0.4 guarantees new-plan quality.
+> **前置流程选择表**：0.0 状态澄清（起点——目标 / 现状模糊时走）→ 0.1 三级跑道与总纲（每个任务必走，按判级速查选道）→ 0.2 联网调研（主流程第 4 步的查询细节）→ 0.3 产品完善度诊断（**触发式**：反复审查 / 存量项目反复不足时走）→ 0.4 强制双调研（**规划前必过**：第 9 步前的门禁）→ 0.5 调研矩阵（严格度 × 规模，控制 token 浪费）→ 0.6 L2 分流决策表（三问 → L2-S/L2-F）。0.3 与 0.4 互补不冲突：0.3 定位存量缺陷，0.4 保证新规划质量。
 
-### 0.0 Status clarification (run first when goals / state are fuzzy)
+### 0.0 状态澄清（目标 / 现状模糊时先走）
 
-**Triggers**: "can't sort this out / project is a mess / unclear where things stand / where do I even start / help me organize / what's next / should I do X / I'm a bit lost"; or master step 1 exposes a fuzzy baseline.
+**触发词**：理不清 / 项目太乱 / 现状不明 / 不知道从哪下手 / 帮我梳理 / 理理思路 / 下一步怎么办 / 要不要做 X / 我现在有点乱；或主流程第 1 步发现现状模糊。
 
-- [ ] 1. Empathize & frame: restate the user's situation and stuck feeling in one line; declare the clarification dialogue
-- [ ] 2. First question: start at the highest-leverage point (usually "what is the result you want / what is blocking you")
-- [ ] 3. Drill layer by layer: follow up per answer (3-5 causal layers, explicit constraints/assumptions, convert obstacles into the real problem), 1-2 questions per round
-- [ ] 4. Offer leads: give observed leads/hypotheses for the user to verify, avoid question fatigue
-- [ ] 5. Converge & structure: stop when enough info; produce a clarification memo (goal / current state / constraints / blockers)
-- [ ] 6. Plan together: structured action plan (goal → priorities → next steps); after confirmation, return to master step 1
+- [ ] 1. 共情框定：一句话复述用户处境与卡住的感觉，声明进入澄清对话
+- [ ] 2. 首问：从最高杠杆点切入（通常先问「最终想要的结果 / 什么在阻挡你」）
+- [ ] 3. 逐层深挖：按回答追问下一层（因果链 3-5 层、显式化约束与假设、把障碍转化为真问题），每轮 1-2 个
+- [ ] 4. 抛出线索：适时给出观察到的线索 / 假设请用户验证，避免纯提问疲劳
+- [ ] 5. 收敛结构化：信息足够即停问，产出【澄清纪要：目标 / 现状 / 约束 / 卡点】
+- [ ] 6. 共同规划：给出结构化行动规划（目标 → 优先级 → 下一步），用户确认后回主流程选道
 
-### 0.1 Mandatory master sequence (11 steps, exit-artifact gates)
+### 0.1 三级跑道与强制总纲主流程（L2-F · 11 步，出口产物门禁）
 
-Exit artifacts per step are in SKILL.md §2.2; the previous step's artifact must exist before the next step; legitimate skips must record the reason in the task record, never silently.
+**选道（10 秒）**：按 §0.6 三问分流 → L1 快速通道 / L2-S 短工作流 / L2-F 完整 11 步；L3 恒为 L2-F + 暂停行。每步出口产物见 SKILL.md §2.4 表；进入下一步前上一步产物必须存在；无法产出的步须在任务记录写明理由，不得静默跳过。
 
-**Triage quick reference (decide in 10 seconds, one sentence max, no extended argument)**: L3 closed list (exactly 6 items — anything outside is never L3): secrets/permissions | data deletion | data or service migration | external publishing | architecture choice | over-budget destructive operations; L1 quick call: rename, copy, formatting, single-line edits and other reversible small changes — just do them; L2: new feature, multi-file, cross-module — record, do, report; cannot triage within 10 seconds → default to L2 and proceed, one-sentence verdict, no interrogating the user, no extended argument. **Triage ≠ understanding confirmation**: triage can be fast, but when the goal / boundaries / direction are ambiguous or your understanding is not fully certain, ask via the question tool before proceeding — normal mode asks too.
+**判级速查（10 秒定论，一句话即止，禁止展开论证）**：L3 封闭清单（仅 6 项，清单外一律不是 L3）：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作；L1 速判：改名、文案、格式、单行修改等可逆小改动直接做；L2：新功能、多文件、跨模块，记录后做；10 秒判不了级默认按 L2 直接推进，判级结论一句话即止、不追问用户、不展开分析。**判级 ≠ 理解确认**：判级可以快，但目标 / 边界 / 方向有歧义、理解不尽确定时，普通模式也用提问工具问清楚再推进——**问清楚比问少了更重要，理解需求比模糊执行更重要**。
 
-- [ ] 1. Receive instruction (artifact: one-sentence task essence)
-- [ ] 2. Read the experience log first (hit record)
-- [ ] 3. Survey actual resources (status fact list)
-- [ ] 4. Online survey (mandatory) (market solution survey record)
-- [ ] 5. Reuse survey (iron law) (reuse conclusion)
-- [ ] 6. Restate understanding (user confirmation)
-- [ ] 7. Ask on any doubt (ask record)
-- [ ] 8. Product-view + constraints + triage + rollback point (triage + rollback record)
-- [ ] 9. Plan & acceptance doc (plan & acceptance doc)
-- [ ] 10. Execute (execution record)
-- [ ] 11. Self-check & archive (verification result + archive)
+**L2-F 完整 11 步**：
 
-### 0.2 Online survey — what & how, and trust signals
+- [ ] 1. 接收指令（出口产物：任务本质一句话）
+- [ ] 2. 经验库必读（先 `experience-mustread.md` TOP 再症状检索原文；命中记录）
+- [ ] 3. 调研实际资源（现状事实清单，含对接真相表与模块真实状态）
+- [ ] 4. 联网调研·必须（市面方案调研记录；离线 → degraded-offline）
+- [ ] 5. 复用调研·铁律（复用结论）
+- [ ] 6. 复述理解（用户确认）
+- [ ] 7. 疑问必问（提问记录）
+- [ ] 8. 产品视角五问 + 约束 + 分级 + 回滚点（五问记录 + 分级 + 回滚点记录）
+- [ ] 9. 规划与验收文档（规划验收文档，双调研结论）
+- [ ] 10. 执行（执行记录）
+- [ ] 11. 自查与归档（验证结果 + 真实用户走查 + GATE + 归档）
 
-> Purpose: not "is it popular" but **verifiable trust signals**, with local verification as the final judge. Authority tiers: **first-hand** (official docs / official repo / spec / standard) > **empirical** (stars / downloads / maintenance activity / adoption evidence) > **community feedback** (developer reviews / known pitfalls) > **listing heat** (discoverability reference only, never a quality signal).
+**L2-S 短工作流（小模块默认）**：①对接真相清单（必做）②复述 3 短行 ③免 plan（单文件直做 / ≤3 文件一行）④执行 + 最小验证 ⑤GATE 行 + 状态面行。**L1 快速通道**：复述 → 最小修改 → 最小验证（记退出码）→ 一行汇报。
 
-**What to check (tick each)**:
+### 0.2 联网调研·详细查询清单与可信依据
 
-- [ ] 1. Candidate inventory: GitHub search / official registries / awesome lists; collect 3-5 candidates
-- [ ] 2. Empirical signals: stars / forks / contributors / last release date / maintenance activity (long inactivity = risk) / dependency count / weekly downloads
-- [ ] 3. Adoption evidence: which known projects depend on or use it; real community usage
-- [ ] 4. Official docs & examples: README / docs / demo / API fit for the requirement and experience
-- [ ] 5. Community feedback: developer reviews (HN / Reddit / Discord / issues), known pitfalls (search GitHub issues)
-- [ ] 6. License & security: license compliance, CVE / security advisories, dependency-tree risk
-- [ ] 7. Local verification (the iron judge): install into a temp dir → run a minimal demo → verify it meets requirements & performance
-- [ ] 8. Record the conclusion: comparison table + recommendation + reasons, into the market solution survey record
+> 目的：不是判断「谁火」，而是收集**可验证的可信信号**，并以本地实测兜底。权威性分级：**一手源**（官方文档 / 官方仓库 / spec / 标准）> **实证源**（stars / 下载量 / 维护活跃度 / 被采用证据）> **社区口碑**（开发者评论 / 已知坑）> **榜单热度**（只作被发现度参考，不作质量证据）。
 
-**Authority note**: daily-top / skills rankings (skills.sh, Glama, etc.) are based on install telemetry — discoverability, not quality. Quality is judged by evidence from items 2/3/4/5 plus item 7's local verification.
+**查什么（逐项打勾）**：
 
-### 0.3 Product-perspective review (step 8 — MANDATORY for every L2/L3 plan; deep diagnosis on repeated-review / legacy-restlessness triggers)
+- [ ] 1. 候选盘点：GitHub 搜索 / 官方 registry / awesome 列表，收集 3-5 个候选
+- [ ] 2. 实证信号：stars / forks / contributors / 最近 release 时间 / 维护活跃度（长期未更新即风险）/ 依赖数 / 周下载量
+- [ ] 3. 采用证据：被哪些知名项目依赖 / 使用，社区实际应用案例
+- [ ] 4. 官方文档与示例：README / 文档 / demo / API 是否符合需求与体验要求
+- [ ] 5. 社区口碑：开发者评论（HN / Reddit / Discord / issues）、已知坑（GitHub issues 搜索）
+- [ ] 6. 许可与安全：license 合规、CVE / security advisories、依赖树风险
+- [ ] 7. 本地实测（最铁）：安装到临时目录 → 跑最小 demo → 实测验证符合需求与性能
+- [ ] 8. 结论留档：候选对比表 + 推荐 + 理由，写入市面方案调研记录
 
-**Base (mandatory lite five questions — no plan submitted without it):**
-- [ ] a. One-sentence user-request decomposition: what does this module fundamentally solve for the user, and what should the experience be at this step
-- [ ] b. ≥1 explicitly rejected alternative (naming the loser and why)
-- [ ] c. Rework-cost assessment (per the design-cost iron law: evaluate by future rework cost, not today's build cost)
-- [ ] d. Boundaries & not-do list (what is explicitly out of scope this round)
-- [ ] e. 3-5 verifiable acceptance criteria
+**权威性说明**：GitHub 每日最火 / skills 榜单（skills.sh、Glama 等）基于安装遥测统计，只代表「被发现度」，不代表质量；质量必须靠 2/3/4/5 项证据 + 第 7 步本地实测共同判定。
 
-**Deep mode (replace the base when the trigger fires)**: the triggers below upgrade the review to the full product-polish diagnosis — module decomposition → five-question frame (feature logic / code coupling / UI / humanized flow / other) → diagnosis report → confirm with user → carry the report as step-8 gate artifact.
+### 0.3 产品完善度诊断（反复要求审查 / 存量项目反复不足时先走）
 
-**Triggers**: the user keeps asking to review ("check again / anything else wrong / something feels off"); a lasting sense of insufficiency in a legacy codebase; "I know it's not good enough but can't say why".
+**触发**：用户反复要求审查（「再检查一遍 / 还有没有问题 / 总觉得不对劲」）；在存量项目反复感到不足；「知道不够好但说不清哪里不好」。
 
-**Viewpoint switch**: adopt the **product view**, not the engineer view — before checking code correctness, ask "what does this module fundamentally solve for the user, and what should the experience be at this step?".
+**视角切换**：先确认以**产品视角**而非工程师视角对待——不先查代码正确性，先问「这个模块本质为用户解决什么？用户在这步的体验应该是什么？」。
 
-- [ ] 1. Decompose module by module: essential need + target experience (the complete flow the user expects)
-- [ ] 2. Run the five-question frame to locate where "not good enough" lives (can be multiple):
-      ① **Feature logic** — missing / redundant / self-inconsistent / uncovered edges / does it actually solve the problem
-      ② **Code coupling** — does coupling block future product iteration, are module boundaries clear (serving product evolution)
-      ③ **UI** — visual consistency / design norms / information hierarchy / design defects (contrast, spacing, hierarchy)
-      ④ **Humanized interaction flow** — path smoothness / too many steps / timely feedback / cognitive load / error-prone without fallbacks
-      ⑤ **Other** — information architecture & navigation / empty-loading-error states / performance & perceived speed / accessibility & multi-device / copy & tone / consistency with product positioning & brand
-- [ ] 3. Produce a *product-polish diagnosis report*: per module = essential need / current state / defect location (multi-dimensional ok) / severity / priority
-- [ ] 4. Confirm the diagnosis and priorities with the user
-- [ ] 5. Return to the master sequence (step 8 already carries the report as a gate artifact)
+- [ ] 1. 逐模块拆解：本质需求 + 目标体验（用户期望的完整流程）
+- [ ] 2. 五问框架逐项审查，定位「不够完善」落在哪一维度（可多维度）：
+      ① **功能逻辑**——缺失 / 冗余 / 不自洽 / 边界未覆盖 / 是否真解决问题
+      ② **代码耦合**——耦合度是否阻碍后续产品迭代、模块边界是否清晰（服务于产品演进）
+      ③ **界面 UI**——视觉统一 / 设计规范 / 信息层级 / 设计缺陷（对比度、间距、层级）
+      ④ **人性化互动流程**——路径顺畅度 / 步骤是否过多 / 反馈是否及时 / 认知负担 / 易错无兜底
+      ⑤ **其他**——信息架构与导航 / 空-加载-错误三态 / 性能与感知速度 / 可访问性与多端 / 文案语气 / 与产品定位品牌一致性
+- [ ] 3. 产出《产品完善度诊断报告》：每模块 = 本质需求 / 现状 / 缺陷定位（可多维度）/ 严重度 / 优先级
+- [ ] 4. 与用户确认诊断结论与优先级
+- [ ] 5. 回到总纲主流程执行（第 8 步已产出诊断报告作为门禁产物）
 
-### 0.4 Mandatory dual survey & planning (before every task's planning)
+### 0.4 强制双调研与规划（每个任务规划前必过）
 
-> Dual survey is the planning quality gate: only after the **engineer view + product-manager view** may a detailed plan doc be produced.
+> 双调研是规划质量门禁：**工程师视角 + 产品经理视角**双重调研后，才能产出详细规划文档。
 
-- [ ] 1. **Engineer survey** — code reality (status evidence), technical feasibility, reuse inventory (master steps 3 & 5)
-- [ ] 2. **Product-manager survey** — examine the current design plan: essential need (what it solves for the user) / is the design complete / do experience·UI·interaction match product positioning & brand / comparison with alternatives / planning risks
-- [ ] 3. Combine both surveys to locate "planning gaps": feature logic / design plan / UI / interaction / technical feasibility / other
-- [ ] 4. Produce a **detailed plan doc**: goal & boundaries / dual-survey conclusions / feature list & priorities / acceptance criteria (3-5 verifiable) / risks & rollback point / (goal mode adds budgets & file boundaries)
-- [ ] 5. After user confirmation of the plan, proceed to execution (master step 9 gate artifact)
+- [ ] 1. **工程师调研**：代码实况（现状证据）、技术可行性、复用盘点（总纲第 3、5 步产物）
+- [ ] 2. **产品经理调研**：审视当前设计规划——本质需求（为用户解决什么）/ 设计是否完备 / 体验·UI·交互是否符合产品定位与品牌 / 与同类对比 / 规划风险
+- [ ] 3. 综合双调研结论，定位「规划缺口」：功能逻辑 / 设计规划 / UI / 交互 / 技术可行性 / 其他
+- [ ] 4. 产出**详细规划文档**：目标与边界 / 双调研结论 / 功能清单与优先级 / 验收标准（3-5 条可验证）/ 风险与回滚点 /（目标模式加预算与文件边界）
+- [ ] 5. 用户确认规划后进入执行（总纲第 9 步门禁产物）
 
-### 0.5 Research-scaled matrix (task size × project strictness) & prior-takeaway reuse
+### 0.5 调研矩阵（任务规模 × 项目严格度）与前文复用
 
-> Purpose: stop token waste. Small-module tasks must not repeat full dual research; confirmations already made in THIS session / THIS project must never be re-researched.
+> 目的：停止 token 浪费。小模块任务不得重复全量双调研；本会话 / 本项目**已确认过的结论必须显式复用，绝不重跑**。
 
-- [ ] 1. **Project strictness tier** (set at bootstrap; change it in the project rule file): **S3 strict** — production / external-facing / security / financial / multi-collaborator / user-named strict · **S2 standard** (default) · **S1 loose** — personal / prototype / short-lived.
-- [ ] 2. **Task-size tier**: **L1** no research · **small-module L2** (≤2 files, single domain, same shape as existing patterns) → code-level research (master step 3) + reuse prior takeaways; internet survey (step 4) only for new tech / new dependency / team requirement · **normal L2 / L3** full dual survey (steps 3-5).
-- [ ] 3. **Matrix rule**: S3 × even-small-module = still full research (strict projects trust nothing implicitly); S2 × small-module = light (skip internet unless new dep/tech); S1 × small-module = no internet survey.
-- [ ] 4. **Prior-takeaway reuse (step 2.5)**: confirmed conclusions from this session or this project's memory are research inputs too — reuse them and record a one-line reference; do not re-run the same survey, install checks, or web fetch. (Same-session no-reload discipline applies to research as well.)
-- [ ] 5. **L2 entry without a plan directive** (user drops a multi-file request with no `/plan`-style directive): restate goal+boundary in 1-3 sentences → 3 acceptance criteria → one-line triage; at S3 strictness, ask before starting.
+- [ ] 1. **项目严格度档**（bootstrap 时设定；变更走项目规则文件）：**S3 严格**——生产 / 对外 / 安全 / 金融 / 多协作者 / 用户点名严格 · **S2 标准**（默认）· **S1 宽松**——个人 / 原型 / 短命。
+- [ ] 2. **任务规模档**：**L1** 免调研 · **小模块 L2**（≤2 文件、单域、与既有模式同构）→ 代码级调研（总纲第 3 步）+ 复用前文结论；联网调研（第 4 步）仅新技术 / 新依赖 / 团队要求时 · **普通 L2 / L3** 全量双调研（第 3-5 步）。
+- [ ] 3. **矩阵规则**：S3 × 再小的小模块 = 仍全量（严格项目不信任任何默认可信）；S2 × 小模块 = 轻量（免联网，除非新依赖 / 新技术）；S1 × 小模块 = 免联网调研。
+- [ ] 4. **前文复用（§12 A3 速查表）**：本会话或本项目记忆里已确认的结论，同样是调研输入——显式复用 + 记录一行引用；绝不重跑同一调研、安装检查或网页抓取。（同会话禁重载纪律同样适用于调研。）
+- [ ] 5. **无 /plan 指令的 L2 入口**（用户直接丢多文件需求、没有计划模式指令）：1-3 句复述目标 + 边界 → 3 条验收标准 → 一句判级；S3 严格度 → 先问再开始。
 
-### 0.6 L2 flow split decision table (v1.13 — anti-fiddling; answer in one pass)
+### 0.6 L2 分流决策表（三问，一次答完，防内耗）
 
-| 三问 (three questions) | 命中 | 走哪条 |
+| 三问 | 命中 | 走哪条 |
 |---|---|---|
-| ① ≥3 包 / 跨 api+contracts+前端 ② 契约·架构·迁移·对外发布·安全 ③ 用户点名"按流程/严格分析" | **≥2 项命中** → | **L2-F 完整 11 步**（master） |
-| | 其余 → | **L2-S 短工作流**（默认） |
+| ① 跨 ≥3 包 / 跨 api+contracts+前端？② 涉契约·架构·迁移·对外发布·安全？③ 用户点名「按流程 / 严格分析」？ | **≥2 项命中** → | **L2-F 完整 11 步**（§0.1 / SKILL §2.4） |
+| | 其余 → | **L2-S 短工作流**（SKILL §2.3，默认） |
 
-**L2-S：何时走**（小模块：≤3 文件、单域、与既有模式同构、无契约/架构/发布面；哪怕涉 1 个新端点+1 个新依赖，仍走 L2-S——但**必须走 §2.5 对接真相清单**）。
-**L2-S：怎么走**：①对接真相清单（必做）②复述+3-5 条可验证验收 ③免 plan：单文件直做；≤3 文件一行"改动+验收+回滚基线" ④执行+最小验证 ⑤GATE 一行 + 状态面行。
-**L2-S：省什么**（明确列出防浪费时间）：联网双调研（S2/S1 档）· 产品五问深度 · plan 文档 · 多轮提问（方向/边界有歧义除外——必问不豁免；红线永不豁免）。
+**L2-S：何时走**——小模块：≤3 文件、单域、与既有模式同构、无契约 / 架构 / 发布面；哪怕涉 1 个新端点 + 1 个新依赖，仍走 L2-S——但**必须走对接真相清单**（见下）。
+**L2-S：怎么走**——①对接真相清单（必做）②复述 + 3-5 条可验证验收 ③免 plan：单文件直做；≤3 文件一行「改动 + 验收 + 回滚基线」④执行 + 最小验证 ⑤GATE 行 + 状态面行。
+**L2-S：省什么**（明确列出防浪费时间）——联网双调研（S2/S1 档）· 产品五问深度 · plan 文档 · 多轮提问（方向 / 边界有歧义除外——必问不豁免；红线永不豁免）。
 
-**Integration-truth checklist (mandatory, see SKILL.md §2.5)** — every cross-package call / new endpoint / new dependency: small table `模块 | API | 对接方式 | 证据来源`; writing from naming intuition is forbidden (2026-08-30 counter-examples: envelope unwrap, ApiResponse, recharts package ownership, Nest DI name).
+**对接真相清单（强制，SKILL §2.3）**——每个跨包调用 / 新端点 / 新依赖：小表 `模块 | API/端点 | 对接方式(path/method/envelope/fields/package) | 证据来源(source:line/contract/docs)`；**凭命名直觉写对接代码是被禁止的**（2026-08-30 反例四则：envelope 不解包、`api.get` 实际返回 ApiResponse、recharts 包归属错误、Nest DI 名称不匹配）。
 
-**Evidence-gathering line for the status surface (self-report → checkpoint):**
+**状态面取证行（自我报告 → 检查点）**：
+
 ```
-grep -cE 'references/details|#2[0-9][0-9]\.|#1[0-9][0-9]\.' <session outputs/task records>   # count detail-rule hits; report 0 as 0
+grep -cE 'references/details|#[0-9]{2,3}\.' <会话产物 / 任务记录>   # 统计细则命中数；0 照报 0
 ```
 
-## 1. New feature / new project (15 steps)
+## 1. 新项目 / 新功能开发（15 步）
 
-- [ ] 1. Startup self-check (platform adapted, rule file active)
-- [ ] 2. Read project rules and the relevant task-type flow
-- [ ] 3. Read project docs (goals, architecture, module docs, test baseline)
-- [ ] 4. Restate understanding: goal / boundaries / acceptance
-- [ ] 5. First-principles analysis: essence of the task
-- [ ] 6. Convert goal obstacles into the real problem to solve
-- [ ] 7. Identify constraints & hidden assumptions; verify each
-- [ ] 8. Product view first: is this feature necessary from the experience/behavior angle
-- [ ] 9. Reuse decision chain (five questions, below)
-- [ ] 10. Research existing open-source wheels before self-building
-- [ ] 11. Follow-up questions for ambiguous requirements
-- [ ] 12. Write 3-5 verifiable acceptance criteria
-- [ ] 13. Plan (and TDD where the project uses it)
-- [ ] 14. Implement
-- [ ] 15. Verify (lint / type-check / baseline tests), safety & performance gates, independent review, commit code+docs together, confirm acceptance, update docs/log
+- [ ] 1. 开工自检（平台已适配、规则文件生效）
+- [ ] 2. 通读项目规则与对应分类型流程
+- [ ] 3. 读项目文档（目标、架构、模块文档、测试基线）
+- [ ] 4. 复述理解：目标 / 边界 / 验收口径
+- [ ] 5. 第一性原理分析任务本质
+- [ ] 6. 把目标障碍转化为真正要解决的问题
+- [ ] 7. 识别约束与隐性假设并逐条验证
+- [ ] 8. 产品视角优先：从体验 / 表现角度判定功能必要性
+- [ ] 9. 复用决策链（五问，见下）
+- [ ] 10. 自研前调研现成开源轮子
+- [ ] 11. 需求不明确处追问
+- [ ] 12. 写 3-5 条可验证验收标准
+- [ ] 13. 写计划（项目用 TDD 则同步写测试）
+- [ ] 14. 实现
+- [ ] 15. 验证（lint / type-check / 基线测试）+ 安全性能门禁 + 独立审查 + 文档代码同批提交 + 验收确认 + 更新文档日志
 
+### 1.1 新项目信息文档（首次加载、无文档时）——见 SKILL.md §2.5
 
-### 1.1 New-project info doc (first load, no docs) — see SKILL.md §2.4
-Six sections (architecture / goal from user description / module status table done-planned-not-started / research navigation / reference resources / restate-confirm). Session: minimal-diff update. Timestamps `YYYY-MM-DD HH:mm:ss` everywhere; record cap >120 lines or >3 blocks → new file.
+六节（架构 / 用户描述提炼的目标 / 模块真实状态表 已实现-规划中-未实现 / 调研导航 / 参考资源 / 复述确认）。每个会话：最小 diff 更新。时间戳 `YYYY-MM-DD HH:mm:ss`；记录 >120 行或 >3 块 → 新文件。完整四步引导见 `references/new-project-bootstrap.md`。
 
-## 2. Bug fix & troubleshooting (7 steps)
+## 2. Bug 修复与问题排查（7 步）
 
-- [ ] 1. Search the experience log by current symptom keywords (mandatory; on hit apply "solution / prevention")
-- [ ] 2. Miss? Also search dev log / task records for the same issue
-- [ ] 3. Reproduce the problem
-- [ ] 4. Root-cause it: systematic debugging + causal chain (3-5 layers of why, verify each link)
-- [ ] 5. Write a regression test
-- [ ] 6. Minimal fix
-- [ ] 7. Verify all green; record the pitfall (distill into experience log if repeated / high-rework-cost)
+- [ ] 1. 按当前症状关键词搜经验库（强制；命中按「解决 / 预防」执行）
+- [ ] 2. 未命中再检索开发日志 / 任务记录中同类问题
+- [ ] 3. 复现问题
+- [ ] 4. 定位根因：系统化调试 + 因果链（3-5 层为什么，逐环验证）
+- [ ] 5. 写回归测试
+- [ ] 6. 最小修复
+- [ ] 7. 验证全绿；记录踩坑（重复 / 高返工成本者提炼进经验库）
 
-## 3. UI / design rework
+## 3. UI / 设计重构
 
-- [ ] 1. Product-view review (brand 3 questions: positioning / success criteria / structural constraints; user-journey layers: discover → judge → trust → connect)
-- [ ] 2. Read the project's design spec and component reuse list
-- [ ] 3. Check component reuse (five questions); if missed, self-build + record the reason
-- [ ] 4. Visual review (screenshots / vision tool comparison)
-- [ ] 5. Implement per spec (whitelist guardrails)
-- [ ] 6. Verify in both viewport widths with screenshots
-- [ ] 7. Accessibility & performance checks
-- [ ] 8. Record the rework in the project rework doc
+- [ ] 1. 产品视角评审（品牌三问：定位 / 成功标准 / 结构约束；用户旅程分层：发现 → 判断 → 信任 → 连接）
+- [ ] 2. 读项目设计规范与组件复用清单
+- [ ] 3. 查组件复用（五问），未命中再自研并记录理由
+- [ ] 4. 视觉审查（截图 / 视觉工具对比）
+- [ ] 5. 按规范实现（白名单护栏）
+- [ ] 6. 双视口截图验证
+- [ ] 7. 可访问性与性能检查
+- [ ] 8. 记录到项目重构文档
 
-## 4. Deploy & operations
+## 4. 部署与运维
 
-- [ ] 1. Build locally (follow the project's build command)
-- [ ] 2. Package and upload
-- [ ] 3. On server: unpack + migrate + reload process
-- [ ] 4. Prepare the rollback plan (rollback point rule 43)
-- [ ] 5. Health checks and alert wiring
-- [ ] 6. Publish approval + observation window (~30 min), monitor errors / latency / alerts
-- [ ] 7. Alert response: confirm → classify → locate → dispose → review
-- [ ] 8. Backup/restore drill on a schedule
-- [ ] 9. Record the deployment
+- [ ] 1. 本地构建（按项目构建命令）
+- [ ] 2. 打包上传
+- [ ] 3. 服务器解压 + 迁移 + 进程重载
+- [ ] 4. 准备回滚预案（回滚点规则第 43 条）
+- [ ] 5. 健康检查与告警接入
+- [ ] 6. 发布审批 + 观察期（约 30 分钟），监控错误 / 延迟 / 告警
+- [ ] 7. 告警响应：确认 → 分级 → 定位 → 处置 → 复盘
+- [ ] 8. 周期性备份恢复演练
+- [ ] 9. 记录部署文档
 
-## 5. Documentation & handover
+## 5. 文档与交接
 
-- [ ] 1. Update authoritative docs in the same commit as code
-- [ ] 2. Register every newly referenced external site / open-source project / tool in the project's reference-resources doc
-- [ ] 3. Update the handover checklist
-- [ ] 4. Record lessons learned
-- [ ] 5. Self-check consistency (key numbers match the project's authoritative docs)
-- [ ] 6. Archive check (equivalence precondition, rule 37)
+- [ ] 1. 权威文档与代码同批提交
+- [ ] 2. 新引用的外部网站 / 开源项目 / 工具，当次登记项目参考资源文档
+- [ ] 3. 更新交接清单
+- [ ] 4. 记录经验教训
+- [ ] 5. 自查口径一致（关键数字以项目权威文档为准）
+- [ ] 6. 归档检查（等价物前置，第 37 条）
 
-## 6. Major decisions & complex tasks
+## 6. 重大决策与复杂任务
 
-- [ ] 1. Recognize the trigger (direction / architecture / scope / conflict)
-- [ ] 2. Build a decision brief: understanding + options comparison + pros/cons + consequences + recommendation （TOC thinking: constraints and hidden assumptions first, then compare options around the constraint)
-- [ ] 3. Ask via the asking tool or text protocol; end the turn and wait
-- [ ] 4. Execute the confirmed direction
-- [ ] 5. Review and record the decision
+- [ ] 1. 识别触发点（方向 / 架构 / 范围 / 分歧）
+- [ ] 2. 自拟决策简报：理解 + 选项对比 + 优缺点 + 后果 + 推荐（TOC 思考：先识别约束与隐性假设，再围绕约束比方案）
+- [ ] 3. 用提问工具或文本协议提问，结束回合等待
+- [ ] 4. 按确认方向执行
+- [ ] 5. 复盘并记录决策
 
-## 7. Goal mode / unattended run
+## 7. 目标模式 · 无人值守
 
-- [ ] 1. Confirm goal and mode with the user
-- [ ] 2. Write the execution plan with risk rating into the task record (time / round / cost budgets; subtasks split by file boundaries, isolated writes); **local backup first, do not `git push` by default** (rollback points use local backup snapshots; check local space is ample first — rule 45)
-- [ ] 3. Triage decisions by L1/L2/L3 (SKILL.md §5.2, full decision table)
-- [ ] 4. Execute autonomously, record everything; **pause only in two cases** — major decisions (L3) / severe blocking problems; all other important decisions follow "investigate → push the first recommendation → **fully archive the decision record**"; **every milestone is forced to land in the task log**; stop automatically past budget; **a local snapshot ready → destructive / modification-class ops are safe to execute, the red-line deferral is relieved by the backup (L3 excepted — still pauses)**
-- [ ] 5. Retrospective delivery + open-questions list; commit/push with explanation (**after a goal-mode run, the user decides together whether to push**)
+- [ ] 1. 与用户确认目标与模式
+- [ ] 2. 执行前写计划与风险评级写入任务记录（时间 / 轮次 / 花费预算；子任务按文件边界拆分、隔离写入）；**本地备份优先、默认不 git push**（回滚点用本地备份快照，先查本地空间充足，见第 45 条）
+- [ ] 3. 按 L1/L2/L3 分级决策（SKILL.md §5.2 判级速查权威块）
+- [ ] 4. 自主执行、全程记录；**暂停仅两种情形**——重大决策（L3）/ 严重阻塞问题；其余重要决策「先调研 → 按第一推荐推进 → **完整归档决策记录**」；**每里程碑强制落盘**；超预算自动停止；**本地快照就绪→破坏性 / 修改类操作可安全执行、红线暂缓由备份缓解（L3 除外，仍暂停）**
+- [ ] 5. 复盘交付 + 待确认清单；提交推送附说明（目标模式达成后用户统一决定是否推送）
 
-## 8. Multi-session orchestration
+## 8. 多会话编排
 
-- [ ] 1. Trigger: roadmap / handover-list status summary marks the task as multi-session
-- [ ] 2. Read the orchestration authority line for this session's number and topic
-- [ ] 3. Each session: own branch + task record (restatement / risk rating / 3-5 acceptance criteria)
-- [ ] 4. Before starting and before committing: check `git status` and target-file mtimes; pause and coordinate on uncommitted concurrent edits
-- [ ] 5. Execute and close per this session's acceptance criteria
-- [ ] 6. Update the handover checklist completion block and status summary; refresh baseline numbers
-- [ ] 7. Commit/push (re-read diff — only this session's files), merge
-- [ ] 8. Next session continues from "Next step"; avoid overloading one session
+- [ ] 1. 触发：路线图 / 交接清单状态汇总标记为多会话任务
+- [ ] 2. 读编排权威对应行确认本会话序号与主题
+- [ ] 3. 每会话独立分支 + 任务记录（复述 / 风险评级 / 3-5 条验收标准）
+- [ ] 4. 开工与提交前检查 `git status` 与目标文件修改时间；有未提交并发改动先暂停协调
+- [ ] 5. 执行并按本会话验收闭环
+- [ ] 6. 更新交接清单完成块与状态汇总，刷新基线口径
+- [ ] 7. 提交推送（重读 diff——只含本会话文件）、合并
+- [ ] 8. 下一会话按「下一步」继续，避免单会话超载
 
-## 9. Adding a new workflow rule (6 steps, no landing without user approval)
+## 9. 新增工作流规则（6 步，未经批准不得落盘）
 
-1. **Collect** — run the rule-index listing (numbers / titles / references) as the dedupe baseline.
-2. **Analyze (five questions)** — necessity / consequence of violation / executability / duplication (pre-check suspected duplicates) / ripple scope (which docs must sync).
-3. **Draft (four-paragraph template)** — source ｜ problem it solves ｜ consequence of violation ｜ relationship to existing rules; numbered after the current section; mark the solidification date.
-4. **Approve** — present the candidate (with five-question conclusions and suspected-duplicate list) via the asking tool; user may approve / modify / veto; no answer or veto = no landing.
-5. **Land & re-check** — append the entry → index integrity check green → sync affected docs.
-6. **Record & commit** — task record carries the five-question conclusions / approval record / verification result; commit message states change + verification.
+1. **采集**——列出规则索引（编号 / 标题 / 引用）作为去重基线。
+2. **分析（五问）**——必要性 / 违规后果 / 可执行性 / 重复性（预检疑似重复）/ 联动范围（需同步哪些文档）。
+3. **草拟（四段模板）**——来源｜解决什么问题｜违规后果｜与现有规则关系；编号续接当前区段；标注固化日期。
+4. **审批**——用提问工具展示候选（含五问结论与疑似重复清单），用户可批准 / 修改 / 否决；不答复或否决 = 不落盘。
+5. **落盘与复检**——追加条目 → 索引完整性检查全绿 → 同步受影响文档。
+6. **留档提交**——任务记录载明五问结论 / 审批记录 / 验证结果；提交信息含改动与验证。
 
-## Reuse decision chain (five questions)
+## 复用决策链（五问）
 
-Before building anything new, answer in order; only a full miss allows self-building (and then record the research conclusion):
+动手前按序回答；全链未命中才允许自研（并记录调研结论）：
 
-1. **Is the feature necessary?** Judge from the product view first (experience & visible behavior win over feature design); no real user-facing value → don't build.
-2. **Does the platform support it natively?** (HTML/CSS/browser APIs first: dialog, Popover, details/summary, Clipboard, scroll-behavior, `:has()`, native drag…)
-3. **Can existing stdlib / component library cover it?** Prefer the current project's component library and home-grown kept components.
-4. **Can an existing dependency cover it?** Prefer already-installed dependencies; don't install duplicates.
-5. **Can it be done with the least code?** Prefer composing existing components (ideally one-line-level composition).
+1. **功能是否必要？** 先以产品视角判断（体验与表现优先于功能设计）；无真实用户价值 → 不做。
+2. **平台是否原生支持？**（HTML/CSS/浏览器 API 优先：dialog、Popover、details/summary、Clipboard、scroll-behavior、`:has()`、原生拖拽……）
+3. **现有标准库 / 组件库能否覆盖？** 优先当前项目组件库与自研保留组件。
+4. **已有依赖能否覆盖？** 优先已装依赖，不重复安装。
+5. **能否用最少代码完成？** 优先组合现有组件（尽量一行级组合）。
 
-## Quality gates
+## 质量门禁
 
-### GATE completion block (mandatory step-11 artifact)
-Every task block ends with one line: `GATE: {v=<scope>, cmd=<re-runnable command>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims>}`. Re-runnable artifacts outrank self-narration; acceptance authority stays with the user; `approval:never` exempts tool-level approval, never the confirmation duty. The task-record template carries this field.
+### GATE 完成块（第 11 步出口产物，强制）
+每个任务块末尾一行：`GATE: {v=<范围>, cmd=<可重跑命令>, exit=<退出码>, files=<变更文件>, lessons=<知识点>, exempt=<未验证声明>}`。可重跑工件 > 自我叙述；验收权在用户；`approval:never` 只豁免工具级审批，**永不豁免确认义务**。任务记录模板带有此字段。
 
-### ExitPlanMode four-item self-check (do not submit a plan missing any)
-① acceptance criteria 3-5 · ② one-line triage (L1/L2/L3) · ③ rollback point (or explicit "current clean baseline is the point") · ④ boundaries & not-do list.
+### ExitPlanMode 四件套自检（缺一不提交）
+①验收标准 3-5 条 · ②一句判级（L1/L2/L3）· ③回滚点（或明示「当前干净基线即回滚点」）· ④边界与不做的清单。
 
+### Must-read 经验晋升（晋级规则）
+同一踩坑**单项目 ≥3 次**（或高返工成本）→ 晋升进 `memory/experience-mustread.md` TOP 列表（一行症状 + 一行对策，硬上限一屏；只写一处——每行交叉引用 experience.md 条目编号，不重复正文）；**2 个干净周期无命中 → 降级**。**先于症状检索读取**；计入状态面取证行。
 
+### 上下文盘点（约每 5 个任务块或 40-60% token 预算）
+列出最大上下文消耗者（dump 输出、远程报告、重复粘贴的归档）→ 决定丢弃 / 归档 → 一行写入会话状态面。大输出规则：>~40 行写文件、上下文只留摘要 + 退出码。模糊记忆规则：继续前从任务记录 / 契约 / 源重取。
 
-- **Pre-commit:** lint / type-check / unit+integration tests (project baseline is authoritative; baseline regression blocks) / coverage (core ≥ 80% target) / dependency audit (before release) / commit message (header ≤ 100 chars) / docs shipped with code (`git status` check).
-- **CI:** every push runs lint + type-check + guardrails + unit + integration; releases additionally run E2E + performance.
-- **Review loop:** reviewer-view diff re-read (boundaries / security / readability / unverified items / reuse & least code / product view); fail → fix → re-run (max 3 rounds) → still failing: stop and report; requirement change mid-way: record impact first.
-- **Independent review (optional sub-agents):** adversarial critique `templates/agents/critic.md`; risk review `templates/agents/risk-reviewer.md`; security audit `templates/agents/security-auditor.md` — copy & adapt to the platform.
-- **Safety:** secret scan before every commit (CI mandatory); leak emergency: revoke/rotate → map exposure → record review.
-- **Periodic:** monthly dependency maintenance / workflow retrospective / memory upkeep; quarterly skill audit & doc reconciliation.
+- **提交前**：lint / type-check / 单测 + 集成测试（项目基线权威，基线回退拦截）/ 覆盖率（核心 ≥ 80% 目标）/ 依赖审计（发版前必跑）/ 提交信息（header ≤ 100 字符）/ 文档与代码同批（`git status` 检查）。
+- **CI**：每次推送跑 lint + type-check + 护栏 + 单测 + 集成；发版加跑 E2E + 性能。
+- **审查循环**：审查者视角重读 diff（边界 / 安全 / 可读性 / 未验证项 / 复用与最少代码 / 产品视角）；失败 → 修复 → 重跑（限 3 轮）→ 仍失败停下汇报；需求中途变更先记录影响。
+- **独立审查（可选子代理）**：对抗式方案评审用 `templates/agents/critic.md`；风险评审用 `templates/agents/risk-reviewer.md`；安全审计用 `templates/agents/security-auditor.md`（平台子代理配置，复制适配）。
+- **安全**：每次提交前密钥扫描（CI 强制）；泄露应急：撤销轮换 → 排查泄露面 → 记录复盘。
+- **周期**：每月依赖维护 / 工作流回顾 / 记忆维护；每季度技能审计 + 文档对账。
 
+## 工具与技能策略（通用）
 
+- **技能按需加载**：每次任务最多加载 1-3 个技能；先按目录 / 描述筛选命中，再按**读取分类**加载（`skill-usage.md` §4：默认**渐进式**——先主 `SKILL.md` 再按需读 `references/`；**前端 / UI / 设计类、核心治理 / 工作流类无条件强制完整读取**，即使上下文充足 / 无预算限制也不减少）。
+- **本地无该 Skill 时**：先问用户是否需要寻找权威 Skill 源安装 / 本机其他 Skill 安装目录可复用（`skill-usage.md` §3）；任何安装先过 `security.md` 开源安装检疫——然后才降级到通用能力 + 官方文档，降级留痕。
+- 反复需要（2-3 次）的能力按工作流 9 沉淀为新技能。
 
-### Must-read experience tier (promotion rule)
-Same pit **≥3 times in a project** (or high rework cost) → promote into `memory/experience-mustread.md` TOP list (one-line symptom + one-line countermeasure, hard cap one screen; one copy only — rows cross-reference experience.md entry numbers, no duplicated bodies). Demote on 2 clean periods without a hit. Read BEFORE the symptom search; counts in the status-surface evidence line.
+## 记忆文件协议（外部化长期记忆）
 
-### Context census (every ~5 task blocks or 40-60% token budget)
-List the biggest context consumers (dump outputs, remote reports, re-pasted archives) → decide discard/archive → one line to the status surface. Big-output rule: >~40 lines write to a file, keep summary + exit code only. Fuzzy-memory rule: refetch from task record/contract/source before proceeding.
+Agent 没有天生的长期记忆、也无法感知上下文被压缩——把会话状态外部化到随时可重读的文件：
 
-## Notes on tools & skills strategy (generic)
-
-### Load skills on demand
-- Load at most 1-3 skills per task, filtered by catalog first, then load per the **classification** in `skill-usage.md` §4 — **progressive read** (main SKILL.md first, references on demand) by default; **front-end / UI / design and core-governance classes are unconditionally fully read** (ample context or no budget limit does not waive it). When the context budget is tight, split into subtasks or a new session.
-
-### Getting a Skill when none is local / capability degradation
-- No local Skill? **Ask the user first** (per `skill-usage.md` §3) — whether to look for an authoritative Skill source to install, or whether the machine has another Skill-install directory to reuse; any install passes the `security.md` open-source install vetting — only then fall back to general capability + official docs; record the fallback.
-- Repeated needs (2-3 times) become new skills via workflow 9.
-
-## Memory-file protocol (externalized long-term memory)
-
-Agents have no inherent long-term memory and cannot sense context compaction — externalize the session state to a file that can always be re-read.
-
-- **Unified archive = project root `memory/`** (default; a project whose real business already uses `memory/` may override the archive dir to `.agent-records/` in its project rule file — the only legal override). **Any session (incl. the next AI) scans this directory on start**; if the directory or skeleton is missing, create it automatically (see `templates/workspace-memory-template.md`).
-- **Fixed structure** — `memory/state.md` (current goal / decisions made / constraints / progress + next step; one screen, quick read); `memory/experience.md` (pitfall log: symptom → root cause → fix → prevention, plus general judgment standards); `memory/preferences.md` (confirmed stack / language / style); `memory/task-log/` (task records, `YYYY-MM-DD-<name>.md`). `memory/` is the "state layer + pitfall layer"; full rule details still live in the skill's `references/` and load on demand — the two do not replace each other.
-- **Context budget (order first, avoid pollution)** — resident (this core, small) → session-start read (workspace `memory/`, scan in order `state → experience → preferences → task-log`, keep to one screen; for `experience`, search only the segment matching the current symptom, don't load it whole) → on demand (Skill `references/`, historical `task-log/`; never preload all references) → end-of-session update (minimal append).
-- **User preferences + post-write review** — log confirmed stack / language / style to `memory/preferences.md` right after the user confirms a choice via the asking tool; read at session start; reuse the same class of decision instead of re-asking. **`preferences.md` records the user's preferred language, which decides the phrasing / expression language of your thinking and output** (if unrecorded, follow the language of the session's user input). **After writing, actively remind the user to re-check the broad direction** (is the stack / language / style direction right), and follow their correction if it drifted. Never put secrets or destructive intent here.
-- **Write at**: ① goal confirmed (step 6) → `state.md`; ② each task / milestone closed → `task-log/`; ③ pitfall found / recurring → `experience.md`; ④ **every important decision → a decision-audit archive entry** (phenomenon / basis / rejected candidates & trade-offs / choice / impact / operational status, alongside the task record; goal mode above all, one entry per decision, so it can be reviewed when done); ⑤ before the context reaches 40-60% → refresh all; ⑥ session end, before archiving.
-- **Read at**: ① session start (state + experience + preferences); ② after any compaction / reset / reload signal — **read first, then continue**; ③ before starting a new task, scan `state.md`.
-- **Completion update order (end-of-session)** — ① minimal verification + self-check → ② update `memory/task-log/<YYYY-MM-DD>-<name>.md` (understanding → acceptance → decisions → result; write conclusions immediately) and log a **decision-audit archive entry for every important decision** → ③ update `memory/experience.md` (new or recurring pitfalls; duplicate content in one place with cross-reference) → ④ update `memory/preferences.md` (with the preference-review reminder) → ⑤ commit docs + code in the same batch; **all key rollbacks go local backup first, push only when remote protection / delivery is genuinely needed**; at session end distill 1-5 reusable knowledge points (default 3).
-- **Layering**: memory files = *state* layer + *pitfall* layer (current work + pitfalls); knowledge docs (step-11 dual-write) = *learning* layer; Skill `references/` = *mechanism* layer. They do not replace each other.
-- **Explicit reload sequence after compaction** (from SKILL.md §9): when the user says "reload / you were compacted / start fresh" or the platform visibly resets the context — ① re-read SKILL.md → ② re-read `memory/state.md` + `memory/experience.md` → ③ re-read the reference the current step needs → ④ restate the current task + acceptance criteria to the user, then continue. Do not trust your memory of the rules after a reset; re-read them.
-- **Prompt budget (optional)** — see `templates/prompt-budget.template.md`: set a budget profile (nano / minimal / standard / full) so the skill loads only the references a task needs, and keep the memory file + task records within their budgets. Budgets are guidance, not enforcement.
+- **位置**（项目约定）：如仓库根 `memory/`（或项目约定的记忆路径）；保持一屏内（约 20 行），做到秒读。
+- **最小结构**——当前目标 ／ 已做决策 ／ 约束 ／ 进度 + 下一步 ／ 踩坑（链接经验库）。
+- **用户偏好字段**——同时维护「用户偏好」子段（用户经提问工具确认的技术栈 / 语言 / 风格；**用户偏好语言记入 `memory/preferences.md`，决定模型输出的思考 / 表述使用什么语言**，未记录默认中文）。确认选择后立即写入 `memory/preferences.md`；**写入后主动向用户复核大类方向**，用户指出偏离则按其修正；会话开始时读取；同类决策直接采用而非重复询问。密钥与破坏性意图绝不写入。
+- **写入时机**：①目标确认（第 6 步）；②每个任务 / 里程碑完成；③**每项重要决策 → 决策审计归档**（现象 / 依据 / 被否候选与取舍 / 选择 / 影响 / 运行状态，与 task-log 并列；目标模式尤其逐条记）；④上下文到 40-60% 前；⑤会话结束归档前。
+- **读取时机**：①会话开始；②任何压缩 / 重置 / 重载信号后——**先读再继续**；③新任务开始前扫一眼。
+- **分层关系**：记忆文件 = *状态*层（当前工作）；知识文档（第 11 步双写）= *学习*层；经验库 = *踩坑*层。三者互不替代。
+- **工作区 `memory/` 统一归档 + 自动创建骨架**：项目根 `memory/` 为跨会话状态 / 踩坑 / 偏好 / 任务记录的默认落点；任何会话（含下一个 AI）开工**先扫该目录**，不存在则自动创建骨架——`state.md`（当前目标 / 已做决策 / 约束 / 进度+下一步，一屏内秒读）、`experience-mustread.md`（高频必读 TOP≤10，先于症状检索）、`experience.md`（踩坑库：症状→根因→解决→预防 + 通用判断标准）、`preferences.md`（已确认技术栈 / 语言 / 风格偏好）、`task-log/`（任务记录 `YYYY-MM-DD-名称.md`）。业务真实恰用 `memory/` 时，可在项目规则文件内把归档目录改为 `.agent-records/`（唯一合法覆盖点）。`memory` = 状态层 + 踩坑层，完整规则仍在 `references/` 按需加载——互不替代。骨架模板见 `templates/workspace-memory-template.md`。
+- **上下文预算法（先定序，防污染）**：把「读哪些、何时读」写死——常驻（本核心，小）→ 开工读（工作区 `memory/`，存在才读，一屏内，按 `state → experience-mustread → experience → preferences → task-log` 顺序扫；`experience` 按当前症状精确检索命中段，不整篇载入）→ 按需（`references/`、历史 `task-log/`，到步骤才读，不预载全部引用）→ 结束更新（最小追加，见「完成后更新序」）。
+- **完成后更新序（结束收尾，避免污染）**：①最小验证 + 自查 → ②更新 `memory/task-log/<YYYY-MM-DD>-<名称>.md`（理解→验收→决策→结果，结论即时落盘）→ ③更新 `memory/experience.md`（新踩坑或重复坑，症状→根因→解决→预防，重复只写一处并交叉引用）→ ④更新 `memory/preferences.md`（写入已确认偏好，含偏好复核提醒；密钥与破坏性意图绝不写入）→ ⑤文档与代码同批提交；会话结束提炼 1-5 条可复用知识点（默认 3 条）。
+- **压缩后显式重载顺序**（源自 SKILL.md §9）：用户说「重载 / 你被压缩了 / 从头加载」、或平台明显重置上下文时——①重读 SKILL.md → ②重读记忆文件 → ③重读当前步骤所需引用 → ④向用户复述当前任务与验收标准再继续。重置后不要相信你对规则的记忆，重读为准。
+- **提示词预算（可选）**：见 `templates/prompt-budget.template.md`——设置预算档位（nano / minimal / standard / full），让 Skill 只加载任务所需的引用，并让记忆文件与任务记录保持在预算内。预算是指引，不强制。

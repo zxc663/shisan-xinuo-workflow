@@ -1,126 +1,129 @@
-# Platform Adaptation (English)
+# 平台适配（中文）
 
-Load this file for Step 0 (platform detection & adaptation) and whenever the asking-tool downgrade chain or the structured asking protocol is needed.
+第 0 步（平台检测与适配）以及提问工具降级链、结构化提问协议需要时加载本文件。
 
-## 1. Detect the current platform
+## 1. 检测当前平台
 
-Check the following signals in order; the first strong hit decides:
+按顺序检查下列信号，第一个强命中即判定：
 
-| Platform | Strong signals |
+| 平台 | 强信号 |
 |---|---|
-| Codex (OpenAI) | CLI `codex` available; `~/.codex/` exists; project has `AGENTS.md` loaded into context |
-| Claude Code | CLI `claude` available; `~/.claude/` exists; `.claude/skills/` resolvable |
-| Cursor | `.cursor/` directory or `.cursorrules` present in project; Cursor env vars (`CURSOR_*`) |
-| Windsurf | `.windsurfrules` in project; Windsurf env vars |
-| Trae | Trae-specific runtime indicators (plugin/skill mechanism active, Trae env vars) |
-| WorkBuddy | `BOOTSTRAP.md` convention; `AskUserQuestion` tool available |
-| Reasonix | `AGENTS.md` scheduled as plugin/rule input |
-| Generic CLI / other | None of the above; plain shell + model API |
+| Codex（OpenAI） | CLI `codex` 可用；`~/.codex/` 存在；项目中 `AGENTS.md` 已载入上下文 |
+| Claude Code | CLI `claude` 可用；`~/.claude/` 存在；`.claude/skills/` 可解析 |
+| Cursor | 项目存在 `.cursor/` 目录或 `.cursorrules`；存在 Cursor 环境变量（`CURSOR_*`） |
+| Windsurf | 项目存在 `.windsurfrules`；存在 Windsurf 环境变量 |
+| Trae | Trae 运行时特征（插件 / Skill 机制激活、Trae 环境变量） |
+| WorkBuddy | agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`，已实证）；`AskUserQuestion` 工具可用 |
+| Reasonix | `AGENTS.md` 作为插件 / 规则输入 |
+| 通用 CLI / 其他 | 以上皆无；纯 shell + 模型 API |
 
-If uncertain, ask the user which platform this is — do not guess when a rule file will be written.
+无法确定时直接问用户是哪个平台——要写规则文件时不允许猜测。
 
-## 2. Injection points — where the agent app ACTUALLY auto-injects rules every session
+## 2. 注入点——agent 应用每会话真正自动注入规则的位置
 
-> Writing a rule file into a workspace folder the app never reads is **useless** — the skill would still require manual triggering. Always target the platform's real injection point, and enable it in-app when required.
+> 只把规则文件写进应用从不读取的工作区目录是**无效的**——Skill 仍会被迫手动触发。必须对准平台真正的注入点；平台要求应用内启用时，先引导用户在应用里启用。
 
-| Platform | Injection point (auto-injected every session) | Layer | In-app enable needed? | Native asking tool |
+| 平台 | 注入点（每会话自动注入） | 层级 | 是否需要应用内启用 | 原生提问工具 |
 |---|---|---|---|---|
-| Codex | `AGENTS.md` (project root) | project-app (global possible per policy) | No — auto-read | `request_user_input` |
-| Claude Code | `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user-global) | project-app / agent-app global | No — auto-read | none native → text protocol |
-| Cursor | `.cursor/rules/*.mdc` or global Rules (app settings) | project-app / agent-app global | Usually auto-read; verify Rules toggle | none native → text protocol |
-| Windsurf | `.windsurfrules` (project) or global rules | project-app / agent-app global | No — auto-read | none native → text protocol |
-| Trae | `~/.trae-cn/user_rules/*.md` (user-global; auto-injected into every project every session) or project `.trae/rules/project_rules.md` | agent-app global / project-app | No — the file's mere existence injects it (verified in practice) | platform question tool if present, else text protocol |
-| WorkBuddy | `BOOTSTRAP.md` (project bootstrap) + connector config | project-app | Yes — attach in app config | `AskUserQuestion` |
-| Reasonix | `AGENTS.md` (plugin/rule input) | project-app (per plugin config) | Per plugin config | none native → text protocol |
-| Generic CLI | no auto-injection | n/a | n/a | none native → text protocol |
+| Codex | `AGENTS.md`（项目根） | 项目-应用层（按策略可设全局） | 否——自动读取 | `request_user_input` |
+| Claude Code | `CLAUDE.md`（项目）或 `~/.claude/CLAUDE.md`（用户全局） | 项目层 / 全局层 | 否——自动读取 | 无原生 → 文本协议 |
+| Cursor | `.cursor/rules/*.mdc` 或应用设置中的全局 Rules | 项目层 / 全局层 | 通常自动读取；核对 Rules 开关 | 无原生 → 文本协议 |
+| Windsurf | `.windsurfrules`（项目）或全局规则 | 项目层 / 全局层 | 否——自动读取 | 无原生 → 文本协议 |
+| Trae | `~/.trae-cn/user_rules/*.md`（用户全局，所有项目每会话自动注入）或项目 `.trae/rules/project_rules.md` | 全局层（`~/.trae-cn/user_rules/*.md`）/ 项目-应用层（`.trae/rules/project_rules.md`） | 否——文件存在即注入（已实证） | 有平台提问工具则用，否则文本协议 |
+| WorkBuddy | agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）或项目引导 | 全局层 / 项目-应用层 | 视应用配置 | `AskUserQuestion` |
+| Reasonix | `AGENTS.md`（插件 / 规则输入） | 项目-应用层 | 视插件配置 | 无原生 → 文本协议 |
+| 通用 CLI | 无自动注入 | 不适用 | 不适用 | 无原生 → 文本协议 |
 
-**For every platform**: after writing/merging the file, restate the active essentials to the user (platform, injection point, injection mode, asking tool) and confirm no existing content was lost; if a platform is later shown to require in-app enabling, then guide the user to enable it in the app settings.
+**注入分层规则（普通 vs 硬注入，见 `rules.md` §47）**：**普通（按需 / 精简）注入只写「项目-应用层」**（项目 `.trae/rules/project_rules.md` / `AGENTS.md` / `CLAUDE.md` 等），不写全局层——防污染无关会话上下文；**硬注入（强制）才写「agent 应用全局层」**，且执行前**必须先提醒用户确认**（平台 / 目标注入点 / 内容长度（约行数）/ 每会话 token 成本 / 影响范围），确认后再写入。
 
-**Injection layering rule (normal vs. hard injection, see `rules.md` §47)**: **normal (on-demand / lean) injection writes only to the project-app layer** (project `AGENTS.md` / `.trae/rules/project_rules.md` / `CLAUDE.md`, etc.), never the global layer — avoids polluting unrelated sessions' context. **Hard injection (forced) writes to the agent-app global layer only**, and **must first remind the user to confirm** — state the platform, target injection point, content length (~number of lines), per-session token cost, and scope of impact (which projects / sessions); write only after confirmation.
+**对每个平台**：写入 / 合并文件后，向用户复述生效要点（平台、注入点、注入模式、提问工具）并确认未丢失既有内容；若某平台后续证实需要应用内启用，再引导用户在应用设置里启用。
 
-**Forced injection (hard-load)** = write the full core from `references/injection-core.md` into the detected platform's injection point above (backup first, merge without overwriting) — the workflow is unconditionally present every session. **Do NOT** implement forced injection as "read the full SKILL.md every session": models do not reliably execute extra read actions; write the core text itself into the injection point (field-tested lesson: under the weak-command mode, new sessions follow only the most generic few rules).
+**强制注入（硬加载）** = 把 `references/injection-core.md` 的核心全文（含上下文预算法 + 工作区 `memory/` 约定）写入上面检测到的平台注入点（先备份、合并不覆盖）——工作流每会话无条件在场。**不要**用「每会话完整读取 SKILL.md」这类弱指令实现强制注入：模型不会可靠执行额外读取动作，必须直接写入核心全文（实测教训：弱指令模式下新会话只遵循最通用的几条纪律）。
 
-Generic CLI (no auto-injection): tell the user to open the skill once per session, or wrap the rule in their custom prompt.
+通用 CLI（无自动注入）：提示用户每会话打开一次本 Skill，或将规则写入其自定义提示词。
 
-## 3. Generate / merge the rule file
+## 3. 生成 / 合并规则文件
 
-### 3.0 Choose the injection mode first (ask the user)
+### 3.0 先选注入模式（询问用户）
 
-Before writing any rule file, use the asking chain in section 4 to let the user pick an injection mode; if no asking tool is available, default to **on-demand** and say so.
+写任何规则文件前，用第 4 节降级链让用户选择注入模式；无提问工具可用时默认**按需注入**并明确告知。
 
-| Mode | Rule file contains | Context cost | Use when |
+| 模式 | 规则文件内容 | 上下文开销 | 适用场景 |
 |---|---|---|---|
-| **On-demand (default)** | lean discipline (~9 lines) + pointer to this skill | lowest | most projects; skill triggers when relevant |
-| **Forced injection (hard-load)** | the full core from `references/injection-core.md` (triage quick reference + 11-step master sequence + design iron laws + dual modes + red lines + delivery & records) | a fixed ~2-3K tokens per session | you want the workflow unconditionally present every session, without depending on the model voluntarily loading the skill |
+| **按需注入（默认）** | 精简纪律（约 9 行）+ 回指本 Skill | 最低 | 多数项目；Skill 按触发激活 |
+| **强制注入（硬加载）** | `references/injection-core.md` 核心全文（判级速查 + 11 步主流程 + 上下文预算法 + 设计铁律 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序 + 交付留档） | 每会话固定约 2-3K token | 要求工作流每会话无条件在场、不依赖模型自觉 |
 
-Forced mode writes `references/injection-core.md`'s core in full into the injection point (backup + merge) — there is no extra "read every session" line: weak commands like that are not reliably executed by models and must not be the implementation of forced injection.
+强制注入即把 `references/injection-core.md` 核心全文写入注入点（先备份、合并）——**没有**额外的「每会话必读」行：这类弱指令模型不可靠执行，不得作为强制注入的实现方式。
 
-**The install-time injection-mode choice is bilingual (中 + EN)**: present this "choose the injection mode" asking (option list and recommendation) in **both Chinese and English** — the question is a shared install step, so users / models in different languages can each pick the answer they really want. **This is the ONLY bilingual install-time question.** After install, daily interaction always follows the user's preferred language (per `preferences.md`) — no bilingual duplicate logging; this skill sets no "language bridge" clause.
+**安装期「注入模式选择提问」用双语**：这是安装共用的一步，本「先选注入模式」的提问（含选项单与推荐）以**中 + 英双语呈现**，让不同语言用户 / 模型都能看懂并各选其**自己想要的真正答案**——
 
-### 3.1 Steps
+**请选注入模式（Please choose the injection mode）：**
+1. **按需注入（默认 / On-demand, default）**——只写精简纪律并回指本 Skill，上下文开销最低（writes a compact discipline block and points back to this Skill; lowest context cost）。
+2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 2-3K token/会话（writes the core full-text into the injection point; the workflow is present every session; ~2-3K token/session）。
 
-1. **Backup first**: if the target file exists, copy it to `<file>.bak-<date>` before any change. Never edit an existing rule file in place without a backup.
-2. **Merge, never overwrite**: preserve every existing line of the user's rules. Append the condensed operating discipline below under a clearly separated section — **on-demand mode** uses the lean block; **forced mode** writes the full core from `references/injection-core.md` instead. On-demand lean block:
+**推荐 / Recommended**：默认按需注入（On-demand by default）；要求工作流每会话无条件在场时才用强制注入（choose force injection only when you need it present in every session）。
 
-```markdown
-## Agent workflow discipline (shisan-xinuo-workflow)
+**仅此一个安装期提问双语**：安装完成后的日常交互一律用用户偏好语言（`memory/preferences.md` 择定），不做双语重复记录（本 Skill 不设"语言桥"条款）。
 
-1. Task triage L1/L2/L3; L3 (secrets / permissions / data deletion / migration /
-   external publishing / architecture choice) requires asking the user first.
-2. Two modes: normal (ask on consequential decisions — incl. when understanding is
-   not fully certain) and goal mode
-   (keywords 目标：/ 目标模式 / 无人值守 / goal mode / unattended — autonomous per
-   plan, but secrets & destructive ops pause and wait).
-3. Restate the task (goal / boundaries / acceptance) before acting; write 3-5
-   verifiable acceptance criteria up front.
-4. Workspace memory: scan project root `memory/` (state / experience / preferences /
-   task-log) at session start, create it if missing; update at session end.
-   Full archive details in the skill's references.
-5. Never fake completion — label unfinished work explicitly.
-6. Quality gates: review-diff, run the project's test baseline, ship docs with code.
-7. Rollback point (commit/stash or snapshot) BEFORE major changes or destructive ops.
-8. Keep a task record per session; read the experience log before troubleshooting.
-9. Full rules: see the shisan-xinuo-workflow skill (references/rules.md).
-```
+### 3.1 步骤
 
-3. **Point back to the skill**: the rule file should reference where the full workflow lives (this skill's folder or repo URL), so details stay progressive-disclosure-friendly.
-4. **Verify**: after writing, restate the active essentials (triage, dual modes, injection mode, secrets red line, rollback rule, record discipline) in one line to the user and confirm no existing content was lost.
-
-### 3.2 Session hooks (optional, platform-supported only)
-
-When the platform supports session hooks (e.g. Claude Code `SessionStart`/`SessionEnd` via `.claude/settings.json` or `hooks.json`), the discipline can load **automatically** — the strongest form of "forced" mode.
-
-- **Effect**: on every new session, the start hook prints a discipline banner (triage / dual modes / secrets red line / rollback / record discipline) and points to the rule file + memory file, so the agent re-anchors before any work; the end hook re-anchors closure (verification / task record / memory sync / secrets red line / rollback / explicit-safe cleanup) before the session closes.
-- **How**: templates live in `templates/hooks/` — `session-start.example.sh` (banner script) + `session-end.example.sh` (wrap-up script) + `hooks.example.json` (Claude Code config: `SessionStart`/`SessionEnd` → run the scripts). Copy and adapt to the platform.
-- **Contract**: the hook is **optional and platform-gated** — a config example, not a bundled runtime; the skill stays zero-script. Skip on platforms without hooks.
-## 4. Asking-tool downgrade chain
-
-1. Native asking tool (`request_user_input` / `AskUserQuestion` / `ask_user` / platform question tool).
-2. Structured text protocol (below), then **end the turn and wait** — this works on every platform and is the universal fallback.
-
-Use asking on: direction, ambiguity, risk (permissions / secrets / destructive ops / unclear requirements / architecture & stack choice / scope expansion / conflicting proposals / complex tasks), and **understanding not fully certain** (in normal mode too — asking more clearly beats asking less). Do not ask for L1 routine trivia, but ask when understanding is uncertain.
-
-## 5. Structured asking protocol (text fallback)
-
-Write the following four sections, then end the turn. Keep it tight.
+1. **先备份**：目标文件若已存在，先复制为 `<文件名>.bak-<日期>` 再动。绝不直接原地改既有规则文件。
+2. **合并而非覆盖**：完整保留用户已有的每一行规则，把规则区块追加到清晰分隔的位置——**按需注入**用下面的精简纪律块；**强制注入**用 `references/injection-core.md` 核心全文。按需注入精简块：
 
 ```markdown
-【需要确认 / Needs confirmation】
-<one line on what must be decided>
+## Agent 工作流纪律（shisan-xinuo-workflow）
 
-【我的理解 / My understanding】
-<restatement of goal, boundaries, acceptance>
-
-【选项对比 / Options】
-1. <option A> — 优点 <pros> / 缺点 <cons> / 风险 <risks>
-2. <option B> — 优点 <pros> / 缺点 <cons> / 风险 <risks>
-
-【推荐 / Recommendation】
-<option X>，理由：<why；含后果与代价>
-
-请确认或修正后我再继续。 / Please confirm or correct before I continue.
+1. 任务分级 L1/L2/L3；L3（密钥 / 权限 / 数据删除 / 迁移 / 对外发布 /
+   架构选型）必须先问用户。
+2. 双模式：普通模式（关键决策必问）；目标模式（关键词 目标：/ 目标模式 /
+   无人值守 / goal mode / unattended —— 按计划自主执行，但密钥与破坏性
+   操作暂停等待）。
+3. 开工先复述任务（目标 / 边界 / 验收），前置写 3-5 条可验证验收标准。
+4. 绝不假实现——未完成内容显式标注。
+5. 质量门禁：审查 diff、跑项目测试基线、文档与代码同批提交。
+6. 重大修改 / 破坏性操作前必建回滚点（commit/stash 或快照）。
+7. 每会话维护任务记录；排查前先读经验库。
+8. 完整规则见 shisan-xinuo-workflow Skill（references/rules.md）。
 ```
 
-## 6. Generated rule file size
+3. **回指本 Skill**：规则文件中注明完整工作流的所在位置（本 Skill 目录或仓库 URL），让细节保持渐进式披露。
+4. **校验**：写完后用一句话向用户复述生效要点（分级、双模式、注入模式、密钥红线、回滚规则、留档纪律），并确认未丢失既有内容。
 
-**On-demand**: keep the generated rule file under ~30 lines (the lean block above). **Forced injection (hard-load)**: write the full core from `references/injection-core.md` (~55 lines, a fixed ~2-3K tokens per session — a small fixed cost that buys the workflow being unconditionally present, no longer depending on the model voluntarily loading the skill). The full 47 rules and workflow details stay in this skill's `references/` and load on demand. If the platform's rule mechanism only accepts a single short file, the lean block is sufficient.
+### 3.2 会话钩子（可选，仅平台支持时）
+
+平台支持会话钩子时（如 Claude Code 的 `SessionStart`/`SessionEnd`，经 `.claude/settings.json` 或 `hooks.json`），可让纪律**自动**加载，而不只依赖规则文件文本——这是「强制」模式的最强形态。
+
+- **效果**：每个新会话启动时，start 钩子打印纪律横幅（分级 / 双模式 / 密钥红线 / 回滚 / 留档纪律），并指向规则文件与记忆文件，让 Agent 在任何工作前重新锚定；会话结束前，end 钩子重新锚定收尾事项（最终验证 / 任务记录 / 记忆同步 / 密钥红线 / 回滚 / 显式安全清理）。
+- **方式**：模板位于 `templates/hooks/`——`session-start.example.sh`（横幅脚本）+ `session-end.example.sh`（收尾脚本）+ `hooks.example.json`（Claude Code 配置：`SessionStart`/`SessionEnd` → 运行脚本）。复制并按平台适配。
+- **契约**：钩子**可选且受平台门控**——它是配置示例，不是捆绑运行时；本 Skill 保持零脚本。无 hooks 的平台跳过。
+## 4. 提问工具降级链
+
+1. 平台原生提问工具（`request_user_input` / `AskUserQuestion` / `ask_user` / 平台提问工具）。
+2. 结构化文本协议（见下），然后**结束回合等待答复**——所有平台通用兜底。
+
+适用场景：方向、歧义、风险（权限 / 密钥 / 破坏性操作 / 需求不明 / 架构与技术选型 / 范围扩大 / 方案分歧 / 复杂任务）。L1 常规任务不问。
+
+## 5. 结构化提问协议（文本兜底）
+
+依次写出以下四节，然后结束回合。保持紧凑。
+
+```markdown
+【需要确认】
+<一句话说明必须决定什么>
+
+【我的理解】
+<目标 / 边界 / 验收口径的复述>
+
+【选项对比】
+1. <方案 A> — 优点 <…> / 缺点 <…> / 风险 <…>
+2. <方案 B> — 优点 <…> / 缺点 <…> / 风险 <…>
+
+【推荐】
+<方案 X>，理由：<…；含后果与代价>
+
+请确认或修正后我再继续。
+```
+
+## 6. 生成规则文件的体量
+
+**按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
