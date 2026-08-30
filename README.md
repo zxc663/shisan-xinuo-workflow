@@ -7,9 +7,9 @@
 
 > **作者的话 · A word from the author**
 >
-> 本仓库实质上就是一个**规范工程化的大模型 Agent 提示词注入标范与标本合集**——你可以直接拿本 Skill 的内容当**工作流样本**来打磨你自己的 Agent 工程规范。版本路线：预计 **v2.0.5 之后进入稳定的「细则类小更新」**，不再做破坏性的大版本改动；但**不做绝对保证**（可能仍有意外情况）。感谢加星 ⭐。
+> 本仓库实质上就是一个**规范工程化的大模型 Agent 提示词注入标范与标本合集**——你可以直接拿本 Skill 的内容当**工作流样本**来打磨你自己的 Agent 工程规范。版本路线：**v2.0.5 之后进入稳定的「细则类小更新」**（触达问题已明确为**提示词边界问题**），不再做破坏性的大版本改动；但**不做绝对保证**（可能仍有意外情况）。**一个必须直面的诚实边界**：哪怕在触达上做了重重努力（注入三层 / 项目承载 / 委托纪律包），这终究是**提示词范畴**——抵不上平台级「让 Agent 新会话自动加载」这样一句机制保证。**验收判据（可执行）**：新会话常驻不可用，或自检彩蛋 `zxc663` 未触发 → 即证明本 Skill 需要**用户主动触发或配置触发器**（平台 hooks / SessionStart），别把「提示词在场」误当「机制在场」。感谢加星 ⭐。
 >
-> *At its core this repo is a specimen collection of disciplined, engineering-grade prompt-injection standards for LLM agents — use it as a sample workflow to polish your own. After v2.0.5 expect stable, fine-grained updates; no breaking releases planned (but no hard guarantee). Thanks for the star.*
+> *At its core this repo is a specimen collection of disciplined, engineering-grade prompt-injection standards for LLM agents — use it as a sample workflow to polish your own. After v2.0.5 expect stable, fine-grained updates; no breaking releases planned (but no hard guarantee). One honest boundary: however much injection/carrier/delegation effort goes in, this is still prompt-domain — it cannot beat a platform guarantee like "auto-load every new session". Acceptance check: if a fresh session is never aware of it, or the `zxc663` self-check does not fire, this Skill needs explicit triggering or a configured trigger (hooks / SessionStart) — do not mistake "present as prompt" for "present as mechanism". Thanks for the star.*
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
