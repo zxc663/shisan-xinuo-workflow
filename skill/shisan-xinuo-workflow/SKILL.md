@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「三级跑道（
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 2.0.2
+  version: 2.0.3
   tags:
     - agent-skill
     - workflow-governance
@@ -120,8 +120,9 @@ metadata:
 
 开始任务前，先把本工作流硬加载到当前平台：
 
+0. **安装名前缀自检**：检测安装目录名——无 `agent-` 前缀 → 一行提示「可运行 `scripts/install-skill.ps1` 一键带前缀重装（自适配到目标平台技能目录）；不愿改名则靠 description 触发，按需注入平台不强制」；带 `agent-` 前缀 → 静默通过。前缀意义：技能列表按字母序置顶，便于按需注入用户发现（README FAQ）。
 1. **检测平台**：按 `references/platform-adaptation.md` 的特征清单判断（目录标志、环境变量、工具可用性）。
-2. **定位该平台真实注入点**：按 `platform-adaptation.md` 注入点表——Trae：`~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入，无需应用内启用）或项目 `.trae/rules/project_rules.md`；Claude Code：`~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex：`AGENTS.md`；Cursor：`.cursor/rules/*.mdc`；Windsurf：`.windsurfrules`；WorkBuddy：agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）。只写进应用从不读取的工作区文件是**无效的**。
+2. **定位该平台真实注入点**：按 `platform-adaptation.md` 注入点表——Trae：`~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入，无需应用内启用）或项目 `.trae/rules/project_rules.md`；Claude Code：`~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex：`AGENTS.md`；Cursor：`.cursor/rules/*.mdc`；Windsurf：`.windsurfrules`；WorkBuddy：agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）。只写进应用从不读取的工作区文件是**无效的**。**硬注入承载面 = 规则文件 + 平台配置文件（hooks / 全局设置），见 platform-adaptation.md 第 2.1 节**——先实测可用性再部署。
 3. **询问注入模式**（写规则文件前，用 §4 降级链提问，让用户选择）：
    - **按需注入（默认）**：注入点只写精简纪律并回指本 Skill（约 9 行），完整 Skill 由平台按触发激活——上下文开销最低。
    - **强制注入（硬加载）**：把 `references/injection-core.md` 的核心全文写入该平台注入点（**先备份既有文件、合并不覆盖**）——工作流每会话无条件在场，不依赖模型自觉加载本 Skill（每会话固定约 2-3K token）。**注意：不要用「每个会话开工前必须完整读取本 Skill 的 SKILL.md」这类弱指令实现强制注入——模型不会可靠执行，必须直接写入核心全文。**
@@ -296,7 +297,7 @@ metadata:
 ## 11. 会话状态面（会话末一致性报告——给用户复核；不是「合规 / 有效」自证）
 
 ```
-注入版本: <2.0.2>
+注入版本: <2.0.3>
 细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <会话产物> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
 上下文预算: ~X tokens（阈值 150-200K → 压缩 + 重载序）
 版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py；**并核对平台解析到的 Base directory**）

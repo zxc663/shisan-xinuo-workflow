@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.0.2-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.0.3-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **开源分发入口 · Distribution mirrors**（跨平台工程治理元 Skill，MIT）
 >
@@ -127,7 +127,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：`npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow` → 立即**重命名为 `agent-shisan-xinuo-workflow`**（agent- 前缀=按字母序在技能列表最前——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，最新版随下次发布重建）。
+1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，最新版随下次发布重建）。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -137,7 +137,8 @@
 
 | 平台 | 位置 |
 |---|---|
-| skills.sh | `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（唯一版：中文主交付物；**安装后加 agent- 前缀**） |
+| 任意（一键） | git 用户：`powershell -File scripts/install-skill.ps1`（自动带 `agent-` 前缀、自适配目标平台技能目录；可选 `-Link`/`-Force`/`-HardInject`，`-Dry` 干跑） |
+| skills.sh | `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（唯一版：中文主交付物；**安装名为 `agent-shisan-xinuo-workflow`**） |
 | Claude Code | `~/.claude/skills/agent-shisan-xinuo-workflow/` |
 | Codex / 通用 | 克隆本仓，技能发现指向 `skill/shisan-xinuo-workflow`；或解压 `dist/` zip |
 | Trae / Cursor 等 | 按平台技能目录约定放置；Trae 需在应用设置启用项目规则 |
@@ -150,7 +151,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.0.2）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.0.3）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -172,7 +173,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：v2.0.2 源码与口径批次已推送 GitHub/Gitee 主线（2026-08-31）；**发行面**（npm / GitHub Release / Gitee Release / ClawHub / dist）仍为 v1.19.1，v2.0.x 发行另行批准后执行。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：v2.0.3 源码与口径批次（含 install-skill.ps1 前缀自适配、平台配置文件层）已推送 GitHub/Gitee 主线；**发行面**（npm / GitHub Release / Gitee Release / ClawHub / dist）仍为 v1.19.1，v2.0.3 发行另行批准后执行。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -194,7 +195,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 常见问题 · FAQ
 
-- **为什么带 `agent-` 前缀？** 按需注入的 Agent 不自动执行本 Skill；用户在技能列表按字母序找，agent- 前缀让它排在第一位。
+- **为什么带 `agent-` 前缀？** 按需注入的 Agent 不自动执行本 Skill；用户在技能列表按字母序找，`agent-` 前缀让它排在第一位。**官方已一键适配**：仓库 `scripts/install-skill.ps1` 安装即自动带前缀（`--skill agent-...` 同效），无需手动重命名。
 - **会覆盖我已有的规则吗？** 不会——安装/更新走「备份→合并（syncer 三路合并）→校验」，**你的 `user-notes/` 永不碰**；被覆盖文件可从 `.bak-<ts>` 或 `user-notes/` 找回。
 - **`zxc663` 会做什么？** 仅彩蛋自检回复（注入方式/应用轮数/源库 vs 副本版本）；零操作零网络。
 - **细则为什么曾经 0 命中？** 细则层原为「可选诊断」；v1.13 起报错必经+预读+取证，转有命中，已修复。
@@ -211,6 +212,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v2.0.3（2026-08-31）**：**前缀自适配 + 平台配置文件层（执行批次，未发布）**——①新增 `scripts/install-skill.ps1` 一键安装（自动带 `agent-` 前缀、幂等、`-Dry` 干跑 / `-Link` 软链 / `-Force` 备份覆盖 / `-HardInject` 注入配置层，输出「Base directory 判据」验收提示）；②SKILL §3 新增第 0 步「安装名前缀自检」（无前缀一行提示，带前缀静默）；③README 安装话术改「一条命令自动带前缀」，FAQ 前缀条目改述为官方已适配；④platform-adaptation 新增 §2.1 平台配置文件层（Claude Code settings.json hooks / Codex config.toml / Cursor 应用 Rules / Trae 应用设置 / WorkBuddy settings.json+BOOTSTRAP / ZCode AGENTS.md，每平台经实测如实标注——本机 bash 不可用故 hooks 降级、Codex/WorkBuddy 无 hooks 槽位）；⑤SKILL §3 注入点补「硬注入承载面 = 规则文件 + 平台配置文件」；templates/hooks/ 新增多平台说明 README；⑥本机配置层全激活（~/.codex AGENTS.md 由 v1.19.1 重写为 v2.0.3、部署副本 ×2 syncer 同步、注入副本 ×4 重部署，均先备份 `.bak-20260831-pre-v203`）。verify 4/4 PASS。
 - **v2.0.2（2026-08-31）**：**审查批次（未发布）**——①审计修复三级同步链断裂：v2.0.1 机制「决策三层分界」（SKILL §5.2）未同步 injection-core.md 判级速查块与三份平台注入副本；强制完整读取「三类例外」仅 workflows.md 落地，skill-usage.md §4 / rules.md §26 仍为 2 类——已补齐并重部署注入副本；②口径清理：README 版本历史补 v2.0.1/v2.0.2 行、仓库结构行（package.json 2.0.2 / details 254 条 14 类 / 速查表 28 行）、reference-sources / scripts-README / EVIDENCE §九（重测注入核心字符数）同步、发布面注记（v2.0.x 未对外发布，v1.19.1 为各渠道最新）；③细节：details §13 标题补 #239 归属、SKILL §11 状态面模板版本号。verify 4/4 PASS；源码已推送 GitHub/Gitee 主线（发行面另行批准）。
 - **v2.0.1（2026-08-31）**：**个人工作台版差异化并入（用户拍板四项全并；未发布）**——details §14 回流 15 条（#240-254 MCP/视觉/前端测试）+ 机制四项（L1 跳步豁免 / NEVER 三读自检 / 子代理规则 / 决策三层分界）+ 小增量四项（知识点五条细则 / 强制完整读取三类例外 / 顾问措辞 / 默认中文）。
 - **v2.0.0（2026-08-30）**：**单版本化重构**——①仓库只维护一份中文版 Skill（`skill/`，frontmatter name=`shisan-xinuo-workflow`），删除英文版与双语版（git 历史可追溯）；②中文版吸收三版全部强项并补齐全部疏漏：三级跑道（L1/L2-S/L2-F + 三问分流）、对接真相清单、§12 速查表（28 行，修复 A4/A5 重复 ID）、§11 会话状态面、§3.1 自更新协议、§4.1 复述增强 RE、新项目 bootstrap、注入核心三级跑道对齐、红线↔必问映射表；「增补节 v1.12-1.19」全部并轨进正文后删除；③门禁修复：verify-release 改为**内容锚点校验**（P1-2，终结「版本对、内容降级仍 5/5 PASS」）；④syncer 修复四项：首次安装必崩（P0-2）、备份外置 `skill-backups/`（WorkBuddy 实测：备份污染平台扫描路径致加载旧版）、死代码清理、dry-run 语义；⑤口径全量同步（README 双语保留 / 项目信息 / CHANGELOG / EVIDENCE / package.json 2.0.0 / About GitHub+Gitee）；⑥细节：details 编号校正 204-238 + 新增 #239（平台加载目录判据，跨平台晋升）、template 补 experience-mustread、新增 `.github/workflows/verify-release.yml`；⑦三级同步链：平台注入副本（~/.zcode/AGENTS.md、~/.trae-cn、~/.workbuddy/AGENTS.md）与部署副本同步至 v2.0.0。

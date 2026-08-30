@@ -1,6 +1,27 @@
-# 维护脚本使用文档（verify-release.ps1 + syncer.py）
+# 维护脚本使用文档（install-skill.ps1 + verify-release.ps1 + syncer.py）
 
-仓库维护工具：**发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器**。二者都是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
+仓库维护工具：**一键安装（agent- 前缀自适配）** + **发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器**。install-skill.ps1 面向用户安装（git 分发用）；后二者是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
+
+## 〇、install-skill.ps1（一键安装 · agent- 前缀自适配）
+
+从仓库 `skill/` 复制（或 `-Link` 软链）到目标平台技能目录，安装名统一为 `agent-shisan-xinuo-workflow`（字母序置顶便于发现）。幂等、可干跑；已存在时提示，`-Force` 先备份到 `<技能目录>\skill-backups\`（平台扫描路径之外）再覆盖。
+
+```powershell
+# 干跑（只列动作不写盘）
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Dry
+
+# 自动探测平台并安装（默认文本复制）
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1
+
+# 指定平台 + 软链 + 顺手硬注入配置层
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Platform workbuddy -Link -HardInject
+
+# 指定目标目录（如临时目录实测）/ 已存在时强制重装
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Target <绝对路径>
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Force
+```
+
+要点：`.ps1` 内不做任何凭据处理与网络访问；`-HardInject` 按 platform-adaptation 注入点表先备份再合并 injection-core 全文；验收提示输出「平台解析到的 Base directory 判据」（v2.0 判据）。
 
 ## 一、verify-release.ps1（发布门禁）
 
@@ -40,12 +61,12 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ### 预期当前输出
 
-v2.0.2 单版本配置下当前应全 PASS：
+v2.0.3 单版本配置下当前应全 PASS：
 
 ```
 [PASS] A 内容锚点(主交付物全量特性)   (OK)
 [PASS] B hooks 三层齐全(主交付物)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.0.2 ; package.json version=2.0.2)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.0.3 ; package.json version=2.0.3)
 [PASS] D 泄漏红线(发布物)   (0 泄漏)
 ```
 

@@ -1,7 +1,8 @@
-# CHANGELOG · 版本摘要（v1.9 → v2.0.2）
+# CHANGELOG · 版本摘要（v1.9 → v2.0.3）
 
 > 简史制（每版关键意图一行；完整逻辑见 git log 与 memory/task-log）。时间线 2026-08-26 → 2026-08-31。
 
+- **v2.0.3**（2026-08-31）：**前缀自适配 + 平台配置文件层（执行批次，未发布）**——①新增 `scripts/install-skill.ps1` 一键安装（agent- 前缀自适配 / 幂等 / -Dry·-Link·-Force·-HardInject / Base directory 验收提示）；②SKILL §3 新增第 0 步「安装名前缀自检」（无前缀一行提示）；③README 安装话术与 FAQ 前缀条目改述「一条命令自动带前缀」；④platform-adaptation 新增 §2.1 平台配置文件层（Claude Code settings.json hooks / Codex config.toml / Cursor 应用 Rules / Trae 应用设置 / WorkBuddy settings.json+BOOTSTRAP / ZCode AGENTS.md，逐项实测：本机 bash 不可用（WSL 无发行版）hooks 降级、Codex/WorkBuddy 无 hooks 槽位、Trae/ZCode 已注入）；⑤SKILL §3 注入点补「硬注入承载面=规则文件+平台配置文件」；templates/hooks/ 新增多平台说明；⑥本机配置层全激活（~/.codex AGENTS.md 重写 v2.0.3、部署副本 ×2 syncer 同步、注入副本 ×4 重部署，均先备份 `.bak-20260831-pre-v203`）。verify 4/4 PASS。
 - **v2.0.2**（2026-08-31）：**审查批次（未发布）**——①同步链断裂修复：v2.0.1 机制「决策三层分界」在 injection-core.md 与三份平台注入副本缺失（SKILL §5.2 三级一致判据被违反）；「强制完整读取三类例外」仅 workflows.md 落地，skill-usage §4（仍标「2 类例外」）/rules §26 未同步——均已补齐并重部署注入副本（先备份）。②口径清理：README 版本历史补 v2.0.1/v2.0.2 行、仓库结构行（package.json 2.0.2 / details 254 条 14 类 / 速查表 28 行）；docs/reference-sources、scripts/README 示例、EVIDENCE §九（重测注入核心字符数）同步。③发布面注记：v2.0.x 发行面未做，各渠道最新仍 v1.19.1。verify 4/4 PASS；源码已推送 GitHub/Gitee 主线（2026-08-31，对外发行另行批准）。
 - **v2.0.1**（2026-08-31）：**个人工作台版差异化并入（用户拍板四项全并）**——①details 新增 §14「个人工作台版回流」15 条（#240-254：MCP 工具链 5 条 / 视觉·生成 5 条 / 前端测试 5 条，脱敏后通用化）；②机制增量四项：L1 快速通道跳步豁免（整体标注一次即豁免 2-9 步逐步理由）、NEVER 清单三读自检（开工/提交/L3 前三读逐条核对）、子代理使用规则（自包含片段任务可交子代理；按次计费生成 L2 调前确认、L3 不执行）、决策三层分界（L3 重大 ≠ 一般关键 ≠ 常规执行，定提问边界与自主度）；③小增量四项：知识点提炼五条细则（1-3 句/生活化类比/可指导行动/宁少勿多 3-5 条/双写）、技能强制完整读取三类例外、状态澄清「专属战略顾问」措辞、语言表达默认中文（preferences 可覆盖）；同步 injection-core / workflows / README / 项目信息。
 
