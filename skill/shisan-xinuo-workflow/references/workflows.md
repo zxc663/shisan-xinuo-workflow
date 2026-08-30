@@ -239,6 +239,14 @@ Every task block ends with one line: `GATE: {v=<scope>, cmd=<re-runnable command
 - **Safety:** secret scan before every commit (CI mandatory); leak emergency: revoke/rotate → map exposure → record review.
 - **Periodic:** monthly dependency maintenance / workflow retrospective / memory upkeep; quarterly skill audit & doc reconciliation.
 
+
+
+### Must-read experience tier (promotion rule)
+Same pit **≥3 times in a project** (or high rework cost) → promote into `memory/experience-mustread.md` TOP list (one-line symptom + one-line countermeasure, hard cap one screen; one copy only — rows cross-reference experience.md entry numbers, no duplicated bodies). Demote on 2 clean periods without a hit. Read BEFORE the symptom search; counts in the status-surface evidence line.
+
+### Context census (every ~5 task blocks or 40-60% token budget)
+List the biggest context consumers (dump outputs, remote reports, re-pasted archives) → decide discard/archive → one line to the status surface. Big-output rule: >~40 lines write to a file, keep summary + exit code only. Fuzzy-memory rule: refetch from task record/contract/source before proceeding.
+
 ## Notes on tools & skills strategy (generic)
 
 ### Load skills on demand
