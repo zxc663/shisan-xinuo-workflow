@@ -1,58 +1,56 @@
-# Skill Usage Module: Capability Discovery / Load-Decision Routing / Progressive vs. Full Read Classification
+# Skill 使用模块：能力发现 / 加载决策路由 / 渐进与完整读取分类（中文）
 
-> Load this file when a task involves choosing a Skill, front-end / design work, how to obtain a Skill when none is local, or weak-model / context-constrained handling. It defines the load discipline for **already-registered** Skills — creation / registration themselves are meta-capability, handled elsewhere.
-> Cross-references: `rules.md` §26/§28/§29/§38, `security.md` install vetting, `platform-adaptation.md` §1/§2.
+> 任务涉及 Skill 选用、前端 / 设计类任务、本地无 Skill 时如何获取、弱模型 / 上下文受限处理时加载本文件。
+> 与 `rules.md` §26/§28/§29/§38、`security.md` 安装校验、`platform-adaptation.md` §1/§2 交叉引用。
 
-## 0. Where Skill capability comes from & how it is discovered (meta-capability)
+## 0. Skill 能力来源与发现机制（元能力）
 
-- **An agent can only use a Skill the platform has registered into its "available skills list"** — every session the platform injects all discoverable Skills' `name + one-line description` (in this session, the `available_skills` list in the system reminder). **A Skill that is not registered / injected cannot be triggered by the agent, even if its file exists on disk.**
-- **Three-layer load model** (how platforms naturally work):
-  - **L0 registry list** (name + description, injected in full every session, resident) — for **discovery & matching decisions**; occupies no body context unless triggered.
-  - **L1 main file** (`SKILL.md`, read on demand when triggered).
-  - **L2 `references/`** (read progressively on demand).
-- **Trigger decision chain**: task → scan the L0 list → read several descriptions to judge the hit → trigger the Skill tool by name → read L1 → progressively read L2. **Description quality drives match accuracy and false-trigger cost** (concise + trigger words → accurate hit, low cost; otherwise you misjudge or end up dumping the whole body). **Trigger a Skill only with the exact `name` in the registry list** — letter prefix + plugin form use the full `plugin:skill` name; a Skill name from testing / training memory is **never guessed or invented** — only the exact names present in the injected list.
-- **Agent (sub-agent) registration dimension**: whether you can use a Skill **depends on whether the executing agent itself has a Skill tool registered** — unrelated to whether the file exists on disk. Empirically: `general_purpose_task` / `Explore` / `Plan` carry a Skill tool, while `browser_use` does **not** (only the browser API + read-only tools). Two disciplines: ① when a delegated task falls within a Skill's capability, **first verify that sub-agent has a Skill tool registered**; if not, switch to an agent type that does, or **run it in the main session** — never delegate Skill-dependent work to an agent without the Skill tool; ② after delegating, the sub-agent itself follows this module's load order (scan the L0/L1/L2 it received) — the main session does not re-load the same Skill on top of the sub-agent's (saves tokens). This is a general discipline, recorded in `rules.md` §28.
-- **Platform differences** (per `platform-adaptation.md` §1/§2): Trae injects the available list via system reminder and reads the body on demand; Claude Code requires a Skill to be registered under `.claude/skills/` before it can be parsed (**file present ≠ usable; depends on platform parsing**); Cursor / Windsurf etc. follow their platform mechanism. The load discipline must adapt to the platform being argued for and to whether the Skill is "registered & discoverable".
-- **Registration vs. use separation**: creating / registering / updating a Skill is **meta-capability** (skill-creator on Trae, lark-skill-maker for Lark, the six-step flow in `rules.md` §38 for rules-type); this module only governs the **load discipline for already-registered Skills** — the two are not mixed.
-- **Weak models / oversized skill libraries**: even with only descriptions injected, dozens of Skills' name + description resident in full can break a weak model's context → for weak models, shrink the discoverable list (platform-side filter / keep only the core) and rely on precise descriptions to avoid false triggers.
+- **Agent 能用的 Skill 能力，前提是被平台注册进「可用 Skill 清单」**——每会话注入所有可发现 Skill 的 `name + 一句话 description`（即会话上下文的 available skills 列表）。**未被注册 / 注入的 Skill，文件即使存在也无法被 Agent 触发**。
+- **三层加载模型**（平台天然如此）：
+  - **L0 注册清单**（name+description，平台全量注入、每会话常驻）——用于**发现与匹配决策**，不触发即不占正文。
+  - **L1 主文件**（`SKILL.md`，触发后按需读取）。
+  - **L2 `references/`**（按需渐进读取）。
+- **触发决策链路**：任务 → 扫 L0 清单 → 读多条 description 判定命中 → Skill 工具按 name 触发 → 读 L1 → 渐进 L2。**description 质量决定匹配准度与误触发成本**（描述精炼 + 含触发词 → 命中准、成本低；反之易误判或被迫整读正文）。**触发 Skill 仅能用注册清单里的「确切 name」**——字母前缀 + 插件态用 `plugin:skill` 全名；测试 / 训练记忆里的 Skill 名一律**不准猜、不准拼**，只能用注入清单中的实名。
+- **Agent（子代理）注册维度**：能否用 Skill **取决于执行体自身是否注册了 Skill 工具**，与文件是否存在于磁盘无关。纪律两条：①**委托任务是 Skill 能力范围的，先核对该子代理已注册 Skill 工具**；未注册则改用带 Skill 的 agent 类型或**留在主会话执行**，不把 Skill 依赖任务委托给无 Skill 的 agent（如 `browser_use` 这类无 Skill 工具的 agent）；②委托后子代理自身也按本模块的加载顺序（扫它收到的 L0/L1/L2）执行，主会话不在子代理之外重复装载同一 Skill（省 token）。此为通用纪律，记入 `rules.md` §28。
+- **平台差异**（承 `platform-adaptation.md` §1/§2）：Trae 经上下文注入可用清单、正文按需；Claude Code 需要 Skill 先注册到 `.claude/skills/` 才能被解析（**文件在 ≠ 能用，依赖平台解析**）；Cursor / Windsurf 等按平台机制。加载纪律须按所论证平台与「是否已注册可发现」适配。
+- **注册 vs 使用分离**：创建 / 注册 / 更新 Skill 属**元能力**（规则类走 `rules.md` §38 六步流程）；本模块只管**「已注册 Skill 的使用加载纪律」**，两者不混。
+- **弱模型 / 技能库过大的处理**：即便只注入 description，几十个 Skill 的 name+description 全量常驻也可能冲破弱模型上下文 → 弱模型下调小可发现清单（平台层过滤 / 只保核心）、依赖精准 description 避免误触发。
 
-## 1. When to use / when NOT to use a Skill
+## 1. 何时用 / 何时不用 Skill
 
-- **Use**: when it raises professional capability and the task falls within a Skill's scope (writing / analysis / front-end / payments / documents / data, etc.).
-- **NOT use**: **weak models / context-constrained cases** — the Skill's full text blows through the context limit; load it in a lean form or not at all, keeping only the master-sequence core (triage / red lines / must-ask). For users unused to Skills or who don't understand them yet, first show that Skills can raise an LLM's professional capability, but **a weak model may not need Skills** — forcing a load blows the context; judge the trade-off per §5.
+- **用**：能提升专业能力、任务属 Skill 能力范围（写作 / 分析 / 前端 / 支付 / 文档 / 数据等）。
+- **不用**：**弱模型 / 上下文受限时**——Skill 全文会冲破上下文限制，改为精简加载或不用，只保留主流程核心（判级 / 红线 / 必问）；不习惯或尚未理解 Skill 使用的用户，先引导其认识 Skill 能提升大模型专业能力，但**弱模型可能不需要 Skill**——强行加载会冲破上下文，需按 §5 判定取舍。
 
-## 2. Local Skills first, progressive loading
+## 2. 本地 Skill 优先，渐进式加载使用
 
-- A local / workspace Skill is available → **load it progressively** (main SKILL.md first → references on demand), **don't re-hand-roll**, and don't re-import an already-registered duplicate.
+- 有本地 / 工作区 Skill → **优先按渐进式加载使用**（先主 SKILL.md → references 按需），**不重复自研**。
 
-## 3. Getting a Skill when none is local
+## 3. 本地无 Skill 时的获取流程
 
-1. **Ask the user first** (per the asking-tool downgrade in `platform-adaptation.md` §4) one of two: whether to look for an **authoritative Skill source** to install, or whether this machine has **another Skill-install directory** to reuse.
-2. **Authoritative-source judgment**: first-hand sources (official repos / registries / the skills ecosystem) > empirical sources (stars / maintenance / adoption) > community reputation; any install must pass the **mandatory open-source install vetting** in `security.md` (§1.5, 6 steps).
-3. **Reuse another local directory**: filter by capability / description first, **read progressively only after confirming it is registered & discoverable on the platform** — don't re-import duplicates; if not registered, register it per the platform mechanism.
+1. **先问用户**（`platform-adaptation.md` 第 4 节提问降级链）二选一：是否需要寻找**权威 Skill 源**安装 / 本机是否有**其他 Skill 安装目录**可复用。
+2. **权威源判定**：一手源（官方仓库 / registry / skills 生态）> 实证源（stars / 维护 / 采用）> 社区口碑；**安装必走 `security.md` 开源安装强制校验流程（1.5 节 6 步）**。
+3. **本机其他目录复用**：先按能力 / 描述筛选，**确认已在平台注册可发现后再渐进式读取**，不重复引入；未注册则按平台机制登记。
 
-## 4. Progressive read vs. forced full read (classification) ← core change
+## 4. 渐进式读取 vs 强制完整读取（分类标准）← 核心变更点
 
-- **Default: progressive read** — read the Skill's main file (SKILL.md / SKILL), read `references/` on demand at the current step; never preload all references; the context budget is not wasted.
-- **Force full read (not progressive) — 3 exceptions**:
-  1. **Core governance / workflow Skills** — the process gate cannot be skipped (Shisan Xinuo Agent Workflow itself is one such class).
-  2. **Front-end / UI / design Skills always force a full read** (explicitly mandated) — **unconditional: not reduced even when context is ample or the user explicitly sets no budget limit**; design work depends on the complete spec / constraints, and progressive reading tends to miss component specs, design tokens, and usability / accessibility rules, producing non-compliant output.
-     - *Post-load check*: when the user names a skill category ("aesthetics + front-end design"), load at least 2-3 items from that category's registry — never stop at 1 (observed failure 2026-08-30: user asked for aesthetic/front-end skills, only anti-ui-slop was loaded).
-  3. **The user explicitly allows no budget limit**: read in full directly (if it is a front-end class, it is already an unconditional full read — see #2). "Ample context" is the natural default state and is not a front-end waiver.
-- **No full read needed**: tool-like / helper / trigger-on-demand Skills → progressive.
-- **Front-end / UI / design Skill examples (illustrative)**: `frontend-design`, `frontend-skill`, `html-report`, `html-deck`, `canvas-design`, `web-artifacts-builder`, `shadcn`, `web-design-guidelines`, `theme-factory`, `brand-guidelines`, etc. — when triggered, read their SKILL.md and the needed references in full.
+- **默认：渐进式读取**——读 Skill 主文件（SKILL.md / SKILL），references 按当前步骤按需读；不预载全部引用，上下文预算不浪费。
+- **强制完整读取（不走渐进式）的 2 类例外**：
+  1. **核心治理 / 工作流类 Skill**——流程门禁不可跳（本 Skill 自身即此类）。
+  2. **前端 / UI / 设计类 Skill 一律强制完整读取**——**无条件强制完整读，即使上下文充足 / 用户明确无预算限制也不减少**；因设计类依赖完整规范 / 约束，渐进易遗漏组件规范、设计 token、可用性 / 可访问性规则导致产出不合规。
+- **不需完整读取的**：工具型 / 辅助型 / 按需触发型 Skill → 渐进式。
+- **前端 / UI / 设计类 Skill 示例**（仅作类别举例的通用实名，触发即完整读取其 SKILL.md 与所需 references）：`frontend-design` / `html-report` / `html-deck` / `shadcn` / `web-design-guidelines` / `theme-factory` / `canvas-design` / `brand-guidelines` 等。
 
-## 5. Weak-model / context-constrained handling
+## 5. 弱模型 / 上下文受限处理
 
-- **Judgment (qualitative, no hard threshold)**: weak model capability, or the context is about to be exhausted → **load only the minimal core that can move the task**; split heavy Skills into sub-tasks / new sessions.
-- Log the decision (reason into the task record).
+- **判定（不做硬阈值，定性）**：模型能力弱，或上下文将耗尽 → **只加载能打动任务的最小核心**，重 Skill 拆成子任务 / 新会话执行。
+- 决策留痕（reason 记入任务记录）。
 
-## 6. Skill description quality discipline (for Skill authors; also an adoption basis for users)
+## 6. Skill 描述（description）质量纪律（对 Skill 作者，兼作选用依据）
 
-- The description should be **concise and carry clear trigger words**, so the agent can judge the hit with high accuracy from the description alone — lowering false triggers and the cost of reading the whole body.
-- A description **that does not match the actual capability (inflated / stale) is the #1 cause of match errors and wasted context**; honestly flag when a Skill's docs don't match its implementation.
+- 描述应**精炼、含明确触发词**，使 Agent 仅凭 description 即可高准度判定命中——降低误触发与整读正文的成本。
+- 描述概要与实际能力**不符（夸大 / 过时）是匹配失误与上下文浪费的头号成因**；发现 Skill 说明与实现不符时诚实标注。
 
-## 7. Skill vs. MCP / tools (capability boundary)
+## 7. Skill 与 MCP / 工具的关系（能力边界）
 
-- A Skill may carry tools / MCP (exposed via `run_mcp` or the platform mechanism); triggering the Skill unlocks its tools, and the usage discipline follows the same triage / logging / cost rules as tools (`rules.md` §28/§29).
-- When a Skill's capability is missing, follow the "capability-loss degradation" in `security.md` / `workflows.md` — degrade, don't block.
+- Skill 可能携带 tools / MCP（按平台机制暴露）；触发 Skill 即解锁其工具，使用纪律与分级 / 留痕 / 成本规则一致（`rules.md` §28/§29）。
+- Skill 能力缺失时按 `security.md` / `workflows.md`「能力缺失降级」降级，不阻塞。

@@ -1,314 +1,312 @@
-# Landing Details — concrete engineering rules (progressive disclosure)
+# 落地细则——具体工程规范（渐进式披露）
 
-> Load this file when executing a task and a step needs the concrete how-to (environment, frontend, DB, testing, API contracts, ops, code quality, git). These are the fine-grained operational rules distilled from real development history — they complement the 47 foundational rules with **specific, verifiable practice**. Load by category on demand; do not preload.
+> 执行任务、某一步需要"具体怎么做"时加载本文件（环境 / 前端 / 数据库 / 测试 / API 契约 / 部署运维 / 代码质量 / Git）。这些是从真实开发历史中提炼的**细化、可验证的操作规范**，与 47 条基础规则互补——47 条是通用地基，本文件是规则落地时的具体细节与规范性。按需按类加载，不预加载。
 
-## 1. Environment & toolchain
+## 1. 环境与工具链
 
-1. Create any script containing non-ASCII text with an editor tool as UTF-8, and run scripts only after they are written to disk (encoding pollution).
-2. PowerShell paths containing `[ ]` or Chinese characters: use `-LiteralPath`; for rg use `-g` for special characters.
-3. When `npm`/`npx` is blocked by execution policy: run via `cmd /c npm.cmd ...` / `cmd /c npx.cmd ...`.
-4. SQL with quotes: write it to a temp file and pipe it (`Get-Content -Raw | docker exec -i psql`); never inline via `-c`.
-5. Chinese JSON bodies: use Node `fetch` or explicit UTF-8 bytes, not `Invoke-WebRequest`.
-6. After installing system-level software, fully exit and reopen the app before relying on the new version (PATH is stale in running processes).
-7. Background processes must use a dedicated log filename (prevents EBUSY on shared logs).
-8. On alpha/beta runtimes, verify C-extension imports first (`python -c "import <mod>"`).
-9. Before piping Chinese text to a child process, confirm encoding (Unicode escapes or a file).
+1. 含中文等非 ASCII 的脚本一律用编辑工具以 UTF-8 创建，脚本落盘后再执行（防编码污染）。
+2. PowerShell 路径含 `[]` / 中文时用 `-LiteralPath`；rg 遇特殊字符用 `-g`。
+3. `npm` / `npx` 被执行策略拦截时走 `cmd /c npm.cmd` / `cmd /c npx.cmd`。
+4. 含引号 SQL 写入临时文件后管道传入（`Get-Content -Raw | docker exec -i psql`），不走 `-c` 内联。
+5. 中文 JSON body 用 Node `fetch` 或显式 UTF-8 字节，不用 `Invoke-WebRequest`。
+6. 系统级软件安装后必须完全退出应用重启（运行中进程 PATH 是旧值）。
+7. 后台进程一律用独立日志名（防 EBUSY）。
+8. alpha / beta 运行时先验证 C 扩展导入（`python -c "import <模块>"`）。
+9. 管道传中文前确认编码（Unicode 转义或写文件）。
 
-## 2. Frontend / Next.js / React
+## 2. 前端 / Next.js / React
 
-10. Stop dev servers before `prisma generate`; on EPERM kill the whole process tree by PID, not just the listener.
-11. Verification scripts should wait ≥2s and re-run once on failure (dev on-demand compilation).
-12. Check ports before binding (`Get-NetTCPConnection`); avoid reserved ranges.
-13. Build discipline: stop running services before building.
-14. JSX comments only inside JSX elements — never directly inside `return (`.
-15. Enter-to-submit controlled inputs must use internal draft state.
-16. Async persistence + save must wait for the upload queue to drain before reading the latest content.
-17. Resolve hotkey conflicts by isolating bubbling first (`preventDefault()` + `stopPropagation()` in the editor).
-18. Before overriding plugin CSS variables, confirm the cascade; custom props in `@layer base` are easily overridden.
-19. Degradation branches must carry full content — always ask "is the content fully visible?".
-20. After declaring a CSS variable, immediately verify its writer exists.
-21. Static text: no persistent `transform`/`will-change` (blurry text on GPU layers).
-22. Color classes using `/n%` alpha: verify computed style first; pure-var colors need `color-mix()`.
-23. Hover-move cards must not carry `backdrop-filter` on the same element (white-stripe artifacts on glass cards).
-24. System CPU metrics: use `os.cpus()` delta sampling; first sample only establishes a baseline.
-25. Projects pinned to an old library version: never generate components with the `latest` preset (e.g. shadcn).
-26. Before adding a large dependency, check whether it uses dynamic `require` (Turbopack: `serverExternalPackages`).
-27. Before upgrading a library, read its `dist/index.d.ts` Options (removed options like `transform`).
-28. Before an ESLint upgrade, migrate to flat config first.
-29. Batch extraction: validate on a small sample before running the full set (regex must tolerate `\r?\n`).
-30. With React Compiler, write plain functions first; if `memo` is needed, match the compiler-inferred deps.
-31. Undo features must define a "baseline moment" (snapshot at page entry / last save; update baseline after a successful save).
-32. Keep edit-mode and display-mode parsing separate (edit: lenient, preserve structure; display: strict, filter empties).
-33. Any rename/migration: inventory references repo-wide first; update E2E and copy in the same batch.
-34. Pages whose initial state is URL-parameter driven should prefer client-side `useSearchParams` fallback.
-35. Never change SSR-rendered attributes before hydration (hydration warnings).
-36. When full-screen fixed layers coexist with persistent controls, check z-order first.
-37. Marker responsibility is single: the navigator only navigates; the displayer writes the marker at display time.
-38. Controlled rich-text content must be explicitly synced into the editor (compare in an effect, then `setContent`).
+10. 改 schema 前后停 dev 服务；`prisma generate` 报 EPERM 时按 PID 整树停，不只杀监听进程。
+11. 验证脚本等待 ≥2s，失败先重跑一次（dev 首次请求现场编译）。
+12. 端口先查再用（`Get-NetTCPConnection`），避开保留段。
+13. 构建纪律：先停服务再构建。
+14. JSX 注释只写在 JSX 元素内部——`return (` 内不直接放注释。
+15. 回车提交式受控输入必须用内部草稿 state。
+16. 异步落盘 + 保存链路必须等上传队列排空再取最新内容。
+17. 快捷键冲突先隔离冒泡再处理（编辑器内 `preventDefault()` + `stopPropagation()`）。
+18. 覆盖插件 CSS 变量先确认层叠；`@layer base` 内的自定义属性易被插件默认覆盖。
+19. 降级分支必须补完整文本——自问「内容是否完整可见」。
+20. 声明 CSS 变量后立即核对写入方。
+21. 静态文字不要常驻 transform / will-change（文字发虚）。
+22. 涉及 `/n%` 的颜色类先实测 computed style；纯 var 颜色用 `color-mix()`。
+23. hover 位移卡片禁止同元素带 backdrop-filter（玻璃卡白色竖条）。
+24. 系统级 CPU 用 `os.cpus()` 差值采样，采集器首次只建基线。
+25. 锁旧版库的项目禁用 `latest` 预设生成组件（如 shadcn）。
+26. 新增大依赖先查是否动态 require（Turbopack：`serverExternalPackages`）。
+27. 升级库前先读 `dist/index.d.ts` 的 Options（`transform` 等旧选项已移除）。
+28. 升级 ESLint 前先迁移 flat config。
+29. 批量提取先小样本验证再做全量（正则兼容 `\r?\n`）。
+30. React Compiler 下先写普通函数；需要 memo 时以编译器推断依赖为准。
+31. 撤销类功能先定义「基准时刻」（快照 = 进入页面 / 上次保存，保存成功后更新基准）。
+32. 编辑态与展示态解析口径分离（编辑宽松保结构、展示严格过滤空项）。
+33. 任何命名迁移先全局盘点引用，E2E 与文案同批更新。
+34. URL 参数驱动初始状态的页面优先客户端 `useSearchParams` 兜底。
+35. 不要水合前改 SSR 渲染属性（hydration 警告）。
+36. 全屏 fixed 层与常驻控件并存时先核 z 序。
+37. 标记职责单一：跳转方只跳转，展示方在展示时写标记。
+38. 受控富文本必须显式同步进编辑器（effect 比对后 `setContent`）。
 
-## 3. Database / Prisma
+## 3. 数据库 / Prisma
 
-39. Verify model fields before writing migration SQL.
-40. After schema changes, run generate immediately (stop service → generate → restart).
-41. Long-lived connections: never use a module-level singleton (survives hot reload by hanging on a global).
-42. On `MODULE_NOT_FOUND`, first check the package directory content count (a dir existing ≠ the package is complete).
-43. In non-interactive automation, use `migrate diff` → hand-written migration → `migrate deploy`.
-44. Raw-SQL time filters: confirm the timezone convention first (explicit `AT TIME ZONE 'UTC'`).
+39. 迁移前核对模型字段再写 SQL。
+40. 改 schema 立即 generate（停服务 → generate → 重启）。
+41. 常驻连接禁止模块级变量做单例（挂全局对象跨热重载复用）。
+42. `MODULE_NOT_FOUND` 先查包目录内容数量（目录存在 ≠ 包完整）。
+43. 非交互自动化用 `migrate diff` → 手写迁移 → `migrate deploy`。
+44. 裸 SQL 过滤时间列先确认时区口径（显式 `AT TIME ZONE 'UTC'`）。
 
-## 4. Testing / E2E
+## 4. 测试 / E2E
 
-45. After class-name changes, run the full test suite (stale assertions).
-46. Commit headers ≤100 chars, English words lowercase; commit first to see the linter, then push.
-47. Sync all docs when baselines change (single source of truth for numbers).
-48. Verify `npm audit` on the official registry (mirrors may return empty).
-49. Sanitization hooks: register via the official `addHook`; verify with malicious-input unit tests.
-50. Modules with in-process state must export a test reset (call in `beforeEach`).
-51. E2E success paths touching external APIs must be mocked (assert only "the chain is connected").
-52. New E2E suites keep a warm-up case (first request with an extended timeout).
-53. Consecutive tooltip switches in E2E: use stepped `page.mouse.move(x, y, { steps: 8 })`.
-54. Negative network assertions: count via `page.on("request")`, then assert 0 after a fixed wait.
-55. SSR first frame + mount refresh needs explicit `staleTime: 0`.
-56. After swapping a form control library, re-run the E2E that depends on it; locate form fields by role.
+45. 类名改动必跑全量测试（断言旧类名 / 字段）。
+46. 提交信息 header ≤100、英文词转小写、先 commit 看 lint 再 push。
+47. 基线变化时同步所有文档（数字单一权威源）。
+48. `npm audit` 结论必须官方 registry 核验（镜像可能返回空）。
+49. 消毒钩子用官方 `addHook` 方式注册，写完用恶意输入单测验证。
+50. 带进程内状态的模块必须导出测试重置（beforeEach 调用）。
+51. 涉及外部 API 的 E2E 成功路径一律 mock（只断言「链已接上」）。
+52. 新增 E2E 保留预热用例（首条超长超时）。
+53. 连续 tooltip 切换用分步 `page.mouse.move(x, y, { steps: 8 })`。
+54. 负向网络断言用 `page.on("request")` 计数 + 固定等待后断言 0。
+55. SSR 首帧 + 挂载即刷新必须显式 `staleTime: 0`。
+56. 替换表单控件库后先跑依赖该控件的 E2E；表单定位按 role 收敛。
 
-## 5. API contracts
+## 5. API 契约
 
-57. Before deleting an endpoint, search the frontend for references repo-wide.
-58. Success/failure is judged solely by the business code; treat `null` as success for delete-type APIs.
-59. Before writing a write-API client, confirm the return semantics (failures return `fail`, never `ok(null)`).
-60. New/refactored APIs define an explicit return contract `{ object, primaryKey }`.
-61. Error mapping lives in exactly one place (remove route-local wrappers).
-62. Secret keys: decrypt server-side, display masked — never pass the raw value to the client.
-63. Before integrating an external OAuth, read the official response samples; write a dual-format parser + mock tests.
-64. Before adding a config key, confirm a consumer exists.
-65. When structure/copy changes, search and update verification scripts in the same pass.
+57. 删除端点前全仓搜索前端引用。
+58. 以业务码为唯一成败依据；删除类接口 `null` 视为成功。
+59. 写接口客户端前先核对返回语义（失败统一 `fail`，绝不 `ok(null)`）。
+60. 新建 / 重构 API 明确返回契约 `{ 对象, 主键 }`。
+61. 错误映射只在一个地方（移除路由局部包装）。
+62. 机密键：服务端解密、对外掩码——绝不把原始值传给客户端。
+63. 对接外部 OAuth 先读官方响应示例，写双形态兼容解析 + mock 单测。
+64. 新增配置键前先确认消费方存在。
+65. 结构 / 文案变更时同步搜索并更新验证脚本。
 
-## 6. Deployment / operations
+## 6. 部署 / 运维
 
-66. Add polling endpoints to the monitoring exclusion list to avoid self-counted P99 spikes.
-67. Heavy collection logic must run in the background (fire-and-forget + cache + single-flight).
-68. Monitoring details that need forensics must be persisted, rotated, and exportable.
-69. Self-monitoring must carry degradation and recovery mechanisms (busy-aware downscale).
-70. Health probes must cover the real business path (no fail-open on dead dependencies).
-71. Load tests needing a login cookie: disable redirects and parse 302 `Set-Cookie`.
-72. When using a new API, verify the id semantics first.
-73. Static assets must never go through the app layer (reverse proxy direct-serve + long cache).
-74. CN servers: finish ICP filing before TLS; use DNS-01 when HTTP-01 is blocked by WAF.
-75. After a cert-validation failure, find the root cause before retrying (rate limits).
-76. Credential files: minimal permissions (chmod 600 equivalent).
-77. After deployment, confirm the renewal job exists (short-lived certs).
-78. Config backups live outside `include` directories.
-79. Every command that may return empty needs tolerance (`|| true` or an explicit check).
-80. After deployment, verify the actual listening port (privileged-port fallback is silent).
-81. Before updating a singleton config, GET the current value first (full-validation writes).
-82. Any temporary admin interface must restrict access before starting (no all-interfaces bind).
-83. Secrets needing audit: redirect output to a file and extract from there — never echo into the session.
-84. Deployment scripts list the archive structure before installing (an archive may contain a directory, not a single file).
-85. Packing scripts: never combine `-z` and `-I` (conflicting compression options).
+66. 新增轮询类端点先加入监控排除清单（防 P99 自计尖峰）。
+67. 采集类重操作一律后台化（fire-and-forget + 缓存 + 单飞）。
+68. 需要详查的监控明细必须落库、轮转、可导出。
+69. 自监控必须带降级与恢复机制（busy-aware 降频）。
+70. 健康探针必须覆盖真实业务路径（依赖挂掉时不许 fail-open 200）。
+71. 压测取登录 Cookie 必须禁重定向，解析 302 的 Set-Cookie。
+72. 使用新 API 前先核对 id 语义。
+73. 静态资源绝不过应用层（反向代理直服 + 长缓存）。
+74. 国内服务器先备案再配证书；HTTP-01 被 WAF 阻断时改 DNS-01。
+75. 证书验证失败先排查根因再重试（防速率限制）。
+76. 凭据文件最小权限（chmod 600 等价）。
+77. 部署后必须确认续期任务存在（短期证书）。
+78. 配置文件备份放 include 目录外。
+79. 所有可能空结果的命令加容错（`|| true` 或显式判断）。
+80. 部署后核对实际监听端口（特权端口回退是静默的）。
+81. 改单例前先 GET 当前值（单例更新是全量校验）。
+82. 任何临时管理口先限制访问再启动（防绑全网卡）。
+83. 需审计的 secret：输出重定向到文件后提取，禁止进会话回显。
+84. 部署脚本先列压缩包结构再安装（压缩包可能是目录而非单文件）。
+85. 打包脚本不要同时用 `-z` 与 `-I`（tar 压缩选项冲突）。
 
-## 7. Code quality (foundational floor)
+## 7. 代码质量（地基底线）
 
-86. Add concise Chinese comments to critical / hard-to-follow logic; comments explain *why*, not *what*.
-87. When a single code block exceeds ~20 lines, consider abstraction (extract a function, merge duplicates).
-88. Avoid unnecessary copies/clones; reuse references unless a copy is genuinely required.
-89. Avoid deep nesting; prefer early returns to lower complexity.
-90. Concurrency / batch / scheduled work must use explicit control (rate limit, queue, semaphore, concurrency cap).
-91. Use meaningful, descriptive names; follow the project/language convention; avoid abbreviations and single letters (loop `i` etc. excepted).
-92. One function does one thing; related code stays together; keep a consistent abstraction level.
-93. Public APIs carry clear docs; sync comments and docs when code changes.
+86. 为关键逻辑和可能造成理解困难的部分添加简明中文注释；注释解释「为什么」，不解释「是什么」。
+87. 单段代码超约 20 行时优先抽象 / 聚合（提取函数、合并重复逻辑）。
+88. 避免不必要的对象复制 / 克隆，尽量复用引用，仅在确有需要时复制。
+89. 避免多层嵌套，优先提前返回（early return）降低复杂度。
+90. 并发 / 批量 / 定时任务必须用显式并发控制（限流 / 队列 / 信号量 / 并发上限）。
+91. 命名用有意义、描述性名称；遵循项目 / 语言规范；避免缩写与单字母（循环 `i` 等约定俗成除外）。
+92. 函数只做一件事；相关代码放在一起；保持适当抽象层次。
+93. 公共 API 提供清晰文档；代码变更后同步更新注释与文档。
 
-## 8. Git & collaboration
+## 8. Git / 协作
 
-94. Check `git status` before committing (lint-staged formatting creates new changes — re-add).
-95. Git commands use explicit `-C <absolute path>` when the working dir is ambiguous.
-96. Secret scan before every commit; CI must run it too.
-97. When a hosting platform times out on direct connection, use a proxy (HTTP/SOCKS); no silent fallback if the proxy is down.
-98. Pure doc/asset moves may use `--no-verify`; code changes are never exempt.
-99. URL whitelists: reject `//` first, then allow `/` internal paths, then the protocol allowlist (pure function + unit tests).
-100. In dev, do not rely on "module-level cache + cross-route invalidation".
-101. Decisions must be archived — a repeated question every session is a sign of an unarchived decision.
+94. 提交前看 `git status`（lint-staged 格式化会产生新改动——重新 add）。
+95. git 命令在目录不明确时带 `-C <绝对路径>` 显式指定。
+96. 每次提交前密钥扫描；CI 必跑。
+97. 外网托管平台直连超时走代理（HTTP / SOCKS）；代理未启动不会回退直连。
+98. 纯文档 / 资产移动提交可用 `--no-verify`；代码改动一律不豁免。
+99. URL 白名单顺序：空 → `//` 拒绝 → `/` 站内放行 → 协议枚举（纯函数 + 单测）。
+100. dev 下不要依赖「模块级缓存 + 跨路由失效」。
+101. 决策必须留档——每会话重复问同样问题 = 决策未留档的信号。
 
-## 9. Sessions / backups / governance
+## 9. 会话 / 备份 / 治理细则
 
-102. Read knowledge docs by their head index first, then search the body on demand (context discipline; never read the whole file).
-103. At session end, dual-write knowledge: an AI version (trigger | judgment | action) appended to the knowledge doc with a maintained head index; a plain-language personal version given in chat; write "no new knowledge this session" if none.
-104. When the user repeats a similar issue, search task records / experience log / knowledge index first and align to the existing conclusion — never re-run the full investigation.
-105. Any new Skill must go through the chain: download to a temp dir first for security vetting (static-scan `curl`/`wget`/`eval`/`exec` and external-content pulls) → only then install into the offline backup dir → register in the inventory; use the local backup when a platform lacks the Skill — never skip the vetting.
-106. New workflow rules go through the six-step loop (collect → five-question analysis → four-paragraph template → user approval → land & re-check → record), with a script validating numbering continuity / reference integrity / suspected duplicates.
-107. Backups have layers: at least one off-site + one local; ideally three (multi-remote VCS push / local off-box copy / production backup + periodic restore drills); every push and backup carries an explanation (time / reason / content).
-108. Keep the private main repo separate from the open-source release repo: develop in the private main; sync the release repo only at agreed milestones; run validation + residue scan (brand / account / local paths / keys / internal references = 0 hits) before any external push.
-109. Keep only running docs at the root; move process docs (designs / review reports / one-off lists) into a history dir with a note.
-110. Register any external site / open-source project / tool referenced during a session in the project resource doc immediately (name + real link + purpose); never reference first and record later.
-111. Reconcile module docs against an auto-list quarterly (numbers / config keys / references); correct and record drift immediately.
+102. 开工必读按固定顺序执行，知识沉淀类文档只读**头部索引**再按需检索正文（上下文纪律，不整文读）。
+103. 会话收尾必须双写知识：AI 版（触发场景｜判断｜行动）追加知识沉淀文档并维护头部索引；个人版（类比 + 判断标准）在对话中给出；确实没有则写明「本次无新知识点」。
+104. 用户重复反馈同类问题时，先检索任务记录 / 经验库 / 知识索引，命中引用既有结论直接对齐，不重复完整调研。
+105. 新 Skill 引入必须走链路：先下载到临时目录做安全体检（静态扫描 `curl` / `wget` / `eval` / `exec` 等敏感指令与外部内容拉取）→ 验后装入项目离线备份目录 → 登记清单；平台缺失时用本地备份代替，禁止跳过体检。
+106. 新增工作流规则必须走六步流程（采集 → 五问分析 → 四段模板 → 用户审批 → 落盘复检 → 留档提交），并配套脚本校验编号连续性 / 引用完整性 / 疑似重复。
+107. 备份分层：至少一层异地 + 一层本地；理想三层（版本库多端推送 / 本地外移 / 生产备份 + 定期恢复演练）；每次推送与备份强制附说明（时间 / 原因 / 内容）。
+108. 私有主仓与开源发布仓分离：开发在私有主仓，发布仓仅在明确里程碑同步；对外推送前跑验证 + 残留扫描（品牌 / 账号 / 本机路径 / 密钥 / 内部引用零命中）。
+109. 根目录只保留运行文档，过程性文档（设计稿 / 审查报告 / 一次性清单）进历史目录并附说明。
+110. 会话中新增引用的外部网站 / 开源项目 / 工具，当次登记到项目参考资源文档（名称 + 真实链接 + 用途），禁止先引用后补。
+111. 每季度用自动清单复核模块文档一致性（数字 / 配置键 / 引用），发现漂移立即纠偏并留档。
 
-## 10. Deep-dive details (distilled from real dev-log pitfalls)
+## 10. 深挖补充细则（开发日志真实踩坑提炼）
 
-### 10.1 Environment & toolchain
+### 10.1 环境与工具链
 
-112. Cross-platform build artifacts are not reusable (`.next`, native binaries): build per platform.
-113. Don't guess mirror version numbers — list the dir first; on npm timeout use a mirror registry + matching binary-mirror env var.
-114. After rewriting git history, rebuild origin and stash in-flight changes first; cross-verify Chinese-path stats via multiple channels.
-115. Git SOCKS needs its own `http.proxy socks5h://...`; `ConvertTo-Json` needs explicit `-Depth`; UTF-8 via `[System.IO.File]::ReadAllText/WriteAllText`.
-116. On Windows `bash` may point to uninstalled WSL: use the Git Bash explicit path for shell syntax checks.
+112. 跨平台构建产物不可复用：编译缓存 / 原生二进制（`.next`、swc 等）各平台需各自构建。
+113. 镜像下载不猜版本号：先列目录确认最新版再下载；npm 超时用镜像源 `npm ci --registry=<镜像>` + 对应二进制镜像环境变量。
+114. 重写 git 历史后需重建 origin、提前 stash 在途改动；中文路径统计多通道交叉验证（ls-files / log / bundle 对照）。
+115. Git 走 SOCKS 需单独配置 `http.proxy socks5h://...`；`ConvertTo-Json` 显式 `-Depth`，UTF-8 读写用 `[System.IO.File]::ReadAllText/WriteAllText`。
+116. Windows 下 `bash` 可能指向未装 WSL：shell 语法检查用 Git Bash 显式路径，不假设 bash 可用。
 
-### 10.2 Frontend / React / Next
+### 10.2 前端 / React / Next
 
-117. Components with event handlers must declare `"use client"` (RSC boundary → 500).
-118. NextAuth v5: `getToken` in middleware needs explicit `secret`; HTTPS prod needs explicit site URL (AUTH_URL/NEXTAUTH_URL) and env-appropriate `secureCookie`.
-119. After adding routes in dev, a 500 is usually stale build cache (clear `.next` / change port) before debugging code.
-120. Server components returning Prisma Date objects: serialize to ISO first (`JSON.parse(JSON.stringify())`) to avoid hydration mismatch.
-121. TanStack Query prefetch hits depend on exact queryKey equality; separate the search "input value" from the "submitted value".
-122. On filter changes, manually `setPage(1)` + clear selection; don't use useEffect (queryKey already refetches).
-123. Optimistic updates via `setQueryData` (same key as the list query), deletes via `invalidateQueries`; `keepPreviousData` prevents refetch flicker.
-124. First-load/retry loading state: use `!data && isFetching` (isLoading is false during retries after an error).
-125. Multi-action panels: disable per row with `mutation.isPending && mutation.variables === id`.
-126. Zustand persist in SSR: use a noop storage (getStorage must not be undefined).
-127. Don't send a frontend "ALL" placeholder to a Zod enum: include "all" in the backend schema, or omit the param when "all".
-128. Modals need three close channels (ESC / overlay / button); missing one is a UX defect.
-129. Separate the list's full dataset from its filtered view; render functions must build the DOM before reading it (first-paint crash).
-130. Keep the action identifier separate from the status value (`act` vs `status`); enum values must not be used directly as CSS class names.
-131. Decorative large-blur elements need a root `overflow-x: hidden` (blur widens the paint area → horizontal scroll).
-132. Grid/Flex children default to `min-width:auto` and get blown out: add `minmax(0,1fr)` or `min-w-0`.
-133. A sticky sidebar "disappearing mid-scroll" is usually a parent `align-items:start`: use `stretch`.
-134. Expand/collapse animations: `grid-template-rows: 0fr↔1fr` + inner `overflow:hidden` instead of max-height.
-135. Scroll-distance thresholds should be viewport-relative (`min(600, viewportHeight×ratio)`), not hardcoded pixels.
-136. When a popover is trapped by an overlay or parent transform (Radix sets body `pointer-events:none`), use `createPortal` to body + explicit `pointer-events-auto`.
-137. Time-dependent copy (greetings / relative time) will mismatch on SSR: compute client-side after mount.
-138. Visual-model/screenshot spacing conclusions are only leads — trust real rect coordinates (Playwright geometry audit).
+117. 使用事件处理器（onClick 等）的组件必须声明 `"use client"`（RSC 边界否则 500）。
+118. NextAuth v5：middleware 中 `getToken` 必须显式传 `secret`；HTTPS 生产须显式配置站点地址（AUTH_URL / NEXTAUTH_URL）并按环境传 `secureCookie`。
+119. dev 新增路由后 500 优先怀疑构建缓存（清 `.next` / 换端口），别先当代码 bug 排查。
+120. 服务端组件直接返回 Prisma Date 对象时先序列化为 ISO（`JSON.parse(JSON.stringify())`），防 hydration mismatch。
+121. tanstack-query 预取命中靠 queryKey 精确相等（参数名与值全一致）；搜索框分离「输入值」与「已提交值」。
+122. 筛选变化手动 `setPage(1)` + 清空选中，不用 useEffect 监听（queryKey 已自动重取）。
+123. 乐观更新用 `setQueryData`（queryKey 与列表查询一致），删除用 `invalidateQueries`；`keepPreviousData` 防失效重取闪烁。
+124. 首次加载与重试 loading 用 `!data && isFetching`（isLoading 在 error 后重试时为 false）。
+125. 多操作面板用 `mutation.isPending && mutation.variables === id` 精确禁用对应行。
+126. zustand persist 在 SSR 用 noop storage（getStorage 不接受 undefined）。
+127. 前端「ALL」占位值不直接传 Zod enum：后端显式含 "all"，或值为 "all" 时不传该参数。
+128. 弹窗类组件三通道关闭（ESC / 遮罩 / 关闭按钮），缺一即 UX 缺陷。
+129. 列表页「全量数据」与「筛选后可见数据」分离；渲染函数先写 DOM 再读 DOM（首屏崩溃白屏）。
+130. 操作标识与状态值分开定义（`act` vs `status` 混用致徽章 undefined）；枚举值不能直接当 CSS 类名。
+131. 装饰性大 blur 元素配根级 `overflow-x: hidden`（blur 扩大绘制区撑出横向滚动）。
+132. Grid / Flex 子项默认 `min-width:auto` 被内容撑破：容器 / 子项加 `minmax(0,1fr)` 或 `min-w-0`。
+133. sticky 侧栏「读一半消失」根因是父容器 `align-items:start`：改 `stretch`。
+134. 展开 / 折叠动画用 `grid-template-rows: 0fr↔1fr` + 内层 `overflow:hidden`，替代 max-height。
+135. 依赖滚动距离的阈值用视口比例（`min(600, 视口高×比例)`），不写死像素。
+136. 弹层被遮罩或父级 transform 困住时（Radix 给 body 加 pointer-events:none）用 `createPortal` 挂 body + 显式 `pointer-events-auto`。
+137. 依赖时间的文案（问候语 / 相对时间）SSR 与水合必不一致：挂载后客户端计算。
+138. 视觉模型 / 截图对间距对齐的结论只作线索，以浏览器真实 rect 坐标（Playwright 几何审计）为准。
 
-### 10.3 Backend / database
+### 10.3 后端 / 数据库
 
-139. Prisma: update FK fields with `UncheckedUpdateInput` (UpdateInput only accepts relation objects).
-140. Prisma nullable JSON: use `Prisma.DbNull` / `JsonNull` (DB NULL vs JSON null differ).
-141. On unique-key conflicts, catch the DB error (P2002) and retry once with a suffix; don't pre-check (concurrency race).
-142. Updates needing the latest value: `select` it inside the transaction; state-machine writes must explicitly validate the current state.
-143. Merge complex cross-field validation into a single object-level `superRefine` (Zod v3 refine has no ctx.parent).
-144. Range-validate configurable thresholds before writing (bad values spam alerts); guard pagination params with `Number.isFinite`.
-145. Frontend page-size options must match backend caps (schema + service + tests), else pages silently skip rows.
-146. Multi-step writes must be real transactions with explicit timeouts; clean up polymorphic orphans in the same delete transaction.
-147. On low-memory machines, batch tasks in parallel-within-batch / serial-across-batches, with atomic increments.
-148. `migrate dev` is unusable non-interactively: use `migrate diff` + hand-written migration + `migrate deploy`; check drift with `migrate status`, don't mask it with db push.
+139. Prisma 有外键的模型更新外键字段用 `UncheckedUpdateInput`（UpdateInput 只接受关联对象）。
+140. Prisma 可空 JSON 置空用 `Prisma.DbNull` / `JsonNull`（DB NULL 与 JSON null 语义不同）。
+141. 唯一键冲突捕获数据库错误（P2002）后追加后缀重试一次，不做存在性预检（并发竞态）。
+142. 需要最新值的更新在事务内用 `select` 返回该字段；状态机类写操作显式校验当前状态。
+143. 复杂跨字段校验合并为单个对象级 `superRefine`（Zod v3 refine 回调无 ctx.parent）。
+144. 配置化阈值的写入必须有范围校验（异常值入库致告警刷屏）；分页参数 `Number.isFinite` 兜底 NaN / 负值。
+145. 前端每页条数与后端上限一致（schema + service + 测试三处同步，否则跳页漏数据）。
+146. 多步骤写操作必须真事务 + 显式 timeout；多态表随父删除在事务内清理孤儿数据。
+147. 低内存机器批量任务分批并发（批次内并行、批次间串行）+ 原子递增防竞态。
+148. `migrate dev` 非交互不可用：`migrate diff` + 手写迁移 + `migrate deploy`；漂移用 `migrate status` 核对，不用 db push 掩盖。
 
-### 10.4 Testing / E2E
+### 10.4 测试 / E2E
 
-149. Assert login success before running backend assertions (all-401 is misread as mass failure); guard against login rate limits in batch verification.
-150. Prefer Playwright `domcontentloaded` + fixed waits (networkidle never settles with polling).
-151. Order `mockResolvedValueOnce` by actual call order (short-circuit branches misalign); E2E needs a cleanup script + DB-count verification.
-152. Clear inputs via `el.value=''` + `dispatchEvent(new Event('input',{bubbles:true}))` (fill/Ctrl+A may not fire input).
-153. E2E data independence: create per-case temp data and clean up; test wrong passwords with a nonexistent account to avoid lockouts; assert deletes against the DB.
-154. `div:has-text` matches ancestor containers and drifts clicks: use precise child selectors; too many workers crush dev servers (use 2/1).
-155. `node --check` any JS generated from template strings (escape-level bugs produce broken files).
+149. 验证脚本先断言登录成功再执行（否则后台全 401 被误判为大量失败）；批量验证防登录限流误伤（复用会话 / 控频）。
+150. Playwright 等待优先 `domcontentloaded` + 固定等待（networkidle 对持续连接 / 轮询永不收敛）。
+151. mock 队列按实际调用顺序排布 `mockResolvedValueOnce`（分支短路会错位）；E2E 配套清理脚本 + DB 计数复核。
+152. 清空输入用 `el.value=''` + `dispatchEvent(new Event('input',{bubbles:true}))`（fill / Ctrl+A 可能不触发 input）。
+153. E2E 数据独立性：每用例自建临时数据并清理、用不存在账号测错误密码防锁定、删除断言以 DB 为准。
+154. `div:has-text` 会匹配祖先容器导致点击漂移：用精确子级选择器；并发 workers 过多压垮 dev 服务（用 2 / 1 worker）。
+155. 模板字符串生成 JS 后必须 `node --check` 校验（转义层级错误生成损坏文件）。
 
-### 10.5 Deployment / ops
+### 10.5 部署 / 运维
 
-156. Never build in place on low-memory servers (OOM): local standalone → tar → upload → server only extracts + migrates + reloads.
-157. Assemble release packages in a clean copy (`npm ci + build`) and inject prod env explicitly (dev .env silently overrides); standalone traces only JS — copy data/static manually.
-158. Baseline performance on the production shape (standalone/server) with real traffic recorded; use SWR + single-flight for slow endpoints.
-159. In-process timers must `.unref()` (else test processes hang).
-160. Destructive major upgrades: stepwise, each step committed + fully verified + a rollback point (tag + reset).
-161. `pm2 restart --update-env` doesn't always pick up new vars: use `pm2 delete + start`; `nginx -t` before asset rollout and auto-rollback on failure.
+156. 低内存服务器禁止原地构建（必 OOM）：本地 standalone → tar → 上传 → 服务器只做解压 + migrate + reload。
+157. 发布包必须在纯净副本 `npm ci + build` 组装，显式注入生产 env（防开发 .env 静默覆盖）；standalone 产物只追踪 JS，数据 / 静态资源手动补齐。
+158. 性能基线用生产形态（standalone / server）跑真实流量落盘统计，数据驱动优化；慢接口用 SWR + 单飞去重。
+159. 进程内定时器必须 `.unref()`（否则测试进程不退出挂起）。
+160. 破坏性大升级分步 + 每步独立提交 + 全量验证 + 回滚点（tag + reset）。
+161. `pm2 restart --update-env` 不总能补入新变量：彻底刷新用 `pm2 delete + start`；nginx 资产上线前 `nginx -t` 且失败自动回滚。
 
-### 10.6 API contracts / security
+### 10.6 API 契约 / 安全
 
-162. Public write endpoints need per-IP/target rate limits; prevent account enumeration (uniform responses for known/unknown accounts).
-163. Unified error contract: `code !== 0` is a failure; `data:null` is a legal success (≈204) — don't treat it as an error client-side.
-164. Export endpoints: UTF-8 BOM for CSV (Excel Chinese), field escaping, formula-injection guard (`=+-@` prefixes), row cap.
-165. CSRF same-origin checks: compare the Origin hostname to the request-Host hostname (ignore port), never the listening address.
-166. Rich-text/Markdown rendering must attach a sanitizer allowlist and restrict protocols (`javascript:` injection); path security rejects `../`, absolute paths, and same-prefix traversal.
-167. Download tokens: HMAC + expiry + constant-time comparison; production must configure real keys (dev fallbacks are forgeable).
-168. Sensitive/security operations need audit trails; roles must match across three layers (middleware whitelist + route check + frontend menu filter).
-169. Encrypt site config/keys before DB write (AES-GCM envelope), mask on read; admin panels must not self-lock (can't disable the current account).
+162. 公开写接口必须有 IP / 目标级限流；登录防账号枚举（未知与已知账号统一响应）。
+163. 统一错误契约：`code !== 0` 才算失败，`data:null` 是合法成功（等价 204），客户端不当错误处理。
+164. 导出类接口：CSV 加 UTF-8 BOM（Excel 中文）+ 字段转义 + 公式注入防护（`=+-@` 前缀）+ 条数上限。
+165. CSRF 同源校验取 Origin hostname 与请求 Host 的主机名比较（忽略端口），不用服务监听地址。
+166. 富文本 / Markdown 渲染必须接消毒白名单并限制链接协议（`javascript:` 注入）；路径安全拒绝 `../`、绝对路径、同名前缀穿越。
+167. 下载令牌 HMAC + 过期 + 常量时间比较；生产必须配置密钥（开发回退值可伪造）。
+168. 敏感 / 安全操作必须审计留痕；角色权限三层一致（middleware 白名单 + route 校验 + 前端菜单过滤）。
+169. 站点配置 / 密钥落库前加密（AES-GCM 信封），读取掩码；管理面板防自我锁死（不能停用当前账号）。
 
-### 10.7 Collaboration / process
+### 10.7 协作 / 流程
 
-170. Reconciliation review: design claims ↔ code evidence ↔ runtime measurement; verify design claims along the dependency graph (upstream/downstream, events, cache invalidation, notifications are actually wired).
-171. Record decision items with the user's original words and rationale; confirm a command actually succeeded before scripting a bulk replace (check exit codes on redirection).
-172. Guard regex bulk-replaces against over-matching (non-greedy swallows to the next match): add structural constraints + idempotency; run the verify quad (test + typecheck + lint + build) after each batch.
-173. Archive outdated docs instead of deleting: fold key info into live docs first, then update cross-references.
+170. 对账式审查：设计声明 ↔ 代码证据 ↔ 运行实测三层互证；审查按关联图谱验证设计声明（上下游 / 事件 / 缓存失效 / 通知是否接通）。
+171. 决策项回写文档写明用户原话与依据；批量替换 / 脚本化前确认命令执行成功（重定向检查退出码）。
+172. 正则批量替换防误吞（非贪婪吞到下一匹配）：加结构约束 + 幂等可重跑；每批改动固定跑验证四件套（test + typecheck + lint + build）。
+173. 过时文档归档而非删除：先整合关键信息，归档后批量更新交叉引用。
 
-## 11. Iron laws & agent-workflow discipline (distilled from comparable projects)
+## 11. 铁律与 Agent 工作流纪律补充（同类项目调研提炼）
 
-### 11.1 Code-quality iron laws (DRY / KISS / YAGNI …)
+### 11.1 代码质量铁律（DRY / KISS / YAGNI 等）
 
-174. **DRY / single point of truth (SPOT)** — every piece of knowledge/logic has exactly one authoritative version; validation, conversion, error-code mapping are not duplicated per site (multiple sources of truth = fix one, miss others).
-175. **KISS** — the most direct, fewest-concepts implementation that meets the current need; a one-line regex stuffed with business rules or a giant function is hidden complexity.
-176. **YAGNI** — implement only when truly needed; don't pre-build abstractions, factories, config, or scaffolding "for later".
-177. **Deletion over addition** — the shortest working diff wins; delete when possible; mark deliberate simplifications with a ceiling + upgrade path.
-178. **Composition over inheritance + Law of Demeter** — prefer composition; talk only to immediate friends, don't chain into deep fields.
-179. **Open/closed** — open for extension, closed for modification; new behavior prefers addition over editing existing branches.
+174. **DRY / 单一真相源（SPOT）**：每处知识 / 逻辑只留一个权威版本；校验、转换、错误码映射不各写一份（多处真相源 = 修一处漏一处）。
+175. **KISS**：满足当前需求前提下选最直白、最少概念的实现；一行正则塞满业务规则或巨大函数是变相复杂。
+176. **YAGNI**：只在真正需要时实现；不为「将来可能」预建抽象、工厂、配置、脚手架（later 会为自己脚手架）。
+177. **删除优于添加**：最短可用 diff 胜出；能删除就删除；刻意简化用注释标注天花板与升级路径。
+178. **组合优于继承 + Law of Demeter（最少知识）**：优先组合；对象只与直接朋友交谈，不链式扒深处字段。
+179. **开闭原则**：对扩展开放、对修改封闭；新行为优先新增而非改动既有分支。
 
-### 11.2 Agent-workflow discipline
+### 11.2 Agent 工作流纪律
 
-180. **The 40-60% context rule** — when context reaches 40-60%, proactively compact / persist / split sessions; instructions fade over time (instruction fade-out), so re-state key discipline periodically.
-181. **Checkpoint stops for long tasks** — checkpoint + persist + compact at each step to prevent context poisoning and drift.
-182. **Stopping rule** — stop when the next step's marginal value is negative or no longer clearly above its token cost; don't force output.
-183. **Human-review boundary** — what machines can verify ahead of time (lint / type / tests / evidence / CI) is not left to humans; human review is reserved for product correctness, architecture trade-offs, edge cases, operational risk.
-184. **Review for weakness, not just correctness** — rank the weakest architectural / operational / testing risks.
-185. **Verification first** — think about verification before acting; every change carries evidence (test output / run results / deploy evidence); missing evidence = unfinished.
+180. **上下文 40-60% 规则**：上下文用到 40-60% 时主动压缩 / 落盘 / 拆会话；指令会随时间褪色（instruction fade-out），关键纪律定期重申。
+181. **长任务 checkpoint 停靠**：每步 checkpoint 落盘并压缩上下文，防上下文污染（context poisoning）导致漂移。
+182. **停止规则**：下一步边际收益为负或不再明显高于 token 成本时即停，不硬堆产出。
+183. **人为审查边界**：机器能提前验证的（lint / type / 测试 / 证据 / CI）不留给人；人为审查只留产品正确性、架构权衡、边界、运维风险。
+184. **Review for weakness, not just correctness**：审查不只查正确性，要定位最薄弱的架构 / 运维 / 测试风险并排序。
+185. **验证优先**：先想如何验证再动手；每个改动带证据（测试输出 / 运行结果 / 部署证据），证据缺失 = 未完成。
 
-### 11.3 Risk-tier evidence (extends L1/L2/L3)
+### 11.3 风险分级证据要求（补充 L1/L2/L3）
 
-186. **L3 additional evidence** — high-risk (auth / billing / migration / permissions / destructive / production rewrites) besides "ask first + rollback point" requires: integration/E2E coverage of critical paths + rollback/mitigation plan + observability updates + explicit architectural-risk review.
+186. **L3 分级附加证据要求**：高风险（认证 / 计费 / 迁移 / 权限 / 破坏性 / 生产重写）除「先问 + 回滚点」外，须：集成 / E2E 覆盖关键路径 + 回滚 / 缓解计划 + 观测更新 + 明确架构风险审查。
 
-## 12. Source-project deep-dive (2026-08-26 review of the 863KB dev log + pitfall/knowledge libraries)
+## 12. 源项目深挖补充（2026-08-26 审查 863KB 开发日志 + 踩坑库 / 知识沉淀）
 
-187. [Env] Windows system-reserved port ranges (Hyper-V) cause EACCES even with nothing listening: query `netsh interface ipv4 show excludedportrange` before picking a port.
-188. [Env] Windows schannel certificate-revocation checks can block curl: verify with `--ssl-no-revoke` when a direct connection fails.
-189. [Env] MCP / config-file changes are not hot-reloaded: fully exit the app and start a new session before relying on them; if still unavailable, switch to the fallback channel instead of repeatedly restarting.
-190. [Frontend] Elastic/drag-style animations must only animate `transform`/`opacity`; animating width/height pushes parents and grid row heights.
-191. [Frontend] SPA route transitions invalidate old DOM refs: re-acquire the reference after every view change before operating on it.
-192. [Frontend] Text/position APIs often differ in 0-based vs 1-based indexing ("not found" is usually a base mismatch): confirm the convention first and lock it with a pure-function unit test.
-193. [Frontend] Perceived "slowness" usually comes from missing feedback at the interaction point: put loading state on the interactive element, not just a global overlay.
-194. [Frontend] Color changes are driven by measured WCAG contrast data, not default palettes; re-run the contrast check after palette or semantic-color changes.
-195. [DB] Prisma: even when `where` guarantees non-null, TS types stay nullable (no narrowing by where) — handle null explicitly in the business layer.
-196. [DB] Composite unique keys with a nullable field reject `upsert` on null: use a non-null sentinel; migrations must drop FKs before UPDATE (FK violation).
-197. [DB] Rate limits are the most common "dead config" (defined but never wired): verify each public write endpoint actually calls the limiter before release.
-198. [API] Async tasks use a unified "202 + poll status endpoint" convention, kept consistent across design / API / feature docs.
-199. [Ops] In-process scheduled jobs (backup / scheduling) die when the process is offline: critical backups need an independent scheduled task as fallback.
-200. [Ops] Deployment verification must sample-assert static / key resources return 200, not just curl the HTML shell.
-201. [Git] One-time token push: after a successful push with a temporary token, restore the remote URL to the token-less form.
-202. [AI] Reasoning models default to `max_tokens >= 512`, else thinking consumes the budget and output is empty.
-203. [AI] LLM / vision APIs returning "HTTP 200 but empty content" count as failure: switch / retry, never treat as success.
+187. [环境] Windows 系统保留端口段（Hyper-V 保留）会让指定端口 EACCES（即使无进程占用）：先用 `netsh interface ipv4 show excludedportrange` 查保留段再选端口。
+188. [环境] Windows schannel 证书吊销检查会拦截 curl 直连：必要时用 `--ssl-no-revoke` 验证。
+189. [环境] MCP / 配置文件变更不热加载：须完全退出应用并新建会话才生效；仍不可用直接走替代通道，不反复重启重试。
+190. [前端] 弹性 / 拖拽类动效只允许作用在 `transform` / `opacity` 上：用 width/height 做动效必然撑动父级与网格行高。
+191. [前端] SPA 路由跳转后旧 DOM ref 失效：每次视图变化后重新获取引用再操作。
+192. [前端] 文本 / 位置类 API 存在 0 基与 1 基口径差异（"查找永不命中"常源于此）：比较前先确认口径并抽纯函数加单测锁定。
+193. [前端] 用户感知的"性能差"多来自反馈不在交互点：加载态必须落在交互元素上，而非只靠全局 loading 遮罩。
+194. [前端] 配色 / 语义色改动以 WCAG 对比度实测数据驱动，不用默认色板硬编码；改动后必须跑对比度校验。
+195. [数据库] Prisma 即使查询 `where` 保证非空，返回类型仍可能是可空（TS 不按 where 收窄）：业务层须显式处理 null。
+196. [数据库] 含可空字段的复合唯一键 `upsert` 不接受 null：改用非空哨兵值；迁移须先删外键再 UPDATE（外键违反）。
+197. [数据库] 限流规则最易"死配置"（定义了但从未接入调用）：上线前逐个核对公开写接口是否真正调用限流。
+198. [API] 异步任务统一「202 + 轮询状态端点」约定，并在设计 / API / 功能文档间保持一致。
+199. [运维] 进程内定时任务（备份 / 调度）在进程离线时即停摆：关键备份需独立计划任务兜底。
+200. [运维] 部署验证不能只 curl 首页 HTML（200 ≠ 页面完整）：必须抽样断言静态资源 / 关键资源返回 200。
+201. [Git] 一次性令牌推送成功后，remote 改回无令牌 URL（安全）。
+202. [AI] 推理型模型默认 `max_tokens ≥ 512`：否则 token 全花在思考过程，输出为空。
+203. [AI] LLM / 视觉 API「HTTP 200 但内容为空」一律按失败处理并自动切换，不当作成功结果。
 
-## 13. Blog-CMS FR-phase backflow (2026-08-29 · audit-driven promotion, entries 204-227)
+## 13. 博客 CMS FR 阶段回流（2026-08-29 · 审计驱动晋升，条目 204-238）
 
-> Source: a full agent-log audit (8.2MB event log + 53MB rollout transcripts, 8 page sessions) of one project's frontend-rebuild phase; promoted under the two-strike backflow rule (SKILL.md §10). Stack tags mark where a lesson is bound; the failure *shapes* generalize.
+> 来源：某项目前端重做阶段的全量 agent 日志审计（8.2MB 事件流 + 53MB 会话转录，8 个页面会话）；按 SKILL.md §10 双击晋升制准入。技术栈标签标注绑定范围，失败「形态」本身可跨项目迁移。
 
-204. [Build] "Build success" ≠ new code online: monorepo task-cache hits skip dist recompiles (downstream reads stale types/exports after a shared-package change) — force-rebuild on release-class changes, then RESTART the resident process (`node dist/main.js` is not watch mode; new endpoints 404 until restart).
-205. [Build] Killing a wrapper process leaves the node child alive holding the port; the new instance silently fails to bind and smoke tests hit the old build — restart ritual: locate PID by port → kill → confirm port free → start → verify NEW pid; put an observable new-build marker in smoke assertions.
-206. [Frontend] Tailwind v4 does not scan workspace-package sources: utilities used ONLY inside a component library (arbitrary values, size classes) appear on the DOM but generate no CSS — add `@source` pointing at the package sources in each app's globals; after adding a library variant, walkthroughs must spot-check computed styles, not just DOM classes.
-207. [Frontend] A shared package consumed by BOTH node(require) and Vite(import) breaks on a single-CJS build (Rollup named-export probing: "X is not exported"); dual format (CJS+ESM) with conditional `exports` is the fix; ESM consumed by require needs .js extensions.
-208. [Frontend] Self-wrapped interactive components (Button etc.) must forwardRef — without it Radix `asChild` wiring silently breaks: the component renders but its dropdown/popover never opens.
-209. [Frontend] Runtime style injection (sonner etc.) emits non-@layer CSS that overrides @layer skins — give custom skins a double attribute selector for specificity.
-210. [Frontend] Single quotes inside cva className strings (e.g. `[class*='size-']`) break the outer string quoting — switch the selector's inner quotes, not the outer delimiters.
-211. [Frontend] Newer lucide-react removed brand icons (`Github` → TS2305) — inline the brand SVG instead of downgrading the icon set.
-212. [Next] RSC/SSR fetch needs an absolute base (relative URL = ERR_INVALID_URL); `next build` pre-renders routes without searchParams and REALLY executes their data fetches — make dynamic pages call `connection()`; never evaluate live clocks/greetings at build time (frozen at build instant).
-213. [Next] Middleware intercepts everything unless `matcher` explicitly narrows paths (per-request edge cost on ISR routes); an over-strict dev Origin allowlist serves only the HTML shell — React never hydrates.
-214. [Contract] Assert response SHAPES in layers: success = bare data; validation failure = 2xx + `{ok:false,code:V1000}` envelope; true 404/403 = real status codes; Nest POST returns 201; PATCH is often full Upsert — smoke assertions must be per-layer and per-method, never blanket 200/400.
-215. [Contract] Envelope-client consumption iron law: queries unwrap `data?.ok ? data.data : undefined`, mutations throw on `!res.ok` — a new page that skips unwrapping white-screens or silently swallows failures (high-frequency recurring defect).
-216. [Contract] Coerce query params at the contract layer (`z.coerce.number()`); adding a required contract field means updating test fixtures in the same commit; action→status mapping is an explicit constant, never `toUpperCase()`; serialize DB `Date` via a toRow pass before exposing; align contract enums with DB enums before writing endpoints.
-217. [Backend] Static subroutes must be registered BEFORE the `:id` parameter route (`x/import` before `x/:id`), or the parameter route swallows them.
-218. [DB] Prisma "edited an applied migration" drift demands a reset (= database wipe, a red line) — reconcile with `migrate deploy` / `migrate resolve --applied`; tables created via `db push` without a migration file must get a hand-written aligned migration + resolve registration, or production deploy never creates them.
-219. [DB] "Seed only when table empty" is an idempotence illusion (placeholder rows silently block real seed) — rebuild with deleteMany+createMany; store arrays directly in Json columns, never pre-stringify (double encoding reads back as a string).
-220. [E2E] Radix components have no native inputs (Checkbox = `button[role=checkbox]`) — select by role; `input[type=checkbox]` locators time out; fast clicks on Radix Dialog confirm buttons can be swallowed by animation/focus timing.
-221. [E2E] Delete-flow closure asserts on API state, not UI text (timing-swallowed clicks leave residue that text assertions miss); walkthrough data resets to seed state after acceptance (delete, not re-seed); smokes that touch in-memory state (rate-limit counters, nonces) end with a process restart.
-222. [Test] Malicious fixtures must be built at raw-byte level — library constructors sanitize attack payloads and manufacture false greens; memory fixtures: `new Array(n).fill(1)` costs 8B/slot (nominal 1MB = actual 8MB) — use `Buffer.alloc` to express real bytes.
-223. [Test] Guard smokes go read-only: nonexistent id + empty body asserting 403 lets the whole endpoint matrix run in RED phase with zero data changes.
-224. [Windows] PowerShell five pits: `-Body` strings are not UTF-8 (Chinese becomes `?` in the DB); here-strings interpolate `$` and break fenced code; `node -e` inline `$` gets eaten (use a temp .cjs file); no heredoc (DB executes use --file); direct CLI calls hit "not recognized" (go through `pnpm exec`).
-225. [Windows] Hyper-V excluded port ranges silently eat container port mappings (container won't start) — remap the port; Node's native fetch exposes Set-Cookie only via `getSetCookie()`.
-226. [Security] Verifying "logged-out" UI means deleting the server-side session, not just clearing cookies (residual sessions fake a logged-in state); IP persistence and IP attribution must share one extraction function (req.ip vs proxy-header divergence makes "already-liked" never match).
-227. [Process] Replication/redesign specs get verified against the actual source and the direction confirmed by the user BEFORE code; read the contract for field names before calling the backend from test scripts (intuition names fail: guestbook takes `name`, not `nickname`).
+204. [构建] 「build 成功」≠ 新代码在线：monorepo 任务缓存命中会跳过 dist 重编（共享包改导出后下游读到旧类型/旧产物）——发布级改动一律 `--force` 重编，且重编后必须重启常驻进程（`node dist/main.js` 非 watch 模式，不重启新端点一直 404）。
+205. [构建] 杀掉包装进程后 node 子进程孤儿存活占端口，新实例静默绑定失败、冒烟全程打到旧构建——重启固定流程：按端口定位 PID → kill → 确认端口空 → 启动 → 核对新 PID；冒烟断言里放一个可观测的「新构建标志」。
+206. [前端] Tailwind v4 默认不扫 workspace 包源码：只在组件库内使用的工具类（任意值/尺寸类）会出现在 DOM 上但 CSS 不生成——各应用 globals 显式 `@source` 指向包源码；组件库新增 variant 后走查必须抽查 computed style，不能只看 DOM 类名。
+207. [前端] 共享包同时被 node(require) 与 Vite(import) 消费时，单 CJS 产物会被 Rollup 命名导出探测拦下（"X is not exported"）——双格式（CJS+ESM）+ `exports` 条件导出是正解；ESM 产物被 require 需带 .js 扩展。
+208. [前端] 自封装交互组件（Button 等）必须 forwardRef——不透传 ref 时 Radix `asChild` 接线静默断链：组件渲染了，但下拉/弹层永远打不开。
+209. [前端] sonner 等运行时注入「非 @layer 样式」会覆盖 @layer 里的自定义皮肤——皮肤选择器用双属性选择器提特异性。
+210. [前端] cva className 字符串内嵌单引号（如 `[class*='size-']`）会破坏外层引号——改选择器内引号，而非外层定界符。
+211. [前端] lucide-react 高版本移除品牌图标（`Github` 导出 TS2305）——品牌 mark 用内联 svg 替代，不为此降级图标库。
+212. [Next] RSC/SSR 的 fetch 必须绝对 base（相对 URL 直接 ERR_INVALID_URL）；`next build` 会对无 searchParams 的路由静态预渲染并真实执行取数——动态页面 `connection()` 转动态；实时钟点/问候语勿依赖 build 期求值（冻结在构建当刻）。
+213. [Next] middleware 默认全站拦截，必须 `matcher` 显式限定路径（否则 ISR 路由每请求添 edge 开销）；dev 的 Origin 白名单过严时只出 HTML 壳、React 永不水合。
+214. [契约] 响应形态分层断言：成功=裸数据；校验失败=2xx+`{ok:false,code:V1000}` 信封；真 404/403=真状态码；Nest POST 默认 201；PATCH 常为全量 Upsert——冒烟断言按层、按方法写，绝不一刀切 200/400。
+215. [契约] 信封客户端消费铁律：query 用 `data?.ok ? data.data : undefined`、mutation `!res.ok` throw——新页面漏解包 = 白屏或静默吞失败（高频复现缺陷）。
+216. [契约] query 参数契约层 `z.coerce.number()` 收口；契约新增必填字段同批改单测夹具；「动作→状态」用显式映射常量、禁 `toUpperCase()` 直转；DB Date 出库统一 toRow 序列化；契约枚举与 DB 枚举先对齐再写端点。
+217. [后端] 框架静态子路由必须注册在 `:id` 参数路由之前（`x/import` 在 `x/:id` 前），否则被参数路由吞掉。
+218. [DB] Prisma「已应用迁移被文本修改」drift 会要求 reset（=删库红线）——用 `migrate deploy` / `migrate resolve --applied` 对账绕过；`db push` 先落库未登记迁移的表，须手写对齐迁移 + resolve 补登记，否则生产 deploy 不建表。
+219. [DB] seed「空表才写」是幂等假象（占位数据静默挡住真实种子）——改 deleteMany+createMany 全量重建；Json 列直接存数组勿再 stringify（双重编码读回是字符串）。
+220. [E2E] Radix 系组件无原生 input（Checkbox = `button[role=checkbox]`）——按 role 选元素，`input[type=checkbox]` 定位必超时；对 Radix Dialog 确认按钮的快速点击可能被动画/焦点时序吞掉。
+221. [E2E] 删除类闭环断言以 API 复核后端状态为准，UI 文本断言会假阳（时序吞点击察觉不到残留）；走查数据验收后清回 seed 态（delete 而非改 seed）；触内存态的冒烟（限流计数/nonce）结束必须重启进程清态。
+222. [测试] 安全用例恶意夹具必须 raw 字节级构造——规矩库构造器会净化攻击载荷造成假绿；内存夹具 `new Array(n).fill(1)` 每槽实占 8B（名义 1MB 实占 8MB）——一律 `Buffer.alloc` 表达真实字节。
+223. [测试] 守卫类冒烟「只读化」设计：不存在的 id + 空 body 断言 403——RED 阶段即可全端点开跑且零数据变更。
+224. [Windows] PowerShell 五坑：`-Body` 字符串非 UTF-8（中文落库变 `?`）；here-string 触发 `$` 插值破坏围栏代码；`node -e` 内联含 `$` 被吞（改临时 .cjs 文件）；无 heredoc（DB 执行用 --file）；直启 CLI 报 not recognized（经 `pnpm exec`）。
+225. [Windows] Hyper-V 保留端口段会静默吞掉容器端口映射（容器起不来）——换端口绕行；Node 原生 fetch 取 Set-Cookie 只能用 `getSetCookie()`。
+226. [安全] 验证「未登录态」先删服务端会话而非只清浏览器 cookie（残留会话伪装已登录）；IP 落库与 IP 标注必须共用同一提取函数（req.ip 与代理头解析分叉会让「已赞标注」永不命中）。
+227. [流程] 复刻/重做类规格先以源码/现状为证呈报、由用户裁定方向再动手；测试脚本调后端前先读契约字段名（直觉命名必翻车：留言板是 `name` 不是 `nickname`）。
 
-228. [Contract] Cross-package dist is the typecheck truth — after editing `@tx/contracts` / `@tx/ui` / prisma schema, rebuild that package's dist (`pnpm -C <pkg> build`) or `db:generate` BEFORE typechecking dependents; stale dist makes dependents report old types/missing exports. *Promoted*: confirmed 3× in one project session (2026-08-30 audit, sess_c0f4df2b); prior family #113/#19/#31/#38/#49.
-229. [Ops] Stale resident process symptoms + restart ritual — when API behavior disagrees with new code (new fields 404 / "unregistered key" / new endpoint missing / disk status "统计失败"), check `process uptime` and dist timestamp FIRST; restart ritual = rebuild dist → stop listener → start `node dist/main.js` → curl health → grep new endpoint. *Promoted*: confirmed 3× in one session (disk watermark / settings registry key / monitor endpoint), family #48/#57/#61/#62/#94/#109.
-230. [E2E] Browser walkthrough three-environment traps — scroll container is NOT `window` (scroll the `overflow-auto` main); Radix popover hover needs pointer-move + settle, and its tooltip content may not surface in body.elText; under CI parallel load real-worker tests time out spuriously — quality by isolated re-run (two consecutive passes), never by editing the test. *Promoted*: each ≥2× across sessions; family #101/#102/#104/#105/#110/#111/#112.
-231. [Process] Long-session archive drift guard — when a session's last task blocks cross an hour barrier, state.md/experience.md go stale: before the final commit of a long session, re-verify state.md matches reality (delete "pending walkthrough" notes that are already done) and append the last task blocks; the workflow skill's own task-log must also be written (audit of 2026-08-30 found zero self-log entries). *Promoted*: 1 clear counter-example; rule is preventive.
-232. [Process] Context-budget hard signpost — long interactive sessions silently pass 400-600K input tokens (audit peak 652K) with no compaction: treat ~150-200K input (or >40-60% of model budget) as an explicit trigger for the reload sequence (SKILL.md §9) — do not rely on self-sensing; log the token estimate in the session status surface.
-
-233. [Contract] Writing integrations from naming intuition is false-green — always verify against the true contract first: ① envelope vs direct return (`api.get` returns `ApiResponse`, unwrap `res.data` before `.data`); ② package ownership of a dependency (recharts belongs to apps/admin — installing it in apps/api produced a wrong-workspace dep); ③ Nest/provider constructor-injected name must match the imported provider exactly (mismatch = "duplicate identifier" fat-finger); ④ SSR/absolute-URL and Next fetch rules. Fix method: grep call sites → read schema/type → confirm package → then write. *Promoted*: 4 counter-examples in one session (2026-08-30, sess_c0f4df2b), family #228.
-
-234. [Process] Ask with recommendation+reason, and handle timeout: every ask carries the model's recommended option + core reason (no open-ended "what do you want"); ask-tool timeout → prefer cancelling it (host support), else proceed on researched best-for-project solution marked "pending user confirmation" — never treat an empty auto-answer as approval. *Source: user preference (rank #1), 2026-08-30; family: fuzzy-requirement = LLM-era real pain point.*
-235. [Process] Context hygiene at rule level: big outputs (>~40 lines) → file + summary only; subagent reports → conclusions only; re-paste everything archived → cite path; unsure about earlier decisions/fields/APIs → refetch from record/contract/source (guessing from memory forbidden); context census every ~5 blocks or 40-60% budget. *Source: 2026-08-30 audit (peak 652K, zero compression) + user directive.*
-
-236. [Process] New project with no docs → create FIRST `docs/project-info.md` with six sections (architecture / goals / real module-state table / research navigation / reference resources / restatement-confirmation), minimal-diff update each session; fragments → create an index entry, don't duplicate. *Source: v1.16 execution rewrite; family #119/#121.*
-237. [Process] All archived timestamps use `YYYY-MM-DD HH:mm:ss` (second-precision; day-level = incomplete); editing the body must update the header "updated:" (header ≥ newest body line); task log >~120 lines or spanning >3 blocks → new file/archive. *Source: v1.16 execution rewrite; family #119.*
-238. [Process] If the project has a logging module, errors MUST pass through logging: catch trio (log + degraded prompt + audit), delivery five-check includes "error already logged", zero tolerance for bare `console.` / empty catch in diff re-scan. *Source: v1.16 execution rewrite; family #121.*
+228. [Contract] 改 @tx/contracts/@tx/ui/prisma → 先 `pnpm -C <包> build`（或 db:generate）再验依赖方 typecheck（跨包 dist 是类型真相；旧 dist 让依赖方报旧类型/缺导出）。*晋升：会话单项目 3 次（2026-08-30）。*
+229. [Ops] 常驻进程旧 dist 三症状（新字段 404/「未登记键」/端点缺失）+ 重启仪式（重建 dist→停监听→node dist/main.js→curl health→grep 新路由）。*晋升：3 次。*
+230. [E2E] 浏览器走查三陷阱：滚动容器=main 非 window；Radix 弹层 hover 需 move+settle；CI 负载下真实 worker 偶发超时→单跑两遍定性（勿改测试）。*晋升：各≥2 次。*
+231. [Process] 长会话归档防呆：最后一个 commit 前回验 state/experience 与既成事实一致（清「待走查」类过时注记）；skill 自身 task-log 同写。*反例 1 次，预防条款。*
+232. [Process] 上下文预算硬路标：长会话悄过 400-600K（审计峰值 652K）→ ~150-200K 或 40-60% 预算显式触发压缩→重载序；状态面记 token 估值。
+233. [Contract] 凭命名直觉写对接=假绿：信封解包（api.get→ApiResponse）/包归属（recharts 装 apps/api 错误）/DI 注入名与导入一致；修复=先 grep 调用点→读 schema→确认包→再写。
+234. [Process] 提问带推荐+理由；超时/空答→能取消则取消，否则按实况推荐方案+「待确认」标注——空答不当批准。
+235. [Process] 上下文卫生：大输出>~40 行→文件+摘要；子代理只留结论；已归档引用路径；模糊先重取；~5 块盘点。
+236. [Process] 新项目无文档→docs/project-info.md 六节（含模块真实状态表与调研导航）；已有文档→索引不重复。
+237. [Process] 时间戳统一 `YYYY-MM-DD HH:mm:ss`（秒级）；日级=不完整；活头部校验；记录上限 >120 行/跨 >3 块开新文件。
+238. [Process] 有日志模块→报错必经日志：catch 三件套（记日志+降级提示+审计）、五查含「已接日志」、console/空 catch 零容忍。
+239. [Ops] Skill 升级验收看平台解析到的加载目录：文件版本号一致 ≠ 平台加载新版——syncer 备份若落在平台扫描路径内（如 skill 目录同级 `<dest>.bak-<ts>`），会被平台收录为第二个同名 Skill 并可能选中旧版（WorkBuddy 2026-08-30 实测：升级后行为完全没变）。修复：备份移出扫描路径（`skill-backups/`）+ 用「加载时的 Base directory」验证而非版本号。

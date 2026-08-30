@@ -1,10 +1,10 @@
 ---
 name: shisan-xinuo-workflow
-description: "One-line positioning: forces every engineering task through an auditable agent workflow — mandatory research-driven 11-step master sequence + L1/L2/L3 closed-list quick triage + dual modes (normal/goal), with platform-agnostic hard injection of the core discipline. Use on any hands-on task."
+description: "一句话定位：把任何工程任务强制按「三级跑道（L1 快速通道 / L2-S 短工作流 / L2-F 完整 11 步）+ L1/L2/L3 封闭清单速判 + 三模式」推进的可审计 Agent 工程纪律工作流，核心纪律可平台无关硬注入。任何动手任务开工必用。"
 license: MIT
-compatibility: "Trae, Codex, Claude Code, Cursor, Windsurf, WorkBuddy and any CLI encoding agent supporting the Agent Skills standard"
+compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 1.19.1
+  version: 2.0.0
   tags:
     - agent-skill
     - workflow-governance
@@ -16,7 +16,6 @@ metadata:
     - trae
     - cursor
   author: zxc663
-  edition: universal-en
   homepage: https://github.com/zxc663/shisan-xinuo-workflow
   topics:
     - agent-skills
@@ -24,237 +23,324 @@ metadata:
     - prompt-injection-defense
 ---
 
-# Shisan Xinuo Agent Workflow (十三希诺通用 Agent 工作流)
+# 十三希诺通用 Agent 工作流（Shisan Xinuo Agent Workflow）
 
-> **Reading order**: §1 use-musts → §2 executable lanes → §3 platform → §4 ask protocol → §5 triage & split → §6 close loop → §7 gates → §8 gotchas → §9 references → §10 records → §11 status surface → §12 quick-execution table.
-> Every section is written **trigger → steps (checklist) → template → check → boundary**. If a step needs "interpretation", it does not belong here — report it (Paper-blind-test rule).
+> **阅读顺序**：§1 何时用 → §2 三级跑道 → §3 平台注入 → §4 必问协议 → §5 模式与判级 → §6 最小闭环 → §7 门禁回滚 → §8 易错点 → §9 引用地图 → §10 留档纪律 → §11 会话状态面 → §12 速查表。
+> **每节的写法是固定的「触发 → 步骤（清单）→ 模板 → 自检 → 边界」**。哪一步需要「解释」而不是「执行」，它就不属于这里——上报（纸测盲测规则：说不清就是没写完）。
 
-## 0. Meta-rules for reading this skill
+## 0. 元规则（如何读本 Skill）
 
-- **Trigger first**: a rule applies only when its trigger fires. Trigger not met → skip.
-- **Steps are checklists**: one performable action each, in order; a step you cannot act on = reload context (§9) or ask (§4).
-- **Templates are copy-paste**: fill the one-line template and keep it in the named artifact.
-- **Boundary says what is NOT done here**: ask-before-acting & red lines are never waived by any other rule.
+- **触发优先**：一条规则只在它的触发条件成立时适用；触发不满足 → 跳过。
+- **步骤即清单**：每步是一个可执行动作、按序执行；无法执行的步骤 = 重载上下文（§9）或提问（§4）。
+- **模板即复制**：填入一行模板，放进指定产物；不原地空想。
+- **边界说不做什么**：必问协议与红线不被任何其他规则豁免；边界内的事不是本层的职责。
 
-## 1. When to use / when NOT to use
+## 1. 何时使用 / 何时不用
 
-- **Use**: any hands-on engineering task (then advance along §2 lanes). **NOT a substitute for** learning a framework/API from its own docs; the project's own docs win where they conflict with this skill.
-- **Honest note on details.md**: it is a **pitfall log** ("what went wrong there"), not a domain tutorial; the workflow/rules/gates layers are framework-agnostic.
+**使用**：任何工程任务（只要动手干活，就按第 2 节跑道推进）；用户要求纪律化执行、工作流治理、工作流规则，或希望 Agent 在跨项目、跨平台时行为一致。本 Skill 每次加载时也会执行第 3 节第 0 步（平台适配）。
 
-## 2. Master: task operating sequence — executable lanes
+**不用**：替代不了用官方文档学习框架 / 库 / API；也不替代项目自身的约定——与本 Skill 冲突时，项目自身文档优先。
 
-**Trigger**: a hand-on task; you are the actor.
-**Lane pick (10 seconds)**: run §5 triage → L1 / L2-S / L2-F.
+> **关于落地细则的诚实说明**：`details.md` 确实承载了从真实项目沉淀的细粒度工程经验，其中一部分绑定具体技术栈（Next.js / Prisma / Playwright 等）。请把它当作**踩坑日志**（那里曾经错在哪）——不是**技术教程**（该怎么用）；流程 / 规则 / 门禁层本身与框架无关。
 
-### 2.1 L1 fast lane (small, reversible, low impact)
+## 2. 总纲：任务运行序列——三级跑道（唯一入口）
 
-1. Restate in one sentence (goal/boundary). 2. Make the minimal change. 3. Run the minimal verification command, record exit code. 4. Report in one line.
-**Template**: `L1 fast path: 改 X → "cmd"(exit=0) → done.`
-**Check**: □ restate recorded □ cmd reruns clean □ task record marked "L1 fast path".
+> **这是本 Skill 的核心，不是参考项。** 每个任务必须按此流程推进。**10 秒选道**：先按 §5.2 判级速查的分流行回答三问 → 命中 L3 任意项或三问 ≥2 命中 → **L2-F 完整 11 步**（§2.4）；其余、且满足触发条件 → **L2-S 短工作流**（§2.3）；L1 → 快速通道（§2.2）。每次选道在任务记录里留一行。
 
-### 2.2 L2-S short workflow (default for small modules)
+### 2.1 前置：状态澄清（目标 / 现状模糊时）
 
-**Trigger**: ≤3 files, single domain, same shape as existing patterns; §5 three questions <2 yes.
-1. **Integration-truth survey (mandatory, never skipped)** — table before any write:
-   | 模块 | API/端点 | 对接方式 (path/method/envelope/fields/package) | 证据来源 (source:line / contract / docs) |
+当用户理不清项目状态、目标不明、或主流程第 1 步发现现状模糊时，**先走「状态澄清」对话**（`references/workflows.md` §0.0 澄清流程）：主导式逐层追问（一次一问）→ 摸清现状、拆解问题、锁定关键线索 → 产出【澄清纪要：目标 / 现状 / 约束 / 卡点】→ 用户确认后回到选道（§2）继续。
+
+### 2.2 L1 快速通道（小改动、可逆、低影响）
+
+**触发**：§5.2 判级为 L1（改名、文案、格式、单行修改等）。
+
+1. **一句话复述**（目标 / 边界）。
+2. **最小修改**：只改任务要求的范围。
+3. **最小验证**：跑最小粒度验证命令，**记录退出码**（lint / type-check / 测试——以项目自身基线为准）。
+4. **一行汇报**。
+
+**模板**：`L1 快速通道: 改 X → "cmd"(exit=0) → done.`
+**自检**：□ 复述已记录 □ 验证命令可重跑且清 □ 任务记录标注「L1 快速通道」（是命名通道，不是静默跳步）。
+
+### 2.3 L2-S 短工作流（小模块默认道）
+
+**触发**：≤3 文件、单域、与既有模式同构；§5.2 三问 <2 命中。**哪怕涉及 1 个新端点 + 1 个新依赖，仍走 L2-S**——但必须走第 1 步对接真相清单。
+
+1. **对接真相调研（必做，绝不跳过）**——任何写码前先填这张小表：
+
+   | 模块 | API/端点 | 对接方式（path/method/envelope/fields/package） | 证据来源（source:line / contract / docs） |
    |---|---|---|---|
-   Fill rule: grep call site → read schema/type → confirm package ownership → then write. Naming intuition is banned (2026-08-30 counter-examples: envelope unwrap, `api.get`→ApiResponse, recharts wrong workspace, Nest DI name).
-2. Restate 改哪 / 影响什么 / 怎么验 (3 short lines).
-3. No plan doc: single file → do it; ≤3 files → one line "change + acceptance + rollback baseline".
-4. Execute + minimal verification (rerunnable, capture exit).
-5. GATE line (§7) + status-surface contribution (§11).
-**Check**: □ integration table rows have evidence source □ 3 acceptance criteria are verifiable (number/visible state/rerunnable check) □ GATE cmd reruns.
-**Boundary**: skips internet dual-survey / deep five-questions / plan doc / repeated asking — but ask-before-acting & red lines are NOT waived; direction/boundary ambiguity → §4.
 
-### 2.3 L2-F full 11-step master (large modules)
+   **填表规则**：grep 调用点 → 读 schema/类型 → 确认包归属 → 才写。**命名直觉是被禁止的**（2026-08-30 反例四则：envelope 不解包、`api.get` 实际返回 ApiResponse、recharts 走错包、Nest DI 名称不匹配）。
+2. **复述 3 短行**：改哪 / 影响什么 / 怎么验。
+3. **免 plan 文档**：单文件 → 直接做；≤3 文件 → 一行「改动 + 验收 + 回滚基线」。
+4. **执行 + 最小验证**（可重跑，捕捉退出码）。
+5. **GATE 行（§7）+ 状态面贡献行（§11）**。
 
-**Trigger**: §5 three questions ≥2 yes, or any L3.
+**自检**：□ 对接表每行有证据来源 □ 3 条验收可验证（数字 / 可见状态 / 可重跑）□ GATE 命令可重跑。
+**边界（省什么）**：免联网双调研（S2/S1 档，见 workflows.md §0.5）、免产品五问深度、免 plan 文档、免多轮提问——**但必问协议与红线不豁免**；方向 / 边界有歧义 → §4。
 
-| # | Step (trigger → action) | Exit artifact (template) |
+### 2.4 L2-F 完整 11 步主流程（大模块 / 任何 L3）
+
+**触发**：§5.2 三问 ≥2 命中，或命中 L3 封闭清单任意项。
+
+> **最铁铁律（复用铁律）**：以最少的代码，实现最完整的功能和体验，并达到需求描述——就是最好的代码。能复用就复用，风格适配或二次开发都可以，**绝不自己自研组件**。
+> **设计成本铁律**：好的设计是昂贵的，但糟糕的设计成本更高——界面、交互、架构决策按「后期改造成本」评估，不按「当下实现成本」评估；炫酷特效实现成本低，可用性差或后期改造的代价高。
+
+| 步 | 动作（触发 → 执行） | 出口产物（无则不进入下一步） |
 |---|---|---|
-| 1 | Receive instruction → distill essence | one-line task essence |
-| 2 | Experience search: read `memory/experience-mustread.md` (TOP ≤10) FIRST + symptom-grep `experience.md` hot segment | hit-records; 0 hits → note "no prior experience" |
-| 3 | Reality survey: read structure/contracts + integration-truth table (§2.2) + module list with **real status** (done/planned/not-started) | fact list (file:line) |
-| 4 | Online survey: candidates + trust signals (stars/activity/adoption/community/security) | survey record (`degraded-offline` tag if no net) |
-| 5 | Reuse decision (local → mature OSS; five-question chain; self-build only if all empty + reason) | reuse conclusion |
-| 6 | Restate understanding (goal/boundary/acceptance) | user confirmation |
-| 7 | Ask anything unclear (§4) — no code before clarity | ask/confirm record |
-| 8 | Product-view five questions (mandatory): one-line user-request decomposition / ≥1 rejected alternative / rework-cost / boundaries+not-do / 3-5 acceptance | five-question record (+ L3 risk-layer evidence) |
-| 9 | Plan doc (plan-template: acceptance 3-5 verifiable + rollback point; goal-mode adds budgets/file borders) | plan |
-| 10 | Execute with checkpoints; goal mode auto-stop over budget | execution record |
-| 11 | Verify (rerun core flow) → real-user walk-through → five-check → GATE → archive (§10) → commit | GATE + records |
+| 1 | **接收指令**：第一性原理理解——本质 / 必要 / 惯性 | 任务本质一句话 |
+| 2 | **经验必读**：先读 `memory/experience-mustread.md`（TOP≤10，先于症状检索）→ 按症状 / 关键词检索 `experience.md` 命中段 | 检索命中记录（0 命中 → 记「无既往经验」） |
+| 3 | **调研实际资源**：真实代码（现状证据）+ 结构 / 契约 + **对接真相表（§2.3）** + 模块清单（**真实状态**：已实现 / 规划中 / 未实现）+ 环境 + 可用 Skill / MCP | 现状事实清单（含文件 / 行号 / 结论） |
+| 4 | **联网调研·必须**：调研市面上开源成熟项目 / 库 / 方案；收集**可验证的可信信号**（stars / 下载量 / 维护活跃度 / 被采用证据 / 社区口碑 / 安全通告），**不以「网上都说火」为依据**——榜单热度只作被发现度参考，不作质量证据；细节见 `references/workflows.md` §0.2。**离线 / 无网络是合法降级**：跳过远程调研，出口产物标注 `degraded-offline`，以本地证据 + 经验库替代 | 市面方案调研记录（候选 + 可信信号 + 口碑 + 安全风险 + 降级情况） |
+| 5 | **复用调研·铁律**：本地项目 → 市面开源成熟项目；能复用就复用（复用五问），**绝不自己自研组件** | 复用结论（候选 + 适配方案 + 自研理由，仅全链无解时） |
+| 6 | **复述理解**：目标 / 边界 / 验收口径 | 用户确认（对齐后继续） |
+| 7 | **疑问必问**：执行不理解或方向偏移 → 提问并结束回合等待（§4） | 提问 / 确认记录 |
+| 8 | **产品视角审查 + 约束假设 + L1/L2/L3 分级 + 回滚点**：以产品角度审视（体验与表现优先）；**产品视角五问（L2/L3 计划默认强制）**——诉求一句话拆解 / 被否候选 ≥1 / 返工成本 / 边界与不做的清单 / 3-5 条可验证验收；触发「反复要求审查 / 存量项目反复不足 / 知道不够好但说不清」时，**先做产品完善度诊断**（五问定位缺陷落在：功能逻辑 / 代码耦合 / 界面 UI / 人性化互动流程 / 其他，见 workflows.md §0.3）再动手 | 五问记录 + 风险分级 + 回滚点记录 |
+| 9 | **规划与验收文档（强制双调研后）**：先完成**双调研**——①工程师视角（代码实况 / 技术可行性 / 复用，见第 3、5 步）②产品经理视角（当前设计规划的合理性：本质需求 / 设计是否完备 / 体验·UI·交互是否符合产品定位，见 workflows.md §0.4）——再产出**详细规划文档**（双调研结论 + 功能清单优先级 + 3-5 条可验证验收标准；目标模式加预算与文件边界） | 详细规划文档（含双调研结论） |
+| 10 | **执行**：按分级执行；目标模式按计划自主、节点记录、超预算自动停 | 执行记录 / 变更 |
+| 11 | **自查与归档**：最小验证 → 真实用户走查一遍（不可用改到可用，允许多轮）→ 交付五查 → GATE 块 → 留档（§10）→ 提交附说明 | GATE + 验证结果 + 归档 |
 
-**Check**: □ every exit artifact exists before next step □ rollback point before disruptive work □ GATE cmd reruns exit 0.
+**门禁**：进入下一步前，上一步的出口产物必须存在且已记录；无法产出的步（如明确无需调研）也要在任务记录里写明理由，不得静默跳过。
 
-### 2.4 New project / first load — project information doc
+### 2.5 新项目 / 首次加载——项目信息文档
 
-**Trigger**: first task in a workspace with no docs/指导说明 (or fragmentary).
-1. Create `docs/project-info.md` (index-style if docs already cover parts — never duplicate content).
-2. Six sections: ① architecture (shape/package boundaries/one-line data flow) ② goal planning (summarized from the user's description, staged) ③ module table `模块 | 真实状态(已实现/规划中/未实现) | 关键描述` (real status is the lifeline — never mark planned as done) ④ research navigation (this doc's purpose: research these / skip those, by status×change surface) ⑤ reference resources (name+purpose+path, reusable later) ⑥ restate to the user for confirmation (signature column).
-3. Each session: minimal-diff update (status/goal/new resources) + note in task record.
-**Check**: □ six sections □ status factual □ restate confirmed by user □ updated this session if changed.
+**触发**：工作区第一个任务，且无 `docs/` 指导说明（或碎片化）。
 
-## 3. Step 0: Platform detection & injection
+1. 创建 `docs/project-info.md`（若文档已覆盖部分 → 建索引式入口，**绝不重复内容**）。
+2. **六节**：①架构（形态 / 包边界 / 一行数据流）②目标规划（从用户描述提炼、分期）③模块表 `模块 | 真实状态(已实现/规划中/未实现) | 关键描述`（真实状态是命脉——**绝不可把规划中的写成已实现**）④调研导航（本文档用途：按状态 × 改动面决定调研哪些 / 跳过哪些）⑤参考资源（名称 + 用途 + 路径，后续可复用）⑥复述给用户确认（签名列）。
+3. 每个会话：最小 diff 更新（状态 / 目标 / 新资源）+ 任务记录留一行。
 
-**Trigger**: first run on a platform.
-1. Detect platform → injection point (Trae `~/.trae-cn/user_rules/*.md` | Codex `AGENTS.md` | Claude `CLAUDE.md` | Cursor `.cursor/rules/*.mdc` | Windsurf `.windsurfrules` | WorkBuddy `BOOTSTRAP.md`).
-2. Write injection-core core (≤~55 lines) — merge, never overwrite; backup `<file>.bak-<date>` first.
-3. After write: re-read injected copy → three-way consistency (SKILL §5.2 block = injection-core = injected copy).
-**Boundary**: never preload references.
+**自检**：□ 六节齐全 □ 状态属实 □ 复述已获用户确认 □ 本会话有变更则已更新。
+**完整引导**（含 4 步运行序 / 严格度档位 / 诚实前提）见 `references/new-project-bootstrap.md`。
 
-### 3.1 Skill self-update protocol (three-way merge, user-local wins)
+## 3. 第 0 步：平台检测与注入（加载 / 首次执行）
 
-**Trigger**: this skill updated upstream; user asks to pull/update (or status surface shows version mismatch).
-1. Run `python scripts/syncer.py` (repo root): it does ① health-diff (finds user-owned files in the installed copy) ② backup `.bak-<ts>` ③ migrate non-source files (e.g. `personal-playbook.md` → `user-notes/`) ④ overwrite upstream (SKILL/references/templates) ⑤ write change-list + dual task-log (repo `memory/task-log` AND installed-copy `memory/task-log`).
-2. Merge policy (layer table): source-authoritative (triage block/red lines/ask protocol — three-way consistency) → upstream wins; **user rules in `user-notes/` + `memory/` → NEVER touched (local user wins)**; coexist files → both kept; unresolvable conflict → keep local + mark `CONFLICT` in list for user.
-3. Never edit in place by hand: any manual edit to installed copy belongs in `user-notes/` (else the next sync overwrites it).
-**Check**: □ script ran with exit=0 □ change-list exists (both logs) □ user-notes/ & memory/.bak untouched □ version line updated in both copies.
+开始任务前，先把本工作流硬加载到当前平台：
 
+1. **检测平台**：按 `references/platform-adaptation.md` 的特征清单判断（目录标志、环境变量、工具可用性）。
+2. **定位该平台真实注入点**：按 `platform-adaptation.md` 注入点表——Trae：`~/.trae-cn/user_rules/*.md`（用户全局，文件存在即每会话自动注入，无需应用内启用）或项目 `.trae/rules/project_rules.md`；Claude Code：`~/.claude/CLAUDE.md` 或项目 `CLAUDE.md`；Codex：`AGENTS.md`；Cursor：`.cursor/rules/*.mdc`；Windsurf：`.windsurfrules`；WorkBuddy：agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`）。只写进应用从不读取的工作区文件是**无效的**。
+3. **询问注入模式**（写规则文件前，用 §4 降级链提问，让用户选择）：
+   - **按需注入（默认）**：注入点只写精简纪律并回指本 Skill（约 9 行），完整 Skill 由平台按触发激活——上下文开销最低。
+   - **强制注入（硬加载）**：把 `references/injection-core.md` 的核心全文写入该平台注入点（**先备份既有文件、合并不覆盖**）——工作流每会话无条件在场，不依赖模型自觉加载本 Skill（每会话固定约 2-3K token）。**注意：不要用「每个会话开工前必须完整读取本 Skill 的 SKILL.md」这类弱指令实现强制注入——模型不会可靠执行，必须直接写入核心全文。**
+   无提问工具可用时默认按需注入，并明确告知用户。
+4. **选定生效的提问机制**：按 §4 的降级链取第一个可用项。
+5. **校验生效**：写入后**回读注入副本 → 核对三级一致**（SKILL §5.2 判级块 = injection-core.md = 平台注入副本）；复述生效要点（平台、注入点、注入模式、提问工具）；注入未确认生效前不得宣称成功。未完成前不得开始任务。
 
-## 4. Ask-before-acting protocol
+**边界**：绝不预载 references。
 
-**Trigger**: direction/boundary/conflict/permission/secrets/destructive/architecture/scope-expansion fuzzy — or "triage ≠ understanding confirmed".
-**Steps**:
-1. Never code first: trigger fires → stop and ask before implementation.
-2. Every question carries **recommended option + core reason + consequence of alternative** — never open-ended "what do you want?" Core reason to state: "insufficient preparation + fuzzy requirement is the real pain point" (user wording, internalized).
-3. Ask via platform question tool; if none → structured text protocol (understanding + options pros/cons + risks + recommendation), then end turn.
-4. Timeout/empty-answer: prefer cancelling the wait (host support); if not — **do not treat empty answer as approval**: research real implementation + known intent → produce closest-to-project recommended solution → mark **"pending user confirmation"** for one-shot confirm.
-5. After answer: confirmed → act; redirected → re-split (§5); rejected (not what they wanted / workflow wrong) → **rejection log** (§12 R1).
-**Check**: □ recommendation+reason in question □ no implementation before clarity □ empty-answer path = research+pending-confirm, never silent action.
+### 3.1 Skill 自更新协议（三路合并 · 本地用户优先）
 
-### 4.1 Restatement amplification (RE) — sub & total restate, user knows the "why" continuously
+**触发**：本 Skill 上游更新；用户要求拉取 / 更新（或状态面显示版本不一致）。
 
-**Trigger**: a key decision is made / direction changes / a caliber (口径) is confirmed — do NOT wait for task end.
-1. **Sub-restate (immediately, one line)**: `决定 X｜依据：<evidence / user wording / root cause>｜影响：<scope>` → append to task-record decision row.
-2. **Total restate (block end)**: summarize decision chain / evidence chain / impact / open points; **sub-restates distill to bullet points only** — no full-text repetition, no log stacking.
-3. Sub-restate tells the user *what the model decided from what*; total restate is the compact map of the block.
-**Template**: `决定：对 X 采用 A（评分/理由一句话） ｜ 依据：<…> ｜ 影响：<…>`
-**Check**: □ every key decision has an evidence sentence □ total covers all sub points (bullets) □ no duplicated paragraphs.
-**Boundary**: trivial detail decisions (§12 P4) do not need sub-restate — only their log line.
+1. 运行 `python scripts/syncer.py`（仓库根）：①体检（发现副本中上游没有的用户文件）②备份 `.bak-<ts>`（**备份落在 `skill-backups/`——平台扫描路径之外**，见下）③迁移非源文件（如 `personal-playbook.md` → `user-notes/`）④覆盖上游（SKILL / references / templates）⑤落变更清单 + 双 task-log（仓库 `memory/task-log` 与副本 `memory/task-log`）。
+2. **合并策略（分层表）**：源权威（判级块 / 红线 / 必问协议——三级同步链）→ 上游胜；**user-notes/ 与 memory/ 中的用户规则 → 永不碰（本地用户胜）**；共存文件 → 两边都留；不可解冲突 → 保留本地 + 清单标注 `CONFLICT` 交用户。
+3. **只许写入 user-notes/**：手动修改副本必须写 `user-notes/`，否则下次同步被覆盖。
+4. **验收判据（2026-08-30 WorkBuddy 实测）**：**平台加载时的 Base directory 是唯一可信证据**——文件版本号一致 ≠ 升级成功；同步后务必确认平台解析到的目录是正式目录而非备份目录（备份目录若位于平台扫描路径内，会被当成第二个同名 Skill 收录并可能选中旧版）。
 
+**自检**：□ 脚本 exit=0 □ 变更清单存在于两处日志 □ user-notes / memory / .bak 未被碰 □ 备份目录在扫描路径外 □ 两个副本的版本行一致。
 
-## 5. Execution modes & task triage
+## 4. 关键必问协议
 
-### 5.1 Modes
-- Normal (default): every major decision asks; understanding-not-sure asks.
-- Goal (`目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended`): per written plan; pause only for L3-major or hard block; else decide → research-first → recommend → archive; rollback local-first, no push by default.
-- Quiet (`安静模式`/`quiet`/`quiet mode`): L1 report result only; L2/L3 unchanged; secrets/destructive still ask.
-**Check**: □ mode keyword present? □ mode obligations in task record.
+**触发**（命中任一即停止并提问）：方向不明或有歧义、**理解不尽确定**、需求冲突、权限/密钥处理、破坏性操作（删除、迁移、覆盖写、对外发布）、架构或技术选型、范围扩大、方案分歧。**问清楚比问少了更重要，理解需求比模糊执行更重要。**
 
-### 5.2 Triage (10 seconds) + flow split
+**红线 ↔ 必问映射（速查）**：
 
-| Question (answer these 3) | Yes count | Lane |
+| 触发 | 必问动作 |
+|---|---|
+| 密钥 / 权限 | 暂停；绝不把密钥写入代码 / 文档 / 提交 / 对话；涉及权限授予先问 |
+| 数据删除 / 迁移 | 暂停；先列命令清单 → 等确认再执行 |
+| 数据或服务迁移 | 暂停；先问迁移方案与回滚点 |
+| 对外发布 | 暂停；先获用户批准，再进入约 30 分钟观察期 |
+| 架构选型 | 暂停；先给选型对比 + 推荐 + 理由 |
+| 超预算破坏性操作 | 暂停；列命令清单 → 等确认 |
+
+**提问规则**：
+1. 绝不先动手：触发即停，问清楚再实现。
+2. 每个问题**必带推荐选项 + 核心理由 + 替代方案的后果**——绝不留开放式的「你想要什么？」。核心理由要说清楚：**准备不充分 + 需求模糊才是真正的痛点**。
+3. 提问走**降级链**（取第一个可用项）：①平台原生提问工具（`request_user_input`、`AskUserQuestion`、`ask_user` 等）②不可用时：结构化文本协议——呈现（a）理解、（b）选项与优缺点、（c）风险与后果、（d）推荐方案——然后**结束回合等待答复**。完整协议见 `platform-adaptation.md`。
+4. **超时 / 空答 ≠ 批准**：优先取消等待（宿主支持时）；不可取消时——按项目实况调研 + 已知意图 → 产出最近接项目现实的推荐方案 → 标注**「待用户确认」**一次性确认。
+5. 答复后：确认 → 执行；改向 → 重新选道（§2）；拒绝（不是他要的 / 流程不对）→ **拒绝日志**（§12 R1：原话 + 隐含需求 → 偏好或需求变更 → 回流）。
+
+**偏好记忆**：用户做出确认的选择（如经提问工具选定的技术栈 / 语言 / 风格）后，写入 `memory/preferences.md`（§10）；**写入后主动向用户复核大类方向**（技术栈 / 语言 / 风格方向是否对头），用户指出偏离则按其修正；同类场景下次直接采用，不再重复询问。密钥与破坏性意图绝不写入偏好。
+
+**冲突仲裁序**——当两个指令源相抵触（本 Skill 指引 vs 项目纪律 vs 设计稿 vs 其他 Skill 默认），按以下固定顺序取最优，**只保留胜者**（从工作笔记中删除败方引用——绝不两边都听，也不和稀泥折中）：
+
+1. 用户 / 项目纪律（项目规则文件、已确认的 D 系决策、设计契约）——brief 优先；
+2. 平台硬注入核心（注入点正文）；
+3. 当前交付物的设计稿 / brief；
+4. 本 Skill 默认值；
+5. 其他已加载 Skill 的默认值。
+
+在任务记录中留一行仲裁记录（`来源 A vs 来源 B → 采用 X，因为 …`）。同一理由的冲突被裁决两次，即升格为常设决策：写入 `memory/preferences.md`，不再散落临时笔记。
+
+### 4.1 复述增强 RE（子复述 + 总复述）
+
+**触发**：做出关键决定 / 方向改变 / 口径确认——**不要等到任务结束**。
+
+1. **子复述（即时，一行）**：`决定：对 X 采用 A（评分/理由一句话）｜依据：<证据 / 用户原话 / 根因>｜影响：<范围>` → 追加进任务记录决策行。
+2. **总复述（块尾）**：总结决策链 / 证据链 / 影响面 / 未决点——**子复述只提炼要点**，不全文重述、不堆日志。
+3. 子复述让用户知道「模型依据什么做了什么决定」；总复述是块内紧凑地图。
+
+**自检**：□ 每个关键决定有证据句 □ 总复述覆盖全部子点（要点式）□ 无重复段落。
+**边界**：琐碎细节决定（§12 P4）不需子复述——只需其日志行。
+
+## 5. 执行模式与任务判级
+
+### 5.1 三模式（默认 = 普通模式）
+
+| 模式 | 触发 | 行为 |
 |---|---|---|
-| ① ≥3 packages / spans api+contracts+frontend? ② contracts/architecture/migration/publish/security? ③ user named "follow the workflow / strict analysis"? | **≥2** → **L2-F** (§2.3) |
-| | else → **L2-S** (§2.2) |
-| L1: small/reversible/low impact | always | L1 (§2.1) |
-| L3 closed list (secrets/permissions · data deletion · data/service migration · external publish · architecture choice · over-budget destructive) | always ≥ | L2-F + pause line (ask; local backup never replaces confirmation) |
-**Check**: □ one-line triage in task record □ L2-F boundary templates written (new endpoint+contract+two pages / architecture / migration / secrets+publish / multi-module joint).
+| **普通**（默认） | 无关键词 | 每个关键决策执行前必问（§4，含理解不尽确定时必问）；**关键决策即时复述确认 + 决策审计归档**（重要决策同样落盘供可解释） |
+| **目标模式** | 关键词 `目标：` / `目标模式` / `无人值守` / `goal mode` / `unattended` | 按书面计划自主执行；**暂停仅两种情形——重大决策（L3）/ 严重阻塞问题**；其余重要决策「先调研 → 按第一推荐推进 → **完整归档供审计翻阅**」；**每里程碑强制留档**；密钥与破坏性操作仍暂停并等待用户；**回滚点走本地备份、默认不 git push（省宽带 + token）；本地快照就绪 → 破坏性 / 修改类操作可安全执行（L3 除外，仍暂停）** |
+| **安静模式** | 关键词 `安静模式` / `quiet` / `quiet mode` | L1 任务只汇报结果（跳过中间推理 / 调研步骤展示），降低视觉噪音与 Token 焦虑；L2/L3 不受影响；密钥与破坏性操作仍必问 |
 
-## 6. Minimal closed-loop delivery (step 11 essence)
+目标模式附加职责：执行**前**写计划（范围、风险评级、时间/轮次预算）；子任务按文件边界拆分；边执行边记录；超预算自动停止；结束时交付复盘文档 + 待确认清单。**每条用户消息（含任务中途消息）都要检查模式关键词**——触发词是活开关，会静默改变决策模型。
 
-1. Run the core flow for real — **no run = not done**.
-2. Walk through as a real user once (L2-F always; L2-S smoke the referenced path); fix usability issues until actually usable (multiple rounds allowed).
-3. Six-report: what ran / exit code / what changed / unverified (exempt) / knowledge points / user-visible errors logged to the log module.
-**Template**: GATE (§7).
+### 5.2 判级速查（10 秒定论，一句话即止，禁止展开论证）
 
-## 7. Quality gates & rollback
+> **本块是 L3 封闭清单、L1/L2 速判与三条跑道分流的唯一权威源**；`rules.md`、`workflows.md` 等引用处只做摘要并回指本节。**三级同步链（三级必须一致）**：`injection-core.md` 因注入环境自包含必须保留全文（是其一例外），且它已被部署为平台全局注入副本——**本块 → `injection-core.md` → 已注入的平台全局副本**三级必须同步；改判级先改本块，再同步 injection-core，最后重新部署到注入点。
 
-**Trigger**: before commit / before disruptive change.
-1. **GATE block** (per task block): `GATE: {v=<scope>, cmd=<rerunnable cmd>, exit=<exit code>, files=<changed files>, lessons=<knowledge points>, exempt=<unverified claims>}`.
-2. **Five-check before delivery**: missing requirements / edge cases / temporary or commented code / unrelated modifications / **errors logged to the log module** (grep `console.` / empty `catch {}` in diff = zero tolerance when a log module exists).
-3. **Rollback point**: git tracked → clean tree + commit/stash/branch BEFORE disruptive work; record the line ("current clean baseline is the point" allowed).
-4. **Log-module enforcement**: design line in the integration table (`报错→哪种日志/级别/谁调/文案同源`); catch triple = log + user-visible fallback + (if needed) audit trace; user-visible message and log message stay in sync.
-**Check**: □ GATE cmd reruns with recorded exit □ five-check done □ red line never crossed (`approval:never` exempts tool-level approval only, never confirmation duty).
+- **L3 封闭清单（仅 6 项，不在清单内一律不是 L3，不得自行扩展）**：密钥/权限｜数据删除｜数据或服务迁移｜对外发布｜架构选型｜超预算破坏性操作。
+- **L1 速判**：改名、文案、格式、单行修改等可逆小改动 → 直接做，不问、不展开。
+- **L2**：新功能、多文件、跨模块 → 记录后做，关键点汇报。
+- 10 秒判不了级 → 默认按 L2 直接推进；判级结论一句话即止，除命中 L3 清单外判级本身不追问用户、不展开分析。
+- **判级 ≠ 理解确认**：判级可以快，但「目标 / 边界 / 方向有歧义、理解不尽确定」时，普通模式也必问——用提问工具问清楚再推进。
 
-## 8. Gotchas
+**跑道分流（三问，一次答完，防内耗）**：
 
-- Same-session no-reload: already-loaded content not re-read unless compacted / explicit / source changed.
-- Main flow: no step skipping; the survey steps are the most-skipped — use lanes instead.
-- Over-asking kills adoption: decide non-core details yourself (§12 P4) and keep going.
-- Skill load ≠ task start.
-- Secrets never in code/docs/commits/dialogue; leak → rotate immediately.
-- Regression ≥3 or high-rework → promote to must-read (§12 P2).
-
-## 9. Reference map — load on demand
-
-**Trigger**: a step needs the specific how-to, or an error matches a symptom class (banned: preloading).
-1. Read the map (below), open ONLY the matched file by category.
-2. **Mandatory error-time entry point**: on error / unexpected API shape / unknown field or endpoint / new dependency not working → FIRST search `details.md` symptom class (e.g. build-tool, [Contract], [Ops]) then change code; on hit, one reference line into the task record.
-3. After use: one citation line (`细则 #N 命中：…`).
-
-| reference | content | trigger |
+| 三问 | 命中 | 走哪条 |
 |---|---|---|
-| injection-core.md | platform-injected core (triage/11-step/modes/red lines/update order) — always in context | every session (injected) |
-| workflows.md | task-type flows & quality gates (§0 preludes incl. product-view & research matrix) | step-8/9 quality doubts |
-| details.md | concrete pitfall entries, 13 classes, symptom index | symptom keyword matches (build tool / framework version / API shape / deploy …) |
-| rules.md | 47 numbered discipline rules (8 groups) | discipline disputes |
-| security.md | 6 production red lines + open-source install check + response plans | secrets/publish/supply-chain |
-| never-list.md | bright-line never list (7 groups) | before commit / before L3 |
-| skill-usage.md | skill discovery/loading rules | multiple skills / front-end class load |
-| personal-playbook.md | personal-zh only: 11 stack symptom→root→fix→prevention tables | personal edition start / troubleshooting |
+| ① 跨 ≥3 包 / 跨 api+contracts+前端？② 涉契约·架构·迁移·对外发布·安全？③ 用户点名「按流程 / 严格分析」？ | **≥2 命中** → | **L2-F 完整 11 步**（§2.4） |
+| | 其余 → | **L2-S 短工作流**（§2.3，默认） |
 
-**Check**: □ matched file only □ citation line if used □ preloading avoided (0-hit audit evidence: engineering consumption of details.md = 0; entry point above is the fix).
-**Boundary**: details.md = pitfall log, not tutorial.
+**自检**：□ 任务记录有一句判级 □ 命中 L3 → L2-F + 暂停行（先问；本地备份取代不了确认）□ L2-F 的边界模板已写（新端点+契约+两页 / 架构 / 迁移 / 密钥+发布 / 多模块联合）。
 
-## 10. Records & knowledge discipline
+## 6. 最小闭环交付（第 11 步的交付原则）
 
-**Trigger**: session start / block end / session end.
-- **Session start**: read `memory/` one screen — `experience-mustread.md` TOP FIRST (≤10, one-line symptom + one-line countermeasure; ≥3 hits or high-rework promotes; two clean periods demotes), then `state.md`, then `experience.md` symptom search.
-- **Block end**: task record append (understanding → acceptance → decisions → results → GATE) — timestamp **`YYYY-MM-DD HH:mm:ss`** (seconds REQUIRED; day-granularity counts as incomplete).
-- **Session end**: ① minimal verification + self-check ② task-log ③ experience (new/recurring; one copy, cross-ref) ④ preferences (+ remind user to re-check direction) ⑤ commit docs+code together; then distill 1-5 knowledge points (default 3).
-- **Live header check**: header `更新：` timestamp must be ≥ newest body entry; updating body without header = violation.
-- **Record size cap**: task record >~120 lines or >3 task blocks → new file (`-名称-2.md`) or archive.
-**Check**: □ must-read read before work □ timestamps to seconds □ live-header consistent □ record within cap.
+1. **理解**：用 1-3 句复述目标、边界、验收口径。
+2. **最小修改**：只改任务要求的范围。优先复用已有代码、依赖、平台原生能力与现成开源方案，而非新写（复用五问决策链见 `references/workflows.md`）。
+3. **最小验证**：跑最小粒度的验证以证明改动有效——**真实跑一遍，没跑 = 未完成**；然后**以真实用户身份走查一遍**（L2-F 必做；L2-S 冒烟所涉及的路径），不可用改到可用（允许多轮）。
+4. **交付成品**：不交半成品、不留占位。未完成的必须显式标注（`TODO`、`未实现`、`待验证`）。**绝不假实现。**
+5. **六项报告**：跑了什么 / 退出码 / 改了什么 / 未验证项（注明豁免）/ 知识点 / 用户可见错误已写入日志模块（项目有日志模块时，见 §7）。
 
-## 11. Session status surface (end-of-session consistency report — user review; NOT compliant/effective claim)
+## 7. 质量门禁与回滚
+
+**触发**：提交前 / 破坏性变更前。
+
+- **GATE 块（每任务块末尾，第 11 步出口产物）**：一行 `GATE: {v=<范围>, cmd=<可重跑命令>, exit=<退出码>, files=<变更文件>, lessons=<知识点>, exempt=<未验证声明>}`。**可重跑的工件 > 自我叙述**；验收权在用户；`approval:never` 只豁免工具级审批，**永不豁免确认义务**。
+- **交付五查**：缺失需求 / 边界情况 / 临时代码与注释代码 / 无关改动 / **错误已写入日志模块**（项目有日志模块时，diff 里 grep `console.` / 空 `catch {}` = 零容忍）。
+- **日志模块强制（项目有日志时）**：设计期的对接真相表留「日志对接行」（报错 → 哪种日志 / 级别 / 谁调 / 文案同源）；catch 三件套 = 记日志 + 用户可见降级提示 + （如需）审计线索；用户可见文案与日志文案同源。
+- **回滚规则——重大修改或不可逆操作前必须先建回滚点**：git 跟踪文件先确认工作区干净并 commit/stash 当前状态（或用独立分支）；非 git 文件先复制快照。回滚点就绪后方可开始改动。
+- **原子操作锁（L3 破坏性操作）**：删除 / 迁移 / 覆盖写 / 发布类操作，除建回滚点外，**先输出你打算执行的命令清单、结束回合等待用户确认，确认后才执行**——把最后一道闸门交给人类，而非 Agent 自觉。
+- **对外发布**：先获用户批准，再进入约 30 分钟观察期（监控错误率 / 延迟 / 告警），异常走回滚预案。
+- **ExitPlanMode 四件套**（提交任何 plan 前自查，缺一不可）：①验收标准 3-5 条 ②一句判级（L1/L2/L3）③回滚点（或明示「当前干净基线即回滚点」）④边界与不做的清单。
+
+## 8. 易错点（Gotchas）
+
+- **判级内耗**：琐碎判级一句话定论——改名 / 文案 / 格式类问题一律 L1 直接做；L3 只认 §5.2 封闭清单，清单外不构成 L3。为判级展开论证或反复纠结是 token 浪费的最大来源之一。
+- **同会话重载是纯浪费**：当前会话已加载过的 Skill / 引用文件，同会话内的下一个任务**不再重读**——「每会话重载」纪律适用于跨会话（全新上下文），不适用会话内。仅在上下午压缩后、用户显式要求重载、或源文件已变更时重读。
+- **流程不可跳步**：调研（第 4 步）与复用调研（第 5 步）最容易被跳过——且三问分流后的「小模块免全量调研」不是跳步，是选道（§2.3 边界写明省什么）。
+- **反复要求审查时先做产品完善度诊断**：用户反复要求审查 / 反复觉得不足 /「知道不够好但说不清」，先以产品角度定位缺陷落在哪一层（功能逻辑 / 代码耦合 / 界面 UI / 人性化互动流程 / 其他，见 workflows.md §0.3）再动手——别用工程师思维只查代码正确性。
+- **触发关键词是活开关**：目标模式关键词（`目标：`、`unattended` 等）会静默改变决策模型。每条用户消息（含任务中途消息）都要检查。
+- **绝不覆盖已有规则文件**（`AGENTS.md`、`CLAUDE.md` 等）：只备份 + 合并。
+- **用户想法与代码冲突**：代码与实测为准，直说，不静默执行错误指令。
+- **平台无原生提问工具**：最常见的失败是埋头直冲而不使用文本协议并结束回合。先问，永远不擅自动手。
+- **过度提问会毁掉采纳率**：L1 反复确认是让用户禁用本 Skill 的最快方式。默认：L1 直接做，L3 必问；非核心细节自己决定（§12 P4）。
+- **Skill 加载 ≠ 任务开工**：即使用户消息看起来简单，§2 跑道也强制执行。
+- **密钥**（key、token、密码）绝不进入代码、文档、提交或对话。提交前扫描；泄露立即轮换。
+- **结论立刻落盘**：分析时即时记录，拖到收尾再写会在长会话中丢失。
+- **细则层「活着」不是装饰**：错误 / API 返回意外形态 / 未知字段或端点 / 新依赖不生效 → **先查 `details.md` 症状类再改代码**（§9 错误时强制入口），命中后在任务记录留一行引用；会话末用 grep 取证行报告命中数（0 照报 0），不靠自述。
+- **同坑 ≥3 次即晋升**：同一踩坑在单项目 ≥3 次（或高返工成本）→ 晋升进 `memory/experience-mustread.md` TOP 列表（一行症状 + 一行对策）；2 个干净周期无命中 → 降级。
+- **Skill 升级验收看 Base directory**：文件版本号一致不代表平台加载了新版——平台解析到的加载目录（Base directory）才是唯一可信证据（§3.1）。
+
+## 9. 引用地图——按需加载
+
+**加载纪律**：只在（a）命中下表**触发症状**、（b）走到点名该文件的步骤、或（c）用户显式要求时才打开对应引用，**绝不预载**。某份引用影响了决策时，在任务记录里留一行引用——这是细则层保持「活着」而非装饰的关键。
+
+| 文件 | 内容 | 何时加载 / 触发症状 |
+|---|---|---|
+| `references/injection-core.md` | 平台无关核心——判级速查 / 三级跑道 / 必问 / 红线 / 留档（每会话注入在场） | 第 3 节强制注入（硬加载）时；「写进我的平台规则」 |
+| `references/platform-adaptation.md` | 平台检测 / 注入点表 / 提问工具降级链 / 结构化提问协议全文 | 第 3 节平台检测；平台未知 / 无原生提问工具 / 注入点存疑 |
+| `references/skill-usage.md` | Skill 能力发现/注册机制 + 加载决策路由 + 渐进/完整读取分类 | Skill 选型纠结 / 前端设计类任务 / 本地无 Skill 可用 / 弱模型场景 |
+| `references/rules.md` | 编号工程纪律（地基）；引用具体规则编号或需查规则原文时 | 纪律争议 /「哪条规则这么说的」 |
+| `references/workflows.md` | 总纲与澄清流程 / 调研矩阵与分流决策表 / 9 类任务工作流 / 复用五问 / 质量门禁细节 | 现状模糊 / 任务类型不明 / 规划质量存疑 / 产品完善度诊断 |
+| `references/details.md` | 落地细则（工程规范 / 具体做法）——13 类，症状索引 | 症状关键词命中踩坑类别（构建工具链 / 框架版本 / 无障碍 / API 形态 / 部署 …）——**在不熟悉领域即兴发挥前，先查这里** |
+| `references/security.md` | 密钥红线 / 应急响应 / 安全生产红线 / 回滚流程细节 / 提示注入防御 / 供应链与 SBOM | 接触密钥 / 疑似泄露 / 对外发布 / 依赖引入 |
+| `references/never-list.md` | 永不清单（明确禁止项） | 提交前 / 任何 L3 操作前 |
+| `references/new-project-bootstrap.md` | 新项目 4 步引导（骨架 / 引用槽 / 严格度 / 首日经验） | 首次任务 / 无 `memory/` 目录 / 迁移的工作区 |
+| `templates/workspace-memory-template.md` | 工作区 `memory/` 骨架（§10）——初始化 state / experience-mustread / experience / preferences / task-log | 项目尚无 `memory/` 目录 |
+
+**错误时强制入口**：遇到错误 / API 意外形态 / 未知字段或端点 / 新依赖不生效 → **先按症状类搜 `details.md`**（如 build-tool、[Contract]、[Ops]），再改代码；命中 → 任务记录留一行引用（`细则 #N 命中：…`）。
+
+不要预加载全部引用，只加载当前步骤需要的。**你无法自行感知上下文是否被压缩——不靠感知，靠两道守卫**：（a）显式信号：用户说「重载 / 你被压缩了 / 从头加载」、或平台明显重置上下文时，**立即按重载顺序执行**：①重读本 SKILL.md；②重读记忆文件（`memory/`，见 §10）；③重读当前步骤仍需的引用；④向用户复述当前任务与验收标准后再继续；（b）关键节点自检：每次开工、提交、重大决策前，先默写核心要素（三级跑道选道、当前模式、回滚规则、必问协议）——任一要素复述不全，即视为上下文缺失，先重读再继续。
+
+## 10. 留档与知识纪律
+
+**触发**：会话始 / 块尾 / 会话末。
+
+- **会话始**：读 `memory/` 一屏——`experience-mustread.md` TOP 列表**先读**（≤10 条：一行症状 + 一行对策；≥3 次或高返工晋升；2 个干净周期降级），再 `state.md`，再按症状检索 `experience.md`。上下文预算法（先定序，防污染）：**常驻**（本核心，小）→ **开工读**（工作区 `memory/`，存在才读，一屏内，按 `state → experience → preferences → task-log` 顺序扫；`experience` 按当前症状精确检索命中段，不整篇载入）→ **按需**（`references/`、历史 `task-log/`，到步骤才读，不预载全部引用）→ **结束更新**（最小追加，见「完成后更新序」）。
+- **块尾**：追加任务记录（理解 → 验收 → 决策 → 结果 → GATE）——时间戳 **`YYYY-MM-DD HH:mm:ss`**（秒级必填；日级 = 不完整）；**活头部校验**：头部 `更新：` 时间戳必须 ≥ 最新正文条目时间；**容量上限**：记录 >~120 行或 >3 个任务块 → 新文件（`-名称-2.md`）或归档。
+- **会话末**：①最小验证 + 自查（真实可用 / 边界 / 规则 / 文档同步）→ ②更新 `memory/task-log/<YYYY-MM-DD>-<名称>.md`（理解→验收→决策→结果，结论即时落盘）+ **每项重要决策一份决策审计归档**（现象 / 依据 / 被否候选 / 选择 / 影响，与 task-log 并列）→ ③更新 `memory/experience.md`（新踩坑或重复坑：症状→根因→解决→预防；重复内容只写一处并交叉引用）→ ④更新 `memory/preferences.md`（已确认偏好 + 复核提醒；密钥与破坏性意图绝不写入）→ ⑤文档与代码同批提交；会话结束提炼 1-5 条可复用知识点（默认 3 条）。所有关键回滚走**本地备份优先**、push 仅在需远程保护 / 交付时。
+- **工作区 `memory/` 统一归档 + 自动创建骨架**：项目根 `memory/`——任务记录 / 踩坑库 / 偏好 / 会话状态统一归档于此；**任何会话（含下一个 AI）开工先扫该目录**，不存在则自动创建骨架——`state.md`（当前目标 / 已做决策 / 约束 / 进度+下一步，一屏内秒读）、`experience-mustread.md`（高频必读 TOP≤10）、`experience.md`（踩坑库：症状→根因→解决→预防 + 通用判断标准）、`preferences.md`（已确认技术栈 / 语言 / 风格偏好）、`task-log/`（任务记录 `YYYY-MM-DD-名称.md`）。业务真实恰用 `memory/` 时，可在项目规则文件内把归档目录改为 `.agent-records/`（唯一合法覆盖点）。`memory` = 状态层 + 踩坑层，完整规则仍在 `references/` 按需加载——互不替代。
+- **`state.md` 是骨架不是日记——硬上限约一屏（~10KB）**。只放当前阶段 / 下一步 / 遗留 / 红线。开工扫描发现超一屏时：**先把里程碑史迁移到 `memory/archive-YYYY-MM.md` 再开工**（移动而非删除）。
+- **经验回流（双击晋升制）**：项目级踩坑先落项目自己的 `experience.md`。同一踩坑**在单项目出现两次、或跨两个项目各出现一次**（症状相符、根因相同）即触发晋升：按「症状→根因→解决→预防」提炼为可归类条目，提交进**本 Skill 的 `references/details.md`**——让后续所有项目的第 2 步症状检索都能命中。回流是「已稳定教训的晋升」，不是首例写入；一次性噪音永不进 Skill。
+- **用户偏好**：用户做出确认的选择（技术栈 / 语言 / 风格）后写入 `memory/preferences.md`；写入后主动复核大类方向；会话开始时读取；同类决策直接采用。**preferences.md 记录用户偏好语言，决定思考与输出措辞；未记录时跟随会话输入语言。**
+- **配套模板**：规划、验收标准、任务记录、复盘、回滚点、提示词预算、工作区 `memory/` 骨架模板，以及会话钩子（`templates/hooks/`）与审查子代理（`templates/agents/`）均位于 `templates/`（复制后填写，不原地编辑）。
+
+## 11. 会话状态面（会话末一致性报告——给用户复核；不是「合规 / 有效」自证）
 
 ```
-注入版本: 1.19.1
-细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <session outputs> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
-上下文预算: ~X tokens（阈值 150-200K → 压缩+重载序）
-版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py）
-上下文账本: 本会话 input 增量 ~X ｜ 最大单次 ~Y ｜ 工具占比 Bash a%/Read b%/其他 c% ｜ 盘点 N 次(signal-based)
+注入版本: <2.0.0>
+细则命中: grep -cE 'references/details|#2[0-9][0-9]\.' <会话产物> → N（0 照报 0）；打开类: [Contract]×N / [Ops]×N
+上下文预算: ~X tokens（阈值 150-200K → 压缩 + 重载序）
+版本一致性: 副本 vs 源库（不一致 → 跑 syncer.py；**并核对平台解析到的 Base directory**）
+上下文账本: 本会话 input 增量 ~X ｜ 最大单次 ~Y ｜ 工具占比 Bash a% / Read b% / 其他 c% ｜ 盘点 N 次（按信号触发）
 未验证/待办: <exempt 与未完成项——必须是真待办，不得留「已完成却未清」的陈旧注记>
 ```
-**Rules**: evidence-based not self-claimed; timestamps to seconds; pending items must be real.
 
-## 12. Quick-execution table (v1.12-1.15 clauses as executable one-liners)
+**规则**：证据化而非自述；时间戳到秒；待办必须是真待办；本报告不是通过 / 失败声明。
 
-| id | 触发 | 动作 | 模板/自检 | 边界 |
+## 12. 速查表（v1.12-v1.19 条款的执行化一行）
+
+| id | 触发 | 动作 | 模板 / 自检 | 边界 |
 |---|---|---|---|---|
-| G1 | task block ends | write GATE line | `GATE: {v,cmd,exit,files,lessons,exempt}`; cmd reruns | — |
-| S1 | session ends | status surface (§11) | three lines | not a pass/fail claim |
-| A1 | L2/L3 plan | five questions (§2.3 step 8) | decomposition/rejected alt/rework/boundary/acceptance | L3 adds risk evidence |
-| A2 | research | strictness tier S3/S2/S1 × task size | S3×small=full; S2×small=light; S1×small=no internet | — |
-| A3 | confirmed conclusion in-session/project | reuse + one reference line | no re-survey | — |
-| A4 | L2 request without /plan | restate + 3 acceptance + triage | §2.2 step 2 | S3 → ask first |
-| A5 | exit plan mode | four-item check (acceptance/triage/rollback/boundaries) | don't submit missing any | — |
-| B | new project, no docs | project-info.md six sections (§2.4) | user confirms restate | index, not duplicate |
-| P1 | fuzzy intent | communicate first; ask with recommendation+reason; empty-answer → research+pending-confirm | §4 | never treat empty answer as approval |
-| P2 | same pit ≥3 | promote to experience-mustread.md; 2 clean periods → demote | one-line symptom + one-line countermeasure | one copy only (cross-ref) |
-| P3 | big output >~40 lines / subagent report | **TWO-STEP: read → distill to file (full report kept) → context keeps pointer + summary only**; refetch from file when needed; census per ~5 blocks on **signal** (token delta / tool-count), not vibes | census line ONLY to §11 (single source of info); **reset point: 5 consecutive blocks re-citing old content, or per-block cost >2× session mean → propose new session (handover + reload sequence)** | fuzzy → refetch record/contract/source |
-| P4 | non-core detail | decide + keep going | log decision+reason | core/boundary/red-line → ask |
-| P5 | error found | root cause first, then fix | grep zero tolerance | bypass/hide = violation |
-| P6 | done | real run + real-user walk (L2-F) / smoke referenced path (L2-S) | fix until usable | no run = not done |
-| P7 | delivery | five-check (req/edge/temp/unrelated/log-module) | §7 | — |
-| R1 | plan rejected / user redirects | rejection log: original wording + implicit need → preference (preferences.md) or requirements change (task record) → backflow | one line each | rejection is gold, not noise |
-| R2 | user pastes big code/styles | ask first: "evidence or requirement?" | handle per answer | never guess intent from paste |
-| R3 | task block done | session board line (done ▸ in-progress ▸ pending-confirm ▸ review point) | top of task record | user can check anytime |
-| R4 | block end | stop-check: need user input / all done / risk-publish surfaced — else continue | 3-stop checklist | "continue" cost counts |
-| R5 | updating memory | live header check | header ts ≥ newest body ts | — |
-| R6 | record grows | >120 lines or >3 blocks → new file/archive | `-名称-2.md` | — |
-| DC | module has log module | design line in integration table; catch triple; five-check #5 | log+fallback+audit | console-only/silent = violation |
-| TS | any record | timestamp `YYYY-MM-DD HH:mm:ss` | seconds required | day-only incomplete |
-| RE | key decision / direction change / caliber confirmed | sub-restate one line `决定X｜依据…｜影响…` → task record; block end → total restate (bullets distilled) | □ evidence sentence each decision □ total covers all subs | trivial details use P4 log only |
-| A4 | a previously logged decision is changed | change-log: original decision + change reason + trigger | so later sessions see both | — |
-| A5 | acceptance criteria shift during execution | confirm with user OR log as「范围变更」 (who changed what, why) | criteria owner recorded | — |
-| ZE | user types meaningless `zxc663` | self-check reply:「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）｜源库 vX vs 副本 vY（不一致 → 建议跑 syncer.py）」 | no action beyond version compare | pure test trigger |
+| G1 | 任务块结束 | 写 GATE 行 | `GATE: {v,cmd,exit,files,lessons,exempt}`；cmd 可重跑 | — |
+| S1 | 会话结束 | 状态面（§11） | 三行起 | 不是通过 / 失败声明 |
+| A1 | L2/L3 计划 | 产品五问（§2.4 步 8） | 诉求分解 / 被否候选 ≥1 / 返工成本 / 边界 / 验收 3-5 | L3 增加风险层证据 |
+| A2 | 调研 | 严格度档 S3/S2/S1 × 任务规模（workflows §0.5） | S3×小模块=全量；S2×小模块=轻量；S1×小模块=免联网 | — |
+| A3 | 同会话 / 同项目已有确认结论 | 显式复用 + 一行引用 | 不重跑同一调研 | — |
+| A4 | 无 /plan 指令的 L2 请求 | 复述（目标+边界）+ 3 条验收 + 一句判级 | §2.3 步 2 | S3 严格度 → 先问再开始 |
+| A5 | 退出计划模式 | 四件套自检（验收 / 判级 / 回滚点 / 边界） | 缺一不提交 | — |
+| B | 新项目、无文档 | project-info.md 六节（§2.5） | 复述经用户确认 | 索引式，不重复 |
+| P1 | 意图模糊 | 先沟通；提问带推荐+理由；空答 → 调研 + 待确认标注 | §4 | 绝不把空答当批准 |
+| P2 | 同坑 ≥3 | 晋升 experience-mustread.md；2 个干净周期降级 | 一行症状 + 一行对策 | 只写一处（交叉引用） |
+| P3 | 大输出 >~40 行 / 子代理报告 | **两步式**：读 → 提炼落文件（全文归档）→ 上下文只留指针+摘要；上下文盘点按**信号**触发（token 增量 / 工具数），约每 5 块一次；账本行只写进 §11（信息单一源）；**重置点：连续 5 块回引旧内容、或单块成本 >2× 会话均值 → 建议新会话（交接 + 重载序）** | 盘点行只写 §11 | 模糊 → 重取记录 / 契约 / 源 |
+| P4 | 非核心细节 | 决定 + 继续 | 记录决定 + 理由 | 核心 / 边界 / 红线 → 必问 |
+| P5 | 发现错误 | 先根因，再修复 | grep 零容忍 | 绕过 / 隐藏 = 违规 |
+| P6 | 完成 | 真实运行 + 真实用户走查（L2-F）/ 冒烟所涉路径（L2-S） | 改到可用为止 | 没跑 = 未完成 |
+| P7 | 交付 | 五查（需求 / 边界 / 临时 / 无关 / 日志模块） | §7 | — |
+| R1 | 计划被拒 / 用户改向 | 拒绝日志：原话 + 隐含需求 → 偏好（preferences.md）或需求变更（task record）→ 回流 | 各一行 | 拒绝是金矿，不是噪音 |
+| R2 | 用户粘贴大段代码 / 样式 | 先问：「证据还是需求？」 | 按答复处理 | 绝不从粘贴猜意图 |
+| R3 | 任务块完成 | 会话看板行（done ▸ 进行中 ▸ 待确认 ▸ 评审点） | 任务记录顶部 | 用户随时可查 |
+| R4 | 块尾 | 停点三检查：需用户输入 / 全部完成 / 风险发布面已呈现——否则继续 | 3 停点清单 | 「继续」的成本计入 |
+| R5 | 更新记忆 | 活头部校验 | 头部时间戳 ≥ 最新正文条目 | — |
+| R6 | 记录增长 | >120 行或 >3 块 → 新文件 / 归档 | `-名称-2.md` | — |
+| DC | 项目有日志模块 | 对接真相表留「日志对接行」；catch 三件套；五查含日志 | 日志 + 降级提示 + 审计 | 纯 console / 静默 catch = 违规 |
+| TS | 任何记录 | 时间戳 `YYYY-MM-DD HH:mm:ss` | 秒级必填 | 仅日级 = 不完整 |
+| RE | 关键决定 / 方向改变 / 口径确认 | 子复述一行（决定 X｜依据…｜影响…）→ 任务记录；块尾总复述（要点提炼） | □ 每决定有证据句 □ 总复述覆盖全部子点 | 琐碎细节走 P4 日志 |
+| C1 | 改判已记录的决定 | 同栏留档案：原决定 + 改判原因 + 触发 | 后续会话能看到两者 | — |
+| C2 | 验收标准执行中漂移 | 用户确认，或记作「范围变更」（谁改了什么、为什么） | 记录标准所有者 | — |
+| Y1 | 发现「未请求功能」冲动 | 遵守 YAGNI：最简方案 + 最小改动，不添加未请求功能；觉得该加 → 记「已考虑」 | 需求变更走 A5/C2 流程 | — |
+| ZE | 用户输入无意义单串 `zxc663` | 自检回复：「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（N=按任务记录/文档数快速统计）｜源库 vX vs 副本 vY（不一致 → 建议跑 syncer.py；并核对 Base directory）」 | 纯回复，不触发任何操作 | 无后续动作 |
 
-## Templates
+## 13. 模板索引
 
-Ready-to-fill templates live in `templates/`: plan / acceptance-criteria / task-record (GATE field) / retrospective / rollback-point / prompt-budget / workspace-memory / session hooks / review sub-agents. Copy & fill; never edit in place.
+可复制即用的模板在 `templates/`：规划 / 验收标准 / 任务记录（含 GATE 字段）/ 复盘 / 回滚点 / 提示词预算 / 工作区 memory 骨架（experience-mustread 五件套）/ 会话钩子（hooks）/ 审查子代理（agents：critic / risk-reviewer / security-auditor）。复制后填写，绝不原地编辑。
 
 ---
 
-*Style note: if you found a paragraph that needs "interpretation", report it — the Paper-blind-test rule (v1.16) says it does not belong.*
+*风格注记（纸测盲测规则，v1.16）*：如果你发现某段文字需要「解释」而不是「执行」，上报——它不该留在这里。
+
+*v1.12-v1.19 增补制说明*：原「增补节 v1.12-1.19」的全部条款（三级跑道 / 对接真相清单 / 速查表 / 会话状态面 / 自更新协议 / 复述增强 / 调研矩阵 / 时间戳秒级 / 日志对接 / 彩蛋 / 上下文管理 / 用户偏好集等）已全部并轨进正文 §2-§12。**本版（2.0.0）为唯一权威全量，不再有独立增补节。**

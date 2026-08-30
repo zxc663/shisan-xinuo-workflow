@@ -1,20 +1,20 @@
-# New-project bootstrap (English · v1.12, 2026-08-30)
+# 新项目引导（New-project bootstrap · v2.0，2026-08-30）
 
-> When the first task is about a workspace where any of these hold, run this BEFORE master step 3: no `memory/` dir · no reference project/repo known · no prior experience entries · a migrated workspace. Goal: make the "research-on-demand" matrix and the step-2 experience search have a ground to stand on, and fail loud when they don't.
+> 当第一个任务涉及以下任一情形的工作区时，在主流程第 3 步**之前**先执行本引导：无 `memory/` 目录 · 无已知参考项目/仓库 · 无既往经验条目 · 迁移来的工作区。目标：让「按需调研矩阵」与第 2 步经验检索有立足点；没有立足点时要显式失败（fail loud），而不是静默猜。
 
-## Run order (first task only)
+## 运行序（仅首次任务）
 
-1. **Skeleton** — copy `templates/workspace-memory-template.md` into the project root as `memory/` (state / experience / preferences / task-log). If the project overrides the archive dir (`.agent-records/`), use that instead, and say so in the project rule file.
-2. **Register reference slots (may be empty)** — list in `memory/state.md`: reference projects/repos the user pointed to, reference skills installed, key external docs. Empty is fine; the field exists so the next session knows what does NOT exist (fail-loud, not guess).
-3. **Set project strictness tier** — S3 / S2 / S1 with the triggers from `workflows.md` §0.5 (S3: production / external / security / financial / multi-collaborator / user-named strict; S2 default; S1 personal/prototype). Write the tier + reason into `memory/state.md` and the project rule file; it feeds every later research-matrix decision.
-4. **First-experience write-back** — "no experience → normal research → same-day pitfall write": whatever pit yawned or shortcut you discovered on the first task, distill it into `memory/experience.md` the same day (symptom → root cause → fix → prevention). The bootstrap is complete only when this entry exists.
+1. **骨架**：把 `templates/workspace-memory-template.md` 复制为项目根 `memory/`（state / experience-mustread / experience / preferences / task-log）。若项目覆盖了归档目录（`.agent-records/`），用那个目录，并在项目规则文件里说明。
+2. **登记引用槽（可为空）**：在 `memory/state.md` 列出——用户指过的参考项目/仓库、已安装的参考 Skill、关键外部文档。**空是允许的**；字段存在的意义是让下一个会话知道「什么不存在」（显式失败，而非猜测）。
+3. **设项目严格度档**：按 `workflows.md` §0.5 的触发定 S3 / S2 / S1（S3：生产 / 对外 / 安全 / 金融 / 多协作者 / 用户点名严格；S2 默认；S1 个人 / 原型 / 短命）。档位 + 理由写进 `memory/state.md` 与项目规则文件；它决定此后每一次调研矩阵决策。
+4. **首日经验回写**——「无经验 → 正常调研 → 当日踩坑回写」：第一个任务里你踩到的坑、发现的捷径，**当天**提炼进 `memory/experience.md`（症状 → 根因 → 解决 → 预防）。**该条目存在，引导才算完成。**
 
-## What each future session reads
+## 每个后续会话读什么
 
-- `memory/state.md` — strictness tier + reference slots + current goal (one screen).
-- `memory/experience.md` — step-2 symptom search now has real entries.
-- Research matrix applies: small-module L2 under S2 → light; S3 → full even for small modules.
+- `memory/state.md`——严格度档 + 引用槽 + 当前目标（一屏）。
+- `memory/experience.md`——第 2 步症状检索现在有真实条目了。
+- 调研矩阵生效：S2 下小模块 L2 → 轻量；S3 → 小模块也全量。
 
-## Precondition honesty
+## 诚实前提
 
-If steps 1-4 cannot be completed (e.g., user stays in a brand-new repo with zero reference), write "bootstrap partial: no reference/experience yet" into state.md — the matrix still applies, with the S-tier set by the user's first statement. Do not silently assume S2 when the user said "production".
+若 1-4 步无法完成（如用户待在全新仓库、零参考），在 state.md 写 **「bootstrap partial: 暂无参考/经验」**——矩阵仍生效，严格度档按用户第一句话设定。用户说「生产」时，**不得静默假设 S2**。
