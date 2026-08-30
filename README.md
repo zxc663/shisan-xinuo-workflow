@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.0.4-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.0.5-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -27,7 +27,7 @@
 
 一个**「让规则被消费」的执行手册型工程治理元 Skill**：把「大模块专属的完整 11 步流程 + 小模块短工作流（L2-S）+ L1/L2/L3 判级路由 + 携带推荐理由的必问 + GATE 可复跑验证 + 五段式细则（触发/步骤/模子/自检/边界）＋ 经验强制预读 ＋ 上下文主动管理」打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**设计意图不是「写更多规则」，而是给规则装触达端口**（错误必经句 / 预读 TOP / 命中取证 / 三路合并），并用可复跑工件（GATE 块 / syncer.py）让「做过 ≠ 说过」——每条规则都能被照着做，不靠领会。
 
-**真实口径（2026-08-30 实证）**：细则层（254 条 / 14 类）**工程消费命中此前 = 0**（v1.13 全平台审计）；v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复，已转**有命中**（#228×3 / #229×2 / #233×1）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。仍有一个诚实声明：**规则有效性已有 1 轮迷你实验证据（2026-08-30，4 个真实任务 A/B——首过/返工/可复跑/打断四项指标均无差异，未达显著；机制保留，但不得宣称已验证）**；更大样本复验列下轮（verify 绿 = 体系与自身一致，非行为变好）。
+**真实口径（2026-08-30 实证）**：细则层（现 267 条 / 15 类；实证时点 254 条 / 14 类）**工程消费命中此前 = 0**（v1.13 全平台审计）；v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复，已转**有命中**（#228×3 / #229×2 / #233×1）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。仍有一个诚实声明：**规则有效性已有 2 轮 A/B 证据、均未达显著**（2026-08-30 四任务迷你实验四指标无差异；2026-08-31 六开源项目路测 A 轨 n=14 / B 轨 n=3 仍未观察到显著差异，且 A 轨一次判据失误被无规则轨独立纠正——机制保留，不得宣称已验证；「规则在场 ≠ 被遵守」的触达局限列为已知问题）；更大样本复验列下轮（verify 绿 = 体系与自身一致，非行为变好）。
 
 *(EN) A "rules-must-be-consumed", execution-manual governance meta-skill. Not more rules — touchpoints: error-time entry point, must-read top, hit evidence-line, three-way self-update merge; verifiable artifacts (GATE / syncer.py) make "done" ≠ "claimed". Real numbers: detail-layer engineering hits were 0 before v1.13 (now converts to hits); platform cumulative input 947M tokens (3 long sessions = 81%); assumption that rules change AI behavior is still unverified.*
 
@@ -77,7 +77,7 @@
 （RE：关键决定即时「决定X｜依据｜影响」；块尾总复述仅提炼要点）→ 状态面（证据制，0 照报 0）
         │
         ▼
-规则（+ 编号纪律，地基）+ 落地细则（254 条/14 类，症状索引）+ 冲突仲裁序
+规则（+ 编号纪律，地基）+ 落地细则（267 条/15 类，症状索引）+ 冲突仲裁序
         │
         ▼
 自更新（syncer.py 三路合并：体检→备份→迁移 user-notes/ →覆盖→双落盘；user-notes/memory/.bak 永不碰）
@@ -125,7 +125,7 @@
 - 本质是「强提示词注入」：无强制，靠注入方式（用户/平台）+ Agent 自觉。
 - 记忆靠「外部化文件」：Agent 无法感知压缩——显式重载顺序 + 关键节点自检兜底。
 - 细则层绑技术栈：details 是踩坑日志不是教程；机制层与框架无关。
-- **规则有效性：已有 1 轮迷你实验证据但未达显著**（2026-08-30，4 个真实任务 A/B：首过率/返工率/可复跑命令成功率/用户打断四项指标均无差异）——机制按拍板保留，但不得宣称「已验证」；更大样本/更长周期复验列下轮。verify 绿=体系与自身一致，非行为变好。
+- **规则有效性：已有 2 轮 A/B 证据但均未达显著**（2026-08-30 四任务四指标无差异；2026-08-31 六开源项目路测 A 轨 n=14 / B 轨 n=3 仍未观察到显著差异，A 轨一次判据失误反被无规则轨纠正）——机制按拍板保留，但不得宣称「已验证」；**「规则在场 ≠ 规则被遵守」的触达局限为已知问题**（二轮路测必产物 0/3 实证）；更大样本/更长周期复验列下轮。verify 绿=体系与自身一致，非行为变好。
 - **曾 0 命中**（v1.13 实证）：细则层工程消费=0——已以触达端口修复为有命中；仍如实标注「预防性，有效性需实测」。
 - 不提供「硬门禁」：依赖平台（hooks/CI/沙箱）；缺口用兜底。
 - 定位是「治理层」：不替代领域知识/项目文档；冲突时项目文档优先。
@@ -159,7 +159,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.0.4）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.0.5）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -167,7 +167,7 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
 │   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 28 行）
 │   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/memory 骨架五件套）
-│   └── references/（injection-core · workflows · details 254条/14类 · rules 47条 ·
+│   └── references/（injection-core · workflows · details 267条/15类 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
@@ -181,7 +181,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：v2.0.4 源码与口径批次（三层承载化 + 取证命令修复）已推 GitHub/Gitee 主线，**并存全渠道发行（2026-08-31：GitHub Release v2.0.4 / npm 2.0.4 / Gitee Release / ClawHub 1.0.6 / About 双端）**。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：v2.0.4 已全渠道发行（2026-08-31：GitHub Release v2.0.4 / npm 2.0.4 / Gitee Release / ClawHub 1.0.6 / About 双端）。**v2.0.5（路测回流批次）为本地批次：已本地 commit、未推送、未发行**——发行面（dist 重建 / npm / Release / ClawHub）与注入副本重部署另行批准。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -195,7 +195,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 - 依赖强提示词注入与 Agent 自律：无运行时强制；注入跳过/描述未命中 = 什么也不做。
 - 上下文成本：治理层仍消耗上下文——用三级跑道 + L2-S + 上下文卫生（两步式/信号化盘点/账本核算）换取一致性。
-- 细则体量大（254 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经——从「可加载」升级为「必经站」。
+- 细则体量大（267 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经——从「可加载」升级为「必经站」。
 - 平台检测启发式：不确定时问用户不猜。
 - 未验证假设：规则能否改变行为（对照实验列下一轮）；verify=一致性≠有效性。
 - 单版本（v2.0 起）：唯一中文版为权威全量；删除的英文/双语版在 git 历史可回溯——不再有增补制同步面。
@@ -216,11 +216,12 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Sources
 
-- **细则 254 条/14 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）；**#240-254（第 14 类）** = 2026-08-31 个人工作台版差异化回流（MCP 工具链 / 视觉生成 / 前端测试 15 条，用户拍板并入）。
-- **成本/命中实证（2026-08-30）**：ZCode 平台 `model_usage` 全量——累计 input 947,218,098 / output 2,188,313 / reasoning 249,823；19 会话 context_exceeded=0；细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。**取证口径（2026-08-31 v2.0.4）**：原取证命令对 `1.–254.` 有序列表与裸编号引用恒 0 但为命令失配（非零命中），已校准为匹配真实引用形态的命令且复测通过——结论「0→有」仍成立，计数命令可重跑（见 EVIDENCE §七）。
+- **细则 267 条/15 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）；**#240-254（第 14 类）** = 2026-08-31 个人工作台版差异化回流（MCP 工具链 / 视觉生成 / 前端测试 15 条，用户拍板并入）；**#255-267（第 15 类）** = 2026-08-31 六开源项目路测回流（12 项漏检清单全收 + 「不复现」判定举证纪律；#256 异步栈出错点 vs 调用点为 A 轨判据失误的直接实证）。
+- **成本/命中实证（2026-08-30）**：ZCode 平台 `model_usage` 全量——累计 input 947,218,098 / output 2,188,313 / reasoning 249,823；19 会话 context_exceeded=0；细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。**取证口径（2026-08-31 两轮演进：v2.0.4 → v2.0.5）**：v2.0.4 前命令对实引形态恒 0（假阴性）→ v2.0.4 加裸 `#NNN` 分支校准为「0→有」→ **2026-08-31 路测三口径实证 v2.0.4 命令假阳性**（10 计数中 9 为 GitHub issue 编号误计；严格形态=1 且为命令自指；真实语义命中=1）→ v2.0.5 废弃裸编号分支、只认完整前缀形态 `details #NNN` / `细则 #NNN`（引用规范见 details.md 头部，见 EVIDENCE §十）。
 
 ## 版本历史 · Changelog
 
+- **v2.0.5（2026-08-31）**：**路测回流批次（本地执行，未推送未发行——v2.0.5 后进入稳定细则小更新路线，本版即首个该路线版本）**——基于 v2.0.4 基线路测（6 开源项目真实 issue：klona / p-map / mitt / ky / commander / chalk+ink；A 轨 13 块 / B 轨 3 项 / 反向审计 12 项漏检）：①**取证命令二次修复**：v2.0.4 裸 `#[0-9]{3}` 分支无法区分细则编号与 GitHub issue 编号（三口径实证：v2.0.3=1 假阴性 / v2.0.4=10 假阳性（9 为 issue 编号）/ 严格=1 且自指，真实语义命中=1）→ 废弃裸编号分支，只认完整前缀形态 `details #NNN` / `细则 #NNN` / `references/details`，details 引用规范同步禁裸编号、injection-core 引用条款同约束；②**前缀自检改每会话触发**（用户拍板）：SKILL §3 第 0 步重写（权威源，含两个合规出口：目录名未知→不猜不阻塞 / 用户拒绝改名→state.md 记录后静默）+ injection-core「开工一行自检」+ memory-anchor 锚点行——三层触达承载（路测实证只写 §3 时 14 块 0 触发）；③**details §15 路测回流 13 条**（#255-267）：12 项漏检全收 + 「不复现」判定举证纪律（T5 误判实证：异步栈出错点 vs 调用点只丢其一）；口径 254→267 条 / 14→15 类全仓同步；④**有效性诚实声明更新**：纳入二轮路测（未观察到带规则的正确性优势 + A 轨判据失误被无规则轨纠正 + 「规则在场 ≠ 被遵守」触达局限、必产物 0/3 实证）；§8 易错点 +2；⑤**「跳过必声明」元规则**（用户拍板）：任何规则 / 步骤 / 纪律被跳过（含 L2-S 边界豁免）→ 复述跳过项 + 记录依据 + 提醒用户——「跳过 + 声明」合法、静默跳过违规（SKILL §0 + §12 SK 行 + injection-core 主流程门禁）；⑥版本 bump 2.0.5 全口径（package.json / README / CHANGELOG / 项目信息 / EVIDENCE §十）。
 - **v2.0.4（2026-08-31）**：**三层承载化 + 取证命令修复（执行批次，已全渠道发行）**——①硬注入升级为「记忆层（每会话在场锚点，首行在场提示）+ 规则层（注入核心全文）+ 配置文件层（§2.1）」三层强制写入，写前提醒用户授权；按需注入只写应用层、询问是否写规则层（不写记忆层）；②新增 §3 步骤 1.5「识别与调研注入点（不猜）」——识别 Agent 平台后联网调研官方注入点再注入；③新增 `templates/memory-anchor.md`（记忆层锚点块，首行「在场提示 · 工作流 Skill 现已在场」）+ platform-adaptation §2.2 平台记忆层；④install-skill.ps1 增 `-MemoryFile`、syncer.py 增 `--memory-target`（记忆层同步，先备份合并）；⑤**取证命令缺陷修复**：状态面 `grep -cE 'references/details|#2[0-9][0-9]\.'` 对 details.md `1.–254.` 有序列表与任务记录 `#228×3` 形态恒 0 假阴性→改为匹配真实引用形态，details.md 补引用规范，EVIDENCE §七「0→有命中」复测校准；⑥本机三层实测注入（WorkBuddy MEMORY.md / Trae user_profile.md / Codex AGENTS.md 注记 + 注入副本 ×4 重部署，均备份 `.bak-20260831-pre-v204`）。verify 4/4 PASS + **全渠道发行**（GitHub Release / npm 2.0.4 / Gitee / ClawHub 1.0.6 / About 双端）。
 - **v2.0.3（2026-08-31）**：**前缀自适配 + 平台配置文件层（执行批次，未发布）**——①新增 `scripts/install-skill.ps1` 一键安装（自动带 `agent-` 前缀、幂等、`-Dry` 干跑 / `-Link` 软链 / `-Force` 备份覆盖 / `-HardInject` 注入配置层，输出「Base directory 判据」验收提示）；②SKILL §3 新增第 0 步「安装名前缀自检」（无前缀一行提示，带前缀静默）；③README 安装话术改「一条命令自动带前缀」，FAQ 前缀条目改述为官方已适配；④platform-adaptation 新增 §2.1 平台配置文件层（Claude Code settings.json hooks / Codex config.toml / Cursor 应用 Rules / Trae 应用设置 / WorkBuddy settings.json+BOOTSTRAP / ZCode AGENTS.md，每平台经实测如实标注——本机 bash 不可用故 hooks 降级、Codex/WorkBuddy 无 hooks 槽位）；⑤SKILL §3 注入点补「硬注入承载面 = 规则文件 + 平台配置文件」；templates/hooks/ 新增多平台说明 README；⑥本机配置层全激活（~/.codex AGENTS.md 由 v1.19.1 重写为 v2.0.3、部署副本 ×2 syncer 同步、注入副本 ×4 重部署，均先备份 `.bak-20260831-pre-v203`）。verify 4/4 PASS。
 - **v2.0.2（2026-08-31）**：**审查批次（未发布）**——①审计修复三级同步链断裂：v2.0.1 机制「决策三层分界」（SKILL §5.2）未同步 injection-core.md 判级速查块与三份平台注入副本；强制完整读取「三类例外」仅 workflows.md 落地，skill-usage.md §4 / rules.md §26 仍为 2 类——已补齐并重部署注入副本；②口径清理：README 版本历史补 v2.0.1/v2.0.2 行、仓库结构行（package.json 2.0.2 / details 254 条 14 类 / 速查表 28 行）、reference-sources / scripts-README / EVIDENCE §九（重测注入核心字符数）同步、发布面注记（v2.0.x 未对外发布，v1.19.1 为各渠道最新）；③细节：details §13 标题补 #239 归属、SKILL §11 状态面模板版本号。verify 4/4 PASS；源码已推送 GitHub/Gitee 主线（发行面另行批准）。
