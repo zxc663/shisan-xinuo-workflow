@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Shisan Xinuo Workflow — 发布前一致性/泄漏门禁校验（P0 机制）
+    Shisan Xinuo Workflow — 发布前一致性/泄漏门禁校验（P0 机制，v2.0 单版本）
 .DESCRIPTION
-    校验三语通用版（en / universal-zh / universal-bilingual）在发布前满足：
-      A. 增补制一致：三语 SKILL version 均 == 主交付物 version（动态基准）且含「v1.12-1.19」增补标记（v1.16 起执行化全文以英文主交付物为准，三语为增补制——不再要求全量文件对称）
-      B. hooks 三层齐全（主交付物）：templates/hooks/ 含 session-start / session-end / hooks.json，且 hooks.json 同时声明 SessionStart 与 SessionEnd
-      C. 版本一致：三版 SKILL.md 的 metadata.version 相等，且 == package.json version
-      D. 泄漏红线：发布物范围内不出现个人版路径 / memory / 令牌原文（ghp_/gho_/github_pat_）
-    用途：修复"靠自律同步多版、静默漂移"的结构短板——每次发布前必跑，任一项不过即退出码 1。
-    本脚本只读、非破坏性，不改动任何文件。
+    校验唯一主交付物（中文版 skill/shisan-xinuo-workflow，v2.0 起单版本、无多语版）在发布前满足：
+      A. 内容锚点完整：SKILL.md 必须含全部关键特性串（L2-S / L2-F / 对接真相 / GATE: / zxc663 / 速查表 / 三级同步 / Base directory），
+         injection-core.md 必须含三级跑道与对接真相（修复「版本号一致、内容实质性降级」的门禁盲区——v1.19.1 实测内容差 57% 仍 5/5 PASS）
+      B. hooks 三层齐全：templates/hooks/ 含 session-start / session-end / hooks.json，且 hooks.json 同时声明 SessionStart 与 SessionEnd
+      C. 版本一致：SKILL.md metadata.version == package.json version
+      D. 泄漏红线：发布物范围内不出现个人版路径 / 外部机密目录 / 本仓真实路径 / 真实用户主目录 / 令牌原文（ghp_/gho_/github_pat_）
+    用途：发布前必跑，任一项不过即退出码 1。本脚本只读、非破坏性，不改动任何文件。
 .PARAMETER Root
     项目根目录，默认取脚本所在目录的上一级。
 .PARAMETER SkipLeak
@@ -32,12 +32,9 @@ if (-not $PSScriptRoot) { $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCom
 $Root = [System.IO.Path]::GetFullPath($Root)
 if (-not (Test-Path $Root)) { Write-Host "E: Root 不存在: $Root" -ForegroundColor Red; exit 2 }
 
-# ---------- 待校验版本（主版 + 两个通用版） ----------
-$sk = @{
-    "en" = Join-Path $Root "skill\shisan-xinuo-workflow"
-    "zh" = Join-Path $Root "versions\universal-zh\shisan-xinuo-workflow"
-    "bi" = Join-Path $Root "versions\universal-bilingual\shisan-xinuo-workflow"
-}
+# ---------- 主交付物（唯一版本：中文 skill/） ----------
+$skDir = Join-Path $Root "skill\shisan-xinuo-workflow"
+$main  = Join-Path $skDir "SKILL.md"
 
 # ---------- 状态收集 ----------
 $results  = [System.Collections.Generic.List[string]]::new()
@@ -47,33 +44,41 @@ function Add-Result([bool]$ok, [string]$name, [string]$detail) {
     if (-not $ok) { $failures.Add($name) }
 }
 
-# 缺失任一版直接判失败
-$missing = $sk.GetEnumerator() | Where-Object { -not (Test-Path $_.Value) } | ForEach-Object { $_.Key }
-if ($missing.Count -gt 0) {
-    Add-Result $false "B路径存在" "缺失版: $($missing -join ',')"
+if (-not (Test-Path $main)) {
+    Add-Result $false "B路径存在" "缺失主交付物: $main"
+    Write-Host "FAILED (缺主交付物)" -ForegroundColor Red
+    exit 1
 }
 
-# ---------- A. 增补制一致（version 1.19 + v1.12-1.19 标记；主交付物权威） ----------
-$root = if ($Root) { $Root } else { Split-Path -Parent $PSScriptRoot }
-$main = Join-Path $root "skill\shisan-xinuo-workflow\SKILL.md"
-$langs = @("universal-zh","universal-bilingual")   # personal-zh 为私有工作台版，非发布物，版本不检
-$verM = [regex]::Match((Get-Content $main -Raw), "(?s)version\s*:\s*([0-9]+\.[0-9]+\.[0-9]+)")
-$baseVer = $verM.Groups[1].Value
-$verOK = ($baseVer -ne "")
-$probs = @()
-if (-not $verOK) { $probs += "主交付物 version=${($verM.Groups[1].Value)}(≠$baseVer)" }
-foreach ($l in $langs) {
-    $sk = Join-Path $root "versions\$l\shisan-xinuo-workflow\SKILL.md"
-    if (-not (Test-Path $sk)) { $probs += "$l 缺 SKILL"; continue }
-    $txt = Get-Content $sk -Raw
-    $vm = [regex]::Match($txt, "(?s)version:\s*([0-9]+\.[0-9]+\.[0-9]+)")
-    if ($vm.Groups[1].Value -ne $baseVer) { $probs += "$l version=$($vm.Groups[1].Value)(base=$baseVer)" }
-    if ($txt -notmatch "v1.12-1.19") { $probs += "$l 缺增补标记" }
+# ---------- A. 内容锚点（门禁修复：校验内容覆盖度，防「门禁全绿但内容降级」） ----------
+$anchorsSkill = @(
+    "L2-S",            # 三级跑道·短工作流
+    "L2-F",            # 三级跑道·完整 11 步
+    "对接真相",         # 对接真相清单
+    "GATE:",           # GATE 完成块
+    "zxc663",          # 彩蛋自检
+    "速查表",           # §12 速查表
+    "三级同步",         # 判级三级同步链声明
+    "Base directory"   # 自更新验收判据
+)
+$anchorsCore = @(
+    "L2-S", "L2-F", "对接真相", "三级同步链", "Base directory"
+)
+$newBootstrap = Join-Path $skDir "references\new-project-bootstrap.md"
+$probsA = @()
+$txt = Get-Content $main -Raw -Encoding UTF8
+foreach ($anc in $anchorsSkill) { if ($txt -notmatch [regex]::Escape($anc)) { $probsA += "SKILL 缺锚点[$anc]" } }
+$core = Join-Path $skDir "references\injection-core.md"
+if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
+    $ctxt = Get-Content $core -Raw -Encoding UTF8
+    foreach ($anc in $anchorsCore) { if ($ctxt -notmatch [regex]::Escape($anc)) { $probsA += "injection-core 缺锚点[$anc]" } }
 }
-Add-Result ($probs.Count -eq 0) "A 增补制一致（主交付物 base + 三语增补标记）" $(if($probs.Count -eq 0){"OK"}else{$probs -join ";"})
+if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-bootstrap.md" }
+Add-Result ($probsA.Count -eq 0) "A 内容锚点(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK"}else{$probsA -join ";"})
+
 # ---------- B. hooks 三层齐全（主交付物） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
-$hDir = Join-Path $root "skill/shisan-xinuo-workflow/templates/hooks"
+$hDir = Join-Path $skDir "templates\hooks"
 $probs2 = @()
 foreach ($hf in $hookFiles) { if (-not (Test-Path (Join-Path $hDir $hf))) { $probs2 += "缺 $hf" } }
 $json = Join-Path $hDir "hooks.example.json"
@@ -82,27 +87,16 @@ if (Test-Path $json) {
     $hjH = $hj.hooks; if ($null -eq $hjH -or $hjH.PSObject.Properties.Name -notcontains 'SessionStart' -or $hjH.PSObject.Properties.Name -notcontains 'SessionEnd') { $probs2 += 'hooks.json 缺双钩子声明' }
 }
 Add-Result ($probs2.Count -eq 0) "B hooks 三层齐全(主交付物)" $(if($probs2.Count -eq 0){"OK"}else{$probs2 -join ";"})
-# ---------- C. 版本一致（自包含：四版本直读 + package 比较） ----------
-$verMap = @{ en = (Join-Path $Root "skill\shisan-xinuo-workflow\SKILL.md"); zh = (Join-Path $Root "versions\universal-zh\shisan-xinuo-workflow\SKILL.md"); bi = (Join-Path $Root "versions\universal-bilingual\shisan-xinuo-workflow\SKILL.md") }   # personal-zh 私有版不纳入发布版本
-$ver = @{}
-foreach ($k in $verMap.Keys) {
-    $raw = Get-Content $verMap[$k] -Raw -ErrorAction SilentlyContinue
-    if ($null -ne $raw -and $raw -match '(?s)version\s*:\s*([\d.]+)') { $ver[$k] = $Matches[1] } else { $ver[$k] = '' }
-}
-$versOk = ($ver.en -eq $baseVer) -and ($ver.zh -eq $baseVer) -and ($ver.bi -eq $baseVer)
-Add-Result $versOk "C 四版版本一致(=base)" ("en=$($ver.en) zh=$($ver.zh) bi=$($ver.bi)")
-$pkgVersion = ''
-$pkg = Join-Path $Root "package.json"
-if (Test-Path $pkg) { $pkgVersion = ((Get-Content $pkg -Raw | ConvertFrom-Json).version) }
-Add-Result ($versOk -and $ver.en -eq $pkgVersion) "C 与 package.json 一致" "package.json version=$pkgVersion (base=$baseVer)"
+
+# ---------- C. 版本一致（交付物 == package.json） ----------
+$baseVer = ((Get-Content $main -Raw -Encoding UTF8 | Select-String -Pattern '(?s)version\s*:\s*([0-9]+\.[0-9]+\.[0-9]+)' -AllMatches).Matches[0].Groups[1].Value)
+$pkgVersion = ((Get-Content (Join-Path $Root "package.json") -Raw -Encoding UTF8 | ConvertFrom-Json).version)
+Add-Result ($baseVer -eq $pkgVersion) "C 版本一致(交付物=package.json)" "SKILL version=$baseVer ; package.json version=$pkgVersion"
 
 # ---------- D. 泄漏红线（发布物范围） ----------
 if (-not $SkipLeak) {
-    # 发布物 = 三语通用版 + 根级交付文件 + scripts/（.gitignore 已屏蔽 personal-zh / memory）
     $leakPaths = @(
         (Join-Path $Root "skill"),
-        (Join-Path $Root "versions\universal-zh"),
-        (Join-Path $Root "versions\universal-bilingual"),
         (Join-Path $Root "README.md"),
         (Join-Path $Root "package.json"),
         (Join-Path $Root "LICENSE"),
@@ -123,9 +117,8 @@ if (-not $SkipLeak) {
             }
             # 2) 令牌原文
             foreach ($tp in $tokenPats) { if ($text -match $tp) { $leakHits += "$rel :: 疑似令牌明文(已掩码)" ; break } }
-            # 3) 发布物内出现 personal-zh 目录实际内容（非 README 版本矩阵提及）
-            $isReadme = $rel -eq "README.md" -or $rel -eq "项目信息.md"
-            if ((-not $isReadme) -and ($text -match 'versions[\/]personal-zh')) {
+            # 3) 发布物内出现个人版路径（README 版本说明豁免）
+            if (($rel -notlike "README.md") -and ($text -match 'versions[\/]personal-zh')) {
                 $leakHits += "$rel :: 发布物内引用个人版路径"
             }
         }
