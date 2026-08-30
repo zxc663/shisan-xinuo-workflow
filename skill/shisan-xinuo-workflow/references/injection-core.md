@@ -118,3 +118,5 @@ Project root `memory/` — task records / pitfall log / preferences / session st
 - 项目有日志模块 → 设计期在对接清单写「日志对接行」；catch 三件套（记日志+降级提示+审计）；交付五查含「错误是否已接日志」；diff 回扫 `console.`/空 catch 零容忍。
 
 - **彩蛋自检（测试）**：用户输入无意义单串 `zxc663` → 回复「十三希诺工作流已应用，注入方式是：［按需 / 硬注入］，已经应用 N 轮会话/对话（按任务记录/文档数快速统计）」；纯回复不触发任何操作。
+
+- **skill 自身更新（三路合并 · 本地用户优先）**：源库更新 → 跑 `scripts/syncer.py`（体检/备份/迁移/覆盖/双落盘清单）；`user-notes/`（用户规则）与 `memory/`（skill 自身 task-log）与 `.bak-*` **永不碰**；手动改副本只能写在 `user-notes/`，否则下次同步被覆盖。彩蛋 `zxc663` 附版本对比（源库 vs 副本）。
