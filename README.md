@@ -36,18 +36,18 @@
 ## 为什么用它 · Why this
 
 - **把「AI 直觉」变成「工程纪律」**：L1/L2/L3 风险分级、关键必问（带推荐理由）、回滚点、GATE 验证块、五查留档——不再靠 Agent 自觉碰运气。
-- **省 token 不丢纪律**：L2-S 短工作流（小模块默认）+ 调研矩阵（S1-S3 × 规模）+ 上下文卫生（两步式归档 / 信号化盘点 / 会话级账本）——小任务不烧完整流程，大任务不破底线。
+- **控成本不丢纪律**：渐进披露不整库常驻（注入核心里程碑实测 1–5K tok/会话）、L2-S 短流小任务默认、上下文两步式归档——目的不是降绝对 token，而是避免病态无界燃烧、并用极少常驻开销换取一致性；9.47 亿为平台聚合口径，非 Skill 归因（归因明细见 EVIDENCE §九）。
 - **规则被消费而非被登记**：报错必经 details 症状类、开工必读预读 TOP、会话末取证命中（0 照报 0）、自更新三路合并——这是 v1.13 后区别于「规则堆」的核心差异。
 - **跨平台行为一致**：第 0 步自动适配注入；自检彩蛋 `zxc663` 一次确认「注入方式 + 已应用轮数 + 源库 vs 副本版本」。
 
-*(EN) Turns AI instinct into auditable discipline; saves tokens via the short-lane + research matrix + context hygiene; rules get consumed via mandatory touchpoints; consistent cross-platform via Step-0 injection.*
+*(EN) Turns AI instinct into auditable discipline; bounds token cost via progressive disclosure + short-lane + context hygiene (1–5K tok/session fixed overhead, platform 947M is aggregate, not skill-attributable); rules get consumed via mandatory touchpoints; consistent cross-platform via Step-0 injection.*
 
 ## 它为谁解决什么 · Who it's for
 
 - 重度 AI 编码用户（Cursor / Claude Code / Trae / Codex 深度用户）：希望 Agent 跨项目、跨平台行为一致、可审计，尤其痛恨「假完成 / 伪造测试 / 虚报数据」。
 - 按风险放权的人：L1 常规直接做，L3 高风险（密钥、删除、迁移、发布）一律先问。
 - 想要无人值守目标模式的人：写计划、设预算、按文件边界拆分、超预算自动停。
-- 想省 token 又不丢纪律的人：渐进式加载 + L2-S 快速通道。
+- 想控成本又不丢纪律的人：渐进式加载 + L2-S 快速通道。
 - 开源治理设计研究者：了解「渐进式 Skill」如何把静态约束变成动态治理。
 - 刚入门、有一定了解、不想踩坑的用户：细则层即「踩坑日志 + 预读 TOP + 报错必经」——新人按图索骥少走弯路。
 
