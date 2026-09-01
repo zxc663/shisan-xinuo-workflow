@@ -20,8 +20,8 @@
 
 ## ② 目标规划（当前阶段）
 - 已完成：**v2.0.6 全渠道发行（2026-08-31）**——v2.0.5（路测回流+触达强化）与 v2.0.6（项目承载+授权边界）两个本地批次内容已随 v2.0.6 一并发行（GitHub Release / npm / Gitee / ClawHub 1.0.7 / About 双端）。
-- 当前：**v2.1.0 上下文主动管理补全批次（本地，未发行）**——借鉴 Aider/1bcoder/Atrium：保留清单（Preserver）+ 折叠协议 + 紧凑档 + 大文件读取协议 + 模块锚点表 + 本地模型术语表。
-- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 审核复查 ③v2.1.0 发行面待批准 ④下一轮路测（换项目池 + 转测触发率）。
+- 当前：**v2.1.0 上下文主动管理补全批次（2026-09-02 已全渠道发行）**——保留清单（Preserver）+ 折叠协议 + 紧凑档 + 大文件读取协议 + 模块锚点表 + 按需符号召回 + 本地模型术语表；GitHub Release（dist zip）/ npm 2.1.0 / Gitee（zip 附件）/ ClawHub 1.0.8 / About 双端。
+- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 1.0.8 审核复查 + skills.sh 遥测收录核查 ③下一轮路测（换项目池 + 转测触发率）④注入副本重部署 v2.1.0 + 技能副本 syncer 同步（待批）。
 - 路线：v2.0.5 后进入稳定细则小更新（不做破坏性大改，但保留意外情况声明）。
 
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
@@ -32,9 +32,9 @@
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：state/experience-mustread/experience/preferences/task-log | state、experience、preferences、task-log、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.0.6，staging 重建 + Set-diff 双检） | 发行 zip、发布包、dist |
+| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.1.0，staging 重建 + Set-diff 双检 38=38，187,627B） | 发行 zip、发布包、dist |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
-| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.1.0 本地批次；发行面待批准执行） | 发行台账、渠道回执、门禁 |
+| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.1.0；2026-09-02 已全渠道发行） | 发行台账、渠道回执、门禁 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |
 
 ## ④ 调研导航（改什么 → 查哪）
