@@ -5,10 +5,10 @@
 
 ## A. 本仓已备（随 git 提交）
 - [x] 版本锁 2.1.0（package.json / SKILL frontmatter / README 徽章与版本历史行 / 项目信息 §三·§五 / docs/project-info / verify-release 锚串 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七）
-- [x] 上下文主动管理补全源码（本地 commit 151834c + 补强批次待提交）：保留清单+折叠协议（injection-core 关键条款 + SKILL §12 P8）、紧凑档（details #273）、大文件读取协议（#274）、模块锚点表（#275 + docs/project-info 锚词列示范）、按需符号召回协议 + 模块依赖关系表（#276）、local-model-glossary.md（10 术语）、README 客户端能力边界声明与四客户端联用建议
-- [ ] verify-release 4/4 PASS（base=2.1.0，含新增锚串「折叠协议/保留清单」，零泄漏）——**补强批次后需重跑**
+- [x] 上下文主动管理补全源码（本地 commit 151834c + 补强批次 75ac1b7，2026-09-01）：保留清单+折叠协议（injection-core 关键条款 + SKILL §12 P8）、紧凑档（details #273）、大文件读取协议（#274）、模块锚点表（#275 + docs/project-info 锚词列示范）、按需符号召回协议 + 模块依赖关系表（#276）、local-model-glossary.md（10 术语）、README 客户端能力边界声明与四客户端联用建议
+- [x] verify-release 4/4 PASS（base=2.1.0，含新增锚串「折叠协议/保留清单」，零泄漏）——补强批次后已重跑通过（2026-09-02）
 - [ ] dist/shisan-xinuo-workflow-v2.1.0.zip（**未重建**——发行面批准后再重建，staging 暂存目录法 + Set-diff 双检）
-- [ ] 提交并推送双端 main + tag v2.1.0（**未执行**——本地 commit 不 push，发行面另行批准）
+- [ ] 推送双端 main + tag v2.1.0（**未执行**——本地已 commit 至 75ac1b7，push 属发行面另行批准）
 
 ## B. 全渠道发行回执（待用户批准后执行）
 | 渠道 | 产物/URL | 状态 |
