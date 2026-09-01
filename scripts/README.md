@@ -61,12 +61,12 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ### 预期当前输出
 
-v2.0.6 单版本配置下当前应全 PASS：
+v2.1.0 单版本配置下当前应全 PASS：
 
 ```
 [PASS] A 内容锚点(主交付物全量特性)   (OK)
 [PASS] B hooks 三层齐全(主交付物)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.0.6 ; package.json version=2.0.6)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.1.0 ; package.json version=2.1.0)
 [PASS] D 泄漏红线(发布物)   (0 泄漏)
 ```
 
