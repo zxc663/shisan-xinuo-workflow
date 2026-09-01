@@ -4,9 +4,9 @@
 > **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3、v2.0.4、v2.0.5、v2.0.6 已全渠道发行（2026-08-31，v2.0.5/v2.0.6 内容随 v2.0.6 一并发行）；**v2.1.0（上下文主动管理补全批次）为本地批次（2026-09-01，未发行）**，详情见 项目信息.md §三·§五 与 memory/task-log。
 
 ## A. 本仓已备（随 git 提交）
-- [ ] 版本锁 2.1.0（package.json / SKILL frontmatter / README 徽章与版本历史行 / 项目信息 §三·§五 / docs/project-info / verify-release 锚串 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七——**口径检查未跑完，实施时逐项核**）
-- [ ] 上下文主动管理补全源码（本地 commit 待建）：保留清单+折叠协议（injection-core 关键条款 + SKILL §12 P8）、紧凑档（details #273）、大文件读取协议（#274）、模块锚点表（#275 + docs/project-info 锚词列示范）、local-model-glossary.md（10 术语）、README 客户端能力边界声明与四客户端联用建议
-- [ ] verify-release 4/4 PASS（base=2.1.0，含新增锚串「折叠协议/保留清单」，零泄漏）
+- [x] 版本锁 2.1.0（package.json / SKILL frontmatter / README 徽章与版本历史行 / 项目信息 §三·§五 / docs/project-info / verify-release 锚串 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七）
+- [x] 上下文主动管理补全源码（本地 commit 151834c + 补强批次待提交）：保留清单+折叠协议（injection-core 关键条款 + SKILL §12 P8）、紧凑档（details #273）、大文件读取协议（#274）、模块锚点表（#275 + docs/project-info 锚词列示范）、按需符号召回协议 + 模块依赖关系表（#276）、local-model-glossary.md（10 术语）、README 客户端能力边界声明与四客户端联用建议
+- [ ] verify-release 4/4 PASS（base=2.1.0，含新增锚串「折叠协议/保留清单」，零泄漏）——**补强批次后需重跑**
 - [ ] dist/shisan-xinuo-workflow-v2.1.0.zip（**未重建**——发行面批准后再重建，staging 暂存目录法 + Set-diff 双检）
 - [ ] 提交并推送双端 main + tag v2.1.0（**未执行**——本地 commit 不 push，发行面另行批准）
 

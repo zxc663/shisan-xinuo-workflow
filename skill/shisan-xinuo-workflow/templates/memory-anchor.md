@@ -14,7 +14,7 @@
 - 前缀自检（每会话）：能确定安装目录名且无 `agent-` 前缀 → 一行提示（install-skill.ps1 可带前缀重装；不愿改则 state.md 记「保持无前缀」后静默）；目录名未知 → 不猜不阻塞。
 - 项目承载（自动建，不等许可）：memory/ 规范五件套（state.md … task-log/，禁空占位）+ 项目级规则文件（AGENTS.md 等，templates/project-rules.md，先查既有→合并不覆盖）+ docs/project-info.md。
 - 委托子代理：必须内联纪律包（子代理不继承注入副本、不保证自加载 Skill——2026-08-31 路测实证；独立工作区另建规范承载）。
-- 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / 275 细则）。
+- 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / 276 细则）。
 - 更新协议：`python scripts/syncer.py`（记忆/规则/配置三层随版本同步）；验收以平台解析到的 Base directory 为准。
 - 注入版本：vX.Y.Z ｜ 授权：本锚点由用户授权后注入，未获授权不写。
 ```
