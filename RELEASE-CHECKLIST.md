@@ -9,14 +9,14 @@
 - [x] README 优化：新增「本仓库=一份超长 System Prompt」本质声明 + v2.1.0 已发行口径回填 + dist 提示更新
 - [x] verify-release 4/4 PASS（base=2.1.1，含新增锚串「折叠协议/保留清单」，零泄漏）
 - [x] dist/shisan-xinuo-workflow-v2.1.1.zip（staging 暂存目录法 + Set-diff 双检 38=38，187,627B）
-- [x] 双端 main + tag v2.1.1 已推送（commit 待回执）
+- [x] 双端 main + tag v2.1.1 已推送（6090e7f..c9e348e）
 
 ## B. 全渠道发行回执（2026-09-02 已执行完成）
 | 渠道 | 产物/URL | 状态 |
 |---|---|---|
-| GitHub | Release v2.1.1（附 dist v2.1.1.zip，走代理） | ✅ |
+| GitHub | Release v2.1.1（id=380681782，zip 资产 539867510，188,784B，走代理） | ✅ |
 | npm | `@zxc663/shisan-xinuo-workflow@2.1.1`（GitHub Packages） | ✅ |
-| Gitee | Release tag v2.1.1 + zip 附件（直连） | ✅ |
+| Gitee | Release tag v2.1.1（id=1107366）+ zip 附件（id=3132330，直连） | ✅ |
 | ClawHub | `shisan-xinuo-workflow@1.0.9`（内容 v2.1.1） | ✅ pending scans 待公开 |
 | About | GitHub+Gitee 仓库描述 PATCH（六·一 17 类文案，重 PATCH v2.1.1 口径） | ✅ |
 | skills.sh | 等待遥测/爬虫收录 | ⏳ |
