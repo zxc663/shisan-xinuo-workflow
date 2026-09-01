@@ -59,10 +59,12 @@ $anchorsSkill = @(
     "zxc663",          # 彩蛋自检
     "速查表",           # §12 速查表
     "三级同步",         # 判级三级同步链声明
-    "Base directory"   # 自更新验收判据
+    "Base directory",  # 自更新验收判据
+    "折叠协议"          # v2.1 上下文折叠协议（保留清单五必留 → checkpoint → 摘要 → 重载）
 )
 $anchorsCore = @(
-    "L2-S", "L2-F", "对接真相", "三级同步链", "Base directory"
+    "L2-S", "L2-F", "对接真相", "三级同步链", "Base directory",
+    "保留清单"          # v2.1 Preserver 保留清单五必留（压缩/折叠/交接前核对）
 )
 $newBootstrap = Join-Path $skDir "references\new-project-bootstrap.md"
 $probsA = @()

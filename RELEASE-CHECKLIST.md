@@ -1,24 +1,23 @@
-# 发行执行清单（v2.0.6）——项目承载 + 授权边界修复批次全渠道发行
+# 发行执行清单（v2.1.0）——上下文主动管理补全批次（本地批次，未发行）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
-> **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3、v2.0.4 已全渠道发行（2026-08-31）；**v2.0.5（路测回流批次）与 v2.0.6（项目承载+授权边界批次）内容已随 v2.0.6 全渠道发行（2026-08-31）**（本台账为 **v2.0.6 发行面**），详情见 项目信息.md §五 与 memory/task-log。
+> **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3、v2.0.4、v2.0.5、v2.0.6 已全渠道发行（2026-08-31，v2.0.5/v2.0.6 内容随 v2.0.6 一并发行）；**v2.1.0（上下文主动管理补全批次）为本地批次（2026-09-01，未发行）**，详情见 项目信息.md §三·§五 与 memory/task-log。
 
 ## A. 本仓已备（随 git 提交）
-- [x] 版本锁 2.0.6（package.json / SKILL frontmatter / README 徽章与版本历史行 / CHANGELOG v2.0.6 行 / 项目信息 §三·§五 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七）
-- [x] 项目承载 + 授权边界修复源码（本地 commit 56ee989，已随 HEAD=df8dc98 推送双端）：部署第五层「项目承载检查」、授权边界分级（项目内写文件=自动动作）、§2.5 触发存在性判定、开工四动作写死、Base directory 根因现场修复（`.bak-*` 迁 skill-backups/）
-- [x] 本机注入副本 ×4 重部署 v2.0.6（先备份，含在场提示）
-- [x] verify-release 4/4 PASS（base=2.0.6，零泄漏）
-- [x] dist/shisan-xinuo-workflow-v2.0.6.zip（staging 暂存目录法重建，Set-diff 双检）
-- [x] 提交并推送双端 main + tag v2.0.6（commit df8dc98，双端已推送）
+- [ ] 版本锁 2.1.0（package.json / SKILL frontmatter / README 徽章与版本历史行 / 项目信息 §三·§五 / docs/project-info / verify-release 锚串 / reference-sources / scripts-README 预期输出 / EVIDENCE §九·§七——**口径检查未跑完，实施时逐项核**）
+- [ ] 上下文主动管理补全源码（本地 commit 待建）：保留清单+折叠协议（injection-core 关键条款 + SKILL §12 P8）、紧凑档（details #273）、大文件读取协议（#274）、模块锚点表（#275 + docs/project-info 锚词列示范）、local-model-glossary.md（10 术语）、README 客户端能力边界声明与四客户端联用建议
+- [ ] verify-release 4/4 PASS（base=2.1.0，含新增锚串「折叠协议/保留清单」，零泄漏）
+- [ ] dist/shisan-xinuo-workflow-v2.1.0.zip（**未重建**——发行面批准后再重建，staging 暂存目录法 + Set-diff 双检）
+- [ ] 提交并推送双端 main + tag v2.1.0（**未执行**——本地 commit 不 push，发行面另行批准）
 
 ## B. 全渠道发行回执（待用户批准后执行）
 | 渠道 | 产物/URL | 状态 |
 |---|---|---|
-| GitHub | Release v2.0.6（附 dist v2.0.6.zip，走代理） | ✅ id=379414556，zip 177,425B |
-| npm | `@zxc663/shisan-xinuo-workflow@2.0.6`（GitHub Packages） | ✅ 29 文件 118.6 kB（shasum 188db3b3…） |
-| Gitee | Release tag v2.0.6 + zip 附件（直连） | ✅ id=1017339，附件 id=3120337 |
-| ClawHub | `shisan-xinuo-workflow@1.0.7`（内容 v2.0.6） | ✅ pending security scans |
-| About | GitHub+Gitee 仓库描述 PATCH v2.0.6 | ✅ 200/200 |
+| GitHub | Release v2.1.0（附 dist v2.1.0.zip，走代理） | ⏳ 待批 |
+| npm | `@zxc663/shisan-xinuo-workflow@2.1.0`（GitHub Packages） | ⏳ 待批 |
+| Gitee | Release tag v2.1.0 + zip 附件（直连） | ⏳ 待批 |
+| ClawHub | `shisan-xinuo-workflow@1.0.8`（内容 v2.1.0） | ⏳ 待批 |
+| About | GitHub+Gitee 仓库描述 PATCH v2.1.0（文案见 项目信息.md §六·〇） | ⏳ 待批 |
 | skills.sh | 等待遥测/爬虫收录 | ⏳ |
 
 ## C. 复用要点
@@ -26,4 +25,5 @@
 - Gitee 建 Release 必须带 `target_commitish=main`（否则 400）；**附件上传 `POST /releases/{id}/attach_files` 用 `curl.exe -F access_token=… -F file=@…zip`**，勿用 `Invoke-RestMethod -Form`（PS7 该 multipart 文件字段会致 Gitee 返回 40001 登录失效）。
 - ClawHub 发布路径= skill 子目录（含 SKILL.md）；走红海代理 `127.0.0.1:33210`。
 - GitHub push/fetch/API 走代理 `http://127.0.0.1:33210`；Gitee 直连。
-- 发行完成后：**GitHub classic PAT 轮换**（v2.0.3 起遗留最高优先：重新生成 → 更新 D:\Agent个人资源\机密资源\02-Gitee与GitHub.txt → 旧作废）→ 观察约 30 分钟（含 ClawHub 1.0.6/1.0.7 审核复查）→ 回执写回本项目文件与 task-log。
+- 发行完成后：**GitHub classic PAT 轮换**（v2.0.3 起遗留最高优先：重新生成 → 更新 D:\Agent个人资源\机密资源\02-Gitee与GitHub.txt → 旧作废）→ 观察约 30 分钟（含 ClawHub 1.0.7/1.0.8 审核复查）→ 回执写回本项目文件与 task-log。
+- **v2.1.0 特有前置**：注入副本重部署（平台全局注入文件属授权范畴）与技能副本同步（syncer.py）在发行面之外单独待批。

@@ -9,5 +9,5 @@
 
 ## 项目承载（已就绪）
 - `memory/`：`state.md` / `experience-mustread.md` / `experience.md` / `preferences.md` / `task-log/`——**规范件（带扩展名 .md 的正文文件，非空占位）**；本地承载，按项目 gitignore 约定决定是否随仓。
-- `docs/project-info.md`：六节索引（架构 / 目标 / 模块真实状态表 / 调研导航 / 参考资源 / 复述签章）。
+- `docs/project-info.md`：六节索引（架构 / 目标 / 模块真实状态表【含关键词锚定列，details #275】/ 调研导航 / 参考资源 / 复述签章）。
 - <项目特有纪律 1-3 条；本文件被合并时保留既有段落>
