@@ -9,7 +9,7 @@
 
 # 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）
 
-> 本文件由平台注入机制每会话自动注入，即工作流硬加载核心 = **流程路由地图**：告诉你「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」，并在上下文里写死防污染。**读到本文件即确认注入生效：立即执行四动作——①探测项目承载（`ls` 项目根：无 `memory/` → 自动建**规范五件套**（state.md / experience-mustread.md / experience.md / preferences.md / task-log/——带扩展名、内容从模板复制，**禁空文件占位**）；无 docs/project-info.md 且多文件 → 建索引式六节；**无项目级 AGENTS.md / CLAUDE.md / .trae-rules → 用 `templates/project-rules.md` 自动建（先查既有规则文件：合并不覆盖 + 先备份）**，不等许可）②扫工作区 `memory/`（state → experience-mustread → experience → preferences）③判级速查（10 秒）④三问选道。若本文件未在上下文中出现 → 说明平台注入失效，立即报告用户并亮降级路径（`install-skill.ps1 -HardInject` / 换平台）。**完整细节按需加载技能「shisan-xinuo-workflow」：三级跑道 / 编号纪律 / 9 类工作流 / 落地细则（16 类）/ 安全红线。
+> 本文件由平台注入机制每会话自动注入，即工作流硬加载核心 = **流程路由地图**：告诉你「先读哪些文件 → 按什么顺序执行 → 结束后更新哪些文档」，并在上下文里写死防污染。**读到本文件即确认注入生效：立即执行四动作——①探测项目承载（`ls` 项目根：无 `memory/` → 自动建**规范五件套**（state.md / experience-mustread.md / experience.md / preferences.md / task-log/——带扩展名、内容从模板复制，**禁空文件占位**）；无 docs/project-info.md 且多文件 → 建索引式六节；**无项目级 AGENTS.md / CLAUDE.md / .trae-rules → 用 `templates/project-rules.md` 自动建（先查既有规则文件：合并不覆盖 + 先备份）**，不等许可）②扫工作区 `memory/`（state → experience-mustread → experience → preferences）③判级速查（10 秒）④三问选道。若本文件未在上下文中出现 → 说明平台注入失效，立即报告用户并亮降级路径（`install-skill.ps1 -HardInject` / 换平台）。**完整细节按需加载技能「shisan-xinuo-workflow」：三级跑道 / 编号纪律 / 9 类工作流 / 落地细则（17 类）/ 安全红线。
 
 ## 上下文预算法（先定序，防污染）
 

@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.1.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -156,7 +156,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，**最新 v2.1.0 已随 2026-09-02 发行上传 GitHub Release**，或按仓库脚本「staging 暂存目录法」重新打包）。
+1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，****最新 v2.1.1 已随 2026-09-02 补丁发行上传 GitHub Release（v2.1.0 历史版本在 Releases 内可查）****，或按仓库脚本「staging 暂存目录法」重新打包）。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -182,7 +182,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.1.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.1.1）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -190,7 +190,7 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
 │   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 31 行）
 │   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/memory 骨架五件套）
-│   └── references/（injection-core · workflows · details 276条/16类 · rules 47条 ·
+│   └── references/（injection-core · workflows · details 276条/17类 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap · local-model-glossary）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
@@ -204,7 +204,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -258,6 +258,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
+- **v2.1.1**（2026-09-02）：**口径修正补丁（已全渠道发行）**——①**细则类数 16→17 全仓统一**（details.md 实际 17 分节、类数=分节数系历史自洽规则；v2.1.0 发行预算误记「16 类不变」；SKILL / injection-core / EVIDENCE / docs / CHANGELOG / README / 项目信息 / **About 双端描述全部同步修正**）；②**README 门面优化**（新增「**本仓库=一份超长 System Prompt**」本质声明 + v2.1.0 已发行口径回填 + dist 提示更新）；③dist v2.1.1.zip 重建（38 项 Set-diff 38=38）。verify 4/4 PASS；发行：GitHub Release v2.1.1 / npm 2.1.1 / Gitee / ClawHub 1.0.9 / About 双端 PATCH（17 类文案）。
 - **v2.1.0**（2026-09-01 源码 / 2026-09-02 全渠道发行）：**上下文主动管理补全批次**——借鉴 Aider repo-map / 1bcoder /map·/ctx·/scan / Atrium Preserver / Context Governor 四大客户端机制（用户提供清单）：①**保留清单 + 折叠协议（Preserver）**——压缩/折叠/交接前核对五必留（任务本质/验收标准/激活规则原文/当前步骤/回滚基线），触发→checkpoint 落盘→旧块一行摘要→重载序（injection-core 关键条款 + SKILL §12 P8 + details #272）；②**紧凑档（短上下文适配）**——preferences 标注「紧凑档」→ 折叠阈值按窗口比例 25-35%、预算 ≤minimal、锚点表+大文件协议强制、**纪律不降级**（注入核心全文保留，Preserver 原则；诚实代价 1.7K/8K≈21%）；③**模块锚点表**（docs/project-info 模块表加关键词锚定列，手动 repo map，details #275）；④**大文件读取协议**（>300 行先头部/锚词定位再读，禁整读，details #274）；⑤**本地模型术语表**（references/local-model-glossary.md，10 术语随 Skill 分发）；⑥**客户端能力边界诚实声明 + 联用建议**（局限节：自动 repo-map/增量 diff/轻量模型折叠是客户端执行层能力，Skill 只提供纪律化等价协议）；⑦**补强批次**：模块依赖关系表（project-info 架构节，details #276）+ 按需符号召回协议（#276：锚点表→grep 定义/调用点→只读签名行→局部理解，禁为找符号整读）。口径 271→276 条 / 类数 16→17（新增 §17「上下文主动管理补全」类——发行预算误记「16 类不变」，2026-09-02 复盘按 details 分节数修正）；verify-release A 项 +锚串（折叠协议/保留清单）。verify 4/4 PASS；**2026-09-02 已全渠道发行**（GitHub Release v2.1.0 附 dist zip / npm 2.1.0 / Gitee 附件 / ClawHub 1.0.8 / About 双端 PATCH）。
 - **v2.0.6**（2026-08-31）：**项目承载 + 授权边界修复批次（执行批次，已全渠道发行）**——WorkBuddy 新工作区实测（执行会话自述 5 问题）驱动：①**部署第五层「项目承载检查」**（SKILL §3 第 6 步）：硬注入三层之外检查项目工作区——无 `memory/` 骨架 → 自动建五件套；无 docs/project-info.md 且多文件 → 建索引式六节；②**授权边界分级**（§4 映射表 + injection-core 红线）：项目工作区内写文件（memory/ 骨架、docs/、代码）= **自动动作，不触发授权停**；授权仅限平台全局注入 / 密钥 / 破坏性 / 发布 / 超预算——修复「自动建 memory 被误当需授权」根因；③**§2.5 触发改存在性判定**：无 memory/ 骨架 或 无 docs → 触发，不做「算不算新项目」主观判定；④**开工「项目承载探测」写死**（injection-core 开工四动作 + SKILL §10 会话始）：ls 项目根 → 无骨架自动建 → 再扫 memory/ → 判级选道；⑤**现场修复**：`~/.agents/skills` 下 6 个 `.bak-*` 备份在平台扫描路径内（**Base directory 落旧版根因**）→ 迁移至 skill-backups/；`~/.workbuddy/skills` 副本停在 b8d1022（缺本次触达条款）→ syncer 同步至 2.0.6；⑥诚实补句：纪律 = 可追溯 / 可审计 / 恢复机制，非「自动做对」。verify 4/4 PASS；注入副本 ×4 重部署 v2.0.6（先备份）；**已全渠道发行（GitHub Release / npm 2.0.6 / Gitee / ClawHub 1.0.7 / About 双端）**。
 - **v2.0.5（2026-08-31）**：**路测回流 + 触达强化批次（本地批次，内容已并入 v2.0.6 全渠道发行）**——①**取证命令二次修复**：v2.0.4 裸 `#[0-9]{3}` 分支无法区分细则编号与 GitHub issue 编号（三口径实证：v2.0.3=1 假阴性 / v2.0.4=10 假阳性（9 为 issue 编号）/ 严格=1 且自指，真实语义命中=1）→ 废弃裸编号分支，只认完整前缀形态 `details #NNN` / `细则 #NNN` / `references/details`，details 引用规范同步禁裸编号、injection-core 引用条款同约束；②**前缀自检改每会话触发**（用户拍板）：SKILL §3 第 0 步重写（权威源，含两个合规出口：目录名未知→不猜不阻塞 / 用户拒绝改名→state.md 记录后静默）+ injection-core「开工一行自检」+ memory-anchor 锚点行——三层触达承载；③**「跳过必声明」元规则**（用户拍板）：任何规则/步骤/纪律被跳过（含 L2-S 边界豁免、L1 整体标注）→ 复述 + 记录依据 + 提醒；「跳过 + 声明」合法、静默跳过违规（SKILL §0 + §12 SK 行 + injection-core 主流程门禁）；④**details §15 一轮路测回流 13 条**（#255-267：12 项漏检全收 + 「不复现」判定举证纪律，T5 判据失误实证）+ **§16 二轮路测回流 4 条**（#268-271：chalk level 污染根实例 / 响应体只消费一次 / 配置继承拼接 vs 替换 / 非 TTY 环境查询 undefined——只收通用性强者，终端渲染等绑定领域者不入通用版）；口径 254→271 条 / 14→16 类全仓同步；⑤**负向结论举证升红线**（四要件权威源 SKILL §8 + injection-core 红线 + details #255 交叉引用）——「不复现」举证责任高于「复现」（T5/T9 双失误实证）；⑥**触达机制强化（二轮核心发现「已安装 ≠ 被加载」）**：在场提示/injection-core 首行改「读到即执行 + 缺失即报告」；SKILL §3 注入第五步升可重跑触达验收；高命中细则 TOP 内联进 injection-core 错误段（#233/#214/#163/#256·#270/#262）；description 重构为场景化触发词；**子代理委托纪律包**（rules §28 + skill-usage §0 修正「子代理自扫 L0/L1/L2」错误假设——二轮实证提醒可读仍 0 加载，改为「委托时主代理必须内联最小纪律包」+ SKILL §8/§12 AG + templates/agents 模板）；⑦**有效性诚实声明更新**（§6.6）：纳入二轮（未观察到带规则的正确性优势 + T5/T9 双纠错被无规则轨纠正 + 背答案 7/14 + 8 类零命中/111 条无贡献 + 触达瓶颈；只读作「B 轨未劣于 A 轨」）；§8 易错点 +2（不复现举证 / 子代理纪律直送）；⑧版本 bump 2.0.5 全口径（package.json / README / CHANGELOG / 项目信息 / EVIDENCE §十/§十一）。verify 4/4 PASS。**下一步**：换项目池（zod/vitest/esbuild/prettier/tsx/unbuild）+ 面1·面3 分会话 + 转测触发率，由新会话以本版为基线执行。

@@ -4,7 +4,7 @@
 > 更新：2026-09-01 ｜ 判级：L2-F v2.1.0 批次 ｜ 签章：本批次复述经用户确认（AskUserQuestion 三决策：方向=通用补全+紧凑档 / 版本=v2.1.0 / 术语表=随 Skill 分发）。
 
 ## ① 架构
-开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.1.0+）。
+开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.1.1+）。
 双层：**文档层**（SKILL.md 权威可执行全文 → references/ 按需 → templates/ 模板）＋**维护工具层**（scripts/：install-skill / syncer / verify-release，均为 .ps1/.py，无运行时）。
 
 **模块依赖关系表**（A → B = A 依赖 B；任务涉跨模块改动先查本表再按 details #276 召回符号）：
@@ -20,21 +20,21 @@
 
 ## ② 目标规划（当前阶段）
 - 已完成：**v2.0.6 全渠道发行（2026-08-31）**——v2.0.5（路测回流+触达强化）与 v2.0.6（项目承载+授权边界）两个本地批次内容已随 v2.0.6 一并发行（GitHub Release / npm / Gitee / ClawHub 1.0.7 / About 双端）。
-- 当前：**v2.1.0 上下文主动管理补全批次（2026-09-02 已全渠道发行）**——保留清单（Preserver）+ 折叠协议 + 紧凑档 + 大文件读取协议 + 模块锚点表 + 按需符号召回 + 本地模型术语表；GitHub Release（dist zip）/ npm 2.1.0 / Gitee（zip 附件）/ ClawHub 1.0.8 / About 双端。
-- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 1.0.8 审核复查 + skills.sh 遥测收录核查 ③下一轮路测（换项目池 + 转测触发率）④注入副本重部署 v2.1.0 + 技能副本 syncer 同步（待批）。
+- 当前：**v2.1.0 上下文主动管理补全批次（2026-09-02 已全渠道发行）+ v2.1.1 口径修正补丁（细则类数 16→17 全仓统一 + README 本质声明，2026-09-02 已发行：GitHub Release / npm 2.1.1 / Gitee / ClawHub 1.0.9 / About 双端 17 类文案）**。
+- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 1.0.9 审核复查 + skills.sh 遥测收录核查 ③下一轮路测（换项目池 + 转测触发率）④注入副本重部署 v2.1.1 + 技能副本 syncer 同步（待批）。
 - 路线：v2.0.5 后进入稳定细则小更新（不做破坏性大改，但保留意外情况声明）。
 
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v2.1.0） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 276 条 16 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
+| skill/shisan-xinuo-workflow/ | 已实现（v2.1.1） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 276 条 17 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁） | install-skill、syncer、verify-release、门禁、三路合并 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：state/experience-mustread/experience/preferences/task-log | state、experience、preferences、task-log、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.1.0，staging 重建 + Set-diff 双检 38=38，187,627B） | 发行 zip、发布包、dist |
+| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.1.1，staging 重建 + Set-diff 双检 38=38） | 发行 zip、发布包、dist |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
-| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.1.0；2026-09-02 已全渠道发行） | 发行台账、渠道回执、门禁 |
+| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.1.1；2026-09-02 已全渠道发行 v2.1.0+v2.1.1） | 发行台账、渠道回执、门禁 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |
 
 ## ④ 调研导航（改什么 → 查哪）

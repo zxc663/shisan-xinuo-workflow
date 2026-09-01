@@ -15,10 +15,10 @@ shisan-xinuo-workflow 是一个跨平台"工程治理元 Skill"（governance met
 - npm 包：@zxc663/shisan-xinuo-workflow （GitHub Packages 源 npm.pkg.github.com）
 - skills.sh 收录页：https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
 - ClawHub：https://clawhub.ai （搜索 shisan-xinuo-workflow）
-- 版本：v2.1.0（**唯一中文版主交付物**——v2.0 起单版本，英文 / 双语版已删除，git 历史可追溯；README 双语保留；**v2.1.0 已于 2026-09-02 全渠道发行：GitHub Release（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8 / About 双端 PATCH**）
+- 版本：v2.1.1（**唯一中文版主交付物**——v2.0 起单版本，英文 / 双语版已删除，git 历史可追溯；README 双语保留；**v2.1.0 已于 2026-09-02 全渠道发行 + v2.1.1 口径修正补丁 2026-09-02 全渠道发行（GitHub Release / npm 2.1.1 / Gitee / ClawHub 1.0.9 / About 双端 17 类文案）**）
 
-核心概念：v2.1.0 含 47 条纪律规则 + **三级跑道**（L1 快速通道 / L2-S 短工作流（对接真相清单必做）/ L2-F 完整 11 步，每步出口产物门禁）+
-276 条落地细则（16 类）+ 渐进式披露 + 会话钩子示例 + 一键安装脚本（agent- 前缀自适配）+ 硬注入三层承载（记忆层在场提示 + 规则层 + 配置层）+ 发布一致性校验脚本（内容锚点门禁）+ 上下文主动管理（折叠协议 / 保留清单 / 紧凑档 / 模块锚点表 / 按需符号召回 / 大文件读取协议）。
+核心概念：v2.1.1 含 47 条纪律规则 + **三级跑道**（L1 快速通道 / L2-S 短工作流（对接真相清单必做）/ L2-F 完整 11 步，每步出口产物门禁）+
+276 条落地细则（17 类）+ 渐进式披露 + 会话钩子示例 + 一键安装脚本（agent- 前缀自适配）+ 硬注入三层承载（记忆层在场提示 + 规则层 + 配置层）+ 发布一致性校验脚本（内容锚点门禁）+ 上下文主动管理（折叠协议 / 保留清单 / 紧凑档 / 模块锚点表 / 按需符号召回 / 大文件读取协议）。
 安装演示：npx skills add zxc663/shisan-xinuo-workflow
 ```
 
