@@ -1,6 +1,10 @@
 # 维护脚本使用文档（install-skill.ps1 + verify-release.ps1 + syncer.py）
 
-仓库维护工具：**一键安装（agent- 前缀自适配）** + **发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器**。install-skill.ps1 面向用户安装（git 分发用）；后二者是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
+仓库维护工具：**一键安装（agent- 前缀自适配）** + **发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器** + **发行 zip 打包器**。install-skill.ps1 面向用户安装（git 分发用）；后三者是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
+
+## 零零、build-dist.ps1（发行 zip 打包）
+
+从仓库抽 v2.2.0 发布物到 `dist/shisan-xinuo-workflow-v<version>.zip`（staging 暂存目录法 + Set-diff 双检后压缩）。幂等：目标 zip 已存在先删再建。含 `scripts/` 维护工具与 `skill/` 主交付物全树，用于 GitHub/Gitee Release 附件。
 
 ## 〇、install-skill.ps1（一键安装 · agent- 前缀自适配）
 
