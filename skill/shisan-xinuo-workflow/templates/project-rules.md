@@ -1,6 +1,6 @@
 # 项目级 Agent 规则 · <项目名>
 
-> **本文件是项目级注入（每会话自动进入）。**与平台全局硬注入（injection-core：通用纪律）互补：项目级管「本项目特有信息 + 项目承载 + 项目纪律」。**由工作流「项目承载检查（SKILL §3 第 6 步）」自动创建/合并**——先检查既有规则文件（AGENTS.md / CLAUDE.md / .trae/rules/project_rules.md 按平台）：存在则**合并不覆盖 + 先备份**；不存在才按本模板新建。
+> **本文件是项目级注入（每会话自动进入）。**与平台全局硬注入（injection-core：通用纪律）互补：项目级管「本项目特有信息 + 项目承载 + 项目纪律」。**由工作流「项目承载检查（SKILL §2.0 开工序六步第 4 步 / §3 第 6 步）」自动创建/合并**——文件名按 `platform-adaptation.md` §2「项目级注入点表」定名（Codex=项目根 AGENTS.md / Claude Code=项目 CLAUDE.md / Trae=`.trae/rules/project_rules.md` / Cursor=`.cursor/rules/*.mdc` / Windsurf=`.windsurfrules`；未知平台联网调研，离线降级 AGENTS.md 兜底+头注迁移说明）：存在同名既有规则文件 → **合并不覆盖 + 先备份**；不存在才按本模板新建。
 
 ## 工作流在场（本项目会话）
 - 开工四动作：①探测项目承载（memory/ 五件套 ⊆ 本规则文件 ⊆ docs/ 索引）②扫 `memory/`（state → experience-mustread → experience → preferences）③判级速查（10 秒）④三问选道；命 L3（密钥/删除/迁移/发布/架构/超预算）先问。

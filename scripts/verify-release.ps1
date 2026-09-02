@@ -60,11 +60,13 @@ $anchorsSkill = @(
     "速查表",           # §12 速查表
     "三级同步",         # 判级三级同步链声明
     "Base directory",  # 自更新验收判据
-    "折叠协议"          # v2.1 上下文折叠协议（保留清单五必留 → checkpoint → 摘要 → 重载）
+    "折叠协议",         # v2.1 上下文折叠协议（保留清单五必留 → checkpoint → 摘要 → 重载）
+    "项目级注入点"      # v2.1.1 承载平台适配（项目规则文件按平台注入点表定名）
 )
 $anchorsCore = @(
     "L2-S", "L2-F", "对接真相", "三级同步链", "Base directory",
-    "保留清单"          # v2.1 Preserver 保留清单五必留（压缩/折叠/交接前核对）
+    "保留清单",          # v2.1 Preserver 保留清单五必留（压缩/折叠/交接前核对）
+    "项目级注入点"       # v2.1.1 开工六步：项目规则文件按平台注入点表定名
 )
 $newBootstrap = Join-Path $skDir "references\new-project-bootstrap.md"
 $probsA = @()
@@ -127,6 +129,21 @@ if (-not $SkipLeak) {
     }
     Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"0 泄漏"}else{$leakHits -join ";"})
 }
+
+# ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1） ----------
+$probsE = @()
+$cleanFiles = @($main, $core)
+if (Test-Path (Join-Path $skDir "templates")) {
+    $cleanFiles += Get-ChildItem (Join-Path $skDir "templates") -Recurse -File -Filter *.md | ForEach-Object { $_.FullName }
+}
+foreach ($cf in $cleanFiles) {
+    if (-not (Test-Path $cf)) { continue }
+    $t = Get-Content $cf -Raw -Encoding UTF8
+    foreach ($pat in @('用户拍板','用户定调','作者定调','2026-08','2026-09')) {
+        if ($t -match [regex]::Escape($pat)) { $probsE += "$(Split-Path $cf -Leaf) 含过程注记[$pat]" }
+    }
+}
+Add-Result ($probsE.Count -eq 0) "E 正文净化(常驻/模板面过程注记=0)" $(if($probsE.Count -eq 0){"OK"}else{$probsE -join ";"})
 
 # ---------- 汇总输出 ----------
 Write-Host ""

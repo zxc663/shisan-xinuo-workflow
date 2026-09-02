@@ -104,7 +104,7 @@
 **L2-S：怎么走**——①对接真相清单（必做）②复述 + 3-5 条可验证验收 ③免 plan：单文件直做；≤3 文件一行「改动 + 验收 + 回滚基线」④执行 + 最小验证 ⑤GATE 行 + 状态面行。
 **L2-S：省什么**（明确列出防浪费时间）——联网双调研（S2/S1 档）· 产品五问深度 · plan 文档 · 多轮提问（方向 / 边界有歧义除外——必问不豁免；红线永不豁免）。
 
-**对接真相清单（强制，SKILL §2.3）**——每个跨包调用 / 新端点 / 新依赖：小表 `模块 | API/端点 | 对接方式(path/method/envelope/fields/package) | 证据来源(source:line/contract/docs)`；**凭命名直觉写对接代码是被禁止的**（2026-08-30 反例四则：envelope 不解包、`api.get` 实际返回 ApiResponse、recharts 包归属错误、Nest DI 名称不匹配）。
+**对接真相清单（强制，SKILL §2.3）**——每个跨包调用 / 新端点 / 新依赖：小表 `模块 | API/端点 | 对接方式(path/method/envelope/fields/package) | 证据来源(source:line/contract/docs)`；**凭命名直觉写对接代码是被禁止的**（实证反例：envelope 不解包、`api.get` 实际返回 ApiResponse、recharts 包归属错误、Nest DI 名称不匹配）。
 
 **状态面取证行（自我报告 → 检查点）**：
 
