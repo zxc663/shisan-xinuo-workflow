@@ -63,6 +63,7 @@
 - **兜底不可逆事故**：L3 先问 + 原子操作锁（破坏性操作先列命令清单、结束回合等确认）+ 回滚点先建——AI 编码最贵的三类事故（删错数据、推错分支、改崩契约）把最后一道闸门交给人类，而不是交给 Agent 的自觉。
 - **可审计可问责**：GATE 可重跑（cmd / exit / files / lessons / exempt）+ 决策审计归档（现象 / 依据 / 被否候选 / 选择 / 影响）+ 拒绝日志（R1 原话 + 隐含需求）——「做过 ≠ 说过」，每个结论可复核；状态面只报可核算数字，不报自我感觉。
 - **自我校准的标本**：双击晋升制（同坑两次 → 细则回流）+ 四轮路测诚实口径（包括被无规则轨纠正的 T5/T9 判据失误、背答案 7/14 修正、泛化仅 #270 跨池成功）——本 Skill 自己也在被自己的方法论审计，bad 数据也摆上台面。
+- **场景化，不乱建文档（v2.3.0）**：单发使用（新会话单发触发/无项目特征/非工程任务）纪律全走但**承载创建豁免**——不为一次性任务乱建 memory/规则文件/docs（乱建文档比不建更糟）；持续项目才强制六步全套 + 回指理解（details #283）。
 
 *(EN) Turns AI instinct into auditable discipline; bounds token cost via progressive disclosure + short-lane + context hygiene (1–5K tok/session fixed overhead, platform 947M is aggregate, not skill-attributable); rules get consumed via mandatory touchpoints; consistent cross-platform via Step-0 injection. Extra: cross-session memory (next agent inherits state/experience/preferences), accident backstops (L3 ask-first + atomic-op lock + rollback points), auditability (re-runnable GATE, decision audits, rejection log), and self-calibration (double-hit promotion + four rounds of honest roadtests, bad data included).*
 
@@ -85,6 +86,9 @@
 
 ```
 平台硬加载（第 0 步：检测平台 → 定位真实注入点 → 按需（精简） / 强制（injection-core 核心全文））
+        │
+        ▼
+场景化判定（v2.3.0：单发使用 → 纪律全走 + 承载创建豁免；持续项目 → 六步全套 + 承载强制 + 回指；判定不清默认轻量）
         │
         ▼
 任务三重判级（先答三问：≥3 包跨层？涉契约/架构/迁移/发布/安全？用户点名严格？）
@@ -129,6 +133,12 @@
 | **skill 自更新** | syncer.py 三路合并（用户规则目录永不碰）；彩蛋+状态面版本一致检查 | scripts/syncer.py · SKILL §3.1 |
 | 配套模板/钩子/子代理 | 规划/验收/任务记录/复盘/回滚点/预算/钩子/审查子代理 | templates/ |
 | **彩蛋自检 zxc663** | 回复「注入方式 + 已应用轮数 + 源库 vs 副本版本」——纯自检零操作 | SKILL §12 ZE |
+| **场景化判定（v2.3.0）** | 单发使用（新会话单发/无项目特征/非工程任务）→ 纪律全走、**承载创建豁免**（不乱建 memory/规则文件/docs）；持续项目 → 六步全套 + 承载强制 + 回指；判定不清默认轻量 | SKILL §2.0 · details #283 |
+| **纠偏续跑 Steer（v2.3.0）** | 方向错 → 暂停 → 保留已确认正确部分 → 增量调整 → 从当前状态继续（不从头重做）；面向结果指令 | details #280 · §12 C1 |
+| **并行依赖协议 Parallel（v2.3.0）** | 依赖分析先行（强依赖串行）→ 子任务五要素 → 合并统一集成验证 | details #281 · §5.1 |
+| **回指理解强制（v2.3.0）** | project-rules「回指（强制）」段（缺失=不合规）+ 会话末更新行 + §0 任务中途每一条消息先严谨分析 | details #282 · project-rules 模板 |
+| **文档写作分层（v2.3.0）** | 写任何文档产物：正文只写结论/规则 + ≤1 句为什么；史料（出处/拍板人/日期/轮次）落决策史层 | SKILL §10 总纲 · details #278 |
+| **审计修复（v2.3.0 症状索引门禁）** | details 头部症状索引表 283 条全覆盖 + verify 新增 **F 项索引完整性门禁** + GATE 增 `errpath` 字段（错误路径核对可查） | details 头部 · verify-release F 项 · GATE |
 
 ## 差异化优势 · Differentiation
 
@@ -156,7 +166,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载或按仓库脚本重新打包，****最新 v2.1.1 已随 2026-09-02 补丁发行上传 GitHub Release（v2.1.0 历史版本在 Releases 内可查）****，或按仓库脚本「staging 暂存目录法」重新打包）。
+1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物：从 GitHub Release 下载——**最新已发行版 v2.2.0 已随 2026-09-02 全渠道发行上传 GitHub Release（v2.1.x 历史版本在 Releases 内可查）；v2.3.0 为本地批次，dist 待发行时打包**——或按仓库脚本 `scripts/build-dist.ps1` 重新打包（staging 暂存 + Set-diff 双检，v2.2.0 起））。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -174,7 +184,7 @@
 
 **更新与自维护**：上游更新后跑 `python scripts/syncer.py`（体检→备份→迁移→覆盖→双落盘；备份落 `skill-backups/`——平台扫描路径之外，验收以平台解析到的 Base directory 为准）；**你的本地规则写 `user-notes/`，永不随上游覆盖**；手动改副本只许写在 user-notes/。发布前置校验：`powershell -File scripts/verify-release.ps1`（内容锚点/hooks/版本+package/泄漏全绿才可发布）。
 
-**硬注入 = 三层承载（用户拍板 v2.0.4）**：记忆层（每会话在场锚点，**首行「在场提示 · 工作流 Skill 现已在场」**：`templates/memory-anchor.md`）＋ 规则层（injection-core 核心全文）＋ 配置文件层（hooks/全局设置）**同时写入**，写前提醒用户授权；按需注入只写应用层（精简纪律 + 询问是否写规则层，不写记忆层）。配置层/记忆层文件含凭据时一律走环境变量，不落明文。
+**硬注入 = 三层承载（v2.0.4）**：记忆层（每会话在场锚点，**首行「在场提示 · 工作流 Skill 现已在场」**：`templates/memory-anchor.md`）＋ 规则层（injection-core 核心全文）＋ 配置文件层（hooks/全局设置）**同时写入**，写前提醒用户授权；按需注入只写应用层（精简纪律 + 询问是否写规则层，不写记忆层）。配置层/记忆层文件含凭据时一律走环境变量，不落明文。
 
 ## 仓库结构 · Repository layout
 
@@ -250,6 +260,7 @@ shisan-xinuo-workflow/              ← 仓库根
 - **怎么配置触发器，让每个新会话都强制加载？** 平台 hooks（SessionStart/End）或各平台全局规则文件（`platform-adaptation.md` §2.1 有逐平台实测明细——本机 Claude Code hooks 因 bash 不可用已降级、Codex/WorkBuddy 无 hooks 槽位已如实标注）；配置前先备份；**验收判据**：新会话输入「在场提示」关键词在上下文 + `zxc663` 正常回话 = 触发器生效。
 - **换模型（强模型 → 弱模型）会失效吗？** 可能打折——弱模型对 description 触发精度会降（skill-usage.md §0 有弱模型保底做法：调小可发现清单 / 精准 description）；但注入副本（每会话在场）不受模型影响；`zxc663` 一次自检随时可验证当前是否在场。
 - **「细则类小更新」路线是什么意思？** v2.0.5 之后的承诺：只做细则追加入库（双击晋升制）、措辞校正、口径补全——**不做破坏性大改**；但「不做绝对保证」（作者保留意外情况声明）。本仓库定位 = **Agent 提示词注入标范与标本合集**：把每次机制修改对应的实证（哪轮路测驱动、成功/失败各几处）一并归档，供你拿来打磨自己的工作流。
+- **单发使用会建一堆文档吗？** 不会——v2.3.0 场景化（details #283）：单发/无项目特征/非工程任务 → 纪律照走、**承载创建豁免**（不建 memory/规则文件/docs，乱建文档比不建更糟）；持续项目才建 + 回指强制；判定不清默认轻量。
 
 ## 来源与依据 · Sources
 
@@ -258,7 +269,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 版本历史 · Changelog
 
-- **v2.3.0**（2026-09-02）：**流程场景化 + 写作重构 + Steer/Parallel + 回指理解强制 + 审计修复 1-7（本地批次，未发行）**——①**场景化**（details #283）：单发使用（新会话单发触发/无项目特征/非工程任务）→ 纪律全走、**承载创建豁免**（不建 memory/规则文件/docs）；持续项目 → 六步全套+承载强制+回指；判定不清默认轻量单发 ②**写作重构**：正文 vs 史料泛化为「文档写作分层」总纲（SKILL §10 顶部，写任何文档时）+ 原条例移根 AGENTS.md「维护纪律」小节 + workflows §9 固化日期裁决（日期记决策记录）③**Steer 纠偏续跑**（details #280）：方向错 → 暂停 → 保留已确认正确部分 → 增量调整 → 从当前状态继续（不从头重做）；面向结果指令 ④**Parallel 依赖协议**（details #281）：依赖分析先行（强依赖串行）→ 子任务五要素 → 合并统一集成验证 ⑤**回指理解双强制**：project-rules 模板「回指（强制）」段（缺失=不合规）+ 会话末更新行；§0 复述前置扩「任务中途每一条消息先严谨分析理解」；details #282 创建自检清单 ⑥**审计修复 1-7**：症状索引表（details 头部，283 条全覆盖，F 项门禁）+ 标签统一（17 种中文零分裂）+ 取证命令唯一权威源化（修 workflows 自相矛盾/陈旧编号）+ 错误必查 TOP 换血挂数据（纳入 #228/#229 实证命中条）+ 淘汰机制 + GATE `errpath` 字段 + E 项定位明示（references 史料豁免）+ hooks B 项降警告级 + 彩蛋 zxc663 降档出注入核心 + EVIDENCE 成本账补 SKILL 全载 + 矛盾裁决三对（重读优先/预载措辞/同步面收敛）。口径 279→283 条 / 17 类；verify 6/6 PASS（含 F 项）；本地 commit 不 push、发行面待批。
+- **v2.3.0**（2026-09-02）：**流程场景化 + 写作重构 + Steer/Parallel + 回指理解强制 + 审计修复 1-7——①**场景化**（details #283）：单发使用（新会话单发触发/无项目特征/非工程任务）→ 纪律全走、**承载创建豁免**（不建 memory/规则文件/docs）；持续项目 → 六步全套+承载强制+回指；判定不清默认轻量单发 ②**写作重构**：正文 vs 史料泛化为「文档写作分层」总纲（SKILL §10 顶部，写任何文档时）+ 原条例移根 AGENTS.md「维护纪律」小节 + workflows §9 固化日期裁决（日期记决策记录）③**Steer 纠偏续跑**（details #280）：方向错 → 暂停 → 保留已确认正确部分 → 增量调整 → 从当前状态继续（不从头重做）；面向结果指令 ④**Parallel 依赖协议**（details #281）：依赖分析先行（强依赖串行）→ 子任务五要素 → 合并统一集成验证 ⑤**回指理解双强制**：project-rules 模板「回指（强制）」段（缺失=不合规）+ 会话末更新行；§0 复述前置扩「任务中途每一条消息先严谨分析理解」；details #282 创建自检清单 ⑥**审计修复 1-7**：症状索引表（details 头部，283 条全覆盖，F 项门禁）+ 标签统一（17 种中文零分裂）+ 取证命令唯一权威源化（修 workflows 自相矛盾/陈旧编号）+ 错误必查 TOP 换血挂数据（纳入 #228/#229 实证命中条）+ 淘汰机制 + GATE `errpath` 字段 + E 项定位明示（references 史料豁免）+ hooks B 项降警告级 + 彩蛋 zxc663 降档出注入核心 + EVIDENCE 成本账补 SKILL 全载 + 矛盾裁决三对（重读优先/预载措辞/同步面收敛）。口径 279→283 条 / 17 类；verify 6/6 PASS（含 F 项）；本地 commit 不 push、发行面待批。
 - **v2.2.0**（2026-09-02）：**开工序列六步 + 承载平台适配 + 本体净化 + 决策时效（已全渠道发行）**——①**开工序列六步**（SKILL §2.0 + injection-core）：复述理解（**无条件第一步含 L1，不自以为是，理解缺口先补依据**）→ 扫描工作区（根目录一层+自适应限流+形态判定）→ 定承载根（多目录按任务焦点+留档）→ 承载创建（强制，出口产物）→ 读上下文 → 判级选道；L1 豁免精简（复述不可豁免）②**承载平台适配**：platform-adaptation 新增「项目级注入点表」（Codex=项目根 AGENTS.md 必建等），SKILL §3 第 6 步③与 injection-core 按表定名（删除错误路径 `.trae-rules`），加载即承载检查（SKILL §1——多 Skill 底座占位时本 Skill 条款不依赖注入核心），details #277 ③**本体净化（正文 vs 史料规范）**：SKILL §0 立规范（正文=规则+≤1 句为什么；版本/拍板人/日期/路测轮次→决策史；details 来源字段豁免；注入核心禁悬空指针），逐文件清理过程注记与悬空指针（SKILL/injection-core/details/workflows/platform-adaptation/rules/skill-usage/templates），verify-release 新增 **E 项正文净化检查**（常驻/模板面过程注记=0）+ A 项锚串「项目级注入点」④**决策时效**：details #278 依据场景矩阵（方向性决策依据持久必带前提+重开条件；辅助性背景依据默认 task-log；一次性理由永不入项目文档）+ #279 化石识别（决策可重开——读到历史依据先验前提）；混合写入门槛（普通模式升格持久层前必问「本次还是长期」，目标模式靠标注兜底）；仲裁序升格常设偏好必带前提+重开条件。口径 276→279 条；verify 5/5 PASS（含 E 项）；dist v2.2.0.zip 39=39（190,102B）+ 注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步；**已全渠道发行（GitHub Release v2.2.0 / npm 2.2.0 / Gitee / ClawHub 1.0.10 pending scans / About 双端 PATCH 279 条 17 类）**。
 - **v2.1.1**（2026-09-02）：**口径修正补丁（已全渠道发行）**——①**细则类数 16→17 全仓统一**（details.md 实际 17 分节、类数=分节数系历史自洽规则；v2.1.0 发行预算误记「16 类不变」；SKILL / injection-core / EVIDENCE / docs / CHANGELOG / README / 项目信息 / **About 双端描述全部同步修正**）；②**README 门面优化**（新增「**本仓库=一份超长 System Prompt**」本质声明 + v2.1.0 已发行口径回填 + dist 提示更新）；③dist v2.1.1.zip 重建（38 项 Set-diff 38=38）。verify 4/4 PASS；发行：GitHub Release v2.1.1 / npm 2.1.1 / Gitee / ClawHub 1.0.9 / About 双端 PATCH（17 类文案）。
 - **v2.1.0**（2026-09-01 源码 / 2026-09-02 全渠道发行）：**上下文主动管理补全批次**——借鉴 Aider repo-map / 1bcoder /map·/ctx·/scan / Atrium Preserver / Context Governor 四大客户端机制（用户提供清单）：①**保留清单 + 折叠协议（Preserver）**——压缩/折叠/交接前核对五必留（任务本质/验收标准/激活规则原文/当前步骤/回滚基线），触发→checkpoint 落盘→旧块一行摘要→重载序（injection-core 关键条款 + SKILL §12 P8 + details #272）；②**紧凑档（短上下文适配）**——preferences 标注「紧凑档」→ 折叠阈值按窗口比例 25-35%、预算 ≤minimal、锚点表+大文件协议强制、**纪律不降级**（注入核心全文保留，Preserver 原则；诚实代价 1.7K/8K≈21%）；③**模块锚点表**（docs/project-info 模块表加关键词锚定列，手动 repo map，details #275）；④**大文件读取协议**（>300 行先头部/锚词定位再读，禁整读，details #274）；⑤**本地模型术语表**（references/local-model-glossary.md，10 术语随 Skill 分发）；⑥**客户端能力边界诚实声明 + 联用建议**（局限节：自动 repo-map/增量 diff/轻量模型折叠是客户端执行层能力，Skill 只提供纪律化等价协议）；⑦**补强批次**：模块依赖关系表（project-info 架构节，details #276）+ 按需符号召回协议（#276：锚点表→grep 定义/调用点→只读签名行→局部理解，禁为找符号整读）。口径 271→276 条 / 类数 16→17（新增 §17「上下文主动管理补全」类——发行预算误记「16 类不变」，2026-09-02 复盘按 details 分节数修正）；verify-release A 项 +锚串（折叠协议/保留清单）。verify 4/4 PASS；**2026-09-02 已全渠道发行**（GitHub Release v2.1.0 附 dist zip / npm 2.1.0 / Gitee 附件 / ClawHub 1.0.8 / About 双端 PATCH）。
