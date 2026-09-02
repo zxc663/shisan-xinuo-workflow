@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-02 ｜ 判级：L2-F v2.3.0 批次 ｜ 签章：本批次复述经用户确认（ExitPlanMode 批准：场景化+写作重构+Steer/Parallel+回指理解强制+审计修复 1-7；v2.2.0 已由用户全渠道发行）。
+> 更新：2026-09-03 ｜ 判级：L2-F v2.3.0 批次 ｜ 签章：本批次复述经用户确认（ExitPlanMode 批准：场景化+写作重构+Steer/Parallel+回指理解强制+审计修复 1-7；v2.2.0 已由用户全渠道发行）。README/docs 口径同步批次（2026-09-03）。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.3.0+）。
@@ -19,9 +19,9 @@
 一行数据流：skill/shisan-xinuo-workflow/（源）→ scripts/syncer.py（三路合并同步）→ 各平台技能副本（~/.agents/skills / ~/.workbuddy/skills）→ 注入副本（AGENTS.md ×3 + MEMORY.md）→ 每会话在场。
 
 ## ② 目标规划（当前阶段）
-- 已完成：**v2.0.6 全渠道发行（2026-08-31）** + **v2.1.0（上下文主动管理补全）与 v2.1.1（口径修正 16→17 类）全渠道发行（2026-09-02 ×2：GitHub Release / npm / Gitee / ClawHub 1.0.8/1.0.9 / About 双端）**。
-- 当前：**v2.2.0 批次（本地，未发行）**——开工序列六步（复述前置无条件）+ 承载平台适配（项目级注入点表 + `.trae-rules` 清零 + 加载即承载检查）+ 本体净化（正文 vs 史料规范 + verify E 项）+ 决策时效（依据场景矩阵 + 化石识别 + 混合写入门槛）。
-- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 1.0.8/1.0.9 审核复查 + skills.sh 遥测收录核查 ③下一轮路测（换项目池 + 转测触发率）④注入副本重部署 v2.2.0 + 技能副本 syncer 同步（待批）⑤v2.2.0 发行面（待批）。
+- 已完成：**v2.0.6 全渠道发行（2026-08-31）** + **v2.1.0（上下文主动管理补全）/ v2.1.1（口径修正 16→17 类）/ v2.2.0（开工序列六步+承载平台适配+本体净化+决策时效）全渠道发行（2026-09-02 ×3：GitHub Release / npm / Gitee / ClawHub 1.0.8/1.0.9/1.0.10 / About 双端）**。
+- 当前：**v2.3.0 批次（本地，未发行）**——场景化（单发文档豁免 details #283）+ 写作重构（SKILL §10 总纲 + AGENTS.md 维护纪律 + workflows 日期裁决）+ Steer 纠偏续跑（#280）+ Parallel 依赖协议（#281）+ 回指理解双强制（project-rules 回指段 + §0 每消息严谨分析，details #282）+ 审计修复 1-7（症状索引表 283 全覆盖 + verify F 项门禁 + GATE errpath）。
+- 待办：①GitHub PAT 轮换（v2.0.3 起遗留最高优先）②ClawHub 1.0.10/1.0.11 审核复查 + skills.sh 遥测收录核查 ③下一轮路测（基线 v2.3.0，验收点含场景判定/errpath 生效/索引表 1-2 步定位）④v2.3.0 发行面（dist 重建 + npm / Release / ClawHub / About，待批）⑤注入副本重部署 v2.3.0（待批）。
 - 路线：v2.0.5 后进入稳定细则小更新（不做破坏性大改，但保留意外情况声明）。
 
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
@@ -32,9 +32,9 @@
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：state/experience-mustread/experience/preferences/task-log | state、experience、preferences、task-log、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.1.1，staging 重建 + Set-diff 双检 38=38） | 发行 zip、发布包、dist |
+| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.2.0，staging 重建 + Set-diff 双检 39=39，190,102B；v2.3.0 待发行时打包） | 发行 zip、发布包、dist |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
-| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.2.0 本地批次；v2.1.0/v2.1.1 已 2026-09-02 发行） | 发行台账、渠道回执、门禁 |
+| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.3.0 本地批次；v2.1.0/v2.1.1/v2.2.0 已 2026-09-02 全渠道发行） | 发行台账、渠道回执、门禁 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |
 
 ## ④ 调研导航（改什么 → 查哪）
