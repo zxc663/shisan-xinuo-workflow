@@ -8,7 +8,7 @@
 - `session-end.example.sh` —— 会话收尾横幅（最终验证 / 任务记录 / 记忆同步 / 密钥红线 / 显式清理）
 - `hooks.example.json` —— Claude Code 配置：`SessionStart` / `SessionEnd` 各挂一条 `bash <script>` 命令
 
-## 多平台可用性（2026-08-31 实测口径）
+## 多平台可用性（实测口径）
 
 | 平台 | hooks 支持 | 使用方式 | 备注 |
 |---|---|---|---|
