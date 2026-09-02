@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.3.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -31,7 +31,7 @@
 
 **真实口径（2026-08-30/31 实测）**：
 
-**① 工程消费与成本（平台聚合，13,281 part 穷尽取证）**：细则层（现 279 条 / 17 类）**工程消费命中此前 = 0**（v1.13 全平台审计），v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复后转**有命中**（#228×3 / #229×2 / #233×1，sess_c0f4df2b 留痕）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。**注明**：9.47 亿是平台聚合，非 Skill 归因（归因明细见 EVIDENCE §九）；常驻开销实测 ~0.8%（~1.7K tok / 200K）。
+**① 工程消费与成本（平台聚合，13,281 part 穷尽取证）**：细则层（现 283 条 / 17 类）**工程消费命中此前 = 0**（v1.13 全平台审计），v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复后转**有命中**（#228×3 / #229×2 / #233×1，sess_c0f4df2b 留痕）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。**注明**：9.47 亿是平台聚合，非 Skill 归因（归因明细见 EVIDENCE §九）；常驻开销实测 ~0.8%（~1.7K tok / 200K）。
 
 **② 场景路测描述（四轮，全部描述性证据、无「已验证」表述；产物不进开发库）**：
 
@@ -101,7 +101,7 @@
 （RE：关键决定即时「决定X｜依据｜影响」；块尾总复述仅提炼要点）→ 状态面（证据制，0 照报 0）
         │
         ▼
-规则（+ 编号纪律，地基）+ 落地细则（279 条/17 类，症状索引）+ 冲突仲裁序
+规则（+ 编号纪律，地基）+ 落地细则（283 条/17 类，症状索引）+ 冲突仲裁序
         │
         ▼
 自更新（syncer.py 三路合并：体检→备份→迁移 user-notes/ →覆盖→双落盘；user-notes/memory/.bak 永不碰）
@@ -182,7 +182,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.2.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.3.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -190,7 +190,7 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
 │   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表 31 行）
 │   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/memory 骨架五件套）
-│   └── references/（injection-core · workflows · details 279条/17类 · rules 47条 ·
+│   └── references/（injection-core · workflows · details 283条/17类 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap · local-model-glossary）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
@@ -204,7 +204,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.3.0（流程场景化 + 写作重构 + Steer/Parallel + 回指理解强制 + 审计修复）为本地批次，未发行**。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -218,7 +218,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 - 依赖强提示词注入与 Agent 自律：无运行时强制；注入跳过/描述未命中 = 什么也不做。
 - 上下文成本：治理层仍消耗上下文——用三级跑道 + L2-S + 上下文卫生（两步式/信号化盘点/账本核算/**v2.1 折叠协议 + 保留清单**）换取一致性。**紧凑档（短上下文部署）诚实代价：注入核心 ~1.7K token 对 8K 窗口 ≈ 21%**——纪律不降级（Preserver 原则：规则原文是保留清单必留项），换 token 靠折叠协议/锚点表/大文件协议，不靠砍纪律。
-- 细则体量大（279 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经 + **错误必查 TOP 内联**——从「可加载」升级为「必经站」。
+- 细则体量大（283 条）：症状索引 + 按类按需 + **预读 TOP** + 报错必经 + **错误必查 TOP 内联**——从「可加载」升级为「必经站」。
 - **客户端能力边界（v2.1 诚实声明）**：`/map` `/ctx` `/scan`、自动 repo-map 构建、增量 diff 传递、轻量模型自动折叠是 **Aider / 1bcoder / Atrium / Context Governor 等客户端或中间件的执行层能力**——本 Skill 不假装拥有，只提供**纪律化等价协议**（模块锚点表 / 按需符号召回 / 折叠协议 / 大文件读取协议，details #272-276）与联用建议（下表）。
 - **与上下文治理客户端联用建议（v2.1）**：换客户端或中间件**不冲突**——本 Skill 是纪律层（注入核心 + 协议），客户端是执行层（repo-map 自动构建 / 压缩调度）。推荐组合：Aider（工程向，repo-map + 增量上下文）加载本 Skill 纪律包；Atrium / Context Governor（压缩中间件）在前端做历史折叠时，本 Skill 的**保留清单**正好给「压缩时强制保留什么」提供纪律输入；1bcoder（小模型向）的 /map /ctx /scan 与本 Skill 锚点表/折叠协议互为补充——客户端自动构建，Skill 规定「保留什么、什么时候折叠、折叠产物落哪」。
 - 平台检测启发式：不确定时问用户不猜。
@@ -239,8 +239,8 @@ shisan-xinuo-workflow/              ← 仓库根
 - **联网调研就是「网上说什么信什么」吗？** 不是——按权威性收集可验证信号 + 本地实测兜底。
 - **如何保持本地与上游同步？** 跑 `python scripts/syncer.py`（一条命令，见上「安装」节）。
 - **为什么新会话有时「在场」识别不到？** 硬注入需**三层同时写**——记忆层（每会话读取的记忆文件，写入 **在场提示** 锚点）、规则层（injection-core 全文）、配置文件层；只写规则层、记忆文件空白时，新会话 Agent 可能不知道本 Skill 在场。用 `scripts/install-skill.ps1 -HardInject -MemoryFile <记忆文件>` 或 `syncer.py --memory-target` 补齐记忆层。
-- **这个 Skill 与手写一页 AGENTS.md 有什么本质区别？** 一页规则是「静态提示词」：靠模型自觉执行、无法验证；本 Skill 是「触达端口 + 可复跑工件」：报错必经细则、预读 TOP、GATE 可重跑（cmd/exit/files）、状态面取证行、syncer 三路合并——外加渐进披露（不用背 279 条）与跨平台注入副本同步。一句话：前者是纪律清单，后者是让纪律「被消费」的机制。
-- **细则 279 条，谁读得完？** 不需要通读——它是**踩坑日志不是教程**：症状索引 + 按类按需（报错/意外形态/新依赖不生效才开）+ 开工预读 TOP（≤10）+ 错误必查 TOP 内联（#233/#214/#163/#256·#270/#262 先对再 grep）。读法像「查药典」，不是「背药典」。
+- **这个 Skill 与手写一页 AGENTS.md 有什么本质区别？** 一页规则是「静态提示词」：靠模型自觉执行、无法验证；本 Skill 是「触达端口 + 可复跑工件」：报错必经细则、预读 TOP、GATE 可重跑（cmd/exit/files）、状态面取证行、syncer 三路合并——外加渐进披露（不用背 283 条）与跨平台注入副本同步。一句话：前者是纪律清单，后者是让纪律「被消费」的机制。
+- **细则 283 条，谁读得完？** 不需要通读——它是**踩坑日志不是教程**：症状索引 + 按类按需（报错/意外形态/新依赖不生效才开）+ 开工预读 TOP（≤10）+ 错误必查 TOP 内联（#233/#214/#163/#256·#270/#262 先对再 grep）。读法像「查药典」，不是「背药典」。
 - **路测说「规则没带来正确性优势」，还值得用吗？** 值得，但别误读：两轮 A/B 未达显著是**诚实声明**（不宣称有效）。真实价值 = 可追溯 / 可审计 / 防返工 / 点破后快速恢复（被四轮实测反复验证）；并且它坚持把失败数据也登出来（T5/T9 判据失误、背答案、空占位）——信任来自不吹。
 - **子代理要用它怎么办？** 关键认知：**子代理不继承注入副本、不保证触发 Skill 加载**（实测：提醒可读仍 0 加载）。正确用法 = 主代理委托时**内联最小纪律包**进子代理 prompt（判级 / 红线 / 证据含不复现四要件 / 错误必查 TOP / 引用形态 / GATE / 承载）；不指望子代理自己加载 Skill。详见 rules.md §28 与 SKILL §12 AG。
 - **「项目承载」是什么？要手动建吗？** 三件：`memory/` 规范五件套（state.md / experience-mustread.md / experience.md / preferences.md / task-log/，**带扩展名的正文文件，禁空占位**）+ `docs/project-info.md` 六节索引（模块表含**关键词锚定列**）+ **项目级注入规则文件**（AGENTS.md / CLAUDE.md / .trae-rules，模板 `templates/project-rules.md`）。开工由「项目承载检查」**自动建**（先查既有规则文件→合并不覆盖+备份）；**项目工作区内写文件是自动动作，不必等授权**（授权边界：仅平台全局注入/密钥/破坏性/发布/超预算）。
@@ -253,11 +253,12 @@ shisan-xinuo-workflow/              ← 仓库根
 
 ## 来源与依据 · Sources
 
-- **细则 279 条/17 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）；**#240-254（第 14 类）** = 2026-08-31 个人工作台版差异化回流（MCP 工具链 / 视觉生成 / 前端测试 15 条，用户拍板并入）；**#255-267（第 15 类）** = 2026-08-31 一轮路测回流（12 项漏检清单全收 + 「不复现」判定举证纪律；#256 异步栈出错点 vs 调用点为 A 轨判据失误的直接实证，二轮强化「真实构建产物 vs 自造模拟」）；**#268-271（第 16 类）** = 2026-08-31 二轮路测回流（chalk level 污染根实例 / 响应体只消费一次 / 配置继承拼接 vs 替换 / 非 TTY 环境查询 undefined——只收跨项目/同项目两次 + 通用性强者，终端渲染等绑定领域者按诊断不入通用版）；**#272-279（第 17 类）** = 2026-09-01/02 上下文管理补全与承载平台适配（折叠协议 / 紧凑档 / 大文件读取协议 / 模块锚点表 / 按需符号召回 / 多 Skill 触达与定名，纪律化伪命令 + 能力边界诚实声明）。**覆盖边界（诚实）**：细则主体沉淀自 Web 全栈（Next.js / Prisma / Playwright / Nest / 部署运维 / MCP / 视觉 API）；Node 开源库 / 终端 UI 为边缘场景、覆盖有限，凭通用工程常识兜底——这是定位，不是缺陷。
+- **细则 283 条/17 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）；**#240-254（第 14 类）** = 2026-08-31 个人工作台版差异化回流（MCP 工具链 / 视觉生成 / 前端测试 15 条，用户拍板并入）；**#255-267（第 15 类）** = 2026-08-31 一轮路测回流（12 项漏检清单全收 + 「不复现」判定举证纪律；#256 异步栈出错点 vs 调用点为 A 轨判据失误的直接实证，二轮强化「真实构建产物 vs 自造模拟」）；**#268-271（第 16 类）** = 2026-08-31 二轮路测回流（chalk level 污染根实例 / 响应体只消费一次 / 配置继承拼接 vs 替换 / 非 TTY 环境查询 undefined——只收跨项目/同项目两次 + 通用性强者，终端渲染等绑定领域者按诊断不入通用版）；**#272-283（第 17 类）** = 2026-09-01/02 上下文管理补全与承载平台适配（折叠协议 / 紧凑档 / 大文件读取协议 / 模块锚点表 / 按需符号召回 / 多 Skill 触达与定名，纪律化伪命令 + 能力边界诚实声明）。**覆盖边界（诚实）**：细则主体沉淀自 Web 全栈（Next.js / Prisma / Playwright / Nest / 部署运维 / MCP / 视觉 API）；Node 开源库 / 终端 UI 为边缘场景、覆盖有限，凭通用工程常识兜底——这是定位，不是缺陷。
 - **成本/命中实证（2026-08-30）**：ZCode 平台 `model_usage` 全量——累计 input 947,218,098 / output 2,188,313 / reasoning 249,823；19 会话 context_exceeded=0；细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。**取证口径（2026-08-31 两轮演进：v2.0.4 → v2.0.5）**：v2.0.4 前命令对实引形态恒 0（假阴性）→ v2.0.4 加裸 `#NNN` 分支校准为「0→有」→ **2026-08-31 路测三口径实证 v2.0.4 命令假阳性**（10 计数中 9 为 GitHub issue 编号误计；严格形态=1 且为命令自指；真实语义命中=1）→ v2.0.5 废弃裸编号分支、只认完整前缀形态 `details #NNN` / `细则 #NNN`（引用规范见 details.md 头部，见 EVIDENCE §十）；**二轮双向自证 63=63 通过**（面 1/2/3 全部引用为完整前缀形态，无裸 `#N` 计入）。
 
 ## 版本历史 · Changelog
 
+- **v2.3.0**（2026-09-02）：**流程场景化 + 写作重构 + Steer/Parallel + 回指理解强制 + 审计修复 1-7（本地批次，未发行）**——①**场景化**（details #283）：单发使用（新会话单发触发/无项目特征/非工程任务）→ 纪律全走、**承载创建豁免**（不建 memory/规则文件/docs）；持续项目 → 六步全套+承载强制+回指；判定不清默认轻量单发 ②**写作重构**：正文 vs 史料泛化为「文档写作分层」总纲（SKILL §10 顶部，写任何文档时）+ 原条例移根 AGENTS.md「维护纪律」小节 + workflows §9 固化日期裁决（日期记决策记录）③**Steer 纠偏续跑**（details #280）：方向错 → 暂停 → 保留已确认正确部分 → 增量调整 → 从当前状态继续（不从头重做）；面向结果指令 ④**Parallel 依赖协议**（details #281）：依赖分析先行（强依赖串行）→ 子任务五要素 → 合并统一集成验证 ⑤**回指理解双强制**：project-rules 模板「回指（强制）」段（缺失=不合规）+ 会话末更新行；§0 复述前置扩「任务中途每一条消息先严谨分析理解」；details #282 创建自检清单 ⑥**审计修复 1-7**：症状索引表（details 头部，283 条全覆盖，F 项门禁）+ 标签统一（17 种中文零分裂）+ 取证命令唯一权威源化（修 workflows 自相矛盾/陈旧编号）+ 错误必查 TOP 换血挂数据（纳入 #228/#229 实证命中条）+ 淘汰机制 + GATE `errpath` 字段 + E 项定位明示（references 史料豁免）+ hooks B 项降警告级 + 彩蛋 zxc663 降档出注入核心 + EVIDENCE 成本账补 SKILL 全载 + 矛盾裁决三对（重读优先/预载措辞/同步面收敛）。口径 279→283 条 / 17 类；verify 6/6 PASS（含 F 项）；本地 commit 不 push、发行面待批。
 - **v2.2.0**（2026-09-02）：**开工序列六步 + 承载平台适配 + 本体净化 + 决策时效（已全渠道发行）**——①**开工序列六步**（SKILL §2.0 + injection-core）：复述理解（**无条件第一步含 L1，不自以为是，理解缺口先补依据**）→ 扫描工作区（根目录一层+自适应限流+形态判定）→ 定承载根（多目录按任务焦点+留档）→ 承载创建（强制，出口产物）→ 读上下文 → 判级选道；L1 豁免精简（复述不可豁免）②**承载平台适配**：platform-adaptation 新增「项目级注入点表」（Codex=项目根 AGENTS.md 必建等），SKILL §3 第 6 步③与 injection-core 按表定名（删除错误路径 `.trae-rules`），加载即承载检查（SKILL §1——多 Skill 底座占位时本 Skill 条款不依赖注入核心），details #277 ③**本体净化（正文 vs 史料规范）**：SKILL §0 立规范（正文=规则+≤1 句为什么；版本/拍板人/日期/路测轮次→决策史；details 来源字段豁免；注入核心禁悬空指针），逐文件清理过程注记与悬空指针（SKILL/injection-core/details/workflows/platform-adaptation/rules/skill-usage/templates），verify-release 新增 **E 项正文净化检查**（常驻/模板面过程注记=0）+ A 项锚串「项目级注入点」④**决策时效**：details #278 依据场景矩阵（方向性决策依据持久必带前提+重开条件；辅助性背景依据默认 task-log；一次性理由永不入项目文档）+ #279 化石识别（决策可重开——读到历史依据先验前提）；混合写入门槛（普通模式升格持久层前必问「本次还是长期」，目标模式靠标注兜底）；仲裁序升格常设偏好必带前提+重开条件。口径 276→279 条；verify 5/5 PASS（含 E 项）；dist v2.2.0.zip 39=39（190,102B）+ 注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步；**已全渠道发行（GitHub Release v2.2.0 / npm 2.2.0 / Gitee / ClawHub 1.0.10 pending scans / About 双端 PATCH 279 条 17 类）**。
 - **v2.1.1**（2026-09-02）：**口径修正补丁（已全渠道发行）**——①**细则类数 16→17 全仓统一**（details.md 实际 17 分节、类数=分节数系历史自洽规则；v2.1.0 发行预算误记「16 类不变」；SKILL / injection-core / EVIDENCE / docs / CHANGELOG / README / 项目信息 / **About 双端描述全部同步修正**）；②**README 门面优化**（新增「**本仓库=一份超长 System Prompt**」本质声明 + v2.1.0 已发行口径回填 + dist 提示更新）；③dist v2.1.1.zip 重建（38 项 Set-diff 38=38）。verify 4/4 PASS；发行：GitHub Release v2.1.1 / npm 2.1.1 / Gitee / ClawHub 1.0.9 / About 双端 PATCH（17 类文案）。
 - **v2.1.0**（2026-09-01 源码 / 2026-09-02 全渠道发行）：**上下文主动管理补全批次**——借鉴 Aider repo-map / 1bcoder /map·/ctx·/scan / Atrium Preserver / Context Governor 四大客户端机制（用户提供清单）：①**保留清单 + 折叠协议（Preserver）**——压缩/折叠/交接前核对五必留（任务本质/验收标准/激活规则原文/当前步骤/回滚基线），触发→checkpoint 落盘→旧块一行摘要→重载序（injection-core 关键条款 + SKILL §12 P8 + details #272）；②**紧凑档（短上下文适配）**——preferences 标注「紧凑档」→ 折叠阈值按窗口比例 25-35%、预算 ≤minimal、锚点表+大文件协议强制、**纪律不降级**（注入核心全文保留，Preserver 原则；诚实代价 1.7K/8K≈21%）；③**模块锚点表**（docs/project-info 模块表加关键词锚定列，手动 repo map，details #275）；④**大文件读取协议**（>300 行先头部/锚词定位再读，禁整读，details #274）；⑤**本地模型术语表**（references/local-model-glossary.md，10 术语随 Skill 分发）；⑥**客户端能力边界诚实声明 + 联用建议**（局限节：自动 repo-map/增量 diff/轻量模型折叠是客户端执行层能力，Skill 只提供纪律化等价协议）；⑦**补强批次**：模块依赖关系表（project-info 架构节，details #276）+ 按需符号召回协议（#276：锚点表→grep 定义/调用点→只读签名行→局部理解，禁为找符号整读）。口径 271→276 条 / 类数 16→17（新增 §17「上下文主动管理补全」类——发行预算误记「16 类不变」，2026-09-02 复盘按 details 分节数修正）；verify-release A 项 +锚串（折叠协议/保留清单）。verify 4/4 PASS；**2026-09-02 已全渠道发行**（GitHub Release v2.1.0 附 dist zip / npm 2.1.0 / Gitee 附件 / ClawHub 1.0.8 / About 双端 PATCH）。

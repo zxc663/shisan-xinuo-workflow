@@ -80,7 +80,7 @@ if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
 if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-bootstrap.md" }
 Add-Result ($probsA.Count -eq 0) "A 内容锚点(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK"}else{$probsA -join ";"})
 
-# ---------- B. hooks 三层齐全（主交付物） ----------
+# ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
 $hDir = Join-Path $skDir "templates\hooks"
 $probs2 = @()
@@ -90,7 +90,8 @@ if (Test-Path $json) {
     $hj = Get-Content $json -Raw | ConvertFrom-Json
     $hjH = $hj.hooks; if ($null -eq $hjH -or $hjH.PSObject.Properties.Name -notcontains 'SessionStart' -or $hjH.PSObject.Properties.Name -notcontains 'SessionEnd') { $probs2 += 'hooks.json 缺双钩子声明' }
 }
-Add-Result ($probs2.Count -eq 0) "B hooks 三层齐全(主交付物)" $(if($probs2.Count -eq 0){"OK"}else{$probs2 -join ";"})
+if ($probs2.Count -gt 0) { Write-Host "[WARN] B hooks 三层(警告级)：$($probs2 -join ';') — hooks 是可选加固面，不阻断发布" -ForegroundColor Yellow }
+Add-Result $true "B hooks 三层(警告级)" $(if($probs2.Count -eq 0){"OK"}else{"$($probs2 -join ';')（警告，不阻断）"})
 
 # ---------- C. 版本一致（交付物 == package.json） ----------
 $baseVer = ((Get-Content $main -Raw -Encoding UTF8 | Select-String -Pattern '(?s)version\s*:\s*([0-9]+\.[0-9]+\.[0-9]+)' -AllMatches).Matches[0].Groups[1].Value)
@@ -130,7 +131,7 @@ if (-not $SkipLeak) {
     Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"0 泄漏"}else{$leakHits -join ";"})
 }
 
-# ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1） ----------
+# ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1 起；references 面史料豁免——details 来源字段/节首注记为双击晋升准入证据） ----------
 $probsE = @()
 $cleanFiles = @($main, $core)
 if (Test-Path (Join-Path $skDir "templates")) {
@@ -144,6 +145,30 @@ foreach ($cf in $cleanFiles) {
     }
 }
 Add-Result ($probsE.Count -eq 0) "E 正文净化(常驻/模板面过程注记=0)" $(if($probsE.Count -eq 0){"OK"}else{$probsE -join ";"})
+
+# ---------- F. 索引完整性（details 症状索引覆盖全部细则编号 + 编号连续；v2.3.0） ----------
+$probsF = @()
+$detailsPath = Join-Path $skDir "references\details.md"
+if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
+    $dtxt = Get-Content $detailsPath -Raw -Encoding UTF8
+    # 1) 编号连续：条目编号 = 行首 `N. `（含标签可选）
+    $nums = [regex]::Matches($dtxt, '(?m)^(\d+)\. ') | ForEach-Object { [int]$_.Groups[1].Value }
+    $nums = $nums | Sort-Object -Unique
+    $expect = 1..($nums.Count)
+    $gap = Compare-Object $expect $nums
+    if ($gap) { $probsF += "编号不连续: $($gap | ForEach-Object { $_.InputObject } | Select-Object -First 5)..." }
+    # 2) 索引段覆盖：## 症状索引 与 ## 1. 之间每个编号出现 ≥1 次
+    $mIdx = [regex]::Match($dtxt, '(?s)## 症状索引.*?(?=\n## 1\.)')
+    if (-not $mIdx.Success) { $probsF += "缺症状索引段" } else {
+        $idxSeg = $mIdx.Value
+        $missingIdx = @()
+        foreach ($n in $nums) {
+            if ($idxSeg -notmatch ('#' + $n + '([,\s]|$)')) { $missingIdx += $n }
+        }
+        if ($missingIdx.Count -gt 0) { $probsF += "索引未覆盖: #" + ($missingIdx -join ',#') }
+    }
+}
+Add-Result ($probsF.Count -eq 0) "F 索引完整性(details 编号连续+症状索引全覆盖)" $(if($probsF.Count -eq 0){"OK ($($nums.Count) 条全覆盖)"}else{$probsF -join ";"})
 
 # ---------- 汇总输出 ----------
 Write-Host ""

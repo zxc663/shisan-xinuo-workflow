@@ -1,10 +1,10 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-02 ｜ 判级：L2-F v2.2.0 批次 ｜ 签章：本批次复述经用户确认（ExitPlanMode 批准：v2.1.1 三工作段+决策时效；因 v2.1.1 号被口径修正补丁占用，批次上移合并为 v2.2.0）。
+> 更新：2026-09-02 ｜ 判级：L2-F v2.3.0 批次 ｜ 签章：本批次复述经用户确认（ExitPlanMode 批准：场景化+写作重构+Steer/Parallel+回指理解强制+审计修复 1-7；v2.2.0 已由用户全渠道发行）。
 
 ## ① 架构
-开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.2.0+）。
+开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.3.0+）。
 双层：**文档层**（SKILL.md 权威可执行全文 → references/ 按需 → templates/ 模板）＋**维护工具层**（scripts/：install-skill / syncer / verify-release，均为 .ps1/.py，无运行时）。
 
 **模块依赖关系表**（A → B = A 依赖 B；任务涉跨模块改动先查本表再按 details #276 召回符号）：
@@ -27,7 +27,7 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v2.2.0） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 279 条 17 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
+| skill/shisan-xinuo-workflow/ | 已实现（v2.3.0） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 283 条 17 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁） | install-skill、syncer、verify-release、门禁、三路合并 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
