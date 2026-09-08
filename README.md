@@ -29,9 +29,11 @@
 
 一个**「让规则被消费」的执行手册型工程治理元 Skill**：把「大模块专属的完整 11 步流程 + 小模块短工作流（L2-S）+ L1/L2/L3 判级路由 + 携带推荐理由的必问 + GATE 可复跑验证 + 五段式细则（触发/步骤/模子/自检/边界）＋ 经验强制预读 ＋ 上下文主动管理」打包成跨平台（Trae / Codex / Claude Code / Cursor / Windsurf / WorkBuddy / CLI）可审计的治理层。**设计意图不是「写更多规则」，而是给规则装触达端口**（错误必经句 / 预读 TOP / 命中取证 / 三路合并），并用可复跑工件（GATE 块 / syncer.py）让「做过 ≠ 说过」——每条规则都能被照着做，不靠领会。
 
-**真实口径（2026-08-30/31 实测）**：
+**真实口径（2026-08-30 首测；2026-09-09 全量刷新，本地 db.sqlite 穷尽取证）**：
 
-**① 工程消费与成本（平台聚合，13,281 part 穷尽取证）**：细则层（现 283 条 / 17 类）**工程消费命中此前 = 0**（v1.13 全平台审计），v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复后转**有命中**（#228×3 / #229×2 / #233×1，sess_c0f4df2b 留痕）。成本实证：ZCode 平台累计 **input tokens 947,218,098（9.47 亿）**——**好的**：19 会话零 context_exceeded、零 retry；**坏的**：3 个长会话占全平台 input 81%（7.66 亿）、单会话峰值 3.32 亿 input / 单次 652K、无压缩；6 次计划拒绝 + 6 次「继续」是主要重复成本推手。**注明**：9.47 亿是平台聚合，非 Skill 归因（归因明细见 EVIDENCE §九）；常驻开销实测 ~3-4.5%（~6-9K tok / 200K，2026-09-07 实测）。
+**① 工程消费与成本（平台聚合）**：细则层（现 283 条 / 17 类）**工程消费命中此前 = 0**（v1.13 全平台审计），v1.13-1.16 以「错误必经句 + 预读 TOP + 命中取证行」修复后转**有命中**（#228×3 / #229×2 / #233×1，sess_c0f4df2b 留痕）。成本实证（**2026-09-09 刷新**，2026-08-28→09-09 窗口）：ZCode 平台累计 **input tokens 2,526,616,450（25.27 亿）/ 9,737 次模型请求 / 108 会话**（output 737 万；与官方「应用用量」面板累计 25.3 亿**精确吻合**，本地与官方双口径交叉验证）——**好的**：108 会话**零 context_exceeded**；会话 input 集中度 top3 = 37.8%（对比 08-30 旧口径 81%——长会话病态集中已缓解，v2.x 上下文管理与留档机制启用同期）；**坏的**：单次请求峰值 input 932K、重试 356 次、单会话峰值 4.06 亿 input 仍未消除；工具调用 11,694 次 / 错误率 2.9%（337 次中 288 次为 tool_execution_failed + permission_denied，后者多为授权边界正常拦截）。**注明**：25.27 亿是平台聚合，非 Skill 归因（归因明细见 EVIDENCE §九）；常驻开销实测 ~3-4.5%（~6-9K tok / 200K，2026-09-07 实测）；近 7 天（09-03→09-09）增量 input 13.18 亿 / 5,757 请求。
+
+**①b 作者本人实践样本（dogfooding + 三平台取证，2026-09-09 新增；全部为描述性证据）**：作者近两周在 ZCode 的高强度真实开发（博客项目等）本身即为硬注入的日常实践场景——**作者就是第一个长期实践样本**。**增量窗（09-08→09-09，n=11 新会话：10 个博客真实开发 + 1 个本仓库）**机制触发率：复述 81.8%、判级 72.7%、开工六步 54.5%、GATE 27.3%、memory 留档 90.9%、AskUserQuestion 27.3%——对比全量 108 会话均值（47.2% / 42.6% / 25.9% / 17.6% / 71.3% / 19.4%）约 **×1.7–2.1**；Skill 显式加载 0/11（纪律全靠注入副本维持，再证「触达=提示词边界」）。**三平台全量取证（2026-09-08，v2.4.0 批次）**：WorkBuddy 注入前后最干净对照——判级 3.8%→23.5%（×6）、GATE 3.8%→14.7%（×4）、细则引用 0→17.6%；ZCode 博客项目细则引用仅 6.8%（重机制在真实用户工作渗透低 → v2.4.0 细则三层 T1/T2/T3 蒸馏的直接依据）；Codex 无注入后数据、Trae 正文加密（评估基础设施缺口）。**诚实口径**：n=11 小样本、作者在场监督、期间注入副本为 v2.2.0（机制集与 v2.5.0 相同——一档制/调研前置为 09-09 补部署）——只作描述性对比，**不作因果宣称、不表述为「已验证」**；可重跑脚本与逐会话数据见 `memory/forensics-2026-09-09/`（09-08 批次见 `forensics-2026-09-08/`）。
 
 **② 场景路测描述（四轮，全部描述性证据、无「已验证」表述；产物不进开发库）**：
 
@@ -41,9 +43,9 @@
 - **四轮（基线 v2.0.6，判定重建 + 触达六埋点）**：面1 H 4/63≈6.3%（H+P 38.1%），A→N 预警 18 条（库内部/领域特定/上游回归——Web 全栈细则与底层构建工具链池结构性错位）；**泛化检验 #268-271 仅 #270（配置合并数组）跨池成功**（1/63≈1.6%）——实例污染 / 响应体单次消费 / 非 TTY 三类绑定原池特定库；面2 PART0 承载自动建 **3/3 但为 5 个无扩展名空文件**（空占位 → v2.0.6 规范件 + 项目级规则文件修复）；子代理 A 段③ 前缀自检 0（**不可复核——子代理不继承注入副本**，实测根因）。
 - **附带结论**：四轮下来验证的是「可追溯 / 可审计 / 点破后快速恢复」，**没有**验证「规则带来正确性优势」——两轮 A/B（2026-08-30 四任务四指标无差异；2026-08-31 A 轨 n=14 / B 轨 n=6：5 个可比任务 B 轨 2 次纠正 A 轨 + 3 次挖得更深、A 轨 0 次优于，但 B 轨投入密度 ~3 倍，只读作「B 轨未劣于 A 轨」）。
 
-**③ 口径说明（诚实声明细则，防误读）**：判档三档 H（全命中）/ P（部分命中·类比迁移）/ N（未命中）逐条留痕；**通用设计原则（#174 DRY / #175 KISS / #176 YAGNI / #89 / #91 / #92 / #86）零计入命中**（防虚高至 60%+）；C 强度（机制不明）一律按从严判 N、C→H 零容忍；A→N 18 条显式标预警供复核；**跨轮命中率非同口径不比较**（分母、项目池、H/P 定义均异：12.5% vs 6.3%）；n<20 **不出 p 值**；**实测 / 声称 / 不可复核三级区分**（子代理自报、issue 评论区未读属不可复核）；**全部为描述性证据，禁止表述为「已验证」**；每一轮结论回流开发库的只有「细则条目（#255-271）+ 机制修复 + EVIDENCE 摘要」，原始产物留在独立路测工作区。**作者边界（2026-08-31 定调）**：触达已明确为**提示词边界问题**——注入三层 / 项目承载 / 委托纪律包只能提高概率，抵不上「平台级新会话自动加载」；**验收判据**：新会话常驻不可用或 `zxc663` 未触发 → 需用户主动触发或配置触发器（hooks / SessionStart），「提示词在场」≠「机制在场」。
+**③ 口径说明（诚实声明细则，防误读）**：判档三档 H（全命中）/ P（部分命中·类比迁移）/ N（未命中）逐条留痕；**通用设计原则（#174 DRY / #175 KISS / #176 YAGNI / #89 / #91 / #92 / #86）零计入命中**（防虚高至 60%+）；C 强度（机制不明）一律按从严判 N、C→H 零容忍；A→N 18 条显式标预警供复核；**跨轮命中率非同口径不比较**（分母、项目池、H/P 定义均异：12.5% vs 6.3%）；**①b 增量窗 vs 全量均值同为方向性描述**（n=11、作者监督、时段不同，非同口径不出对比结论）；n<20 **不出 p 值**；**实测 / 声称 / 不可复核三级区分**（子代理自报、issue 评论区未读属不可复核）；**全部为描述性证据，禁止表述为「已验证」**；每一轮结论回流开发库的只有「细则条目（#255-271）+ 机制修复 + EVIDENCE 摘要」，原始产物留在独立路测工作区。**作者边界（2026-08-31 定调）**：触达已明确为**提示词边界问题**——注入三层 / 项目承载 / 委托纪律包只能提高概率，抵不上「平台级新会话自动加载」；**验收判据**：新会话常驻不可用或 `zxc663` 未触发 → 需用户主动触发或配置触发器（hooks / SessionStart），「提示词在场」≠「机制在场」。
 
-*(EN) A "rules-must-be-consumed", execution-manual governance meta-skill. Not more rules — touchpoints: error-time entry point, must-read top, hit evidence-line, three-way self-update merge; verifiable artifacts (GATE / syncer.py) make "done" ≠ "claimed". Real numbers: detail-layer engineering hits were 0 before v1.13 (now converts to hits); platform cumulative input 947M tokens (3 long sessions = 81%); assumption that rules change AI behavior is still unverified.*
+*(EN) A "rules-must-be-consumed", execution-manual governance meta-skill. Not more rules — touchpoints: error-time entry point, must-read top, hit evidence-line, three-way self-update merge; verifiable artifacts (GATE / syncer.py) make "done" ≠ "claimed". Real numbers: detail-layer engineering hits were 0 before v1.13 (now converts to hits); platform cumulative input 2.53B tokens / 108 sessions (top-3 concentration 37.8%, zero context-overflow; author's own dogfooding window shows ~2× discipline-execution rates vs baseline average — descriptive, n=11, not causal).*
 
 ---
 
@@ -56,16 +58,16 @@
 ## 为什么用它 · Why this
 
 - **把「AI 直觉」变成「工程纪律」**：L1/L2/L3 风险分级、关键必问（带推荐理由）、回滚点、GATE 验证块、五查留档——不再靠 Agent 自觉碰运气。
-- **控成本不丢纪律**：渐进披露不整库常驻（注入核心里程碑实测 1–5K tok/会话）、L2-S 短流小任务默认、上下文两步式归档——目的不是降绝对 token，而是避免病态无界燃烧、并用极少常驻开销换取一致性；9.47 亿为平台聚合口径，非 Skill 归因（归因明细见 EVIDENCE §九）。
+- **控成本不丢纪律**：渐进披露不整库常驻（注入核心实测 ~3-4.5%，~6-9K tok / 200K 窗）、L2-S 短流小任务默认、上下文两步式归档——目的不是降绝对 token，而是避免病态无界燃烧、并用极少常驻开销换取一致性；25.27 亿为平台聚合口径，非 Skill 归因（归因明细见 EVIDENCE §九）。
 - **规则被消费而非被登记**：报错必经 details 症状类、开工必读预读 TOP、会话末取证命中（0 照报 0）、自更新三路合并——这是 v1.13 后区别于「规则堆」的核心差异。
 - **跨平台行为一致**：第 0 步自动适配注入；自检彩蛋 `zxc663` 一次确认「注入方式 + 已应用轮数 + 源库 vs 副本版本」。
 - **「AI 的记忆不随会话蒸发」**：`memory/` 统一归档（state 一屏 / experience 踩坑库 / preferences 偏好）+ 经验强制预读——换会话、换模型、换平台，第二个 Agent 站在同一个记忆上；踩坑与决策跨会话延续，不再每次从零重踩。
 - **兜底不可逆事故**：L3 先问 + 原子操作锁（破坏性操作先列命令清单、结束回合等确认）+ 回滚点先建——AI 编码最贵的三类事故（删错数据、推错分支、改崩契约）把最后一道闸门交给人类，而不是交给 Agent 的自觉。
 - **可审计可问责**：GATE 可重跑（cmd / exit / files / lessons / exempt）+ 决策审计归档（现象 / 依据 / 被否候选 / 选择 / 影响）+ 拒绝日志（R1 原话 + 隐含需求）——「做过 ≠ 说过」，每个结论可复核；状态面只报可核算数字，不报自我感觉。
-- **自我校准的标本**：双击晋升制（同坑两次 → 细则回流）+ 四轮路测诚实口径（包括被无规则轨纠正的 T5/T9 判据失误、背答案 7/14 修正、泛化仅 #270 跨池成功）——本 Skill 自己也在被自己的方法论审计，bad 数据也摆上台面。
+- **自我校准的标本**：双击晋升制（同坑两次 → 细则回流）+ 四轮路测 + 三平台取证诚实口径（包括被无规则轨纠正的 T5/T9 判据失误、背答案 7/14 修正、泛化仅 #270 跨池成功、开工六步渗透低与细则低频命中摆上台面、v2.5.0 批次漏部署 ZCode 注入副本的漂移实录）——本 Skill 自己也在被自己的方法论审计，bad 数据也摆上台面；**作者本人即第一个长期实践样本**（dogfooding 数据见真实口径 §①b）。
 - **场景化，不乱建文档（v2.3.0）**：单发使用（新会话单发触发/无项目特征/非工程任务）纪律全走但**承载创建豁免**——不为一次性任务乱建 memory/规则文件/docs（乱建文档比不建更糟）；持续项目才强制六步全套 + 回指理解（details #283）。
 
-*(EN) Turns AI instinct into auditable discipline; bounds token cost via progressive disclosure + short-lane + context hygiene (1–5K tok/session fixed overhead, platform 947M is aggregate, not skill-attributable); rules get consumed via mandatory touchpoints; consistent cross-platform via Step-0 injection. Extra: cross-session memory (next agent inherits state/experience/preferences), accident backstops (L3 ask-first + atomic-op lock + rollback points), auditability (re-runnable GATE, decision audits, rejection log), and self-calibration (double-hit promotion + four rounds of honest roadtests, bad data included).*
+*(EN) Turns AI instinct into auditable discipline; bounds token cost via progressive disclosure + short-lane + context hygiene (~3-4.5% measured fixed overhead, platform 2.53B cumulative input is aggregate, not skill-attributable); rules get consumed via mandatory touchpoints; consistent cross-platform via Step-0 injection. Extra: cross-session memory (next agent inherits state/experience/preferences), accident backstops (L3 ask-first + atomic-op lock + rollback points), auditability (re-runnable GATE, decision audits, rejection log), and self-calibration (double-hit promotion + four roadtest rounds + three-platform forensics, bad data included — the author is sample #1).*
 
 ## 它为谁解决什么 · Who it's for
 
@@ -159,11 +161,11 @@
 - 本质是「强提示词注入」：无强制，靠注入方式（用户/平台）+ Agent 自觉。
 - 记忆靠「外部化文件」：Agent 无法感知压缩——显式重载顺序 + 关键节点自检兜底。
 - 细则层绑技术栈：details 是踩坑日志不是教程；机制层与框架无关。
-- **规则有效性：已有 2 轮 A/B 证据但均未达显著**（2026-08-30 四任务四指标无差异；2026-08-31 二轮 A 轨 n=14 / B 轨 n=6：5 个可比任务中 B 轨 2 次纠正 A 轨错误判断（T5/T9）+ 3 次挖得更深、A 轨 0 次优于——但 B 轨投入密度 ~3 倍、A 轨兼承取证元任务，只读作「B 轨未劣于 A 轨」）——机制按拍板保留，但不得宣称「已验证」；**「已安装 ≠ 被加载」的触达缺口为已知问题**（主会话靠注入副本、子代理靠委托纪律包直送；二轮实证子代理提醒可读仍 0 加载）；更大样本/更长周期复验列下轮。verify 绿=体系与自身一致，非行为变好。
+- **规则有效性：已有 2 轮 A/B 证据但均未达显著**（2026-08-30 四任务四指标无差异；2026-08-31 二轮 A 轨 n=14 / B 轨 n=6：5 个可比任务中 B 轨 2 次纠正 A 轨错误判断（T5/T9）+ 3 次挖得更深、A 轨 0 次优于——但 B 轨投入密度 ~3 倍、A 轨兼承取证元任务，只读作「B 轨未劣于 A 轨」）——机制按拍板保留，但不得宣称「已验证」；**「已安装 ≠ 被加载」的触达缺口为已知问题**（主会话靠注入副本、子代理靠委托纪律包直送；二轮实证子代理提醒可读仍 0 加载）；**补充描述性证据（2026-09-08/09，非 A/B、非因果）**：三平台取证 WorkBuddy 注入前后对照判级 ×6 / GATE ×4 / 细则引用 0→17.6%，作者 dogfooding 增量窗纪律执行率约为全量均值 ×1.7–2.1（见真实口径 §①b）；更大样本/更长周期复验列下轮。verify 绿=体系与自身一致，非行为变好。
 - **曾 0 命中**（v1.13 实证）：细则层工程消费=0——已以触达端口修复为有命中；仍如实标注「预防性，有效性需实测」。
 - 不提供「硬门禁」：依赖平台（hooks/CI/沙箱）；缺口用兜底。
 - 定位是「治理层」：不替代领域知识/项目文档；冲突时项目文档优先。
-- **诚实可核算**：成本真账（9.47 亿/81%/会话级账本）对外公开，好与坏都摆——门面的一部分，不是免责声明。
+- **诚实可核算**：成本真账（25.27 亿/top3 集中度 37.8%/会话级账本/峰值 932K 未消除）对外公开，好与坏都摆——门面的一部分，不是免责声明。
 
 ## 快速体验 · Quick start
 
@@ -215,7 +217,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。发行台账见 RELEASE-CHECKLIST.md。**
+> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。**2026-09-09 本地口径批次（无版本变更、未发行）**：README/EVIDENCE 成本与实践数据全量刷新（25.27 亿 / 108 会话 / dogfooding 增量窗，见真实口径 §①/§①b）；ZCode 注入副本漂移修复（v2.5.0 批次四副本已部署、ZCode 漏部署，本日补部署 + 备份 `.bak-20260909-pre-v250`）。发行台账见 RELEASE-CHECKLIST.md。**
 
 ## 参考项目 · Reference projects
 
@@ -266,7 +268,7 @@ shisan-xinuo-workflow/              ← 仓库根
 ## 来源与依据 · Sources
 
 - **细则 283 条/17 类**：v1.9.1 前 203 条（12 类）蒸馏自真实生产开发日志（863.6KB 主日志等，源文档存独立工作目录不随仓分发）；第 13 类（204-238）= 博客 CMS 前端重做阶段全量 agent 日志审计回流（8.2MB 事件流 + 53MB 转录 / 8 页面会话 / 走查断言 90+，双击晋升制）+ 2026-08-30 全会话审计回流（228-238）；**#239** = 2026-08-30 WorkBuddy 平台实测晋升（Skill 运维类：升级验收看平台解析到的加载目录，非文件版本号）；**#240-254（第 14 类）** = 2026-08-31 个人工作台版差异化回流（MCP 工具链 / 视觉生成 / 前端测试 15 条，用户拍板并入）；**#255-267（第 15 类）** = 2026-08-31 一轮路测回流（12 项漏检清单全收 + 「不复现」判定举证纪律；#256 异步栈出错点 vs 调用点为 A 轨判据失误的直接实证，二轮强化「真实构建产物 vs 自造模拟」）；**#268-271（第 16 类）** = 2026-08-31 二轮路测回流（chalk level 污染根实例 / 响应体只消费一次 / 配置继承拼接 vs 替换 / 非 TTY 环境查询 undefined——只收跨项目/同项目两次 + 通用性强者，终端渲染等绑定领域者按诊断不入通用版）；**#272-283（第 17 类）** = 2026-09-01/02 上下文管理补全与承载平台适配（折叠协议 / 紧凑档 / 大文件读取协议 / 模块锚点表 / 按需符号召回 / 多 Skill 触达与定名，纪律化伪命令 + 能力边界诚实声明）。**覆盖边界（诚实）**：细则主体沉淀自 Web 全栈（Next.js / Prisma / Playwright / Nest / 部署运维 / MCP / 视觉 API）；Node 开源库 / 终端 UI 为边缘场景、覆盖有限，凭通用工程常识兜底——这是定位，不是缺陷。
-- **成本/命中实证（2026-08-30）**：ZCode 平台 `model_usage` 全量——累计 input 947,218,098 / output 2,188,313 / reasoning 249,823；19 会话 context_exceeded=0；细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。**取证口径（2026-08-31 两轮演进：v2.0.4 → v2.0.5）**：v2.0.4 前命令对实引形态恒 0（假阴性）→ v2.0.4 加裸 `#NNN` 分支校准为「0→有」→ **2026-08-31 路测三口径实证 v2.0.4 命令假阳性**（10 计数中 9 为 GitHub issue 编号误计；严格形态=1 且为命令自指；真实语义命中=1）→ v2.0.5 废弃裸编号分支、只认完整前缀形态 `details #NNN` / `细则 #NNN`（引用规范见 details.md 头部，见 EVIDENCE §十）；**二轮双向自证 63=63 通过**（面 1/2/3 全部引用为完整前缀形态，无裸 `#N` 计入）。
+- **成本/命中实证（2026-08-30 首测，2026-09-09 刷新）**：ZCode 平台 `model_usage` 全量（本地 db.sqlite）——累计 input 2,526,616,450 / output 7,373,351 / 9,737 请求 / 108 会话 / context_exceeded=0 / 单次峰值 input 932K / top3 会话集中度 37.8%（08-30 历史快照：947,218,098 / 19 会话 / 81%，保留作时点对比）；与官方「应用用量」面板 25.3 亿交叉吻合；近 7 天增量 input 13.18 亿 / 5,757 请求。细则工程消费 0→有（#228×3/#229×2/#233×1）。详见 EVIDENCE.md（拒绝伪精确纪律：只给可核算数字）。**取证口径（2026-08-31 两轮演进：v2.0.4 → v2.0.5）**：v2.0.4 前命令对实引形态恒 0（假阴性）→ v2.0.4 加裸 `#NNN` 分支校准为「0→有」→ **2026-08-31 路测三口径实证 v2.0.4 命令假阳性**（10 计数中 9 为 GitHub issue 编号误计；严格形态=1 且为命令自指；真实语义命中=1）→ v2.0.5 废弃裸编号分支、只认完整前缀形态 `details #NNN` / `细则 #NNN`（引用规范见 details.md 头部，见 EVIDENCE §十）；**二轮双向自证 63=63 通过**（面 1/2/3 全部引用为完整前缀形态，无裸 `#N` 计入）。
 
 ## 版本历史 · Changelog
 
