@@ -134,15 +134,27 @@ if (-not $SkipLeak) {
 # ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1 起；references 面史料豁免——details 来源字段/节首注记为双击晋升准入证据） ----------
 $probsE = @()
 $cleanFiles = @($main, $core)
+$refDir = Join-Path $skDir "references"
+if (Test-Path $refDir) {
+    $cleanFiles += Get-ChildItem $refDir -File -Filter *.md | Where-Object { $_.Name -ne 'details.md' } | ForEach-Object { $_.FullName }
+}
 if (Test-Path (Join-Path $skDir "templates")) {
     $cleanFiles += Get-ChildItem (Join-Path $skDir "templates") -Recurse -File -Filter *.md | ForEach-Object { $_.FullName }
 }
+# v2.6.0 强化：日期串/拍板叙述/案例代号/会话ID/批次词 全模式；details 单独行过滤扫描（来源/晋升字段与节首注记豁免）
 foreach ($cf in $cleanFiles) {
     if (-not (Test-Path $cf)) { continue }
-    $t = Get-Content $cf -Raw -Encoding UTF8
-    foreach ($pat in @('用户拍板','用户定调','作者定调','2026-08','2026-09')) {
-        if ($t -match [regex]::Escape($pat)) { $probsE += "$(Split-Path $cf -Leaf) 含过程注记[$pat]" }
+    $bad = Get-Content $cf -Encoding UTF8 | Where-Object {
+        $_ -notmatch '\*来源|\*晋升|^## |^> 来源|^> \*来源' -and $_ -match '用户拍板|用户定调|作者定调|2026-\d{2}-\d{2}|二轮证伪|本批次|sess_[a-z0-9]{6}'
     }
+    if ($bad) { $probsE += "$(Split-Path $cf -Leaf) 含过程注记 $($bad.Count) 处" }
+}
+$detailsE = Join-Path $skDir "references\details.md"
+if (Test-Path $detailsE) {
+    $bad = Get-Content $detailsE -Encoding UTF8 | Where-Object {
+        $_ -notmatch '\*来源|\*晋升|^## |^> ' -and $_ -match '用户拍板|2026-\d{2}-\d{2}|sess_[a-z0-9]{6}'
+    }
+    if ($bad) { $probsE += "details.md 正文含日期/拍板 $($bad.Count) 处" }
 }
 Add-Result ($probsE.Count -eq 0) "E 正文净化(常驻/模板面过程注记=0)" $(if($probsE.Count -eq 0){"OK"}else{$probsE -join ";"})
 

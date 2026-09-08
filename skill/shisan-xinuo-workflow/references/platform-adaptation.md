@@ -80,9 +80,9 @@
 
 | 平台 | 记忆层承载点 | 记忆内容 | 实测状态（本机） |
 |---|---|---|---|
-| WorkBuddy | `~/.workbuddy/MEMORY.md`（主记忆）＋ SOUL.md / IDENTITY.md / USER.md | 在场锚点块（精简） | MEMORY.md 现为空（仅 `#`）——本批次写入锚点 |
-| Trae | `~/.trae-cn/memory/user_profile.md`（全局）＋ `projects/<名>/project_memory.md` | 在场锚点块（追加，不覆盖既有偏好） | user_profile.md 已含用户偏好、无工作流锚点——本批次追加 |
-| Codex | `~/.codex/AGENTS.md`（顶部注记，规则/记忆合一）+ `~/.codex/memories/*`（sqlite 记忆库） | 在场锚点块（AGENTS.md 顶部注记段落） | AGENTS.md 已 v2.0.3 核心——本批次补注记段；memories sqlite 不直接写 |
+| WorkBuddy | `~/.workbuddy/MEMORY.md`（主记忆）＋ SOUL.md / IDENTITY.md / USER.md | 在场锚点块（精简） | MEMORY.md 现为空（仅 `#`）——写入锚点 |
+| Trae | `~/.trae-cn/memory/user_profile.md`（全局）＋ `projects/<名>/project_memory.md` | 在场锚点块（追加，不覆盖既有偏好） | user_profile.md 已含用户偏好、无工作流锚点——追加 |
+| Codex | `~/.codex/AGENTS.md`（顶部注记，规则/记忆合一）+ `~/.codex/memories/*`（sqlite 记忆库） | 在场锚点块（AGENTS.md 顶部注记段落） | AGENTS.md 已 v2.0.3 核心——补注记段；memories sqlite 不直接写 |
 | Claude Code | `~/.claude/CLAUDE.md`（规则/记忆合一） | —（无目录则不写） | 本机 `~/.claude/` 仅 mcp.json——文档指引 |
 | Cursor / Windsurf | 应用内全局 Rules（记忆即规则） | — | 本机无目录——文档指引 |
 
