@@ -264,3 +264,23 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 | N9 量化 | 微会话纪律缺口面积 | <10 消息会话 21/108（19%），纪律命中率 9.5% | 单发最小件 + 留观；机器层修复见 hooks 提案（待授权） |
 
 **hooks 提案（待用户授权，配置层写入属必问）**：ZCode 支持平台 hooks——可装「Bash 退出码≠0 → 注入 detail_lookup 提醒」类机器级触达（SessionStart 注入 TOP 亦可选）；提示词触达天花板已由数据钉死（TOP 内联有效但细节层零自触发），机器层是作者定调「提示词边界」的唯一越界解。授权后另批实施。
+
+## 十七、v2.6.0 首轮机评路测（2026-09-09 · 本地批次 · 全自动无头驱动）
+
+**方法与授权**：用户拍板全自动无头（`zcode.cjs -p` 驱动 10 个新会话）、工作区 D:\roadtest-v260（仓库外）、token 不设限、权限预放行、**hooks 最小授权（SessionStart/Stop 落日志）获批并部署生效**（§十六 hooks 提案部分落地：日志型已上线，注入型未做）。判分全机器信号（rollout 全量模型 I/O + 文件系统 + db.sqlite + hooks 日志），检查单预注册跑前落盘。成本：76 请求｜in 2.76M（cache_read 2.31M）｜out 64K。样本每场景 N=1，只报信号不报泛化率。
+
+**机制触发率（10 会话）**：注入在场（rollout 硬证据）3/3 抽验｜复述先行 8/8｜判级一句话 8/8｜GATE 8/8｜裸 # 违规 0/9｜L3 判级正确 1/1｜设计档前置+双回指 1/1｜单发反过度工程 1/1｜resume 续接 1/1｜歧义必问 0/1｜errpath 合规 0/2 可判。
+
+**新发现（F 系列 续）**：
+| # | 发现 | 证据 | 处置建议 |
+|---|---|---|---|
+| F12 | **detail_lookup 端口未随技能副本部署=结构性不可达** | `~/.agents/skills/shisan-xinuo-workflow/` 无 scripts/（syncer 只同步 SKILL/references/templates）；注入命令 `python scripts/detail_lookup.py` 相对路径在任何工作目录不存在；S5 实证模型有意愿执行→自修绝对路径→发现缺失→如实入档 | **下批次最高优先**：syncer 纳入 scripts/ 或注入命令改「技能安装目录/scripts/」形态；§十六渠道修复主张以此为准修补 |
+| F13 | errpath 话术内化先于机制内化（背答案微观实锤） | S4 自报「细则检索命中 0 条」而 transcript 零 lookup 执行 | errpath 证据化（拒自报）原则正确且必要；报告口径改「lookup 执行记录为准」 |
+| F14 | T2/T3 档案触达首次破零 | S3b/S5 真实读取 templates/ 两份模板后按模板建档（模型自主发起） | 历史但书「文件级触达≈0」修正为「references≈0、templates 有真实触达」 |
+| F15 | 歧义必问在无头介质失灵（唯一硬违规） | S8t1 零规格指令未问自行实现（工程质量好但违反必问） | 交互对照样本因用户裁定全自动而取消，介质效应未分离——列未覆盖项，不下规则结论 |
+| F16 | 承载创建时机漂移 | 开工规则驱动 1（S5）；事后内容驱动 3（S3b/S4/S6 出教训后补齐）；静默跳过 1（S2 违规） | 触发时机与规则文本不符；候选：开工四步承载段前移显化（下批次评估） |
+| F17 | hooks/CLI 部署面缺陷三项 | 模板 SessionEnd 事件不存在（实为 Stop）；config-file `hooks.events.<Event>` 须数组（模板为 plugin 形状，照抄整文件静默失效）；CLI 0.16.5 help 列 --max-turns/--settings 但解析器拒绝 | 模板修复+部署说明入下批次；hooks 部署实测姿势已固化 D:\roadtest-v260\hooks\ |
+
+**对既往诊断的对照**：F13=「背答案非泛化」的微观活体；S6 非源域通用纪律（复述/判级/GATE/验证）保持 100%，通用层跨池成立、细则层无需求场景未真检验；「文件级触达≈0」被 F14 打破。**未覆盖**：真人交互保真、平台原生记忆分工、折叠协议、紧凑档、TUI/桌面会话 hooks。
+
+**部署面变更台账**：`~/.zcode/cli/config.json` +hooks 段（已机验 SessionStart/Stop 落行）+provider 单条+model 引用（headless 必需）；备份 config.json.bak-20260909-pre-hooks。取证包：`memory/forensics-roadtest-v260/`（本地承载）+ 原始工件 D:\roadtest-v260\。
