@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "events": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "process",
+            "command": "python",
+            "args": [
+              "<绝对路径>/your-hook.py",
+              "SessionStart"
+            ],
+            "timeoutMs": 10000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "process",
+            "command": "python",
+            "args": [
+              "<绝对路径>/your-hook.py",
+              "Stop"
+            ],
+            "timeoutMs": 10000
+          }
+        ]
+      }
+    ]
+  }
+}

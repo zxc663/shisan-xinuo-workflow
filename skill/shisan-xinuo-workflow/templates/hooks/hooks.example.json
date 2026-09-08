@@ -2,14 +2,22 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "bash .hooks/session-start.example.sh"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .hooks/session-start.example.sh"
+          }
+        ]
       }
     ],
-    "SessionEnd": [
+    "Stop": [
       {
-        "type": "command",
-        "command": "bash .hooks/session-end.example.sh"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .hooks/session-end.example.sh"
+          }
+        ]
       }
     ]
   }

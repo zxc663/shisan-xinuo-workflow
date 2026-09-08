@@ -53,7 +53,7 @@ ANCHOR = '''
 - 项目承载（自动建，不等许可）：memory/ 一档制 `agent-log.md`（状态段/教训区/偏好段/流水区，禁空占位）+ 项目级规则文件（按 platform-adaptation.md「项目级注入点表」定名，templates/project-rules.md，先查既有→合并不覆盖）+ docs/project-info.md。
 - 记忆对齐（最小读取）：只读 agent-log 状态段一屏 + 按症状检索；平台原生记忆在场时跨会话续接交给平台记忆，本档聚焦项目审计。
 - 设计规范档前置：设计类动作（前端尤甚）先逐组件调研成熟规范 → 强制留档 docs/design-specs/ → 按档设计并回指。
-- 细则检索端口：遇错误先对注入核心 TOP，无命中跑 `python scripts/detail_lookup.py "<症状关键词>"` 一条命令检索，命中行贴任务记录。
+- 细则检索端口：遇错误先对注入核心 TOP，无命中跑 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory）一条命令检索，命中行贴任务记录；未执行 lookup 不得自报命中数。
 - 委托子代理：必须内联纪律包（子代理不继承注入副本、不保证自加载 Skill——实测实证；独立工作区另建规范承载）。
 - 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / {count} 细则）。
 - 更新协议：`python scripts/syncer.py`（记忆/规则/配置三层随版本同步；WorkBuddy 技能副本加 --dest）；验收以平台解析到的 Base directory 为准。

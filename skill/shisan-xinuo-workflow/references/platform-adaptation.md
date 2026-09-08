@@ -145,7 +145,7 @@
 
 - **效果**：每个新会话启动时，start 钩子打印纪律横幅（分级 / 双模式 / 密钥红线 / 回滚 / 留档纪律），并指向规则文件与记忆文件，让 Agent 在任何工作前重新锚定；会话结束前，end 钩子重新锚定收尾事项（最终验证 / 任务记录 / 记忆同步 / 密钥红线 / 回滚 / 显式安全清理）。
 - **方式**：模板位于 `templates/hooks/`——`session-start.example.sh`（横幅脚本）+ `session-end.example.sh`（收尾脚本）+ `hooks.example.json`（Claude Code 配置：`SessionStart`/`SessionEnd` → 运行脚本）。复制并按平台适配。
-- **契约**：钩子**可选且受平台门控**——它是配置示例，不是捆绑运行时；本 Skill 保持零脚本。无 hooks 的平台跳过。
+- **契约**：钩子**可选且受平台门控**——它是配置示例，不是捆绑运行时；钩子面保持零捆绑脚本（scripts/detail_lookup.py 为唯一随包分发的标准库只读检索工具）。无 hooks 的平台跳过。
 ## 4. 提问工具降级链
 
 1. 平台原生提问工具（`request_user_input` / `AskUserQuestion` / `ask_user` / 平台提问工具）。

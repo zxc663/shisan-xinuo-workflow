@@ -4,7 +4,7 @@
 # Used by hooks.example.json (Claude Code SessionStart). Optional & platform-gated.
 
 RULE_FILE="$(pwd)/AGENTS.md"          # or CLAUDE.md / .cursor/rules/... per platform
-MEMORY_FILE="$(pwd)/memory/memory.md" # or the project-defined memory path
+MEMORY_FILE="$(pwd)/memory/agent-log.md" # 一档制单文件（或项目定义的记忆路径）
 
 echo "=== shisan-xinuo-workflow · DISCIPLINE ACTIVE ==="
 echo ""
