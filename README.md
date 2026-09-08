@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.3.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.4.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -88,7 +88,7 @@
 平台硬加载（第 0 步：检测平台 → 定位真实注入点 → 按需（精简） / 强制（injection-core 核心全文））
         │
         ▼
-场景化判定（v2.3.0：单发使用 → 纪律全走 + 承载创建豁免；持续项目 → 六步全套 + 承载强制 + 回指；判定不清默认轻量）
+场景化判定（v2.3.0 引入，v2.4.0 反转默认：单发使用 → 纪律全走 + 承载创建豁免；持续项目 → 六步全套 + 承载强制 + 回指；**判定不清 → 默认按持续处理**）
         │
         ▼
 任务三重判级（先答三问：≥3 包跨层？涉契约/架构/迁移/发布/安全？用户点名严格？）
@@ -133,12 +133,13 @@
 | **skill 自更新** | syncer.py 三路合并（用户规则目录永不碰）；彩蛋+状态面版本一致检查 | scripts/syncer.py · SKILL §3.1 |
 | 配套模板/钩子/子代理 | 规划/验收/任务记录/复盘/回滚点/预算/钩子/审查子代理 | templates/ |
 | **彩蛋自检 zxc663** | 回复「注入方式 + 已应用轮数 + 源库 vs 副本版本」——纯自检零操作 | SKILL §12 ZE |
-| **场景化判定（v2.3.0）** | 单发使用（新会话单发/无项目特征/非工程任务）→ 纪律全走、**承载创建豁免**（不乱建 memory/规则文件/docs）；持续项目 → 六步全套 + 承载强制 + 回指；判定不清默认轻量 | SKILL §2.0 · details #283 |
+| **场景化判定（v2.3.0，v2.4.0 反转默认）** | 单发使用（无项目特征且非工程任务）→ 纪律全走、**承载创建豁免**（不乱建 memory/规则文件/docs）；持续项目 → 六步全套 + 承载强制 + 回指；**判定不清 → 默认按持续处理**（先建承载兜底，确认单发后删即可） | SKILL §2.0 · details #283 |
 | **纠偏续跑 Steer（v2.3.0）** | 方向错 → 暂停 → 保留已确认正确部分 → 增量调整 → 从当前状态继续（不从头重做）；面向结果指令 | details #280 · §12 C1 |
 | **并行依赖协议 Parallel（v2.3.0）** | 依赖分析先行（强依赖串行）→ 子任务五要素 → 合并统一集成验证 | details #281 · §5.1 |
 | **回指理解强制（v2.3.0）** | project-rules「回指（强制）」段（缺失=不合规）+ 会话末更新行 + §0 任务中途每一条消息先严谨分析 | details #282 · project-rules 模板 |
 | **文档写作分层（v2.3.0）** | 写任何文档产物：正文只写结论/规则 + ≤1 句为什么；史料（出处/拍板人/日期/轮次）落决策史层 | SKILL §10 总纲 · details #278 |
 | **审计修复（v2.3.0 症状索引门禁）** | details 头部症状索引表 283 条全覆盖 + verify 新增 **F 项索引完整性门禁** + GATE 增 `errpath` 字段（错误路径核对可查） | details 头部 · verify-release F 项 · GATE |
+| **细则三层 + 防棘轮（v2.4.0）** | T1 常驻=注入核心 / T2 症状检索【T2】/ T3 领域查询【T3】（TOP 直查不受限）；防棘轮：新增先 diff 比对、重复当场合并、删减与降级合法；场景判定不清默认按持续 | details 头部 · SKILL §0/§2.0 |
 
 ## 差异化优势 · Differentiation
 
@@ -192,7 +193,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.3.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.4.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏）
@@ -214,7 +215,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径（诚实）**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.3.0（流程场景化 + 写作重构 + Steer/Parallel + 回指理解强制 + 审计修复）已于 2026-09-03 全渠道发行**。发行台账见 RELEASE-CHECKLIST.md。
+> **发布面注记（诚实）**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）为本地批次（2026-09-08），发行待批**。发行台账见 RELEASE-CHECKLIST.md。
 
 ## 参考项目 · Reference projects
 
@@ -260,7 +261,7 @@ shisan-xinuo-workflow/              ← 仓库根
 - **怎么配置触发器，让每个新会话都强制加载？** 平台 hooks（SessionStart/End）或各平台全局规则文件（`platform-adaptation.md` §2.1 有逐平台实测明细——本机 Claude Code hooks 因 bash 不可用已降级、Codex/WorkBuddy 无 hooks 槽位已如实标注）；配置前先备份；**验收判据**：新会话输入「在场提示」关键词在上下文 + `zxc663` 正常回话 = 触发器生效。
 - **换模型（强模型 → 弱模型）会失效吗？** 可能打折——弱模型对 description 触发精度会降（skill-usage.md §0 有弱模型保底做法：调小可发现清单 / 精准 description）；但注入副本（每会话在场）不受模型影响；`zxc663` 一次自检随时可验证当前是否在场。
 - **「细则类小更新」路线是什么意思？** v2.0.5 之后的承诺：只做细则追加入库（双击晋升制）、措辞校正、口径补全——**不做破坏性大改**；但「不做绝对保证」（作者保留意外情况声明）。本仓库定位 = **Agent 提示词注入标范与标本合集**：把每次机制修改对应的实证（哪轮路测驱动、成功/失败各几处）一并归档，供你拿来打磨自己的工作流。
-- **单发使用会建一堆文档吗？** 不会——v2.3.0 场景化（details #283）：单发/无项目特征/非工程任务 → 纪律照走、**承载创建豁免**（不建 memory/规则文件/docs，乱建文档比不建更糟）；持续项目才建 + 回指强制；判定不清默认轻量。
+- **单发使用会建一堆文档吗？** 不会——v2.3.0 场景化（details #283）：单发/无项目特征/非工程任务 → 纪律照走、**承载创建豁免**（不建 memory/规则文件/docs，乱建文档比不建更糟）；持续项目才建 + 回指强制；判定不清默认按持续处理（v2.4.0：先建承载兜底——误判单发丢初始上下文更贵；确认单发后删除承载文件即可）。
 
 ## 来源与依据 · Sources
 
