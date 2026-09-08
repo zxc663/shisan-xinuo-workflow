@@ -1,7 +1,7 @@
 {
   "name": "@zxc663/shisan-xinuo-workflow",
   "version": "2.6.0",
-  "description": "十三希诺通用 Agent 工作流——把任何工程任务强制按「三级跑道（L1 快速通道 / L2-S 短工作流 / L2-F 完整 9 步）+ L1/L2/L3 封闭清单速判 + 三模式」推进的可审计工程治理 Skill；场景化单发豁免 + 场景判定不清默认按持续 + 细则三层 T1·T2·T3 + Steer 纠偏续跑 + Parallel 依赖协议 + 回指理解强制 + 跨会话留档一档制（agent-log 四区）+ 设计前先调研成熟设计并强制留档设计规范档 + 平台原生记忆分工留档减负 + 285 条/17 类落地细则症状索引 + 审计修复门禁。Shisan Xinuo Agent Workflow — cross-platform engineering-governance Agent Skill (three-lane task flow, L1/L2/L3 triage, three modes, scenario-aware single-shot exemption, unclear-case-defaults-continuous, three-tier rule details, steer/parallel protocols, mandatory back-reference, single-file agent-log archiving, research-before-design with archived design specs, platform-native memory division, 285-item symptom-indexed details, ask-before-acting, quality gates, no fake completion). 唯一中文版（v2.0 起单版本，无多语版）。",
+  "description": "十三希诺通用 Agent 工作流——把任何工程任务强制按「三级跑道（L1 快速通道 / L2-S 短工作流 / L2-F 完整 9 步）+ L1/L2/L3 封闭清单速判 + 三模式」推进的可审计工程治理 Skill；场景化单发豁免 + 场景判定不清默认按持续 + 细则三层 T1·T2·T3 + Steer 纠偏续跑 + Parallel 依赖协议 + 回指理解强制 + 跨会话留档一档制（agent-log 四区）+ 设计前先调研成熟设计并强制留档设计规范档 + 平台原生记忆分工留档减负 + 293 条/17 类落地细则症状索引 + 审计修复门禁。Shisan Xinuo Agent Workflow — cross-platform engineering-governance Agent Skill (three-lane task flow, L1/L2/L3 triage, three modes, scenario-aware single-shot exemption, unclear-case-defaults-continuous, three-tier rule details, steer/parallel protocols, mandatory back-reference, single-file agent-log archiving, research-before-design with archived design specs, platform-native memory division, 293-item symptom-indexed details, ask-before-acting, quality gates, no fake completion). 唯一中文版（v2.0 起单版本，无多语版）。",
   "keywords": [
     "agent",
     "skill",
