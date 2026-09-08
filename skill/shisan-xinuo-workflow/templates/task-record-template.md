@@ -27,7 +27,7 @@
 - 第 8 步风险分级 + 回滚点 · Step 8 triage + rollback:
 - 第 9 步规划 · Step 9 plan:（见 plan-template.md）
 - 第 10 步执行 · Step 10 execution:
-- 第 11 步验证 + 归档 · Step 11 verification + archive:
+- 第 9 步验证 + 归档 · Step 9 verification + archive:
 
 ## 关键决策 · Key decisions（决策 + 理由）
 - ___

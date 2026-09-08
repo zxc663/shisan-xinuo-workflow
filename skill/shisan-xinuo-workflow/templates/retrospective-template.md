@@ -1,6 +1,6 @@
 # 复盘 · Retrospective Template
 
-> 用途：目标模式完成复盘（主流程第 11 步 / 双模式表）· Goal-mode retrospective (master step 11)
+> 用途：目标模式完成复盘（主流程第 9 步 / 双模式表）· Goal-mode retrospective (master step 9)
 > 也用于会话结束小结 · Also for session-end wrap-up
 
 ## 目标回顾 · Goal review

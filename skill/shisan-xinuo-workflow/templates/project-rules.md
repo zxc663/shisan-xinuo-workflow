@@ -1,6 +1,6 @@
 # 项目级 Agent 规则 · <项目名>
 
-> **本文件是项目级注入（每会话自动进入）。**与平台全局硬注入（injection-core：通用纪律）互补：项目级管「本项目特有信息 + 项目承载 + 项目纪律」。**由工作流「项目承载检查（SKILL §2.0 开工序六步第 4 步 / §3 第 6 步）」自动创建/合并**——文件名按 `platform-adaptation.md` §2「项目级注入点表」定名（Codex=项目根 AGENTS.md / Claude Code=项目 CLAUDE.md / Trae=`.trae/rules/project_rules.md` / Cursor=`.cursor/rules/*.mdc` / Windsurf=`.windsurfrules`；未知平台联网调研，离线降级 AGENTS.md 兜底+头注迁移说明）：存在同名既有规则文件 → **合并不覆盖 + 先备份**；不存在才按本模板新建。
+> **本文件是项目级注入（每会话自动进入）。**与平台全局硬注入（injection-core：通用纪律）互补：项目级管「本项目特有信息 + 项目承载 + 项目纪律」。**由工作流「项目承载检查（SKILL §2.0 开工四步第 2 步「承载检查」/ §3 第 6 步）」自动创建/合并**——文件名按 `platform-adaptation.md` §2「项目级注入点表」定名（Codex=项目根 AGENTS.md / Claude Code=项目 CLAUDE.md / Trae=`.trae/rules/project_rules.md` / Cursor=`.cursor/rules/*.mdc` / Windsurf=`.windsurfrules`；未知平台联网调研，离线降级 AGENTS.md 兜底+头注迁移说明）：存在同名既有规则文件 → **合并不覆盖 + 先备份**；不存在才按本模板新建。
 
 ## 回指（强制字段，缺失 = 不合规）
 - 本文件由 Skill「shisan-xinuo-workflow」工作流创建——**判级 / 红线 / 必问 / 细则等完整纪律按需加载该 Skill**（`references/injection-core.md` 为平台注入核心；细则库 `references/details.md` 按症状检索）。
