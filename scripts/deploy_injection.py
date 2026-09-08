@@ -68,7 +68,9 @@ def details_count():
 
 def targets(only):
     home = Path.home().as_posix()
-    src = f"C:/{os.environ.get('SKILL_SRC', home + '/.agents/skills/shisan-xinuo-workflow')}"
+    val = os.environ.get('SKILL_SRC', home + '/.agents/skills/shisan-xinuo-workflow')
+    # 仅相对路径才补盘符前缀；已是盘符绝对路径原样保留（防 C:/C:/ 双前缀）
+    src = val if re.match(r'^[A-Za-z]:[/\\]', val) else 'C:/' + val
     for name, (tmpl, plat, anchor) in PLATFORMS.items():
         if only and name not in only:
             continue
