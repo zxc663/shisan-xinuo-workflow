@@ -308,3 +308,5 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 **环境发现**：并发加剧 rollout 清刷（A2 原始件全损失）——守望备份先行应成多会话路测标配；夹具经 Bash 转义层生成时 `\n` 塌陷再现（v2-R8 同源第二次）——夹具一律走 Write 工具（A1b 起零缺陷）。用户同窗口活动（hooks-log 05:18）已排除。
 
 取证包：`memory/forensics-roadtest-v3/`（本地承载）+ 原始工件 `D:\roadtest-v260\v3\`（scorecards 10 件+统计 v3+rollout-backup）。
+
+**§十九补注（C1 探索性场景，2026-09-09）**：补验「零报错静默错账」形态——report.py 月份 key 未归一化致一月合计被劈两行（exit 0 无任何报错）。agent 自行核算期望值、复现先行、根因精准、三边界验证，lookup 仍 0 执行。错误形态谱系（崩溃清晰 A1b/崩溃隐晦 v2-R3/静默错账 C1）三型一致：**自诊可解即不检索；lookup 仅 v2-R8t1 以「取证义务」框架触发 1 例**。B 类归因累计 N=4 信号（非泛化率）。scorecard-C1.json 见取证包。
