@@ -121,7 +121,7 @@
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需(精简) / 强制(injection-core 全文)，备份后合并绝不覆盖 | SKILL §3 · injection-core.md · platform-adaptation.md |
 | **三级跑道（v1.16+，2.0 起唯一版全量；v2.6.0 简化为 9 步）** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 9 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.2-2.4 · workflows §0.6 |
 | **开工序列四步（v2.6.0）** | 复述 → 承载检查（扫描/定根/建补一气呵成）→ 记忆对齐（最小读取）→ 判级选道 | SKILL §2.0 · injection-core |
-| **细则一键检索端口（v2.6.0）** | `python scripts/detail_lookup.py "<症状关键词>"`：关键词/编号/症状域三查，命中行即 errpath 证据——细则检索四步压一步 | scripts/detail_lookup.py · SKILL §9 |
+| **细则一键检索端口（v2.6.0）** | `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory；scripts/ 已随包分发）：关键词/编号/症状域三查，命中行即 errpath 证据——细则检索四步压一步 | scripts/detail_lookup.py · SKILL §9 |
 | **设计规范档前置（v2.6.0）** | 设计类动作（前端尤甚）逐组件调研成熟规范 → 强制留档 `docs/design-specs/` → 按档设计并回指 | details #284 · injection-core 设计铁律 |
 | **对接真相清单（强制）** | 跨包/新端点/新依赖先产「模块\|API\|对接方式\|证据来源」表，禁凭命名直觉 | SKILL §2.3 · details #233 |
 | 必问协议 | 问题必带推荐+理由+后果；超时空答→调研+待确认标注 | SKILL §4 |
