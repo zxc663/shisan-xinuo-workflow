@@ -11,3 +11,7 @@ versions/personal-zh/
 memory/
 *.bak
 *.bak-*
+
+# Python 缓存产物（脚本运行产生，不入仓/不入副本/不入发行 zip）
+__pycache__/
+*.pyc

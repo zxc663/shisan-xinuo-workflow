@@ -6,14 +6,11 @@ $staging = Join-Path $env:TEMP ("xinuo-dist-staging-" + $ts)
 $ver = (Get-Content (Join-Path $root "package.json") -Raw | ConvertFrom-Json).version
 Write-Host "版本 = $ver"
 
-# 1) 根系发布文件
-$rootFiles = @("CHANGELOG.md","EVIDENCE.md","LICENSE","package.json","README.md","RELEASE-CHECKLIST.md")
-
-# 2) 待复制清单（相对 root，正斜杠）
+# 1) 待复制清单（相对 root，正斜杠；排除 __pycache__ 与 *.pyc 缓存产物）
 $roots = @("CHANGELOG.md","EVIDENCE.md","LICENSE","package.json","README.md","RELEASE-CHECKLIST.md")
-$scripts = Get-ChildItem (Join-Path $root "scripts") -File | ForEach-Object { "scripts/" + $_.Name }
+$scripts = Get-ChildItem (Join-Path $root "scripts") -File | Where-Object { $_.Extension -ne '.pyc' } | ForEach-Object { "scripts/" + $_.Name }
 $docs    = Get-ChildItem (Join-Path $root "docs") -File | Where-Object { $_.Name -match 'reference-sources' } | ForEach-Object { "docs/" + $_.Name }
-$skill   = Get-ChildItem (Join-Path $root "skill") -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch '\\.git' } | ForEach-Object { ($_.FullName.Substring($root.Length + 1)).Replace('\','/') }
+$skill   = Get-ChildItem (Join-Path $root "skill") -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch '\\.git' -and $_.FullName -notmatch '__pycache__' -and $_.Extension -ne '.pyc' } | ForEach-Object { ($_.FullName.Substring($root.Length + 1)).Replace('\','/') }
 $all = ($roots + $scripts + $docs + $skill) | Sort-Object -Unique
 
 Write-Host "待复制: $($all.Count) 项"

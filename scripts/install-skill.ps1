@@ -150,8 +150,7 @@ if ($Dry) {
 # ---------- 硬注入（可选；按 platform-adaptation 注入点表）----------
 if ($HardInject) {
     $core = Join-Path $Source "references\injection-core.md"
-    if (-not (Test-Path $core)) { Write-Warning "[注入] 源缺少 references\injection-core.md，跳过注入（安装已完成）。"; return }
-    if (-not $injectFile) {
+    if (-not (Test-Path $core)) { Write-Warning "[注入] 源缺少 references\injection-core.md，跳过注入（安装已完成，继续验收输出）。" } elseif (-not $injectFile) {
         $pn = if ($Platform) { $Platform } else { "未指定" }
         Write-Host "[注入] 平台 $pn 无标准注入点（本脚本未登记），跳过注入（安装已完成）。"
     } else {

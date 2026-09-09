@@ -7,9 +7,16 @@ on:
       - "skill/**"
       - "versions/**"
       - "scripts/**"
+      - "docs/**"
       - "package.json"
       - "README.md"
       - "CHANGELOG.md"
+      - "EVIDENCE.md"
+      - "RELEASE-CHECKLIST.md"
+      - "项目信息.md"
+      - "AGENTS.md"
+      - "LICENSE"
+      - ".gitignore"
   push:
     tags:
       - "v*"
@@ -19,7 +26,7 @@ jobs:
   verify:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4（SHA 固定，防 tag 重定向——security.md §7.2）
       - name: Verify release consistency
         shell: pwsh
         run: pwsh scripts/verify-release.ps1

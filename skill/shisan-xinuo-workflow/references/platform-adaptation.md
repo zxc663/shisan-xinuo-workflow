@@ -113,8 +113,6 @@
 
 **推荐 / Recommended**：默认按需注入（On-demand by default）；要求工作流每会话无条件在场时才用强制注入（choose force injection only when you need it present in every session）。
 
-**仅此一个安装期提问双语**：安装完成后的日常交互一律用用户偏好语言（`memory/preferences.md` 择定），不做双语重复记录（本 Skill 不设"语言桥"条款）。
-
 ### 3.1 步骤
 
 1. **先备份**：目标文件若已存在，先复制为 `<文件名>.bak-<日期>` 再动。绝不直接原地改既有规则文件。
