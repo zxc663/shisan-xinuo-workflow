@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#57606A"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="650" fill="#FFFFFF"/>
+  <rect x="8" y="8" width="1184" height="634" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+
+  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">硬注入 = 三层承载（每次会话强制生效）</text>
+
+  <!-- 触发 -->
+  <rect x="330" y="70" width="540" height="60" rx="10" fill="#FFFFFF" stroke="#1F2328" stroke-width="2"/>
+  <text x="600" y="96" font-size="17" font-weight="bold" fill="#1F2328" text-anchor="middle">硬注入（install-skill.ps1 -HardInject / deploy_injection.py / syncer.py --memory-target）</text>
+  <text x="600" y="118" font-size="15" fill="#57606A" text-anchor="middle">写前提醒用户授权；备份 → 合并 → 校验，绝不覆盖既有文件</text>
+
+  <line x1="600" y1="130" x2="600" y2="170" stroke="#57606A" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- 记忆层 -->
+  <rect x="60" y="170" width="340" height="230" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="76" y="184" width="96" height="28" rx="14" fill="#1F6FEB"/>
+  <text x="124" y="202" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">记忆层</text>
+  <text x="80" y="238" font-size="18" font-weight="bold" fill="#1F2328">每会话在场锚点</text>
+  <text x="80" y="266" font-size="16" fill="#57606A">首行「在场提示 · 工作流</text>
+  <text x="80" y="290" font-size="16" fill="#57606A">Skill 现已在场」</text>
+  <text x="80" y="318" font-size="16" fill="#57606A">模板：templates/memory-anchor.md</text>
+  <text x="80" y="350" font-size="15" fill="#8C959F">让新会话 Agent 一进来就知道</text>
+  <text x="80" y="374" font-size="15" fill="#8C959F">本 Skill 在场，并触发自检</text>
+
+  <!-- 规则层 -->
+  <rect x="430" y="170" width="340" height="230" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="446" y="184" width="96" height="28" rx="14" fill="#1F6FEB"/>
+  <text x="494" y="202" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">规则层</text>
+  <text x="450" y="238" font-size="18" font-weight="bold" fill="#1F2328">injection-core 核心全文</text>
+  <text x="450" y="266" font-size="16" fill="#57606A">判级速查 / 主流程（三级跑道）</text>
+  <text x="450" y="290" font-size="16" fill="#57606A">必问协议 / 红线 / 留档</text>
+  <text x="450" y="318" font-size="16" fill="#57606A">写入平台注入点，每会话强制生效</text>
+  <text x="450" y="350" font-size="15" fill="#8C959F">验收判据：读到「在场提示」或</text>
+  <text x="450" y="374" font-size="15" fill="#8C959F">zxc663 自检彩蛋正常回话</text>
+
+  <!-- 配置文件层 -->
+  <rect x="800" y="170" width="340" height="230" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="816" y="184" width="112" height="28" rx="14" fill="#1F6FEB"/>
+  <text x="872" y="202" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">配置文件层</text>
+  <text x="820" y="238" font-size="18" font-weight="bold" fill="#1F2328">hooks / 全局设置</text>
+  <text x="820" y="266" font-size="16" fill="#57606A">SessionStart / SessionEnd 钩子</text>
+  <text x="820" y="290" font-size="16" fill="#57606A">平台级「新会话自动加载」</text>
+  <text x="820" y="318" font-size="16" fill="#57606A">门控提醒零误触发（机评实证）</text>
+  <text x="820" y="350" font-size="15" fill="#8C959F">只写规则层、记忆文件空白时，</text>
+  <text x="820" y="374" font-size="15" fill="#8C959F">新会话仍可能不识别 → 三层同写</text>
+
+  <!-- 按需注入对比 -->
+  <rect x="150" y="440" width="900" height="90" rx="12" fill="#FFFFFF" stroke="#8C959F" stroke-dasharray="6 4"/>
+  <text x="170" y="472" font-size="17" font-weight="bold" fill="#57606A">按需注入（对比）→ 只写应用层</text>
+  <text x="170" y="500" font-size="16" fill="#57606A">精简纪律 + 询问是否写规则层，不写记忆层；由模型按 description 触发，不保证每次会话生效。</text>
+
+  <!-- 凭据红线 -->
+  <rect x="150" y="560" width="900" height="66" rx="12" fill="#FFF1F0" stroke="#D1242F" stroke-width="2"/>
+  <text x="170" y="592" font-size="17" font-weight="bold" fill="#D1242F">凭据红线</text>
+  <text x="170" y="614" font-size="16" fill="#57606A">配置层 / 记忆层文件含凭据时一律走环境变量，不落明文；密钥绝不写入本仓库任何文件。</text>
+</svg>
