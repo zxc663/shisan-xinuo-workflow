@@ -176,7 +176,7 @@
 
 ## 快速体验 · Quick start
 
-1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物，从 GitHub Release 下载——**最新已发行版 v2.5.0（2026-09-08，附 dist zip），历史版本在 Releases 内可查**；或按仓库脚本 `scripts/build-dist.ps1` 重新打包））。
+1. **安装**：git 用户跑 `scripts/install-skill.ps1`（一条命令自动带 `agent-` 前缀、自适配到目标平台技能目录，可选 `-Link` 软链 / `-HardInject` 顺手注入配置层）；npm 用户 `npx skills add zxc663/shisan-xinuo-workflow --skill agent-shisan-xinuo-workflow`（**前缀在安装名上：`agent-` = 按字母序在技能列表最前**——按需注入的 Agent 不会自动执行，用户靠字母序发现）。旧平台可解压 `dist/` 发布 zip（gitignore 产物，从 GitHub Release 下载——**最新已发行版 v2.6.0（2026-09-09，附 dist zip），历史版本在 Releases 内可查**；或按仓库脚本 `scripts/build-dist.ps1` 重新打包））。
 2. **加载**：新开会话。Skill 自动执行第 0 步检测与注入；**若模型未自动适配，手动再输出一遍本 skill 名字**触发 → 按 §3 备份→合并→校验。
 3. **感受它**：给一个小任务——先复述理解 + 3-5 条验收；给风险任务（「把这个目录删了」）——必须先问再动手（L3）。
 4. **目标模式**：说 `目标：整理本目录文件并归组，注意不要删除任何内容`——观察写计划/预算/文件边界/超预算停。
@@ -226,7 +226,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。**2026-09-09 本地口径批次（无版本变更、未发行）**：README/EVIDENCE 成本与实践数据全量刷新（25.27 亿 / 108 会话 / dogfooding 增量窗，见真实口径 §①/§①b）；ZCode 注入副本漂移修复（v2.5.0 批次四副本已部署、ZCode 漏部署，本日补部署 + 备份 `.bak-20260909-pre-v250`）。**同日 v2.6.0 本地批次（未发行）**：开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4 / 设计规范档前置 #284 / 平台记忆分工 #285 + 跨项目经验回流 #286-293（细则 283→293）+ 触达渠道修复 #294（细则 293→294：detail_lookup 一键检索端口 + 部署工具化）+ 机评路测三场（v1 修复发现 / v2 修复效力 / v3 机制广度，见真实口径 §①c 与 EVIDENCE §十七-十九），注入副本五副本已重部署 v2.6.0——发行台账见 RELEASE-CHECKLIST.md。**
+> **发布面注记**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。**2026-09-09 本地口径批次（无版本变更、未发行）**：README/EVIDENCE 成本与实践数据全量刷新（25.27 亿 / 108 会话 / dogfooding 增量窗，见真实口径 §①/§①b）；ZCode 注入副本漂移修复（v2.5.0 批次四副本已部署、ZCode 漏部署，本日补部署 + 备份 `.bak-20260909-pre-v250`）。**同日 v2.6.0（2026-09-09 本次发行）**：开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4 / 设计规范档前置 #284 / 平台记忆分工 #285 + 跨项目经验回流 #286-293（细则 283→293）+ 触达渠道修复 #294（细则 293→294：detail_lookup 一键检索端口 + 部署工具化）+ 机评路测三场（v1 修复发现 / v2 修复效力 / v3 机制广度，见真实口径 §①c 与 EVIDENCE §十七-十九），注入副本五副本已重部署 v2.6.0——本次发行 v2.6.0（v2.5.0 的 Gitee 侧补发与其发行回执见 RELEASE-CHECKLIST.md）。**
 
 ## 参考项目 · Reference projects
 
@@ -283,7 +283,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **每版一句话；完整明细统一归档 [`CHANGELOG.md`](CHANGELOG.md)（逐版台账）与 git 历史，本节不再重复。**
 
-- **v2.6.0**（2026-09-09，本地批次未发行）：流程简化（开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4）+ 设计规范档前置 + 平台原生记忆分工 + 跨项目经验回流与触达渠道修复（细则 283→294、detail_lookup 一键检索端口、部署工具化）。
+- **v2.6.0**（2026-09-09 本次发行）：流程简化（开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4）+ 设计规范档前置 + 平台原生记忆分工 + 跨项目经验回流与触达渠道修复（细则 283→294、detail_lookup 一键检索端口、部署工具化）。
 - **v2.5.0**（2026-09-08 已发行；Gitee 侧待补）：留档一档制（`memory/agent-log.md` 四区取代五件套）+ 设计前先调研成熟设计。
 - **v2.4.0**（2026-09-08，内容并入 v2.5.0 发行）：三平台取证驱动修补 + 细则三层结构（T1 常驻/T2 症状检索/T3 编号查询）+ 防棘轮。
 - **v2.3.0**（2026-09-03 已发行）：场景化（单发承载豁免）+ 文档写作分层 + Steer/Parallel + 回指强制 + 症状索引门禁。
