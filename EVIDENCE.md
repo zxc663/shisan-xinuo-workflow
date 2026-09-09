@@ -267,7 +267,7 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 
 ## 十七、v2.6.0 首轮机评路测（2026-09-09 · 本地批次 · 全自动无头驱动）
 
-**方法与授权**：用户拍板全自动无头（`zcode.cjs -p` 驱动 10 个新会话）、工作区 D:\roadtest-v260（仓库外）、token 不设限、权限预放行、**hooks 最小授权（SessionStart/Stop 落日志）获批并部署生效**（§十六 hooks 提案部分落地：日志型已上线，注入型未做）。判分全机器信号（rollout 全量模型 I/O + 文件系统 + db.sqlite + hooks 日志），检查单预注册跑前落盘。成本：76 请求｜in 2.76M（cache_read 2.31M）｜out 64K。样本每场景 N=1，只报信号不报泛化率。
+**方法与授权**：用户拍板全自动无头（`zcode.cjs -p` 驱动 10 个新会话）、工作区 roadtest-v260（仓库外）、token 不设限、权限预放行、**hooks 最小授权（SessionStart/Stop 落日志）获批并部署生效**（§十六 hooks 提案部分落地：日志型已上线，注入型未做）。判分全机器信号（rollout 全量模型 I/O + 文件系统 + db.sqlite + hooks 日志），检查单预注册跑前落盘。成本：76 请求｜in 2.76M（cache_read 2.31M）｜out 64K。样本每场景 N=1，只报信号不报泛化率。
 
 **机制触发率（10 会话）**：注入在场（rollout 硬证据）3/3 抽验｜复述先行 8/8｜判级一句话 8/8｜GATE 8/8｜裸 # 违规 0/9｜L3 判级正确 1/1｜设计档前置+双回指 1/1｜单发反过度工程 1/1｜resume 续接 1/1｜歧义必问 0/1｜errpath 合规 0/2 可判。
 
@@ -279,11 +279,11 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 | F14 | T2/T3 档案触达首次破零 | S3b/S5 真实读取 templates/ 两份模板后按模板建档（模型自主发起） | 历史但书「文件级触达≈0」修正为「references≈0、templates 有真实触达」 |
 | F15 | 歧义必问在无头介质失灵（唯一硬违规） | S8t1 零规格指令未问自行实现（工程质量好但违反必问） | 交互对照样本因用户裁定全自动而取消，介质效应未分离——列未覆盖项，不下规则结论 |
 | F16 | 承载创建时机漂移 | 开工规则驱动 1（S5）；事后内容驱动 3（S3b/S4/S6 出教训后补齐）；静默跳过 1（S2 违规） | 触发时机与规则文本不符；候选：开工四步承载段前移显化（下批次评估） |
-| F17 | hooks/CLI 部署面缺陷三项 | 模板 SessionEnd 事件不存在（实为 Stop）；config-file `hooks.events.<Event>` 须数组（模板为 plugin 形状，照抄整文件静默失效）；CLI 0.16.5 help 列 --max-turns/--settings 但解析器拒绝 | 模板修复+部署说明入下批次；hooks 部署实测姿势已固化 D:\roadtest-v260\hooks\ |
+| F17 | hooks/CLI 部署面缺陷三项 | 模板 SessionEnd 事件不存在（实为 Stop）；config-file `hooks.events.<Event>` 须数组（模板为 plugin 形状，照抄整文件静默失效）；CLI 0.16.5 help 列 --max-turns/--settings 但解析器拒绝 | 模板修复+部署说明入下批次；hooks 部署实测姿势已固化 roadtest-v260\hooks\ |
 
 **对既往诊断的对照**：F13=「背答案非泛化」的微观活体；S6 非源域通用纪律（复述/判级/GATE/验证）保持 100%，通用层跨池成立、细则层无需求场景未真检验；「文件级触达≈0」被 F14 打破。**未覆盖**：真人交互保真、平台原生记忆分工、折叠协议、紧凑档、TUI/桌面会话 hooks。
 
-**部署面变更台账**：`~/.zcode/cli/config.json` +hooks 段（已机验 SessionStart/Stop 落行）+provider 单条+model 引用（headless 必需）；备份 config.json.bak-20260909-pre-hooks。取证包：`memory/forensics-roadtest-v260/`（本地承载）+ 原始工件 D:\roadtest-v260\。
+**部署面变更台账**：`~/.zcode/cli/config.json` +hooks 段（已机验 SessionStart/Stop 落行）+provider 单条+model 引用（headless 必需）；备份 config.json.bak-20260909-pre-hooks。取证包：`memory/forensics-roadtest-v260/`（本地承载）+ 原始工件 roadtest-v260\。
 
 ## 十八、v2.6.0 修复效力路测 v2（2026-09-09 · 修复批次验证 · 全自动无头驱动）
 
@@ -297,7 +297,7 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 
 **未覆盖（诚实清单）**：真人交互保真（F15 阻断层仍未分离；意图层已证触发）、桌面/TUI hooks 触达、lookup 在「肉眼不可诊断错误」下的触发率（本轮炸点均可直诊，场景设计局限）、裸 # 三场景补扫（清刷致不可补）。
 
-取证包：`memory/forensics-roadtest-v2/`（本地承载）+ 原始工件 `D:\roadtest-v260\v2\`（scorecards 9 件+统计 v2+runs）。
+取证包：`memory/forensics-roadtest-v2/`（本地承载）+ 原始工件 `roadtest-v260\v2\`（scorecards 9 件+统计 v2+runs）。
 
 ## 十九、v2.6.0 机制广度+并发工程面路测 v3（2026-09-09 · 多面矩阵 · 并发≤3 无头驱动）
 
@@ -307,6 +307,6 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 
 **环境发现**：并发加剧 rollout 清刷（A2 原始件全损失）——守望备份先行应成多会话路测标配；夹具经 Bash 转义层生成时 `\n` 塌陷再现（v2-R8 同源第二次）——夹具一律走 Write 工具（A1b 起零缺陷）。用户同窗口活动（hooks-log 05:18）已排除。
 
-取证包：`memory/forensics-roadtest-v3/`（本地承载）+ 原始工件 `D:\roadtest-v260\v3\`（scorecards 10 件+统计 v3+rollout-backup）。
+取证包：`memory/forensics-roadtest-v3/`（本地承载）+ 原始工件 `roadtest-v260\v3\`（scorecards 10 件+统计 v3+rollout-backup）。
 
 **§十九补注（C1 探索性场景，2026-09-09）**：补验「零报错静默错账」形态——report.py 月份 key 未归一化致一月合计被劈两行（exit 0 无任何报错）。agent 自行核算期望值、复现先行、根因精准、三边界验证，lookup 仍 0 执行。错误形态谱系（崩溃清晰 A1b/崩溃隐晦 v2-R3/静默错账 C1）三型一致：**自诊可解即不检索；lookup 仅 v2-R8t1 以「取证义务」框架触发 1 例**。B 类归因累计 N=4 信号（非泛化率）。scorecard-C1.json 见取证包。

@@ -46,14 +46,16 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 只读、非破坏性，不改动任何文件。
 
-### 校验项（A–D，v2.0 单版本口径）
+### 校验项（A–F，v2.6.0 当前口径）
 
 | 项 | 检查内容 | 通过标准 |
 |---|---|---|
 | **A 内容锚点** | 主交付物 `skill/…/SKILL.md` 含全部关键特性串：`L2-S` / `L2-F` / `对接真相` / `GATE:` / `zxc663` / `速查表` / `三级同步` / `Base directory`；`references/injection-core.md` 含 `L2-S` / `L2-F` / `对接真相` / `三级同步链` / `Base directory`；`references/new-project-bootstrap.md` 存在 | 锚点零缺失（**门禁修复：校验内容覆盖度，不再只比对版本号**——v1.19.1 实测内容差 57% 仍 5/5 PASS 是其直接成因） |
-| **B hooks 三层** | 主交付物 `templates/hooks/` 三件套 | `session-start.example.sh`+`session-end.example.sh`+`hooks.example.json` 齐全，且 JSON 同时声明 `SessionStart` 与 `SessionEnd` |
+| **B hooks 三层** | 主交付物 `templates/hooks/` 三件套 | `session-start.example.sh`+`session-end.example.sh`+`hooks.example.json` 齐全，且 JSON 同时声明 `SessionStart` 与 `Stop`（F17 起模板事件名=Start/Stop） |
 | **C 版本一致** | `SKILL.md metadata.version` == `package.json version` | 两处相等（v2.0 起无多语版，三版一致性校验随多版删除而取消） |
-| **D 泄漏红线** | 发布物范围（`skill/` + README/package.json/LICENSE + `scripts/`） | 无作者机密目录路径 / 无本仓真实绝对路径 / 无真实用户主目录路径（`C:\Users\<名>…`）/ 无令牌原文（ghp_/gho_/github_pat_）/ 发布物内无个人版路径引用（README 版本说明豁免；占位符 `…` 属文档示例，不算泄漏） |
+| **D 泄漏红线** | 发布物范围（`skill/` + README/CHANGELOG/EVIDENCE/RELEASE-CHECKLIST + docs/reference-sources.md + package.json/LICENSE + `scripts/`——与 `build-dist.ps1` 打包面同集合） | 无作者机密目录路径 / 无本仓真实绝对路径 / 无真实用户主目录路径（`C:\Users\<名>…`）/ 无令牌原文（ghp_/gho_/github_pat_）/ 发布物内无个人版路径引用（README 版本说明豁免；占位符 `…` 属文档示例，不算泄漏） |
+| **E 正文净化（常驻/模板面）** | `SKILL.md` + `injection-core.md` + references 各 md（details 除外）| 常驻/模板面过程注记（日期/拍板/批次词/sess_）命中 = 0；references 行级来源豁免（`*来源/晋升*` + 节首注记） |
+| **F 索引完整性** | `details.md` 头部症状索引表全覆盖 | 编号 1-N 连续、每条细则 ≥1 症状域覆盖（无未索引条目） |
 
 ### 退出码
 

@@ -22,7 +22,7 @@
 | skills.sh | 等待遥测/爬虫收录 | ⏳ |
 
 ## C. 复用要点
-- 令牌供给：GitHub PAT 从机密文档 `D:\Agent个人资源\机密资源\02-Gitee与GitHub.txt` 正则提取注入 env（`ghp_`），命令串与输出全程不含明文，用毕即清 env；回显仅 len/前缀。**本批新教训：Shell 工具每次调用为独立进程，`$env:GH_TOKEN` 不跨命令保留——凡用令牌的动作（push/Release/npm/About）必须「提取→注入→执行」同一命令内完成；首次 401 为提取污染（未 Trim），干净提取后有效（/user 200）。**
+- 令牌供给：GitHub PAT 从机密文档 `<本机机密文档>`（路径不写出） 正则提取注入 env（`ghp_`），命令串与输出全程不含明文，用毕即清 env；回显仅 len/前缀。**本批新教训：Shell 工具每次调用为独立进程，`$env:GH_TOKEN` 不跨命令保留——凡用令牌的动作（push/Release/npm/About）必须「提取→注入→执行」同一命令内完成；首次 401 为提取污染（未 Trim），干净提取后有效（/user 200）。**
 - GitHub push/Release/API 走代理 `http://127.0.0.1:33210`；Gitee 直连（本轮不做）。
 - About description 限 350 字符（GitHub API 422「cannot be more than 350 characters」）——六·三文案过长时压缩核心保留（三级跑道/9 步/294 条 17 类/一档制/detail_lookup/触达端口/诚实口径）。
 - dist 打包用 `scripts/build-dist.ps1`（+ Set-diff 双检）；Release 资产上传走 `uploads.github.com` + `-L`；REST JSON body 写文件用无 BOM UTF8。

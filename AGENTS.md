@@ -17,12 +17,12 @@
 - 新增机制条款不带版本号/拍板人署名（决策记录写项目信息.md §三）。
 
 ## 项目承载（已就绪）
-- `memory/`：会话记忆（state / experience-mustread / experience / preferences / task-log）——**gitignore 本地承载，不随仓分发**。
+- `memory/`：会话记忆——**gitignore 本地承载，不随仓分发**（一档制 `agent-log.md` 四区；旧五件套历史原件在 `memory/legacy-pre-v250/` 只读保留）。
 - `docs/project-info.md`：项目导航六节（架构/目标/模块表/调研导航/参考资源/签章）。
 - `项目信息.md`：决策与发布史（权威，46KB）。
 - `dist/`、`versions/personal-zh/`、`.trae/`：本地/私有，不随仓分发或按 gitignore 处理。
 
 ## 本仓库底线（区别于通用纪律）
-- 密钥/令牌绝不写入本仓库任何文件（verify-release 泄漏红线 D 项会拦）；机密文档仅存本机专用机密目录（位置不在此写出、不随仓，以 memory/state.md 最新记录为准）。
+- 密钥/令牌绝不写入本仓库任何文件（verify-release 泄漏红线 D 项会拦）；机密文档仅存本机专用机密目录（位置不在此写出、不随仓，以 memory 最新记录为准）。
 - 发行动作（npm / GitHub Release / Gitee / ClawHub / About）必须先获用户批准 + `verify-release` 6/6 PASS + 观测阶段。
-- 下一轮路测基线 = 本版（v2.6.0 本地批次）；跑前确认注入副本已重部署且新会话读到「在场提示 · v2.6.0」。
+- 下一轮路测基线 = 本版（v2.6.0，2026-09-09 已全渠道发行、Gitee 侧推后）；跑前确认注入副本已重部署且新会话读到「在场提示 · v2.6.0」。

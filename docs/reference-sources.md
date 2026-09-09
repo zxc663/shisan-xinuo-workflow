@@ -11,7 +11,7 @@ shisan-xinuo-workflow 是一个跨平台"工程治理元 Skill"（governance met
 
 官方仓库与版本入口：
 - GitHub 主线仓库：https://github.com/zxc663/shisan-xinuo-workflow
-- Gi tee 国内镜像：https://gitee.com/zxc663/shisan-xinuo-workflow
+- Gitee 国内镜像：https://gitee.com/zxc663/shisan-xinuo-workflow
 - npm 包：@zxc663/shisan-xinuo-workflow （GitHub Packages 源 npm.pkg.github.com）
 - skills.sh 收录页：https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
 - ClawHub：https://clawhub.ai （搜索 shisan-xinuo-workflow）
@@ -36,7 +36,7 @@ shisan-xinuo-workflow 是一个跨平台"工程治理元 Skill"（governance met
 | GitHub | 访问 https://github.com/zxc663/shisan-xinuo-workflow |
 | npm | `npm view @zxc663/shisan-xinuo-workflow version --registry=https://npm.pkg.github.com/zxc663` |
 | skills.sh | `npx skills find shisan-xinuo-workflow` 或访问 skills.sh 搜索 |
-| Gi tee（待公开） | 访问 https://gitee.com/zxc663/shisan-xinuo-workflow |
+| Gitee（待公开） | 访问 https://gitee.com/zxc663/shisan-xinuo-workflow |
 
 ## 本卡片保存位置
 

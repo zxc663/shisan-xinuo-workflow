@@ -32,8 +32,8 @@ def log_dir(dest):
 
 
 def keep(name):
-    """是否是必须保留的目录/备份目录"""
-    return name in KEEP_DIRS or ".bak-" in name
+    """是否必须保留的目录/备份目录/忽略的缓存产物"""
+    return name in KEEP_DIRS or ".bak-" in name or name == "__pycache__" or name.endswith(".pyc")
 
 
 def main():

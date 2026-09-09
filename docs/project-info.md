@@ -33,10 +33,10 @@
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁） | install-skill、syncer、verify-release、门禁、三路合并 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
-| memory/ | 已实现（gitignore） | 本仓库会话记忆：state/experience-mustread/experience/preferences/task-log | state、experience、preferences、task-log、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.5.0 已打包；v2.6.0 待发行时打包） | 发行 zip、发布包、dist |
+| memory/ | 已实现（gitignore） | 本仓库会话记忆：一档制 `agent-log.md` 四区（状态段/教训区/偏好段/流水区；旧五件套历史原件在 legacy-pre-v250/ 只读） | agent-log、记忆、归档 |
+| dist/ | 已实现（gitignore） | 发行 zip（最新 v2.6.0 已打包 223,395B；v2.5.0 亦在位） | 发行 zip、发布包、dist |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
-| RELEASE-CHECKLIST.md | 已实现 | 发行台账（当前认 v2.6.0 本地批次；v2.5.0 已发行、Gitee 侧待补） | 发行台账、渠道回执、门禁 |
+| RELEASE-CHECKLIST.md | 已实现 | 发行台账（v2.6.0 已发行；v2.5.0 与 v2.6.0 的 Gitee 侧待令牌轮换后补发） | 发行台账、渠道回执、门禁 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |
 
 ## ④ 调研导航（改什么 → 查哪）

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Shisan Xinuo Workflow — 发布前一致性/泄漏门禁校验（P0 机制，v2.0 单版本）
 .DESCRIPTION
@@ -88,7 +88,7 @@ foreach ($hf in $hookFiles) { if (-not (Test-Path (Join-Path $hDir $hf))) { $pro
 $json = Join-Path $hDir "hooks.example.json"
 if (Test-Path $json) {
     $hj = Get-Content $json -Raw | ConvertFrom-Json
-    $hjH = $hj.hooks; if ($null -eq $hjH -or $hjH.PSObject.Properties.Name -notcontains 'SessionStart' -or $hjH.PSObject.Properties.Name -notcontains 'SessionEnd') { $probs2 += 'hooks.json 缺双钩子声明' }
+    $hjH = $hj.hooks; if ($null -eq $hjH -or $hjH.PSObject.Properties.Name -notcontains 'SessionStart' -or $hjH.PSObject.Properties.Name -notcontains 'Stop') { $probs2 += 'hooks.json 缺双钩子声明(SessionStart+Stop)' }
 }
 if ($probs2.Count -gt 0) { Write-Host "[WARN] B hooks 三层(警告级)：$($probs2 -join ';') — hooks 是可选加固面，不阻断发布" -ForegroundColor Yellow }
 Add-Result $true "B hooks 三层(警告级)" $(if($probs2.Count -eq 0){"OK"}else{"$($probs2 -join ';')（警告，不阻断）"})
@@ -105,7 +105,11 @@ if (-not $SkipLeak) {
         (Join-Path $Root "README.md"),
         (Join-Path $Root "package.json"),
         (Join-Path $Root "LICENSE"),
-        (Join-Path $Root "scripts")
+        (Join-Path $Root "scripts"),
+        (Join-Path $Root "docs\reference-sources.md"),
+        (Join-Path $Root "CHANGELOG.md"),
+        (Join-Path $Root "EVIDENCE.md"),
+        (Join-Path $Root "RELEASE-CHECKLIST.md")
     )
     $tokenPats = @('ghp_[A-Za-z0-9]{20,}', 'gho_[A-Za-z0-9]{20,}', 'github_pat_[A-Za-z0-9_]{20,}')
     $leakHits = @()
