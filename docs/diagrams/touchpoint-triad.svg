@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#57606A"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="660" fill="#FFFFFF"/>
+  <rect x="8" y="8" width="1184" height="644" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+
+  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">让规则「在场」：触达三件套</text>
+
+  <!-- 目标 -->
+  <rect x="380" y="70" width="440" height="56" rx="10" fill="#FFFFFF" stroke="#1F2328" stroke-width="2"/>
+  <text x="600" y="104" font-size="17" font-weight="bold" fill="#1F2328" text-anchor="middle">目标：每条规则都能被照着做，不靠领会</text>
+
+  <line x1="600" y1="126" x2="600" y2="160" stroke="#57606A" stroke-width="2" marker-end="url(#arrow4)"/>
+
+  <!-- 注入三层 -->
+  <rect x="60" y="160" width="340" height="300" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="76" y="174" width="112" height="28" rx="14" fill="#1F6FEB"/>
+  <text x="132" y="192" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">注入三层</text>
+  <text x="80" y="230" font-size="18" font-weight="bold" fill="#1F2328">平台注入</text>
+  <text x="80" y="258" font-size="16" fill="#57606A">硬注入（三层承载）或</text>
+  <text x="80" y="282" font-size="16" fill="#57606A">按需注入（应用层）</text>
+  <line x1="80" y1="304" x2="380" y2="304" stroke="#D0D7DE"/>
+  <text x="80" y="330" font-size="16" fill="#57606A">记忆层 + 规则层 + 配置层</text>
+  <text x="80" y="354" font-size="16" fill="#57606A">写入平台注入点</text>
+  <text x="80" y="396" font-size="15" fill="#8C959F">验收：新会话上下文读到</text>
+  <text x="80" y="420" font-size="15" fill="#8C959F">「在场提示」，zxc663 回话</text>
+
+  <!-- 项目承载 -->
+  <rect x="430" y="160" width="340" height="300" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
+  <rect x="446" y="174" width="112" height="28" rx="14" fill="#8250DF"/>
+  <text x="502" y="192" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">项目承载</text>
+  <text x="450" y="230" font-size="18" font-weight="bold" fill="#1F2328">文件落地（随项目携带）</text>
+  <text x="450" y="258" font-size="16" fill="#57606A">memory/agent-log.md 一档制</text>
+  <text x="450" y="282" font-size="16" fill="#57606A">（状态/教训/偏好/流水四区）</text>
+  <line x1="450" y1="304" x2="750" y2="304" stroke="#D0D7DE"/>
+  <text x="450" y="330" font-size="16" fill="#57606A">docs/project-info.md 六节</text>
+  <text x="450" y="354" font-size="16" fill="#57606A">（模块真实状态表）</text>
+  <text x="450" y="378" font-size="16" fill="#57606A">项目级规则文件（回指强制）</text>
+  <text x="450" y="420" font-size="15" fill="#8C959F">第二个 Agent 站在同一个记忆上</text>
+
+  <!-- 委托纪律包 -->
+  <rect x="800" y="160" width="340" height="300" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
+  <rect x="816" y="174" width="112" height="28" rx="14" fill="#2DA44E"/>
+  <text x="872" y="192" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">委托纪律包</text>
+  <text x="820" y="230" font-size="18" font-weight="bold" fill="#1F2328">子代理直送</text>
+  <text x="820" y="258" font-size="16" fill="#57606A">子代理不继承注入副本、不保证</text>
+  <text x="820" y="282" font-size="16" fill="#57606A">触发 Skill 加载（实证）</text>
+  <line x1="820" y1="304" x2="1120" y2="304" stroke="#D0D7DE"/>
+  <text x="820" y="330" font-size="16" fill="#57606A">主代理委托时内联最小纪律包</text>
+  <text x="820" y="354" font-size="16" fill="#57606A">判级 / 红线 / 证据四要件 /</text>
+  <text x="820" y="378" font-size="16" fill="#57606A">错误必查 TOP / 引用形态 / GATE</text>
+  <text x="820" y="420" font-size="15" fill="#8C959F">堵住「主代理守纪律、子代理旁路」</text>
+
+  <!-- 边界声明 -->
+  <rect x="60" y="500" width="1080" height="120" rx="12" fill="#FFF1F0" stroke="#D1242F" stroke-width="2"/>
+  <text x="80" y="534" font-size="18" font-weight="bold" fill="#D1242F">边界声明：提示词范畴 ≠ 机制保证</text>
+  <text x="80" y="564" font-size="16" fill="#57606A">无论注入 / 承载 / 委托做得多重，这终究是「提示词在场」——抵不上平台级「新会话自动加载」的机制保证。</text>
+  <text x="80" y="592" font-size="16" fill="#57606A">配置 hooks / SessionStart 触发器后可闭环机制级触达：注入 → 行为跟随、门控零误触发、并发不丢（机评实证，见真实口径 ①c）。</text>
+</svg>
