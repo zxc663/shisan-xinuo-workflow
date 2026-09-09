@@ -118,15 +118,17 @@
 渐进式三层：入口精简（只预载 name+description + injection-core 核心）→ 按步加载（references 按需 / details 按症状类）→ 动态路由（判级前置走 L1/L2-S/L2-F）。
 ## 功能全景 · Feature map
 
+> 本表只报「有什么、入口在哪」；各行能力的机评实证状态按 ①c 三级口径（实测样本 / 部分实测 / 声称态）分级，单一权威见 ①c 与 EVIDENCE——目前约 10 行有机评样本、3 行部分实测（含已知短板）、其余为有实现无被试样本的声称态。
+
 | 能力 | 说明 | 入口 |
 |---|---|---|
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需(精简) / 强制(injection-core 全文)，备份后合并绝不覆盖 | SKILL §3 · injection-core.md · platform-adaptation.md |
 | **三级跑道（v1.16+，2.0 起唯一版全量；v2.6.0 简化为 9 步）** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 9 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.2-2.4 · workflows §0.6 |
 | **开工序列四步（v2.6.0）** | 复述 → 承载检查（扫描/定根/建补一气呵成）→ 记忆对齐（最小读取）→ 判级选道 | SKILL §2.0 · injection-core |
-| **细则一键检索端口（v2.6.0）** | `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory；scripts/ 已随包分发）：关键词/编号/症状域三查，命中行即 errpath 证据——细则检索四步压一步 | scripts/detail_lookup.py · SKILL §9 |
+| **细则一键检索端口（v2.6.0）** | `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory；scripts/ 已随包分发）：关键词/编号/症状域三查，命中行即 errpath 证据——细则检索四步压一步。**机评样本：端到端真实执行 1 例（诚实报 0 命中）；已知短板：自诊可解问题不触发（N=4 信号）、召回 4/8（英文错误码/双词 AND 召不开）——下批次候选** | scripts/detail_lookup.py · SKILL §9 |
 | **设计规范档前置（v2.6.0）** | 设计类动作（前端尤甚）逐组件调研成熟规范 → 强制留档 `docs/design-specs/` → 按档设计并回指 | details #284 · injection-core 设计铁律 |
 | **对接真相清单（强制）** | 跨包/新端点/新依赖先产「模块\|API\|对接方式\|证据来源」表，禁凭命名直觉 | SKILL §2.3 · details #233 |
-| 必问协议 | 问题必带推荐+理由+后果；超时空答→调研+待确认标注 | SKILL §4 |
+| 必问协议 | 问题必带推荐+理由+后果；超时空答→调研+待确认标注。意图层机评 1/1；**阻断行为依赖平台 hooks 配置，未配置平台为提示词边界**——无头会话降级为文本协议+留档 | SKILL §4 |
 | **GATE 完成块** | 任务块一行可复跑验证（cmd+exit+files+lessons+exempt）；验收权在用户 | SKILL §7 · 模板 task-record |
 | **复述增强 RE** | 关键决定即时子复述（依据+影响）；块尾总复述仅提炼要点 | SKILL §4.1 · §12 RE |
 | 交付五查 | 遗漏/边界/临时代码/无关改动/**已接日志模块** | SKILL §7 |
@@ -224,7 +226,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **同步口径**：v2.0 起**唯一中文版为权威全量**——仓库不再维护英文 / 双语版（已删除；git 历史可追溯），不再有「增补制同步」的自律漂移面。README 双语保留（中文优先门面 + 英文摘要）。
 >
-> **发布面注记**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。**2026-09-09 本地口径批次（无版本变更、未发行）**：README/EVIDENCE 成本与实践数据全量刷新（25.27 亿 / 108 会话 / dogfooding 增量窗，见真实口径 §①/§①b）；ZCode 注入副本漂移修复（v2.5.0 批次四副本已部署、ZCode 漏部署，本日补部署 + 备份 `.bak-20260909-pre-v250`）。**同日 v2.6.0 本地批次（未发行）**：开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4 / 设计规范档前置 #284 / 平台记忆分工 #285，注入副本五副本已重部署 v2.6.0——发行台账见 RELEASE-CHECKLIST.md。**
+> **发布面注记**：**v2.0.6 已全渠道发行（2026-08-31：GitHub Release v2.0.6 / npm 2.0.6 / Gitee Release / ClawHub 1.0.7 / About 双端 PATCH）**。**v2.1.0（上下文主动管理补全）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.0（附 dist zip）/ npm 2.1.0 / Gitee Release（zip 附件）/ ClawHub 1.0.8（pending scans）/ About 双端 PATCH（六·一 v2.1.0 文案）。**v2.1.1（口径修正补丁：细则类数 16→17 全仓统一 + README 本质声明优化）已于 2026-09-02 全渠道发行**：GitHub Release v2.1.1（附 dist zip）/ npm 2.1.1 / Gitee / ClawHub 1.0.9（pending scans）/ About 双端 PATCH（17 类文案）。**v2.2.0（开工序列六步 + 承载平台适配 + 本体净化 + 决策时效）已于 2026-09-02 全渠道发行**：GitHub Release v2.2.0（附 dist zip）/ npm 2.2.0 / Gitee Release（zip 附件）/ ClawHub 1.0.10（pending scans）/ About 双端 PATCH（279 条 17 类 + 六步/净化/决策时效口径）；发行前注入副本 ×4 重部署 v2.2.0 + 技能副本 syncer 同步。**v2.4.0（三平台取证驱动修补 + 细则分层蒸馏）与 v2.5.0（留档一档制 + 调研前置）均为本地批次（2026-09-08）。v2.5.0 已于 2026-09-08 发行（本次对外发 v2.5.0，v2.4.0 内容并入）：GitHub Release v2.5.0（附 dist zip）/ npm 2.5.0 / ClawHub 1.0.12（pending scans）/ About GitHub 侧 PATCH；**Gitee 侧（Release/tag/About）挂起**——Gitee API 令牌 401 失效，待轮换后单独补发**。**2026-09-09 本地口径批次（无版本变更、未发行）**：README/EVIDENCE 成本与实践数据全量刷新（25.27 亿 / 108 会话 / dogfooding 增量窗，见真实口径 §①/§①b）；ZCode 注入副本漂移修复（v2.5.0 批次四副本已部署、ZCode 漏部署，本日补部署 + 备份 `.bak-20260909-pre-v250`）。**同日 v2.6.0 本地批次（未发行）**：开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4 / 设计规范档前置 #284 / 平台记忆分工 #285 + 跨项目经验回流 #286-293（细则 283→293）+ 触达渠道修复 #294（细则 293→294：detail_lookup 一键检索端口 + 部署工具化）+ 机评路测三场（v1 修复发现 / v2 修复效力 / v3 机制广度，见真实口径 §①c 与 EVIDENCE §十七-十九），注入副本五副本已重部署 v2.6.0——发行台账见 RELEASE-CHECKLIST.md。**
 
 ## 参考项目 · Reference projects
 
