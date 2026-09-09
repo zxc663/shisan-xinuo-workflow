@@ -27,10 +27,13 @@
 - About description 限 350 字符（GitHub API 422「cannot be more than 350 characters」）——六·三文案过长时压缩核心保留（三级跑道/9 步/294 条 17 类/一档制/detail_lookup/触达端口/诚实口径）。
 - dist 打包用 `scripts/build-dist.ps1`（+ Set-diff 双检）；Release 资产上传走 `uploads.github.com` + `-L`；REST JSON body 写文件用无 BOM UTF8。
 - npm publish 用仓库 `.npmrc`（`${GITHUB_TOKEN}` 变量引用）→ `$env:GITHUB_TOKEN=<令牌>; npm publish`（NODE_AUTH_TOKEN/临时 userconfig 均未生效，GITHUB_TOKEN 环境变量法可行）。
+- **第三方审计修复批次（2026-09-09，commit 7ea4aa8）**：H1-H4 + M1-M6 + L4/L5 全修（泄漏扫描面扩为与 dist 同集合 / hooks 事件对齐 / pycache 排除 / bootstrap 一档制 / 模板步骤号 / CI SHA 固定等）→ verify 6/6 全 PASS（B 警告清零）→ **zip 资产重附**（删 551746289 → 传 551793023，223,668B 零泄漏零 pyc）；npm 2.6.0 同一版本不可重发（3 处 skill 细节随下版本）；副本 .agents+.workbuddy 已同步。
 - 发行完成后：**GitHub classic PAT 轮换**（v2.0.3 起遗留最高优先）→ 观察约 30 分钟（含 ClawHub 1.0.13 审核复查）→ 回执已写回本文件与 task-log。
 
 ## D. 观察期待办
+- [x] 发行物重附：v2.6.0 zip 资产已替换为零泄漏版（审计修复批）
 - [ ] GitHub classic PAT 轮换（本批用毕即应轮换）
 - [ ] ClawHub 1.0.13 security scans 通过复查
 - [ ] Gitee 侧补发：v2.5.0（Release/tag/About）+ v2.6.0（Release/tag/About）待令牌轮换
 - [ ] 注入副本新会话在场验收（`在场提示 · v2.6.0` 关键词）
+- [ ] npm 2.6.0 内 3 处 skill 细节（bootstrap/task-record/platform-adapt）随下一版本自然修复（同版本不可重发）
