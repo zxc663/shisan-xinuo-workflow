@@ -30,6 +30,20 @@
           }
         ]
       }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "process",
+            "command": "python",
+            "args": [
+              "<绝对路径>/top_push.example.py"
+            ],
+            "timeoutMs": 10000
+          }
+        ]
+      }
     ]
   }
 }
