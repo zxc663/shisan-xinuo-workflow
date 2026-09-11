@@ -64,25 +64,48 @@ def main():
                 print(f'[{layer}] {name}: {", ".join("#"+str(i) for i in ids)}')
         return
 
-    kws = args
+    exact = list(args)
+    parts = []
+    for a in args:
+        parts.extend([w for w in a.split() if w and w != a])
     id2domains = {}
     for name, (layer, ids) in domains.items():
         for i in ids:
             id2domains.setdefault(i, []).append(name)
+
+    def emit(scored, mode):
+        scored.sort(key=lambda x: (-x[0], x[1]))
+        head = f'{len(scored)} 命中（{mode}；errpath 证据格式: detail_lookup "{" ".join(args)}" → #{scored[0][1]}）'
+        print(head)
+        for hits, num, text in scored[:12]:
+            doms = '/'.join(id2domains.get(num, []))
+            body = text if full else text[:160].replace('\n', ' ') + ('…' if len(text) > 160 else '')
+            print(f'\n#{num} [{doms}] 命中×{hits}\n{body}')
+
     scored = []
     for num, text in entries.items():
-        hits = sum(text.count(k) for k in kws)
+        hits = sum(text.count(k) for k in exact) * 3 + sum(text.count(k) for k in parts)
         if hits:
             scored.append((hits, num, text))
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    if not scored:
-        print(f'0 命中（关键词: {" ".join(kws)}；可试 --index 换域或换关键词）')
+    if scored:
+        mode = '按相关度排序' + (f'；分词: {" ".join(parts)}' if parts else '')
+        emit(scored, mode)
         return
-    print(f'{len(scored)} 命中（按相关度排序；errpath 证据格式: detail_lookup "{" ".join(kws)}" → #{scored[0][1]}）')
-    for hits, num, text in scored[:12]:
-        doms = '/'.join(id2domains.get(num, []))
-        body = text if full else text[:160].replace('\n', ' ') + ('…' if len(text) > 160 else '')
-        print(f'\n#{num} [{doms}] 命中×{hits}\n{body}')
+    # 2-gram 回退：无空格中文长句整串零召回时，按相邻二字片段命中数兜底（≥2 片段命中同一条目才出）
+    grams = set()
+    for a in args:
+        s = re.sub(r'\s+', '', a)
+        if len(s) > 3:
+            grams |= {s[i:i + 2] for i in range(len(s) - 1)}
+    if grams:
+        for num, text in entries.items():
+            g = sum(1 for gr in grams if gr in text)
+            if g >= 2:
+                scored.append((g, num, text))
+        if scored:
+            emit(scored, '2-gram 回退')
+            return
+    print(f'0 命中（关键词: {" ".join(args)}；可试 --index 换域或换关键词）')
 
 
 if __name__ == '__main__':
