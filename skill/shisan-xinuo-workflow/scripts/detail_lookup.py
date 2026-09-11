@@ -20,6 +20,20 @@ _CANDIDATES = [
 ]
 DETAILS = next((c for c in _CANDIDATES if c.is_file()), _CANDIDATES[0])
 
+# TOP 条目修复命令模板（命中即附处置动作行；权威源 = injection-core 错误段）
+FIX_TEMPLATES = {
+    294: '重新 Read 目标文件后重试 Edit/Write（写操作闭环=改写→验证落盘）',
+    233: 'grep 调用点 → 读 schema/类型 → 确认包归属 → 再写（禁命名直觉）',
+    228: '先重编共享包（build/tsc）→ 再跑消费方（旧 dist 是类型假象）',
+    229: '先查进程 uptime 与 dist 时间戳判别 → 再走重启仪式（重建 dist→重启→health 检查）',
+    214: '按响应分层断言：成功=裸数据 / 校验失败=2xx 信封 / 真 404=状态码',
+    163: '统一错误契约：code≠0 才算失败；data:null 是合法成功',
+    256: 'await 处包 try/catch 带上下文标签（防异步栈丢调用点）',
+    270: '响应体需复用先 clone()/text() 落变量（只可消费一次）',
+    262: '深拷贝语义变体：undefined 键会被丢弃，需保留用显式拷贝',
+    238: '报错必经日志：catch 三件套（记日志+降级提示+审计）；空 catch 零容忍',
+}
+
 
 def parse():
     t = DETAILS.read_text(encoding='utf-8')
@@ -81,6 +95,8 @@ def main():
             doms = '/'.join(id2domains.get(num, []))
             body = text if full else text[:160].replace('\n', ' ') + ('…' if len(text) > 160 else '')
             print(f'\n#{num} [{doms}] 命中×{hits}\n{body}')
+            if num in FIX_TEMPLATES:
+                print(f'修复模板: {FIX_TEMPLATES[num]}')
 
     scored = []
     for num, text in entries.items():

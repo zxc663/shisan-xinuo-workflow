@@ -78,3 +78,20 @@
 | 五副本锚点 | deploy --check **5/5 PASS**（count=294） | zcode/codex/claude/trae/workbuddy；ZCode 副本抽查 v2.6.0 ×2 + 在场提示 ×4 |
 
 测量口径：字符数=Python `len(str)`（Unicode 字符，非字节）；探针=源库 `skill/shisan-xinuo-workflow/scripts/detail_lookup.py` 逐词实跑，首行「N 命中」N≥1 记 HIT。
+
+## 六、批 1 执行记录（条款层 · 2026-09-12 02:47 完成）
+
+六销项全落地，变更 6 文件（SKILL/injection-core/workflows/details/project-rules 模板/detail_lookup.py，+39/-23 行）：
+
+| 销项 | 落点 | 结果 |
+|---|---|---|
+| GATE 9 字段单源 | injection-core 交付段=权威定义行；SKILL §7 同步副本+§12 G1 简写；workflows.md+project-rules 模板改回指 | 旧 6/7 字段模板全仓 grep=0；「独立判级行」义务句 3 处删除（project-rules 判级显式句/SKILL §5.2 自检/单发最小件→改「复述一行+状态行」），判级并入 level 字段 |
+| errpath 事后化 | injection-core 细则条款+在场提示×2；SKILL §8/§9 错误处置入口+TOP 回指头；project-rules 检索端口；details 头部 | 事前强制句（再改代码/先查再改/无命中再查）全仓 grep=0；新口径=TOP 内联处置→处置后必留 errpath 行；lookup=佐证非事前门槛；「未执行 lookup 不得自报命中数」保留 |
+| lookup 修复模板 | detail_lookup.py FIX_TEMPLATES 10 条 TOP 映射 | 命中 TOP 条目输出附「修复模板:」行；探针 24/24 |
+| 状态行 | injection-core 开工①；SKILL §0/§2.0 步1/L1 豁免/§5.1；project-rules | `Context: state= L= confirm=` 模板 3 文件在场；「每条消息复述」→「首产物状态行+阶段边界复述」；L3 确认不豁免保留 |
+| 微轮次豁免 | injection-core 三模式+SKILL §5.1 | 「cron 空转轮/无人值守微轮次允许一轮一行+GATE（声明式豁免）」在场 |
+| 记忆路由裁决 | injection-core 上下文预算法+SKILL §10 | 「平台原生记忆与项目开工必读冲突时项目优先+首行落权威承载」在场 |
+
+验收：verify-release 6/6 ALL PASS｜旧形态清零 grep 三件套全 0｜新锚点在场 grep 全绿｜探针回归 **24/24 HIT**（重构词表落 agent-log 流水区批 1 行注——原 24 词清单未独立落盘，重构口径=可考证词项 24 个；排序抽查 4/4 正中 #294/#238/#229/#262；TOP 命中均附修复模板行）。
+字符：injection-core 11,154→**11,560**（批 1 增量 +406，批 2 瘦身从该值起算，预算 ≤4K 硬上限 6K 不变）。
+边界：五副本重部署+syncer 双副本同步+deploy --check 留批 2（批次边界）；新条款行为验证留批 3/批 5；本地 commit 不 push。
