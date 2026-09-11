@@ -95,3 +95,20 @@
 验收：verify-release 6/6 ALL PASS｜旧形态清零 grep 三件套全 0｜新锚点在场 grep 全绿｜探针回归 **24/24 HIT**（重构词表落 agent-log 流水区批 1 行注——原 24 词清单未独立落盘，重构口径=可考证词项 24 个；排序抽查 4/4 正中 #294/#238/#229/#262；TOP 命中均附修复模板行）。
 字符：injection-core 11,154→**11,560**（批 1 增量 +406，批 2 瘦身从该值起算，预算 ≤4K 硬上限 6K 不变）。
 边界：五副本重部署+syncer 双副本同步+deploy --check 留批 2（批次边界）；新条款行为验证留批 3/批 5；本地 commit 不 push。
+
+## 七、批 2 执行记录（注入瘦身 · 2026-09-12 03:13 完成）
+
+变更 4 文件：`references/injection-core.md`（全量重构）、`scripts/deploy_injection.py`（去重+锚点刷新）、`scripts/verify-release.ps1`（A 项+字符预算）、`SKILL.md`（承载点口径 3 处）。
+
+| 销项 | 落点 | 结果 |
+|---|---|---|
+| 在场提示 ×2 去重 | 根因=源库核心尾部内嵌锚点+deploy 脚本 ANCHOR 叠加（zcode 副本 ×2）。源库尾部整节移除，**单一权威源=deploy 脚本 ANCHOR**，五平台统一携带（原仅 zcode） | 五副本各 ×1 实测（原 zcode ×2）；zcode 副本 12,790→6,961 字符（-46%） |
+| ANCHOR 旧形态清零 | deploy 脚本 ANCHOR 仍为 errpath 事前化旧形态（批 1 漏网，grep 面未含 scripts/） | 刷新为批 1 新形态（TOP 内联处置→处置后留 errpath 行）；五副本旧形态 grep=0 |
+| 头部/正文去重 | 源库 1-8 行模板说明（与 deploy HEADER 重复）、前缀自检（与锚点重复）、上下文预算法/档案容量条款（与开工③/memory 节重复） | 移除；常驻保留集（L3 六项/红线/GATE 9 字段/TOP+检索端口/状态行/症状映射指针）全保留 |
+| 移出流程细节 | 三级跑道全流程/开工四步细目/更新序/memory 细则/关键条款 → 一行版+回指 SKILL.md（Preserver 校验：§2.0/§2.2-2.4/§4/§5.1/§9/§10 全承载后才移） | injection-core **11,560→5,203 字符**（部署实效口径去 \r；含 CRLF 原文 5,271）/-55%，≤6K 硬上限内、4K 目标未达（保留集完整优先，进一步压缩候选见下） |
+| verify 字符锚点 | verify-release.ps1 A 项并入（维持 6 项口径）：>6000 即 FAIL，PASS 明细带实测字符 | `OK（injection-core 5271 字符 ≤6000）` |
+| 承载点口径同步 | SKILL §5.2 三级同步链（「保留全文」→「保留判级要点全文」）/§9 injection-core 行（瘦身版描述）/§3 常驻开销句（删陈旧 tok 数改字符预算） | 3 处在位 |
+
+验收：verify-release **6/6 ALL PASS**｜探针回归 3 词正中（Edit not read→#294/空 catch→#238/深拷贝→#262）｜旧形态 grep=0（核心在场提示 0/deploy 旧句 0）｜deploy --check **5/5 PASS**（count=294）｜五副本在场提示各 ×1｜syncer 双副本 exit=0（.agents 主+.workbuddy --dest，副本 core 5,203 一致）。
+边界与候选池（不顺手扩批）：①install-skill.ps1 -HardInject 规则层写源库核心（现无内嵌锚点）——安装器与 deploy 锚点同源化候选（批 3+ hooks 生态一并；首次安装经记忆层锚点仍带在场提示）②templates/memory-anchor.md（记忆层精简变体）无检索端口 bullet，是否补齐待拍板 ③进一步压缩至 4K 候选=一行版条款全移 SKILL（约 -600）。
+「在场提示/zxc663」新会话锚点验收：按用户指令**留批 3/批 5**（真会话制）。本地 commit 不 push。

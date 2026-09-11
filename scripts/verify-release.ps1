@@ -73,12 +73,15 @@ $probsA = @()
 $txt = Get-Content $main -Raw -Encoding UTF8
 foreach ($anc in $anchorsSkill) { if ($txt -notmatch [regex]::Escape($anc)) { $probsA += "SKILL 缺锚点[$anc]" } }
 $core = Join-Path $skDir "references\injection-core.md"
+$coreLen = 0
 if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
     $ctxt = Get-Content $core -Raw -Encoding UTF8
     foreach ($anc in $anchorsCore) { if ($ctxt -notmatch [regex]::Escape($anc)) { $probsA += "injection-core 缺锚点[$anc]" } }
+    $coreLen = $ctxt.Length
+    if ($coreLen -gt 6000) { $probsA += "injection-core 字符数 $coreLen 超硬上限 6000（常驻瘦身预算，目标 4K）" }
 }
 if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-bootstrap.md" }
-Add-Result ($probsA.Count -eq 0) "A 内容锚点(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK"}else{$probsA -join ";"})
+Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core $coreLen 字符 ≤6000）"}else{$probsA -join ";"})
 
 # ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")

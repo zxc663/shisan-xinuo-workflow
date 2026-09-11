@@ -10,7 +10,7 @@
   python scripts/deploy_injection.py --check                    # 只验收不写入（版本+锚点 grep）
 
 设计: 路径从 USERPROFILE 派生（不硬编码个人路径）；写前备份 .bak-<ts>-pre-v<版本>；
-      ZCode 平台额外携带在场提示锚点块（记忆层），其余平台按各自历史形态不带。
+      各平台统一携带在场提示锚点块（单一权威源=本脚本 ANCHOR；源库核心不内嵌锚点，防双份注入）。
 """
 import argparse, io, re, shutil, sys, os
 from datetime import datetime, timezone, timedelta
@@ -21,20 +21,20 @@ TZ = timezone(timedelta(hours=8))
 REPO = Path(__file__).resolve().parent.parent
 CORE = REPO / 'skill' / 'shisan-xinuo-workflow' / 'references' / 'injection-core.md'
 
-# 平台注入点表（与 platform-adaptation.md §2 同源；新增平台先改表再跑）
+# 平台注入点表（与 platform-adaptation.md §2 同源；新增平台先改表再跑；anchor=是否附在场提示，现全平台统一携带）
 PLATFORMS = {
     'zcode':      ('{home}/.zcode/AGENTS.md', 'ZCode（agent-app global / hard-inject，影响本平台所有项目与会话）', True),
-    'codex':      ('{home}/.codex/AGENTS.md', 'Codex（AGENTS.md 全局规则，每会话自动注入）', False),
-    'claude':     ('{home}/.claude/CLAUDE.md', 'Claude Code（CLAUDE.md 全局规则，每会话自动注入）', False),
-    'trae':       ('{home}/.trae-cn/user_rules/shisan-xinuo-workflow.md', 'Trae（user_rules 用户全局，每会话自动注入）', False),
-    'workbuddy':  ('{home}/.workbuddy/AGENTS.md', 'WorkBuddy（agent-app 全局规则，每会话自动注入）', False),
+    'codex':      ('{home}/.codex/AGENTS.md', 'Codex（AGENTS.md 全局规则，每会话自动注入）', True),
+    'claude':     ('{home}/.claude/CLAUDE.md', 'Claude Code（CLAUDE.md 全局规则，每会话自动注入）', True),
+    'trae':       ('{home}/.trae-cn/user_rules/shisan-xinuo-workflow.md', 'Trae（user_rules 用户全局，每会话自动注入）', True),
+    'workbuddy':  ('{home}/.workbuddy/AGENTS.md', 'WorkBuddy（agent-app 全局规则，每会话自动注入）', True),
 }
 
 HEADER = '''# 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）—— v{version}
 
 > 平台：{plat}
 > 源：本地 skill「{skill_src}」（v{version}，唯一中文版）
-> 注入内容：references/injection-core.md 核心全文｜常驻开销实测 ≈3-4.5%（~6-9K tok / 200K 窗口；2026-09-07 实测口径）
+> 注入内容：references/injection-core.md 核心全文（瘦身版，常驻预算 ≤6K 字符）
 > 完整工作流按需加载：references/ 按触发症状加载——三级跑道 / 编号纪律（rules.md 47 条）/ 9 类工作流 / {count} 条细则·17 类 / 安全红线
 > 更新协议：python scripts/syncer.py（三路合并，备份落 skill-backups/·平台扫描路径外）｜**验收判据：平台加载时的 Base directory，不是文件版本号**
 > 注入时间：{now}
@@ -53,7 +53,7 @@ ANCHOR = '''
 - 项目承载（自动建，不等许可）：memory/ 一档制 `agent-log.md`（状态段/教训区/偏好段/流水区，禁空占位）+ 项目级规则文件（按 platform-adaptation.md「项目级注入点表」定名，templates/project-rules.md，先查既有→合并不覆盖）+ docs/project-info.md。
 - 记忆对齐（最小读取）：只读 agent-log 状态段一屏 + 按症状检索；平台原生记忆在场时跨会话续接交给平台记忆，本档聚焦项目审计。
 - 设计规范档前置：设计类动作（前端尤甚）先逐组件调研成熟规范 → 强制留档 docs/design-specs/ → 按档设计并回指。
-- 细则检索端口：遇错误先对注入核心 TOP，无命中跑 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory）一条命令检索，命中行贴任务记录；未执行 lookup 不得自报命中数。
+- 细则检索端口：遇错误先对注入核心 TOP 内联处置，处置完成后留 errpath 行（症状→处置路径）；lookup=佐证非事前门槛，按关键词检索跑 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory）；未执行 lookup 不得自报命中数。
 - 委托子代理：必须内联纪律包（子代理不继承注入副本、不保证自加载 Skill——实测实证；独立工作区另建规范承载）。
 - 完整规则：规则层文件（AGENTS.md / user_rules / CLAUDE.md）+ 技能 references/（rules.md 47 条 / {count} 细则）。
 - 更新协议：`python scripts/syncer.py`（记忆/规则/配置三层随版本同步；WorkBuddy 技能副本加 --dest）；验收以平台解析到的 Base directory 为准。
