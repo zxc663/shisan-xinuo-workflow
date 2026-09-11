@@ -10,7 +10,7 @@
 | ZCode | `~/.zcode/cli/rollout/model-io-sess_*.jsonl` | 全量模型 I/O（request.body.system 含注入全文） | **清刷风险**：先起 4 秒增量备份守望，逐会话流式读 |
 | ZCode | `D:\roadtest-v260\hooks-log\hooks.jsonl` | SessionStart/Stop 落行 | 按 cwd 区分项目归属 |
 | ZCode | 各项目 `memory/agent-log.md` | 承载留档（行为面结果） | 项目清单由 db.session.directory 聚合得出 |
-| WorkBuddy | `~/.workbuddy/`（AGENTS.md 注入副本 + 会话/记忆文件） | 注入副本头部锚点 + 会话留档 | 复用 `memory/forensics-2026-09-08/` 三平台取证脚本形态；WorkBuddy 数据密度低于 ZCode，以留档+注入面为主 |
+| WorkBuddy | `~/.workbuddy/`（已实勘 2026-09-11） | **workbuddy.db**（10 表：sessions/workspaces/session_usage/automation_runs 等，只读连接与 ZCode 同法）+ **sessions/*.json**（逐会话文件）+ **memory/*.md**（平台原生记忆）+ audit-log/ + traces/ + usage-log.json + AGENTS.md 注入副本 | 数据密度高于预期——判分口径可与 ZCode 全量对齐（非仅留档面）；表结构/字段名按 PRAGMA 现勘，不预设与 ZCode 同形 |
 
 **时间窗锚点**：ZCode 注入副本头部「注入时间：2026-09-09 05:37:38」之后的 session（按 db.session 建立时间过滤）；发行前会话只作对照组。
 
