@@ -2,7 +2,7 @@
 
 > 版本对象：v2.7.0（本地批次，未发行，**先不推送**——用户 2026-09-11 明示）。本文件是预注册判分蓝图：跑前冻结判据，跑后好坏数据同列、n 与口径随每张 scorecard 落盘。
 > 依据链：docs/version-plan-v270.md（逐面台账 + NQ 五子指标定义与 v4 回溯基线）· docs/platform-session-audit-plan-v260.md（平台逐会话审计=自然观测，与本路测=受控实验互补）· ROADTEST-V4（EVIDENCE §二十）· ROADTEST-V5-DRAFT（lookup 修复预注册，R-A/R-C 已实施、终态 24/24）。
-> 执行授权：无头驱动（`zcode -p`，goal 模式）沿用 v4 链路；**执行前须用户批准**（场景裁剪与 token 消耗）。与面 F 平台审计的执行时点一并拍板（version-plan「待拍板两项」）。
+> 执行授权：无头驱动（`zcode -p`，goal 模式）沿用 v4 链路；**已获用户批准（2026-09-12）：S0-S9 全量执行**（含 S9 lookup 对照）。执行产出回填 EVIDENCE §二十二与本台账。
 
 ## 1. 判分主表：NQ 五子指标（首次作为主表）
 
