@@ -6,7 +6,7 @@
 
 | 平台 | 数据源 | 形态 | 风险与对策 |
 |---|---|---|---|
-| ZCode | `~/.zcode/cli/db.sqlite` | session（id/directory/title）/ model_usage（token/tool）/ tool_usage 表 | WAL 只读连接 `file:...?mode=ro`；列名先 PRAGMA 核实（v4 教训：session 主键列=id 非 session_id） |
+| ZCode | `~/.zcode/cli/db/db.sqlite` | session（id/directory/title）/ model_usage（token/tool/报错）/ tool_usage / turn_usage 表 | WAL 只读连接 `file:...?mode=ro`；列名先 PRAGMA 核实（v4 教训：session 主键列=id 非 session_id）；实勘修正 2026-09-11：旧文误写 `~/.zcode/cli/db.sqlite` |
 | ZCode | `~/.zcode/cli/rollout/model-io-sess_*.jsonl` | 全量模型 I/O（request.body.system 含注入全文） | **清刷风险**：先起 4 秒增量备份守望，逐会话流式读 |
 | ZCode | `D:\roadtest-v260\hooks-log\hooks.jsonl` | SessionStart/Stop 落行 | 按 cwd 区分项目归属 |
 | ZCode | 各项目 `memory/agent-log.md` | 承载留档（行为面结果） | 项目清单由 db.session.directory 聚合得出 |
