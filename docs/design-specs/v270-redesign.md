@@ -60,3 +60,21 @@
 - 每批=一个会话；开工读本档+agent-log 状态段；批尾 GATE 落流水区+状态段刷新+本地 commit。
 - 中途新发现→候选池追加本档 §六，不顺手扩批。
 - 全部预授权已在头部划定；超预算（单批 token 异常）自停汇报。
+
+## 五、基线测量记录（批 0 出口 · 2026-09-12 02:23）
+
+回滚点：
+- git tag `pre-v270-redesign` = 10d1b6d（本地，未推送）。
+- 现值备份入 memory/（gitignore 本地承载，diff 校验与源一致）：`injection-core.md.bak-20260912-pre-redesign`｜`SKILL.md.bak-20260912-pre-redesign`｜`templates.bak-20260912-pre-redesign/`（全树）。
+
+现状测量（批 2 瘦身预算与批 4 口径同步的对照基线）：
+
+| 项 | 现值 | 备注 |
+|---|---|---|
+| injection-core.md（源库） | **11,154 字符** / 125 行 / 24,516 UTF-8 字节 | 批 2 预算：目标 ≤4K，硬上限 6K |
+| SKILL.md（源库） | 28,407 字符 / 380 行 | |
+| ZCode 部署副本（~/.zcode/AGENTS.md） | 12,790 字符 / 153 行 | 含头注+在场提示节，非纯核心 |
+| lookup 探针 | **24/24**（G0v2 16/16 + G0v3 8/8） | 排序抽查 3/3 正中：Edit not read→#294｜改包后缓存不刷新→#229｜空 catch 吞错误→#238 |
+| 五副本锚点 | deploy --check **5/5 PASS**（count=294） | zcode/codex/claude/trae/workbuddy；ZCode 副本抽查 v2.6.0 ×2 + 在场提示 ×4 |
+
+测量口径：字符数=Python `len(str)`（Unicode 字符，非字节）；探针=源库 `skill/shisan-xinuo-workflow/scripts/detail_lookup.py` 逐词实跑，首行「N 命中」N≥1 记 HIT。
