@@ -112,3 +112,20 @@
 验收：verify-release **6/6 ALL PASS**｜探针回归 3 词正中（Edit not read→#294/空 catch→#238/深拷贝→#262）｜旧形态 grep=0（核心在场提示 0/deploy 旧句 0）｜deploy --check **5/5 PASS**（count=294）｜五副本在场提示各 ×1｜syncer 双副本 exit=0（.agents 主+.workbuddy --dest，副本 core 5,203 一致）。
 边界与候选池（不顺手扩批）：①install-skill.ps1 -HardInject 规则层写源库核心（现无内嵌锚点）——安装器与 deploy 锚点同源化候选（批 3+ hooks 生态一并；首次安装经记忆层锚点仍带在场提示）②templates/memory-anchor.md（记忆层精简变体）无检索端口 bullet，是否补齐待拍板 ③进一步压缩至 4K 候选=一行版条款全移 SKILL（约 -600）。
 「在场提示/zxc663」新会话锚点验收：按用户指令**留批 3/批 5**（真会话制）。本地 commit 不 push。
+
+## 八、批 3 执行记录（hooks 层 · 2026-09-12 03:40 完成）
+
+变更：仓内 3 文件（`templates/hooks/carrier_reminder.example.py` 新增·SessionStart 纪律包模板、`templates/hooks/top_push.example.py` 新增·PostToolUseFailure TOP 推送模板、`README.md` 模板清单三件套→六件+`hooks.example.config.json` 增 PostToolUseFailure 组形状）；本机部署 3 处（运行时脚本 2 件落 `D:\roadtest-v260\hooks\` 与模板同文、`~/.zcode/cli/config.json` hooks 段增 PostToolUseFailure 组 ×2 组——备份 `.bak-20260912-pre-batch3` 先行·provider/model 段完整复核）。纪律包措辞与注入核心常驻保留集同源（状态行模板+TOP 一行+GATE 9 字段指针，353 字符）。
+
+| 销项 | 结果 |
+|---|---|
+| A1 纪律包注入 | SessionStart 无条件注入纪律包（状态行+TOP+GATE 指针）；git 项目缺 agent-log 附加承载提醒行（v5 版逻辑保留） |
+| A4 PostToolUseFailure | 平台支持实弹通过（无需降级注记）：工具失败时注入「错误必查 TOP」一行（带失败工具名） |
+
+机证（三通道）：
+1. **无头对照 sess_f93b9fa0**（`D:\roadtest-v260\headless-batch3\` 留 rollout 备份+run1.json）：SessionStart 纪律包入首次请求 `messages[5] role=system`（querySource=main_turn 主链）；PostToolUseFailure TOP 推送入第二次请求 `messages[1] role=tool`——F16 同款 additionalContext 真注入；response 行为面=状态行+errpath 行（hooks 纪律包被遵守）。
+2. **真会话 sess_4b54d19d**（交互新会话，cwd=本仓库，预注册 prompt=zxc663+预期失败 Read）：hooks-log SessionStart 03:30:14+PostToolUseFailure 03:31:23 双事件；rollout 行 2 实证 SessionStart 纪律包+注入面在场且 response 首产物=状态行；PostToolUseFailure 后续请求行被 rollout 尾部滑窗清刷（T2 #31 同源），降以**模型自证**补强：该会话 reasoning 与最终回复均引用「（Read 失败）[错误必查 TOP·hooks 通道]」注入原文（db 只读提取）——交互面 TOP 到达模型实锤（模型自证+hooks-log+无头直证三合一）。
+3. **批 2 锚点验收（留批 3 项，本次完成）**：zxc663 彩蛋四要素全正中——注入方式=硬注入／已应用轮数=第 1 轮／源库 v2.6.0 vs 副本 v2.6.0（副本=批 2 重部署版·03:11:23·批 5 才升 2.7.0）／Base directory=`C:\Users\zxc66\.agents\skills\shisan-xinuo-workflow`；首产物状态行+errpath 行+GATE 9 字段全行为化（批 1 条款新会话生效实证）。
+
+验收：verify-release 6/6 ALL PASS（B 项兼容新模板）｜syncer 双副本 exit=0（.agents 主+.workbuddy --dest，新模板随行）｜hook 脚本 stdin→additionalContext 协议自测 PASS。
+边界与候选池（不顺手扩批）：①交互面 PostToolUseFailure 注入的 rollout 直证行被清刷（不判负向，记「未定论：已由模型自证+无头直证覆盖」）②运行时脚本位于 `D:\roadtest-v260\hooks\`（路测目录，存在被清理风险）——迁移至 `~/.zcode/hooks/` 候选③批 2 候选池两项维持待拍板：install-skill -HardInject 与 deploy 锚点同源化／memory-anchor 模板补检索端口 bullet。本地 commit 不 push。
