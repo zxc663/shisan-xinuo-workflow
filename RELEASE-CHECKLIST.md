@@ -1,39 +1,43 @@
-# 发行执行清单（v2.6.0）——流程简化 + 细则 294 + 机评路测（已发行 2026-09-09，Gitee 侧推后）
+# 发行执行清单（v2.7.0）——v2.7+ 重构六批次（收口定稿 2026-09-12，**待批准执行**）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
-> **版本沿革**：v2.0.0 / v2.0.1 / v2.0.2 为源码与口径批次（未发行）；v2.0.3-v2.0.6 已全渠道发行（2026-08-31）；**v2.1.0 / v2.1.1 / v2.2.0 已全渠道发行（2026-09-02 ×3）；v2.3.0 已全渠道发行（2026-09-03）；v2.4.0（内容并入 v2.5.0）与 v2.5.0 已于 2026-09-08 发行（GitHub/npm/ClawHub 1.0.12/About GH 侧；Gitee 侧挂起）**——发行回执见 项目信息.md §五 与 CHANGELOG；**v2.6.0 本次对外发（v2.5.0 的 Gitee 侧补发一并后置）**：**已发行 2026-09-09**——GitHub（Release + zip 资产 + main/tag v2.6.0）+ npm（`@2.6.0`）+ ClawHub（v1.0.13 pending-publication）+ About GitHub 侧；**Gitee 侧（Release/tag/About + v2.5.0 补发）推后**：待 Gitee API 令牌轮换后单独补发；CHANGELOG/README 发布面注记已回写。
+> **版本沿革**：v2.6.0 已全渠道发行（2026-09-09，Gitee 侧推后；回执见 项目信息.md §五 与 CHANGELOG）。**v2.7.0 = v2.7+ 重构六批次收口定稿（2026-09-12 本地批次，未发行——push/发行单独批准）**：条款六销项 + 注入核心瘦身 5,203 字符 + hooks 纪律包注入 + 判例审入（活跃 303 条）+ 路测 v5（无头面注入断裂发现）+ 真会话回归 S0/S7。
+> **待办前置**：Gitee 侧（v2.5.0 / v2.6.0 补发 + v2.7.0 同发）待 Gitee API 令牌轮换后一并处理。
 
 ## A. 本仓已备（随 git 提交）
-- [x] 版本锁 2.6.0（package.json 2.6.0 / SKILL frontmatter 2.6.0 / README 徽章与版本历史行 / docs/project-info / reference-sources / EVIDENCE §九（9,723 字符实测）/ 项目信息 六·三 About 口径）
-- [x] 内容 v2.6.0 全量本地批次：流程简化（开工六步→四步 / L2-F 11→9 / 更新序 6→4）+ #284 设计规范档前置 + #285 平台记忆分工 + 跨项目经验回流 #286-293 + 触达渠道修复 #294（detail_lookup 一键检索端口 + 部署工具化）+ 机评路测三场（EVIDENCE §十七-十九）+ 路测修复批次 F12-F17（detail_lookup 随包分发 / errpath 强化 / SessionStart hook / hooks 模板修正）
-- [x] 正文口径净化 + 承载点口径（294 条/17 类 全仓一致）
-- [x] verify-release 6/6 PASS（base=2.6.0，F 项索引完整性 294 全覆盖，零泄漏）
-- [x] dist/shisan-xinuo-workflow-v2.6.0.zip（已打包 + Set-diff 双检：223,395B / 44 项 / personal=0 / memory=0）
-- [x] 提交并推送 main + tag v2.6.0（commit f54e4cb → GitHub origin；Gitee 端推后）
+- [x] 版本锁 2.7.0（package.json / SKILL frontmatter / README 徽章与版本历史行 / docs/project-info / reference-sources / AGENTS.md 基线行 / 项目信息 §六·三 About 口径 303）
+- [x] 内容 v2.7.0 全量：批 0 基线冻结（tag `pre-v270-redesign`）+ 批 1 条款六销项（GATE 9 字段单源 / errpath 事后化 / lookup 修复模板 / 状态行 / 微轮次豁免 / 记忆路由）+ 批 2 注入瘦身（11,560→5,203 字符，在场提示 ×1 单源）+ 批 3 hooks 纪律包（SessionStart + PostToolUseFailure，机证三通道）+ 批 4 数据工具面（判例审入 #296-#305 / #180 归档并入 #232 / 活跃 303 条 / syncer 旧锚清扫 / Trae 旧锚已清）+ 批 5 收口（本清单）
+- [x] 承载点口径（活跃 303 条/17 类 全仓一致；#295 预留槽 / #180 归档占号不计入）
+- [x] verify-release 6/6 PASS（base=2.7.0，F 项 305 编号全覆盖，核心字符 5,271≤6,000，零泄漏）
+- [x] dist/shisan-xinuo-workflow-v2.7.0.zip（已打包 + Set-diff 双检：240,405B / 46 项）
+- [x] 五副本重部署 v2.7.0（备份 `.bak-20260912-pre-v2.7.0`，--check --version 严格 5/5 PASS count=303）+ syncer 双副本 exit=0（.agents 主 + .workbuddy --dest）
+- [x] 真会话回归 S0/S7（computer-use 交互新会话：注入在场 v2.7.0 + hooks 纪律包双通道机证 + GATE 9 字段行为化）+ 无头冒烟对照
+- [ ] **提交 main（本地 commit）** ← 批 5 收口 commit；**push 单独批准**
 
-## B. 全渠道发行回执（已批执行，2026-09-09）
-| 渠道 | 产物/URL | 状态 |
-|---|---|---|
-| GitHub | 提交 f54e4cb + Release v2.6.0（附 dist zip） | ✅ f54e4cb..main + tag v2.6.0（走代理）；Release id=385171238 + zip 资产 id=551746289（223,395B uploaded） |
-| npm | `@zxc663/shisan-xinuo-workflow@2.6.0`（GitHub Packages） | ✅ has_2.6.0=True，33 文件，Registry 复查 200 |
-| Gitee | Release tag v2.6.0 + zip 附件 + v2.5.0 补发 | ⏳ 推后：用户明示本轮不做；Gitee API 令牌 401 失效 → 轮换后单独补发 |
-| ClawHub | `shisan-xinuo-workflow@1.0.13`（内容 v2.6.0） | ✅ 已提交 pending-publication（待安全扫描确认） |
-| About | GitHub 描述 PATCH | ✅ GitHub len=256（六·三 294 条口径，≤350 限制内压缩）；Gitee 侧 ⏳ 随补发 |
-| skills.sh | 等待遥测/爬虫收录 | ⏳ |
+## B. 全渠道发行命令清单（⏸ 全部待用户批准后执行）
+> 令牌供给：GitHub PAT 从机密文档（路径不写出）正则提取注入 env（`ghp_`），命令串与输出全程不含明文，用毕即清；**提取→注入→执行必须同一命令内完成**（Shell 每调用独立进程）。GitHub 全部走代理 `http://127.0.0.1:33210`。
 
-## C. 复用要点
-- 令牌供给：GitHub PAT 从机密文档 `<本机机密文档>`（路径不写出） 正则提取注入 env（`ghp_`），命令串与输出全程不含明文，用毕即清 env；回显仅 len/前缀。**本批新教训：Shell 工具每次调用为独立进程，`$env:GH_TOKEN` 不跨命令保留——凡用令牌的动作（push/Release/npm/About）必须「提取→注入→执行」同一命令内完成；首次 401 为提取污染（未 Trim），干净提取后有效（/user 200）。**
-- GitHub push/Release/API 走代理 `http://127.0.0.1:33210`；Gitee 直连（本轮不做）。
-- About description 限 350 字符（GitHub API 422「cannot be more than 350 characters」）——六·三文案过长时压缩核心保留（三级跑道/9 步/294 条 17 类/一档制/detail_lookup/触达端口/诚实口径）。
-- dist 打包用 `scripts/build-dist.ps1`（+ Set-diff 双检）；Release 资产上传走 `uploads.github.com` + `-L`；REST JSON body 写文件用无 BOM UTF8。
-- npm publish 用仓库 `.npmrc`（`${GITHUB_TOKEN}` 变量引用）→ `$env:GITHUB_TOKEN=<令牌>; npm publish`（NODE_AUTH_TOKEN/临时 userconfig 均未生效，GITHUB_TOKEN 环境变量法可行）。
-- **第三方审计修复批次（2026-09-09，commit 7ea4aa8）**：H1-H4 + M1-M6 + L4/L5 全修（泄漏扫描面扩为与 dist 同集合 / hooks 事件对齐 / pycache 排除 / bootstrap 一档制 / 模板步骤号 / CI SHA 固定等）→ verify 6/6 全 PASS（B 警告清零）→ **zip 资产重附**（删 551746289 → 传 551793023，223,668B 零泄漏零 pyc）；npm 2.6.0 同一版本不可重发（3 处 skill 细节随下版本）；副本 .agents+.workbuddy 已同步。
-- 发行完成后：**GitHub classic PAT 轮换**（v2.0.3 起遗留最高优先）→ 观察约 30 分钟（含 ClawHub 1.0.13 审核复查）→ 回执已写回本文件与 task-log。
+| # | 渠道 | 命令要点 | 前置 |
+|---|---|---|---|
+| 1 | push | `git push origin main` + `git tag v2.7.0 <commit> && git push origin v2.7.0`（走代理） | 用户批准 + 工作树干净 |
+| 2 | GitHub Release | 创建 Release v2.7.0（标题+要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`；REST JSON body 无 BOM UTF8） | #1 完成 |
+| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（仓库 `.npmrc` 的 `${GITHUB_TOKEN}` 变量引用法） | #1 完成 |
+| 4 | ClawHub | `shisan-xinuo-workflow@1.0.14` update submitted（内容 v2.7.0，pending security scans） | #2 完成 |
+| 5 | About | GitHub 侧 PATCH（**用 项目信息.md §六·三 PATCH 压缩版 ~190 字符 ≤350**；完整版仅作口径基准） | #1 完成 |
+| 6 | Gitee | Release v2.7.0 + tag + About ⏳ **与 v2.5.0/v2.6.0 补发一并**（令牌轮换后） | 令牌轮换 |
+| 7 | PAT 轮换 | 发行完成即 GitHub classic PAT 轮换（v2.0.3 起遗留最高优先） | #2-#5 完成 |
 
-## D. 观察期待办
-- [x] 发行物重附：v2.6.0 zip 资产已替换为零泄漏版（审计修复批）
-- [ ] GitHub classic PAT 轮换（本批用毕即应轮换）
-- [ ] ClawHub 1.0.13 security scans 通过复查
-- [ ] Gitee 侧补发：v2.5.0（Release/tag/About）+ v2.6.0（Release/tag/About）待令牌轮换
-- [ ] 注入副本新会话在场验收（`在场提示 · v2.6.0` 关键词）
-- [ ] npm 2.6.0 内 3 处 skill 细节（bootstrap/task-record/platform-adapt）随下一版本自然修复（同版本不可重发）
+## C. 复用要点（v2.6.0 实证沿用）
+- About description 限 350 字符（GitHub API 422）——v2.7.0 已备压缩版（§六·三）。
+- dist 打包 `scripts/build-dist.ps1`（Set-diff 双检）；Release 资产上传走 `uploads.github.com` + `-L`；REST JSON body 写文件用无 BOM UTF8。
+- npm publish 用 GITHUB_TOKEN 环境变量法（NODE_AUTH_TOKEN/临时 userconfig 均未生效）。
+- 泄漏扫描面=与 dist 同集合；`__pycache__`/`*.pyc` 排除（H3/M 组修复沿用）。
+- 验收看平台解析到的 Base directory，非文件版本号（#239）。
+
+## D. 观察期待办（发行后）
+- [ ] 发行回执写回本文件 B 表 + 项目信息.md §五 + CHANGELOG
+- [ ] 注入副本新会话在场验收（`在场提示 · v2.7.0` 关键词；本批 S0 已真会话预验，发行后复验一次）
+- [ ] ClawHub 1.0.14 security scans 通过复查
+- [ ] Gitee 侧补发三版：v2.5.0 / v2.6.0 / v2.7.0（Release/tag/About，待令牌轮换）
+- [ ] skills.sh 遥测收录核查
+- [ ] WorkBuddy 侧 H0（用户侧新会话输 `zxc663` 验收）+ 面 F WorkBuddy 侧时点（等面 M H0 过）

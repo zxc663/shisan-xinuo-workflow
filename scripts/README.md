@@ -46,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 只读、非破坏性，不改动任何文件。
 
-### 校验项（A–F，v2.6.0 当前口径）
+### 校验项（A–F，v2.7.0 当前口径）
 
 | 项 | 检查内容 | 通过标准 |
 |---|---|---|

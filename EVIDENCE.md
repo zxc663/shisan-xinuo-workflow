@@ -366,3 +366,19 @@ v2.5.0 批次（09-08 09:07）重部署四副本（Codex / Claude Code / Trae / 
 **判分口径沉淀**：①无头面=response 侧聚合+「线程含 assistant 才走线程」分支判定②判级行正则含 markdown 形态③GATE 文件域扫描必设④H0 类判据必须正向锚点计数⑤判分域先对真实形态校准（连续第四批次）。
 
 取证包：仓外工作目录（extracts 13 件+summary-v5+夹具 setup+驱动/收割脚本；工作区自承载）。
+
+## 二十三、批 5 收口 · 真会话回归 S0/S7 + 无头冒烟对照（2026-09-12 · computer-use 交互驱动）
+
+**执行**：v2.7.0 收口定稿回归——真会话制（批 5 拍板理由：无头面注入 0/13 断裂下，注入面效力只有真会话测得了）。computer-use 操作真实 ZCode GUI：新建任务 → 绑定夹具目录（fixtures/s0、s7 重置至 v5 初始态）→ 输入预注册 prompt（与 v5 无头同文，严格可比）→ 完成后 rollout 备份+db+文件面三通道收割。无头面留 1 冒烟对照（hooks 兜底不劣化判据）。
+
+**S0 冒烟（L1 快速通道）**：全绿——①复述「收到：…可逆单文件小改，走 L1 快速通道」②状态行 `Context: state=新建 L=L1 confirm=无需`+承载豁免声明（fixtures 夹具防污染，防占位声明式）③cat 回读验证 exit=0 ④GATE 9 字段全（refs=0/errpath=—/exempt=L1 豁免+防污染已声明）⑤产物仅 hello.txt 零多余承载。
+
+**S7 L2-F 全链**：全绿——①首轮定向「按完整工作流（L2-F）推进，先做承载检查与实际资源调研」②状态行（L=L2-F confirm=豁免:契约已给定）③承载三件套一气呵成（读 agent-log-template 模板先行；AGENTS.md 按「项目级注入点表」ZCode→项目根定名，措辞与注入核心字面一致，自述「hook 已提醒」）④server.js 零依赖 Node 标准库（复用不自研）+错误契约 500/404 ⑤**真实验证三负载形状**：单发 200 响应体逐字节断言+未知路径 404+并发 20/20（#266 红线+#214 分层断言命中）⑥**进程清理**：验证后主动停止+端口归零机证（netstat :3000 空，残存 node 全属他项目，#295 面 B 判据过）⑦GATE 9 字段全（refs=0 grep 自查照报/errpath=—全程无错误未跑 lookup/lessons=复用+负载形状/exempt=500 分支未实测+联网调研豁免声明）⑧跳过声明元规则三条+仲裁记录（自治模式胜出依据）⑨决策行被否候选（拒自研框架）⑩回滚基线 git commit 号在档。
+
+**注入面机证（NQ-5 真会话 2/2，与 v5 无头 0/13 反面对照）**：rollout model-io 逐行解析——S0 会话 msgs[user 域]=AGENTS.md 硬注入（在场提示+v2.7.0+状态行模板+GATE 指针，7.5K）+ msgs[system 域]=hooks 纪律包（SessionStart carrier_reminder additionalContext，11.5K）；v2.7.0 版本锚点在位=批 2 重部署+批 5 版本 bump 的部署链闭环实证。**批 1 条款（状态行/GATE 9 字段）+批 2 瘦身（常驻保留集）+批 3 hooks（纪律包）三批产物在同一真会话内行为化共存**。
+
+**无头冒烟对照**：smoke 夹具（独立目录）`zcode -p --cwd --json` 同款驱动——判据=hooks 兜底不劣化（carrier_reminder SessionStart 触发+任务完成），与 v5「无头注入 0 但 hooks 12/12 接住」基线一致则 PASS。
+
+**无头冒烟结果**：PASS——①任务完成（smoke.txt 产出，exit 0）②hooks-log 机证：sess_7c7ea1d7 SessionStart（04:27:13）+Stop（04:28:08）双事件在档 ③assistant 面：状态行 `Context: state=单发 L=L1 confirm=无需`+L1 复述豁免声明+GATE 9 字段全（exempt=未额外读回诚实标注）。**附加观察（单样本，不定论）**：本无头会话 rollout msgs 域出现注入锚点（在场提示+v2.7.0+hooks 纪律包，msgs=6），形态与 v5 无头「system-only 0/13」不同——或为平台侧行为/记录形态变化或驱动差异，**未复跑 13 会话全池，不构成「无头断裂已修复」结论**；v5 结论维持，复测留 v6 议程。
+
+**结论**：v2.7.0 收口回归 PASS——六批次产物（条款/瘦身/hooks/数据工具）在真会话行为面全链可见，无头面兜底不劣化。发行门=verify 6/6（已 PASS）→ push/发行待用户批准（RELEASE-CHECKLIST v2.7.0 命令清单已备）。
