@@ -138,22 +138,48 @@ def main():
         txt = open(anchor, encoding="utf-8").read()
         m = re.search(r"```markdown\r?\n(.*?)\r?\n```", txt, re.S)
         body = m.group(1) if m else txt
+        # 版本替换：模板占位 vX.Y.Z → 源库 SKILL.md 当前版本（防占位符落盘；读不到版本则保留占位并提示）
+        sk = os.path.join(a.src, "SKILL.md")
+        vm = re.search(r'(?m)^\s*version:\s*([0-9]+\.[0-9]+\.[0-9]+)', open(sk, encoding="utf-8").read())
+        if vm:
+            body = body.replace("vX.Y.Z", f"v{vm.group(1)}")
+        else:
+            print("W: SKILL.md 未解析到版本号，锚点保留 vX.Y.Z 占位")
         mem_ts = datetime.now().strftime("%Y%m%d-%H%M%S")
         mem_bak = a.memory_target + f".bak-{mem_ts}"
         mem_prev = ""
+        cleaned_versions = []
         if os.path.exists(a.memory_target):
             if not a.dry:
                 shutil.copy2(a.memory_target, mem_bak)
             mem_prev = open(a.memory_target, encoding="utf-8").read()
+            # 旧锚清扫（批 4 D3）：识别全部「在场提示」锚点块（标题行→下一个 1-2 级标题或文件尾）全部移除——
+            # 治「每次追加新锚、旧版本锚永久残留」的机制根因（记忆层旧锚跨版本残留三例实证），随后写入唯一最新锚
+            outl, i = [], 0
+            while i < len(mem_prev.splitlines(keepends=True)):
+                ln = mem_prev.splitlines(keepends=True)[i]
+                if re.match(r'^#{2,4} 在场提示 · 工作流 Skill 现已在场', ln):
+                    vm = re.search(r'v\d+\.\d+\.\d+', ln)
+                    cleaned_versions.append(vm.group(0) if vm else '?')
+                    i += 1
+                    while i < len(mem_prev.splitlines(keepends=True)) and not re.match(r'^##?[^#]', mem_prev.splitlines(keepends=True)[i]):
+                        i += 1
+                    while outl and outl[-1].strip() == "":
+                        outl.pop()
+                    continue
+                outl.append(ln)
+                i += 1
+            mem_prev = "".join(outl)
         sep = "\n\n---\n" if mem_prev.strip() else ""
         mem_new = mem_prev.rstrip() + sep + body
-        changed.append(f"~ 记忆层@{os.path.abspath(a.memory_target)}（锚点块合并" + ("，dry" if a.dry else f"，备份 {os.path.basename(mem_bak)}") + "）")
-        mem_note = f"\n## 记忆层（hard-inject 第 3 层）\n- {os.path.abspath(a.memory_target)} ← templates/memory-anchor.md\n- 在场提示首行：工作流 Skill 现已在场"
+        clean_tag = f"；旧锚清扫 {len(cleaned_versions)} 块[{','.join(cleaned_versions)}]" if cleaned_versions else ""
+        changed.append(f"~ 记忆层@{os.path.abspath(a.memory_target)}（锚点块合并{clean_tag}" + ("，dry" if a.dry else f"，备份 {os.path.basename(mem_bak)}") + "）")
+        mem_note = f"\n## 记忆层（hard-inject 第 3 层）\n- {os.path.abspath(a.memory_target)} ← templates/memory-anchor.md\n- 在场提示首行：工作流 Skill 现已在场{clean_tag}"
         if not a.dry:
             open(a.memory_target, "w", encoding="utf-8").write(mem_new)
-            print(f"[记忆] 已合并锚点块 → {a.memory_target}（备份 {mem_bak}）")
+            print(f"[记忆] 已合并锚点块 → {a.memory_target}（备份 {mem_bak}{clean_tag}）")
         else:
-            print(f"[记忆] (dry) 将合并锚点块 → {a.memory_target}")
+            print(f"[记忆] (dry) 将合并锚点块 → {a.memory_target}{clean_tag}")
 
     lines = [f"# sync-skill {ts}", "",
              "## 上游变更", *[f"- {c}" for c in changed or ["(dry) 无变更"]],

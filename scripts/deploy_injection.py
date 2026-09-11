@@ -63,7 +63,9 @@ ANCHOR = '''
 
 def details_count():
     t = (REPO / 'skill' / 'shisan-xinuo-workflow' / 'references' / 'details.md').read_text(encoding='utf-8')
-    return len(re.findall(r'^\d{1,3}\. ', t, re.M))
+    lines = re.findall(r'^(\d{1,3}\. .*)', t, re.M)
+    # 活跃条数：排除特殊槽（〔预留槽〕/〔归档〕行——占号保编号连续，不计入口径）
+    return len([l for l in lines if '〔预留槽〕' not in l and '〔归档〕' not in l])
 
 
 def targets(only):

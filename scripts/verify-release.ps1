@@ -187,7 +187,7 @@ if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
         if ($missingIdx.Count -gt 0) { $probsF += "索引未覆盖: #" + ($missingIdx -join ',#') }
     }
 }
-Add-Result ($probsF.Count -eq 0) "F 索引完整性(details 编号连续+症状索引全覆盖)" $(if($probsF.Count -eq 0){"OK ($($nums.Count) 条全覆盖)"}else{$probsF -join ";"})
+Add-Result ($probsF.Count -eq 0) "F 索引完整性(details 编号连续+症状索引全覆盖)" $(if($probsF.Count -eq 0){"OK ($($nums.Count) 编号全覆盖·活跃数见 deploy --check)"}else{$probsF -join ";"})
 
 # ---------- 汇总输出 ----------
 Write-Host ""
