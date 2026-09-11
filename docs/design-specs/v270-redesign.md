@@ -2,7 +2,7 @@
 
 > 授权态：**全部预授权**（用户 2026-09-12：「不要试图一个长会话做完，分批做，先出计划，全部预授权」）——计划内动作无需逐条再问，按批自主推进、每批收口落档接力。
 > 版本态：原 v2.8 议程并入 v2.7，一个版本出 **v2.7.0**。本文件是唯一施工权威，配套台账 docs/version-plan-v270.md。
-> 预授权边界：✅预授权=skill 源库/templates/hooks 脚本修改、syncer 双副本同步、deploy 五副本重部署（备份先行）、verify/dist、回归路测、本地 commit、判例入 details、细则降级、Trae 记忆层旧锚清扫（备份先行）。⏸仍单独批准=git push（「v2.7 先不推送」指令未解除）、正式发行面（GitHub Release/npm/ClawHub/About）。红线不豁免：verify 6/6 才可 dist；验收权在用户。
+> 预授权边界：✅预授权=skill 源库/templates/hooks 脚本修改、syncer 双副本同步、deploy 五副本重部署（备份先行）、verify/dist、回归路测、本地 commit、判例入 details、细则降级、Trae 记忆层旧锚清扫（备份先行）、**操作真实电脑开 ZCode 交互新会话并监测（用户 2026-09-12 补充授权：仅限开 ZCode/新建会话/输入预注册 prompt/只读观察与监测，不碰其他应用与设置；桌面被占用时等待或汇报）**。⏸仍单独批准=git push（「v2.7 先不推送」指令未解除）、正式发行面（GitHub Release/npm/ClawHub/About）。红线不豁免：verify 6/6 才可 dist；验收权在用户。
 
 ## 总目标（用户原话锚定）
 
@@ -38,7 +38,7 @@
 ### 批 3 · hooks 层（A1+A4，与批 2 可换序不可并行——同动注入生态）
 - A1：carrier_reminder hook 模板扩为「纪律包注入」：TOP 一行+状态行模板+GATE 指针（additionalContext）；skill/templates/hooks/ 源同步+本机 config 部署（hooks 段勿删约束——备份 config 先行，只增改）。
 - A4：PostToolUseFailure 事件实弹验证（挂 TOP 推送脚本）——平台若不支持该事件则记可行性注记降级，不阻塞。
-- 出口：hook 实弹机证（rollout additionalContext 真注入，F16 同款）+交互面/无头面各 1 会话行为抽查（无头面建载/GATE 不劣化）。
+- 出口：hook 实弹机证（rollout additionalContext 真注入，F16 同款）+**真会话验证（用户补充：操作真实电脑开 ZCode 交互新会话，输入预注册 prompt，机证通道=rollout 备份+db+hooks-log 照旧）**；无头面留 1 对照（建载/GATE 不劣化）。
 
 ### 批 4 · 数据与工具面（C4+D 组）
 - C4：14 判例逐条审（双击纪律）入 details；D1：细则使用率盘点→降级清单（低风险条目移归档区标注）；D3：syncer --memory-target 扩旧锚清扫；D2：Trae user_profile v2.0.4 旧锚清扫（备份先行）。
@@ -46,7 +46,7 @@
 
 ### 批 5 · 收口定稿
 - 版本 bump 2.7.0（package.json/SKILL/README/CHANGELOG/version-plan 全链）；verify 6/6+dist 重打。
-- 回归路测：无头 S0/S7 抽查+交互面自然观测对照（预授权内）。
+- 回归路测：**真会话制（用户补充授权）**——computer-use 操作真实电脑开 ZCode 交互新会话跑 S0/S7 真会话版+自然观测对照；监测=守望脚本（rollout 备份）+db 只读+hooks-log+GUI 观察；无头面仅留 1 冒烟对照（验 hooks 兜底不劣化）。理由：无头面不装注入（v5 头条），v2.7 注入面效力只有真会话测得了。
 - 发行命令清单备好 → **push/发行另请批准**（边界见头部）。
 
 ## 总验收（5 条）
