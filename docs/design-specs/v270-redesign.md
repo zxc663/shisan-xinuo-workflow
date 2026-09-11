@@ -129,3 +129,38 @@
 
 验收：verify-release 6/6 ALL PASS（B 项兼容新模板）｜syncer 双副本 exit=0（.agents 主+.workbuddy --dest，新模板随行）｜hook 脚本 stdin→additionalContext 协议自测 PASS。
 边界与候选池（不顺手扩批）：①交互面 PostToolUseFailure 注入的 rollout 直证行被清刷（不判负向，记「未定论：已由模型自证+无头直证覆盖」）②运行时脚本位于 `D:\roadtest-v260\hooks\`（路测目录，存在被清理风险）——迁移至 `~/.zcode/hooks/` 候选③批 2 候选池两项维持待拍板：install-skill -HardInject 与 deploy 锚点同源化／memory-anchor 模板补检索端口 bullet。本地 commit 不 push。
+
+## 九、批 4 执行记录（数据与工具面 · 2026-09-12 04:0x 完成）
+
+变更 7 文件：`references/details.md`（§20 新节+#48/#252 合并扩充+#180 降级+#295 预留槽+索引与口径）、`scripts/syncer.py`（D3 旧锚清扫+版本占位修复）、`scripts/deploy_injection.py`（活跃条数口径）、`scripts/verify-release.ps1`（F 项信息行）、`README.md`/`docs/project-info.md`/`docs/reference-sources.md`（口径 303）+ `templates/memory-anchor.md`（303 细则）。
+
+**C4：14 判例逐条审（双击纪律）**——判例原文取自博客项目 `memory/task-log/2026-09-11-全模块复查部署与工作流核验.md` 判例区（跨项目挖矿授权范围内）：
+
+| 判例 | 处置 | 依据 |
+|---|---|---|
+| 1 窗口全绿≠条目处置 + 2 描述滞后以代码为准 | **新增 #296**（两条合并，同属核账纪律） | 无同族；生产核账实证 |
+| 3 换源连带能力损失（audit 405） | **并入 #48** | 同族双击（镜像 audit 差异既有条） |
+| 4 pnpm 11 overrides 迁移 | **新增 #297** | 无同族；版本迁移坑 |
+| 5 变异验证护栏 | **新增 #298** | 无同族；测试纪律 |
+| 6 Playwright greenlet→CDP 直连 | **新增 #299** | 无同族；零依赖替代有复用价值 |
+| 7 Edge user-data-dir→tmpdir | **并入 #252** | 同族双击（护栏误杀家族） |
+| 8 WSL PATH 显式前缀 + 14 bash -c 单引号防展开 | **新增 #300**（两条合并，同根因） | Windows→WSL PATH 注入双形态 |
+| 9 ln 三参数多源形态陷阱 | **新增 #301** | 无同族；自指环链被断言拦截实证 |
+| 10 force-dynamic 二层根因 | **新增 #302** | #213 语义不同族（middleware 开销 vs 静态优化默认行为） |
+| 11 libpq 拒收 ?schema= | **新增 #303** | 无同族；备份 500 报障实锤 |
+| 12 演练通过≠模块可用 | **新增 #304** | #107 是备份分层策略，验收维度不同 |
+| 13 Git Bash tail 乱码≠损坏 | **新增 #305** | 无同族；假警报实证 |
+
+净变化：+10 新增（#296-#305，含 4 组两两合并）、2 条同族并入（#48/#252）。#295 号槽=面 B「长驻进程清理」候选**等双击**拍板的预留槽（占号非细则，防 lookup 误用）。
+
+**D1：使用率盘点→降级清单**——前缀形态口径扫 443 取证文件：**被引用 22 条 / 零命中 272 条（92.5%）**，与触达瓶颈既有审计链一致（通道问题非内容问题）→ **零命中一律不降级**（因果误读防护）；独立证据裁定 **#180 降级归档**（语义被 #232 覆盖，要点并入、编号保留、#272 引用链同步）；报告落 `memory/platform-audit-2609/usage-audit-batch4.md`（数据件 usage-scan-batch4.json 可重跑）。
+
+**D3：syncer --memory-target 扩旧锚清扫**——①锚点块清扫：写入前识别全部「在场提示」锚点块（状态机：标题行→下一 1-2 级标题/文件尾）整体移除再写唯一新锚（幂等），治住「每次追加、旧版本锚永久残留」的机制根因（记忆层旧锚跨版本残留三例）；②**版本占位缺陷顺带修复**（本批实跑发现）：模板占位 `vX.Y.Z` → 从 SKILL.md 读版本替换——WorkBuddy MEMORY.md 实勘坐实既有双锚叠加（手工 v2.6.0 锚+此前 syncer 追加的占位锚），本次一并清扫归一。
+
+**D2：Trae user_profile v2.0.4 旧锚清扫**——经 D3 扩展后的 `syncer --memory-target` 执行（备份 `.bak-20260912-035353` 内置先行）：v2.0.4 旧锚（11 步/254 细则旧口径）移除、用户记忆内容（Identity/UI/Architecture 等）完整保留、新锚单块+v2.6.0 版本串验证；WorkBuddy MEMORY.md 同跑归一（双锚→单锚 v2.6.0·303 细则）。
+
+**条数口径**：**活跃 303 条·17 类**（=294+10−1；#295 预留/#180 归档占号不计入，deploy `details_count()` 排除特殊槽自动写 303）——全仓同步 6 处活口径（README×3/project-info/reference-sources/memory-anchor 模板）+五副本重部署（备份 `.bak-20260912-pre-v2.6.0` 自动先行，check 5/5 PASS count=303）；史料叙述与 About 待用文案（项目信息 §六·三）不改动，About 口径随批 5 版本定稿统一刷新。
+
+验收：verify-release **6/6 ALL PASS**（F 项 305 编号全覆盖+索引覆盖）｜探针回归 4/4 正中（Edit not read→#294/改包后缓存不刷新→#229/空 catch→#238/软链→**#301 新条检索可达**）｜syncer 双副本（.agents 主+.workbuddy --dest）+记忆层双件（Trae/WorkBuddy）exit=0。
+
+边界与候选池：①#295 转正条件=双击出现（自然观测/路测 S7 类场景均可），细则本体从 version-plan 面 B 草稿入位 ②项目信息 §六·三 About 待用文案仍写 294 条（批 5 与版本 bump 同批刷新）③本批 D 项门禁曾抓到会话内 import 生成的 `__pycache__` 泄漏（删除即复绿——pycache 防泄漏属既有 H3 修复范畴，工具面已覆盖）。本地 commit 不 push。
