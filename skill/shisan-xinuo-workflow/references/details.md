@@ -333,7 +333,7 @@
 227. [流程] 复刻/重做类规格先以源码/现状为证呈报、由用户裁定方向再动手；测试脚本调后端前先读契约字段名（直觉命名必翻车：留言板是 `name` 不是 `nickname`）。
 
 228. [契约] 改 @tx/contracts/@tx/ui/prisma → 先 `pnpm -C <包> build`（或 db:generate）再验依赖方 typecheck（跨包 dist 是类型真相；旧 dist 让依赖方报旧类型/缺导出）。*晋升：会话单项目 3 次（2026-08-30）；家族 #113/#19/#31/#38/#49。*
-229. [运维] 常驻进程旧 dist：API 行为与新代码不符（新字段 404/「未登记键」/端点缺失/磁盘状态统计失败）时**先查 `process uptime` 与 dist 时间戳**（判别先行，勿先改代码）→ 再走重启仪式（重建 dist→停监听→node dist/main.js→curl health→grep 新路由）。*晋升：同会话 3 次（disk watermark / settings registry key / monitor endpoint）；家族 #48/#57/#61/#62/#94/#109。*
+229. [运维] 常驻进程旧 dist（改依赖 / 改包后旧产物与缓存不刷新同此）：API 行为与新代码不符（新字段 404/「未登记键」/端点缺失/磁盘状态统计失败）时**先查 `process uptime` 与 dist 时间戳**（判别先行，勿先改代码）→ 再走重启仪式（重建 dist→停监听→node dist/main.js→curl health→grep 新路由）。*晋升：同会话 3 次（disk watermark / settings registry key / monitor endpoint）；家族 #48/#57/#61/#62/#94/#109。*
 230. [测试] 浏览器走查三陷阱：滚动容器=main 非 window；Radix 弹层 hover 需 move+settle（其 tooltip 内容可能不出现在 body.elText）；CI 负载下真实 worker 偶发超时→单跑两遍定性（勿改测试）。*晋升：各≥2 次；家族 #101/#102/#104/#105/#110/#111/#112。*
 231. [流程] 长会话归档防呆（最后任务块跨小时 barrier 时 state/experience 会过时）：最后一个 commit 前回验 state/experience 与既成事实一致（清「待走查」类过时注记）+ 追加最后任务块；skill 自身 task-log 同写。*反例 1 次，预防条款。*
 232. [流程] 上下文预算硬路标：长会话悄过 400-600K（审计峰值 652K）→ ~150-200K 或 40-60% 预算显式触发压缩→重载序；状态面记 token 估值。
