@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.7.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.7.1-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -177,10 +177,10 @@
 | v7 修正效力 | 交互 goal（47min） | 1 会话 | 修正批 3 条行为质变实证 ✅（必问十维四问结构化/设计契约先行/资源利用）；git 首日条款在 details T2 无症状不触达=分层缺口 ❌ | #312-#315（设计评审暂停/资源盘点/换通道/plan 载体） |
 | v8 接手遗留项目 | goal 时间盒（23min） | 1 会话 | 无文档 Flask 遗留单体全链交付：MPV 缺口五项自主识别+46 项接口走查全过 ✅；git 首日再现弱项 ❌ | **#316 接手必补功能全景文档**；#307 场景化上移注入核心 |
 
-**下一轮路测计划（第四轮复测，基线 v2.7.0）**：
+**下一轮路测计划（第四轮复测，基线 v2.7.1）**：
 
 - **验证对象**（v6-v8 修正批的效力复测）：①#312 设计评审暂停——L2-F 设计档落档后是否真停（确认先于写码）；②#316 接手遗留项目必补功能全景文档——逐页面/路由+角色动线是否产出；③降采样合法化行为——显式声明 vs 静默跳过的边界执行；④#307 git 首日场景化修订效力——接手他人库是否先 commit 基线再动手。
-- **跑前确认**：注入副本重部署+新会话读到「在场提示 v2.7.0」；判分预注册（NQ 主表延续），scorecards 逐会话落盘。
+- **跑前确认**：注入副本重部署+新会话读到「在场提示 v2.7.1」；判分预注册（NQ 主表延续），scorecards 逐会话落盘。
 - **方式**：交互 + goal 混合驱动（#312 暂停行为必须在交互面验证，无头面不可达——v5 实证）。
 - **判分纪律**：好坏数据同列；触发面只记数不设通过线（N 小）；「已验证」表述禁用，复测结论按描述性证据落 EVIDENCE。
 
@@ -214,7 +214,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.7.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.7.1）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏/正文净化/索引完整性）
@@ -242,12 +242,12 @@ shisan-xinuo-workflow/              ← 仓库根
 
 | 渠道 | 最新已发行 | 状态 |
 |---|---|---|
-| GitHub Release | v2.6.0（2026-09-09，附 dist zip） | **v2.7.0 本地定稿未发行**——push/发行单独批准 |
-| npm `@zxc663/shisan-xinuo-workflow` | 2.6.0 | 待 v2.7.0 批准 |
-| Gitee 镜像 | v2.5.0 | v2.6.0 侧挂起（API 令牌 401 待轮换后补发） |
-| ClawHub | 1.0.12 | 待 v2.7.0 批准 |
-| skills.sh / About 双端 | 收录 / v2.6.0 文案 | 随 GitHub 同步 |
-| 各平台注入副本（本机） | **v2.7.0** | 已重部署，check 5/5（与源库一致） |
+| GitHub Release | v2.7.0（2026-09-12，附 dist zip） | **v2.7.1 补丁版发行中**——描述口径同步（npm/GitHub/Gitee/ClawHub） |
+| npm `@zxc663/shisan-xinuo-workflow` | 2.7.0 | **2.7.1 重发中**（description 同步 314/5,991 口径） |
+| Gitee 镜像 | v2.7.0（2026-09-12 补发） | v2.5.0/v2.6.0/v2.7.0 已补发（含 zip 资产） |
+| ClawHub | 1.0.14 | 1.0.15 提交中（pending security scans） |
+| skills.sh / About 双端 | 收录 / v2.7.0 文案 | 随 GitHub 同步 |
+| 各平台注入副本（本机） | **v2.7.1** | 重部署中，check 5/5（与源库一致） |
 
 ## 参考项目 · Reference projects
 
@@ -305,6 +305,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **每版一句话；完整明细统一归档 [`CHANGELOG.md`](CHANGELOG.md)（逐版台账）与 git 历史，本节不再重复。**
 
+- **v2.7.1**（2026-09-12 补丁版·描述口径同步）：npm/GitHub/Gitee/ClawHub 全渠道介绍文案同步 v2.7.0 完整口径（314 条细则 / 17 类 / 注入核心 5,991 字符 ≤6K / hooks 纪律包 / GATE 九字段）；修复 README 文件尾孤儿字符；六·三 About 口径基准更新（5,203→5,991 / 303→314）。
 - **v2.7.0**（2026-09-12 本地批次收口定稿，已发行——push/发行单独批准，Gitee 侧待补）：条款六销项（GATE 9 字段单源 / errpath 事后化 / lookup 修复模板 / 状态行 / 微轮次豁免 / 记忆路由裁决）+ **注入核心瘦身 11,560→5,991 字符**（≤6K 硬上限内；在场提示单一权威源）+ **hooks 纪律包注入**（SessionStart 常驻提醒 + PostToolUseFailure 错误时刻 TOP 推送）+ 判例审入（294→303）+ **必问底线十维**（路测 v6 驱动，#306-#311）+ **评审与接手批**（#307 git 场景化上移 / #312-#315 / #316 接手必补全景）+ **复杂度减法批**（GATE 一行式分级定版 / 三源压义务清单 / 降采样合法化）+ 路测 v5-v8 八轮（无头面注入断裂发现 / NQ 主表首跑 / 真实项目实测）；**活跃 314 条·17 类定稿**。
 - **v2.6.0**（2026-09-09 已发行；Gitee 侧待补）：流程简化（开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4）+ 设计规范档前置 + 平台原生记忆分工 + 跨项目经验回流与触达渠道修复（细则 283→294、detail_lookup 一键检索端口、部署工具化）。
 - **v2.5.0**（2026-09-08 已发行；Gitee 侧待补）：留档一档制（`memory/agent-log.md` 四区取代五件套）+ 设计前先调研成熟设计。
