@@ -7,7 +7,7 @@
 
 > **作者的话 · A word from the author**
 >
-> 本仓库实质上就是一个**规范工程化的大模型 Agent 提示词注入标范与标本合集**——一份「超长 System Prompt」的工程化样本：把治理规范做成可渐进加载的提示词文件树，你可以直接拿它当**工作流样本**来打磨自己的 Agent 工程规范。版本路线：**v2.0.5 之后进入稳定的「细则类小更新」**（双击晋升制、措辞校正、口径补全），不做破坏性大版本改动（不作绝对保证）。**一个必须直面的边界**：哪怕触达上做了重重努力（注入三层 / 项目承载 / 委托纪律包 / hooks 纪律包），这终究是**提示词范畴**——配置平台触发器（hooks / SessionStart）后机制级触达可闭环（机评路测机器实证：注入→行为跟随、门控零误触发、并发不丢），未配置时「提示词在场」≠「机制在场」。**验收判据（可执行）**：新会话常驻不可用，或自检彩蛋 `zxc663` 未触发 → 即证明本 Skill 需要用户主动触发或配置触发器，别把「提示词在场」误当「机制在场」。感谢加星 ⭐。
+> 本仓库实质上就是一个**规范工程化的大模型 Agent 提示词注入标范与标本合集**——一份「超长 System Prompt」的工程化样本：把治理规范做成可渐进加载的提示词文件树，你可以直接拿它当**工作流样本**来打磨自己的 Agent 工程规范。**一个必须直面的边界**：哪怕触达上做了重重努力（注入三层 / 项目承载 / 委托纪律包 / hooks 纪律包），这终究是**提示词范畴**——配置平台触发器（hooks / SessionStart）后机制级触达可闭环（机评路测机器实证：注入→行为跟随、门控零误触发、并发不丢），未配置时「提示词在场」≠「机制在场」。**验收判据（可执行）**：新会话常驻不可用，或自检彩蛋 `zxc663` 未触发 → 即证明本 Skill 需要用户主动触发或配置触发器，别把「提示词在场」误当「机制在场」。感谢加星 ⭐。
 >
 > *At its core this repo is a specimen collection of disciplined, engineering-grade prompt-injection standards for LLM agents — use it as a sample workflow to polish your own. After v2.0.5 expect stable, fine-grained updates; no breaking releases planned (but no hard guarantee). One boundary: this is prompt-domain — configure a platform trigger (hooks / SessionStart) and mechanism-level reach closes the loop (machine-verified); without one, do not mistake "present as prompt" for "present as mechanism". Acceptance check: if a fresh session is never aware of it, or the `zxc663` self-check does not fire, this Skill needs explicit triggering or a configured trigger. Thanks for the star.*
 
