@@ -9,7 +9,7 @@
 - [x] 内容 v2.7.0 全量：批 0 基线冻结（tag `pre-v270-redesign`）+ 批 1 条款六销项（GATE 9 字段单源 / errpath 事后化 / lookup 修复模板 / 状态行 / 微轮次豁免 / 记忆路由）+ 批 2 注入瘦身（11,560→5,203 字符，在场提示 ×1 单源）+ 批 3 hooks 纪律包（SessionStart + PostToolUseFailure，机证三通道）+ 批 4 数据工具面（判例审入 #296-#305 / #180 归档并入 #232 / syncer 旧锚清扫 / Trae 旧锚已清）+ 批 5 收口（本清单雏形）+ 路测 v6 修正批（必问底线 + #306-311）+ 必问十维扩充（#306）/ 评审与接手批（#307 场景化 / #312-316，活跃 309→314）+ 复杂度减法批（project-rules 2.4K→1.08K / GATE 一行式定版 / 降采样合法化，条款 314 不变）+ 口径净化批（头部 313→314 全仓同步 / #315 去重 / 三级同步链修复 / README 大重构）
 - [x] 承载点口径（活跃 314 条/17 类 全仓一致；#295 预留槽 / #180 归档占号不计入）
 - [x] verify-release 6/6 PASS（base=2.7.0，F 项 316 编号全覆盖，核心字符 5,991≤6,000，零泄漏）
-- [x] dist/shisan-xinuo-workflow-v2.7.0.zip（已打包 + Set-diff 双检：249,063B / 46 项；口径净化+README 并行改动后终版复打）
+- [x] dist/shisan-xinuo-workflow-v2.7.0.zip（已打包 + Set-diff 双检：249,132B / 46 项；架构图重绘+README 同步后复打）
 - [x] 五副本重部署 v2.7.0（备份 `.bak-20260912-pre-v2.7.0`，--check --version 严格 5/5 PASS count=314）+ syncer 双副本 exit=0（.agents 主 + .workbuddy --dest）
 - [x] 真会话回归 S0/S7（computer-use 交互新会话：注入在场 v2.7.0 + hooks 纪律包双通道机证 + GATE 9 字段行为化）+ 无头冒烟对照
 - [x] **提交 main（本地 commit）** ← 全程批次 commit 已落（e2e0f56 最新）；**push 单独批准**
