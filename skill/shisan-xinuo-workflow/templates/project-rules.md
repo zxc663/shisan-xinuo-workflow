@@ -1,26 +1,17 @@
 # 项目级 Agent 规则 · <项目名>
 
-> **本文件是项目级注入（每会话自动进入）。**与平台全局硬注入（injection-core：通用纪律）互补：项目级管「本项目特有信息 + 项目承载 + 项目纪律」。**由工作流「项目承载检查」自动创建/合并**——文件名按 `platform-adaptation.md` §2「项目级注入点表」定名（Codex=项目根 AGENTS.md / Claude Code=项目 CLAUDE.md / Trae=`.trae/rules/project_rules.md` / Cursor=`.cursor/rules/*.mdc` / Windsurf=`.windsurfrules`；未知平台联网调研，离线降级 AGENTS.md 兜底+头注迁移说明）：存在同名既有规则文件 → **合并不覆盖 + 先备份**；不存在才按本模板新建。
+> **本文件是项目级注入（每会话自动进入）**：只管「本项目特有信息 + 承载指针」，**通用义务不复述**（单一权威=注入核心，三源叠加旧病防治，细则样本#5）。由工作流「项目承载检查」自动创建/合并——文件名按 `platform-adaptation.md` §2「项目级注入点表」定名（Codex=项目根 AGENTS.md / Claude Code=项目 CLAUDE.md / Trae=`.trae/rules/project_rules.md` / Cursor=`.cursor/rules/*.mdc` / Windsurf=`.windsurfrules`；未知平台联网调研，离线降级 AGENTS.md 兜底）：存在同名既有规则文件 → **合并不覆盖 + 先备份**；不存在才新建。
 
 ## 回指（强制字段，缺失 = 不合规）
-- 本文件由 Skill「shisan-xinuo-workflow」工作流创建——**判级 / 红线 / 必问 / 细则等完整纪律按需加载该 Skill**（引用写**注册名**经 Skill 工具加载，不写绝对路径——多平台安装路径不同，绝对路径会失配）。
-- Skill 存在多副本安装时（主副本 + 平台侧副本）：**以平台侧副本为权威**，修订须双副本同步。**漂移自检（可重跑）**：`diff -rq --exclude=memory --exclude=user-notes --exclude="*.bak-*" <副本A> <副本B>`——零输出=一致；有输出即漂移，先按 syncer 流程同步再继续。
-- 会话识别到本文件但 Skill 未在场 → **提示加载 Skill 再继续**（不裸奔执行）。
-- 会话末：**更新 memory/agent-log.md（流水区 + 状态段）后离开——不更新 = 交接断链**。
-- 留档时间戳（决策/流水/GATE/交接）统一 `YYYY-MM-DD HH:MM`（24 小时制本地时区，秒可选，禁只写日期）——细则 #311。
+- 完整纪律（判级/红线/必问/开工四步/GATE/检索端口）**权威=注入核心与 SKILL.md**，本文件不复制正文；按需加载 Skill「shisan-xinuo-workflow」（写**注册名**，不写绝对路径）；本文件在场但 Skill 未在场 → 先加载再继续。
+- 会话末：更新 `memory/agent-log.md`（流水区+状态段）后离开——不更新 = 交接断链；留档时间戳到分钟（细则 #311）。
+- 多副本安装以平台侧副本为权威；漂移自检：`diff -rq` 双副本（排除 memory/user-notes/*.bak-*）零输出=一致。
 
-## 工作流在场（本项目会话）
-- 开工序列四步（SKILL §2.0）：①复述理解+状态行（无条件先行；输出一行 `Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> confirm=<无需/已问/豁免:理由>`；摘要接续的会话可省开工复述，但须一行声明「接续跳过复述，依据=摘要上下文完整」——L3 确认不豁免）②承载检查（一气呵成）③记忆对齐（最小读取）④判级速查+三问选道；命 L3（密钥/删除/迁移/发布/架构/超预算）先问。
-- 判级不设独立判级行：并入开工状态行 `L=` 字段与 GATE `level=` 字段（判级速查权威见注入核心/SKILL §5.2）。
-- 细则引用统一完整前缀 `details #N` / `细则 #N`（**禁裸 #N**——与 GitHub issue 编号同形异义，假阳性 9/10 实证）。
-- **细则检索端口**：错误 / API 意外形态 / 新依赖不生效 → 先对注入核心「错误必查 TOP」内联处置，**处置完成后留 errpath 行**（症状→处置路径）；lookup=佐证资源非事前门槛，按关键词检索跑 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（**未执行 lookup 不得自报命中数**；Git Bash 下脚本路径须写 Windows 形态 `C:/...`——`/c/...` 会被 MSYS 改写报 No such file，实测坑）。
-- 权威源顺序：`references/injection-core.md`（每会话在场）→ `SKILL.md`（可执行细节）→ <项目权威文档> → `docs/project-info.md`（导航索引）。
-
-## GATE 收尾（每任务块，可复跑工件 > 自我叙述）
-**权威定义见注入核心「交付与留档」GATE 段**——9 字段：`level / v / cmd / exit / files / refs / errpath / lessons / exempt`（判级并入 level，不设独立判级行；errpath 事后化=症状→处置路径，无错误任务填 `—`）；确无可跑命令（纯文档轮）`cmd=文档审阅`，不得空缺整块。
+## 项目纪律（只写本项目特有，<无则整节删>）
+- 细则引用完整前缀 `details #N`（禁裸 #N）；Git Bash 跑 lookup 用 Windows 路径形态 `C:/...`（`/c/...` 会被 MSYS 改写）。
+- 权威源顺序：注入核心 → SKILL.md → <项目权威文档> → docs/project-info.md。
 
 ## 项目承载（已就绪）
-- `memory/agent-log.md`：一档制单文件四区（状态段/教训区/偏好段/流水区）——**规范件（正文从 `templates/agent-log-template.md` 复制，非空占位）**；本地承载，按项目 gitignore 约定决定是否随仓。
-- **承载收敛（项目已有成熟 memory 体系时）**：既有体系（如 state / experience / preferences / task-log）为**权威承载**，`memory/agent-log.md` 作**入口档**（状态段/教训区以指针回指权威文件，仅流水区增量）——勿另起平行体系、勿双写。
-- `docs/project-info.md`：六节索引（架构 / 目标 / 模块真实状态表【含关键词锚定列，details #275】/ 调研导航 / 参考资源 / 复述签章）。
+- `memory/agent-log.md`：一档制四区（规范件从 `templates/agent-log-template.md` 复制，非空占位）；项目已有成熟 memory 体系时其为权威承载、本档作入口档（指针回指，勿双写）。
+- `docs/project-info.md`：六节索引（含关键词锚定列，#275）。
 - <项目特有纪律 1-3 条；本文件被合并时保留既有段落>
