@@ -1,79 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1490" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1560" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
   <defs>
     <marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#57606A"/>
     </marker>
   </defs>
-  <rect width="1200" height="1490" fill="#FFFFFF"/>
-  <rect x="8" y="8" width="1184" height="1474" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+  <rect width="1200" height="1560" fill="#FFFFFF"/>
+  <rect x="8" y="8" width="1184" height="1544" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
 
-  <text x="48" y="52" font-size="22" font-weight="bold" fill="#1F2328">工作原理总流程图（渐进式 / 状态机）</text>
+  <text x="48" y="52" font-size="22" font-weight="bold" fill="#1F2328">工作原理总流程图（渐进式 / 状态机 · v2.7.0）</text>
 
   <!-- 主流程节点：x=40 w=720，中心 x=400 -->
   <!-- n1 -->
-  <rect x="40" y="80" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="40" y="80" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
   <text x="60" y="114" font-size="20" font-weight="bold" fill="#1F2328">1 平台硬加载（第 0 步）</text>
   <text x="60" y="146" font-size="16" fill="#57606A">检测平台 → 定位真实注入点 → 按需（精简纪律）</text>
-  <text x="60" y="174" font-size="16" fill="#57606A">强制（injection-core 核心全文）→ 备份后合并不覆盖</text>
-  <text x="60" y="202" font-size="16" fill="#8C959F">出口：注入副本就绪（新会话读得到「在场提示」）</text>
+  <text x="60" y="174" font-size="16" fill="#57606A">强制（injection-core 核心全文，5,991 字符 ≤ 6K 硬上限）</text>
+  <text x="60" y="202" font-size="16" fill="#8C959F">出口：注入副本就绪 + 在场提示单源（deploy ANCHOR）</text>
 
   <!-- n2 -->
-  <rect x="40" y="256" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
-  <text x="60" y="290" font-size="20" font-weight="bold" fill="#1F2328">2 场景化判定</text>
-  <text x="60" y="322" font-size="16" fill="#57606A">单发使用 → 纪律全走 + 承载创建豁免（不乱建文档）</text>
-  <text x="60" y="350" font-size="16" fill="#57606A">持续项目 → 四步全套 + 承载强制 + 回指理解</text>
-  <text x="60" y="378" font-size="16" fill="#57606A">判定不清 → 默认按持续处理（先建承载兜底）</text>
+  <rect x="40" y="266" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <text x="60" y="300" font-size="20" font-weight="bold" fill="#1F2328">2 场景化判定</text>
+  <text x="60" y="332" font-size="16" fill="#57606A">单发使用 → 纪律全走 + 承载创建豁免（不乱建文档）</text>
+  <text x="60" y="360" font-size="16" fill="#57606A">持续项目 → 四步全套 + 承载强制 + 回指理解</text>
+  <text x="60" y="388" font-size="16" fill="#57606A">判定不清 → 默认按持续处理（先建承载兜底）</text>
 
   <!-- n3 -->
-  <rect x="40" y="432" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
-  <text x="60" y="466" font-size="20" font-weight="bold" fill="#1F2328">3 开工序列四步（每步有出口产物，无产物不进下一步）</text>
-  <text x="60" y="498" font-size="16" fill="#57606A">① 复述理解 → ② 承载检查 → ③ 记忆对齐（最小读取）</text>
-  <text x="60" y="526" font-size="16" fill="#57606A">④ 判级选道（L1 整体标注「L1 精简」，复述不可豁免）</text>
-  <text x="60" y="554" font-size="16" fill="#8C959F">出口：形态判定 + 承载就绪 + 选道一行</text>
+  <rect x="40" y="452" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <text x="60" y="486" font-size="20" font-weight="bold" fill="#1F2328">3 开工序列四步（每步有出口产物，无产物不进下一步）</text>
+  <text x="60" y="518" font-size="16" fill="#57606A">① 复述理解+状态行 → ② 承载检查（git 开局场景化）</text>
+  <text x="60" y="546" font-size="16" fill="#57606A">③ 记忆对齐（最小读取） → ④ 判级选道</text>
+  <text x="60" y="574" font-size="16" fill="#8C959F">出口：形态判定 + 承载就绪 + 选道一行（L1 标注「L1 精简」）</text>
 
   <!-- n4 -->
-  <rect x="40" y="608" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
-  <text x="60" y="642" font-size="20" font-weight="bold" fill="#1F2328">4 任务三重判级 → 三级跑道</text>
-  <text x="60" y="674" font-size="16" fill="#57606A">L1 快速通道 ｜ L2-S 短工作流（默认·小模块）｜ L2-F 完整 9 步</text>
-  <text x="60" y="702" font-size="16" fill="#D1242F">L3 封闭清单 6 项命中 → L2-F + 暂停先问（见下方分级详情）</text>
-  <text x="60" y="730" font-size="16" fill="#8250DF">选道细节 ↓ 见「三级跑道选道图」</text>
+  <rect x="40" y="638" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
+  <text x="60" y="672" font-size="20" font-weight="bold" fill="#1F2328">4 任务判级 → 三级跑道</text>
+  <text x="60" y="704" font-size="16" fill="#57606A">L1 快速通道 ｜ L2-S 短工作流（默认·小模块）｜ L2-F 完整 9 步</text>
+  <text x="60" y="732" font-size="16" fill="#D1242F">L3 封闭清单 6 项命中 → 强制 L2-F + 暂停先问（见三级跑道选道图）</text>
+  <text x="60" y="760" font-size="16" fill="#8C959F">三问分流：≥2 命中 = L2-F；其余 L2-S（一次答完防内耗）</text>
 
   <!-- n5 -->
-  <rect x="40" y="784" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
-  <text x="60" y="818" font-size="20" font-weight="bold" fill="#1F2328">5 必问协议（先问后写）</text>
-  <text x="60" y="850" font-size="16" fill="#57606A">方向 / 边界 / 冲突 / 密钥 / 破坏性——先问再动</text>
-  <text x="60" y="878" font-size="16" fill="#57606A">每个问题必带：推荐选项 + 核心理由 + 失败后果</text>
-  <text x="60" y="906" font-size="16" fill="#8C959F">出口：提问/确认记录（空答绝不当批准，标注「待确认」）</text>
+  <rect x="40" y="824" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <text x="60" y="858" font-size="20" font-weight="bold" fill="#1F2328">5 必问协议（先问后写 · 必问底线十维）</text>
+  <text x="60" y="890" font-size="16" fill="#57606A">方向 / 边界 / 冲突 / 密钥 / 破坏性——先问再动</text>
+  <text x="60" y="918" font-size="16" fill="#57606A">地基决策场景清单一次问全：使用/数据/环境/偏好/演进/性能/安全/交付（#306）</text>
+  <text x="60" y="946" font-size="16" fill="#8C959F">出口：提问/确认记录；笼统授权只覆盖明示项，决定须有依据</text>
 
   <!-- n6 -->
-  <rect x="40" y="960" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
-  <text x="60" y="994" font-size="20" font-weight="bold" fill="#1F2328">6 执行与验证 → 交付</text>
-  <text x="60" y="1026" font-size="16" fill="#57606A">GATE 块（cmd / exit / files / lessons / exempt）可复跑</text>
-  <text x="60" y="1054" font-size="16" fill="#57606A">→ 交付五查 → 复述增强 RE → 会话状态面（0 照报 0）</text>
-  <text x="60" y="1082" font-size="16" fill="#8C959F">出口：GATE + 验证结果 + 归档（真实运行，没跑 = 未完成）</text>
+  <rect x="40" y="1010" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
+  <text x="60" y="1044" font-size="20" font-weight="bold" fill="#1F2328">6 执行与验证 → 交付（GATE 一行式）</text>
+  <text x="60" y="1076" font-size="16" fill="#57606A">GATE 9 字段一行可复跑：level / v / cmd / exit / files</text>
+  <text x="60" y="1104" font-size="16" fill="#57606A">/ refs / errpath / lessons / exempt（包级 9 字段 / 子块简式 3 字段）</text>
+  <text x="60" y="1132" font-size="16" fill="#8C959F">出口：GATE + 交付五查 + 归档（真实运行，没跑 = 未完成）</text>
 
   <!-- n7 -->
-  <rect x="40" y="1136" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
-  <text x="60" y="1170" font-size="20" font-weight="bold" fill="#1F2328">7 规则地基（渐进式加载）</text>
-  <text x="60" y="1202" font-size="16" fill="#57606A">编号纪律 + 落地细则 294 条 / 17 类（症状索引）</text>
-  <text x="60" y="1230" font-size="16" fill="#57606A">detail_lookup 一键检索端口 ｜ 冲突仲裁序五级取最优</text>
-  <text x="60" y="1258" font-size="16" fill="#8C959F">出口：引用完整前缀 «details #NNN»，禁裸编号</text>
+  <rect x="40" y="1196" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <text x="60" y="1230" font-size="20" font-weight="bold" fill="#1F2328">7 规则地基（渐进式加载）</text>
+  <text x="60" y="1262" font-size="16" fill="#57606A">编号纪律 + 落地细则 314 条 / 17 类（症状索引）</text>
+  <text x="60" y="1290" font-size="16" fill="#57606A">错误必查 TOP 内联 + detail_lookup 一键检索 + 冲突仲裁序五级</text>
+  <text x="60" y="1318" font-size="16" fill="#8C959F">出口：引用完整前缀 «details #NNN»，禁裸编号（假阳性 9/10 实锤）</text>
 
   <!-- n8 -->
-  <rect x="40" y="1312" width="720" height="140" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
-  <text x="60" y="1346" font-size="20" font-weight="bold" fill="#1F2328">8 自更新（syncer.py 三路合并）</text>
-  <text x="60" y="1378" font-size="16" fill="#57606A">体检 → 备份 → 迁移 → 覆盖 → 双落盘</text>
-  <text x="60" y="1406" font-size="16" fill="#57606A">user-notes / memory / .bak 永不碰；验收看 Base directory</text>
-  <text x="60" y="1434" font-size="16" fill="#8C959F">回环：新版本 → 重部署注入副本 → 回到第 1 步起点</text>
+  <rect x="40" y="1382" width="720" height="130" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <text x="60" y="1416" font-size="20" font-weight="bold" fill="#1F2328">8 自更新（syncer.py 三路合并）</text>
+  <text x="60" y="1448" font-size="16" fill="#57606A">体检 → 备份 → 迁移 → 覆盖 → 双落盘</text>
+  <text x="60" y="1476" font-size="16" fill="#57606A">user-notes / memory / .bak 永不碰；验收看 Base directory ≠ 版本号</text>
 
   <!-- 垂直箭头 -->
-  <line x1="400" y1="220" x2="400" y2="256" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="396" x2="400" y2="432" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="572" x2="400" y2="608" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="748" x2="400" y2="784" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="924" x2="400" y2="960" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="1100" x2="400" y2="1136" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
-  <line x1="400" y1="1276" x2="400" y2="1312" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="230" x2="400" y2="266" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="416" x2="400" y2="452" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="602" x2="400" y2="638" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="788" x2="400" y2="824" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="974" x2="400" y2="1010" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="1160" x2="400" y2="1196" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
+  <line x1="400" y1="1346" x2="400" y2="1382" stroke="#57606A" stroke-width="2" marker-end="url(#arrow1)"/>
 
   <!-- 侧栏：渐进式三层披露 -->
   <rect x="800" y="80" width="360" height="470" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-dasharray="6 4"/>
@@ -81,12 +80,12 @@
 
   <text x="820" y="160" font-size="17" font-weight="bold" fill="#1F2328">入口精简</text>
   <text x="820" y="188" font-size="16" fill="#57606A">只预载 name+description</text>
-  <text x="820" y="214" font-size="16" fill="#57606A">+ injection-core 核心</text>
+  <text x="820" y="214" font-size="16" fill="#57606A">+ injection-core 核心（≤6K）</text>
   <line x1="820" y1="236" x2="1140" y2="236" stroke="#D0D7DE"/>
 
   <text x="820" y="268" font-size="17" font-weight="bold" fill="#1F2328">按步加载</text>
   <text x="820" y="296" font-size="16" fill="#57606A">references 按需</text>
-  <text x="820" y="322" font-size="16" fill="#57606A">details 按症状类</text>
+  <text x="820" y="322" font-size="16" fill="#57606A">details 按症状类（314 条/17 类）</text>
   <line x1="820" y1="344" x2="1140" y2="344" stroke="#D0D7DE"/>
 
   <text x="820" y="376" font-size="17" font-weight="bold" fill="#1F2328">动态路由</text>
@@ -95,4 +94,14 @@
   <text x="820" y="470" font-size="15" fill="#8C959F">常驻开销实测 ~3-4.5%</text>
   <text x="820" y="494" font-size="15" fill="#8C959F">（~6-9K tok / 200K 窗）</text>
   <text x="820" y="524" font-size="15" fill="#8C959F">目的：避免病态无界燃烧</text>
+
+  <!-- 侧栏：hooks 纪律包 -->
+  <rect x="800" y="580" width="360" height="230" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-dasharray="6 4"/>
+  <text x="820" y="616" font-size="20" font-weight="bold" fill="#1F6FEB">hooks 纪律包（机制级触达）</text>
+  <text x="820" y="652" font-size="16" fill="#57606A">SessionStart 无条件常驻提醒</text>
+  <text x="820" y="678" font-size="16" fill="#57606A">（状态行模板 + TOP 一行 + GATE 指针）</text>
+  <text x="820" y="712" font-size="16" fill="#57606A">PostToolUseFailure 错误时刻</text>
+  <text x="820" y="738" font-size="16" fill="#57606A">TOP 推送（带工具名）</text>
+  <text x="820" y="772" font-size="15" fill="#8C959F">路测 v5：无头面注入断裂下</text>
+  <text x="820" y="794" font-size="15" fill="#8C959F">hooks 载体 12/12 被接住</text>
 </svg>

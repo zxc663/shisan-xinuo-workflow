@@ -1,83 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 940" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 980" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
   <defs>
     <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#57606A"/>
     </marker>
   </defs>
-  <rect width="1200" height="940" fill="#FFFFFF"/>
-  <rect x="8" y="8" width="1184" height="924" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+  <rect width="1200" height="980" fill="#FFFFFF"/>
+  <rect x="8" y="8" width="1184" height="964" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
 
-  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">三级跑道选道图（10 秒选道）</text>
+  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">三级跑道选道图（10 秒选道 · v2.7.0）</text>
 
   <!-- 任务入口 -->
   <rect x="480" y="70" width="240" height="50" rx="10" fill="#FFFFFF" stroke="#1F2328" stroke-width="2"/>
   <text x="600" y="100" font-size="18" font-weight="bold" fill="#1F2328" text-anchor="middle">任务</text>
 
+  <!-- L2 判级速查 -->
+  <rect x="150" y="150" width="900" height="86" rx="12" fill="#FFF8F3" stroke="#BF8700" stroke-width="2"/>
+  <text x="170" y="176" font-size="17" font-weight="bold" fill="#7D5200">L1/L2 速判（先判 L1 与 L3，其余落 L2）</text>
+  <text x="170" y="204" font-size="16" fill="#1F2328">L1：改名/文案/格式等可逆小改 → 直接做 ｜ 判不了 → 默认 L2 ｜ 命 L3 清单 → 必问</text>
+  <text x="170" y="228" font-size="15" fill="#57606A">判级 ≠ 理解确认：目标/边界有歧义 → 普通模式也必问（L3 必问 ≠ 关键决策必问 ≠ 常规判断自主留档）</text>
+
   <!-- L3 封闭清单 -->
-  <rect x="150" y="170" width="900" height="112" rx="12" fill="#FFF1F0" stroke="#D1242F" stroke-width="2"/>
-  <text x="170" y="198" font-size="17" font-weight="bold" fill="#D1242F">L3 封闭清单（仅 6 项，不在清单内一律不是 L3）</text>
-  <text x="170" y="230" font-size="16" fill="#1F2328">密钥/权限 ｜ 数据删除 ｜ 数据/服务迁移 ｜ 对外发布 ｜ 架构选型 ｜ 超预算破坏性操作</text>
-  <text x="170" y="258" font-size="15" fill="#57606A">命中任意一项 → 强制 L2-F，且暂停先问（先列命令清单、结束回合等确认——本地备份取代不了确认）</text>
+  <rect x="150" y="266" width="900" height="112" rx="12" fill="#FFF1F0" stroke="#D1242F" stroke-width="2"/>
+  <text x="170" y="294" font-size="17" font-weight="bold" fill="#D1242F">L3 封闭清单（仅 6 项，不在清单内一律不是 L3）</text>
+  <text x="170" y="326" font-size="16" fill="#1F2328">密钥/权限 ｜ 数据删除 ｜ 数据/服务迁移 ｜ 对外发布 ｜ 架构选型 ｜ 超预算破坏性操作</text>
+  <text x="170" y="354" font-size="15" fill="#57606A">命中任意一项 → 强制 L2-F，且暂停先问（先列命令清单、结束回合等确认——本地备份取代不了确认）</text>
 
   <!-- 三问分流 -->
-  <rect x="180" y="340" width="840" height="128" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
-  <text x="200" y="368" font-size="17" font-weight="bold" fill="#8250DF">三问分流（一次答完，防内耗）</text>
-  <text x="200" y="396" font-size="16" fill="#1F2328">① 跨 ≥3 包 / 跨 api+contracts+前端？</text>
-  <text x="200" y="420" font-size="16" fill="#1F2328">② 涉契约 · 架构 · 迁移 · 对外发布 · 安全？</text>
-  <text x="200" y="444" font-size="16" fill="#1F2328">③ 用户点名「按流程 / 严格分析」？</text>
+  <rect x="180" y="428" width="840" height="104" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
+  <text x="200" y="456" font-size="17" font-weight="bold" fill="#8250DF">三问分流（一次答完，防内耗）</text>
+  <text x="200" y="484" font-size="16" fill="#1F2328">1 跨 ≥3 包 / 跨 api+contracts+前端？  2 涉契约 · 架构 · 迁移 · 对外发布 · 安全？</text>
+  <text x="200" y="508" font-size="16" fill="#1F2328">3 用户点名「按流程 / 严格分析」？</text>
 
-  <!-- 连线：任务 → L3 → 三问 -->
-  <line x1="600" y1="120" x2="600" y2="170" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
-  <line x1="600" y1="282" x2="600" y2="340" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <!-- 连线：任务 → 速判 → L3 → 三问 -->
+  <line x1="600" y1="120" x2="600" y2="150" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="600" y1="236" x2="600" y2="266" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="600" y1="378" x2="600" y2="428" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
 
-  <!-- 三问 → 三条道 -->
-  <path d="M 600 468 L 225 522" fill="none" stroke="#57606A" stroke-width="2"/>
-  <line x1="225" y1="522" x2="225" y2="560" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
-  <line x1="600" y1="468" x2="600" y2="560" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
-  <path d="M 600 468 L 930 522" fill="none" stroke="#57606A" stroke-width="2"/>
-  <line x1="930" y1="522" x2="930" y2="560" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
-  <text x="252" y="506" font-size="15" fill="#2DA44E">L1 速判：改名/文案/格式等可逆小改动</text>
-  <text x="614" y="506" font-size="15" fill="#1F6FEB">三问 &lt; 2 命中（默认道）</text>
-  <text x="856" y="506" font-size="15" fill="#8250DF">三问 ≥ 2 命中；或命中 L3</text>
+  <!-- 三问 → 三条道（正交折线防交叉） -->
+  <path d="M 600 532 L 600 560 L 225 560 L 225 604" fill="none" stroke="#57606A" stroke-width="2"/>
+  <line x1="225" y1="560" x2="225" y2="604" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <line x1="600" y1="532" x2="600" y2="604" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <path d="M 600 532 L 600 560 L 930 560 L 930 604" fill="none" stroke="#57606A" stroke-width="2"/>
+  <line x1="930" y1="560" x2="930" y2="604" stroke="#57606A" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="852" y="546" font-size="15" fill="#8250DF" text-anchor="end">三问 ≥2 命中；或命中 L3</text>
+  <text x="532" y="546" font-size="15" font-weight="bold" fill="#1F6FEB">三问 1 命中（默认道）</text>
+  <text x="248" y="546" font-size="15" fill="#2DA44E">L1：三问 0 命中且非 L3</text>
 
   <!-- L1 快速通道 -->
-  <rect x="60" y="560" width="330" height="260" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
-  <text x="80" y="592" font-size="18" font-weight="bold" fill="#2DA44E">L1 快速通道</text>
-  <text x="80" y="622" font-size="16" fill="#57606A">1 一句话复述（不可豁免）</text>
-  <text x="80" y="650" font-size="16" fill="#57606A">2 最小修改（只改任务范围）</text>
-  <text x="80" y="678" font-size="16" fill="#57606A">3 最小验证（记录退出码）</text>
-  <text x="80" y="706" font-size="16" fill="#57606A">4 一行汇报</text>
-  <text x="80" y="748" font-size="15" fill="#8C959F">整体标注「L1 精简」→ 承载检查豁免，</text>
-  <text x="80" y="772" font-size="15" fill="#8C959F">承载增量补缺与复述不免。</text>
+  <rect x="60" y="604" width="330" height="280" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
+  <text x="80" y="636" font-size="18" font-weight="bold" fill="#2DA44E">L1 快速通道</text>
+  <text x="80" y="664" font-size="16" fill="#57606A">1 一句话复述（不可豁免）</text>
+  <text x="80" y="690" font-size="16" fill="#57606A">2 最小修改（只改任务范围）</text>
+  <text x="80" y="716" font-size="16" fill="#57606A">3 最小验证（记录退出码）</text>
+  <text x="80" y="742" font-size="16" fill="#57606A">4 一行汇报</text>
+  <text x="80" y="784" font-size="15" fill="#8C959F">整体标注「L1 精简」→ 承载检查豁免，</text>
+  <text x="80" y="808" font-size="15" fill="#8C959F">承载增量补缺与复述不免。</text>
+  <text x="80" y="848" font-size="15" fill="#2DA44E" font-weight="bold">三问 0 命中且非 L3 → L1</text>
 
   <!-- L2-S 短工作流 -->
-  <rect x="410" y="560" width="330" height="310" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
-  <rect x="622" y="570" width="108" height="28" rx="14" fill="#2DA44E"/>
-  <text x="676" y="588" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">小模块默认道</text>
-  <text x="430" y="602" font-size="18" font-weight="bold" fill="#1F6FEB">L2-S 短工作流</text>
-  <text x="430" y="630" font-size="16" fill="#57606A">① 对接真相清单（必做，禁命名直觉）</text>
-  <text x="430" y="656" font-size="16" fill="#57606A">② 复述 3 短行：改哪 / 影响 / 怎么验</text>
-  <text x="430" y="682" font-size="16" fill="#57606A">③ 免 plan（≤3 文件一行动作基线）</text>
-  <text x="430" y="708" font-size="16" fill="#57606A">④ 执行 + 最小验证（可重跑）</text>
-  <text x="430" y="734" font-size="16" fill="#57606A">⑤ GATE 行 + 状态面贡献行</text>
-  <text x="430" y="776" font-size="15" fill="#8C959F">省：双调研 / 五问深度 / plan 文档 / 多轮提问</text>
-  <text x="430" y="800" font-size="15" fill="#8C959F">不豁免：必问协议与红线</text>
+  <rect x="410" y="604" width="330" height="310" rx="12" fill="#FFFFFF" stroke="#1F6FEB" stroke-width="2"/>
+  <rect x="622" y="614" width="108" height="28" rx="14" fill="#1F6FEB"/>
+  <text x="676" y="632" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">小模块默认道</text>
+  <text x="430" y="646" font-size="18" font-weight="bold" fill="#1F6FEB">L2-S 短工作流</text>
+  <text x="430" y="674" font-size="16" fill="#57606A">1 对接真相清单（必做，禁命名直觉）</text>
+  <text x="430" y="700" font-size="16" fill="#57606A">2 复述 3 短行：改哪 / 影响 / 怎么验</text>
+  <text x="430" y="726" font-size="16" fill="#57606A">3 免 plan（≤3 文件一行动作基线）</text>
+  <text x="430" y="752" font-size="16" fill="#57606A">4 执行 + 最小验证（可重跑）</text>
+  <text x="430" y="778" font-size="16" fill="#57606A">5 GATE 行 + 状态面贡献行</text>
+  <text x="430" y="820" font-size="15" fill="#8C959F">省：双调研 / 五问深度 / plan 文档 / 多轮提问</text>
+  <text x="430" y="844" font-size="15" fill="#8C959F">不豁免：必问协议与红线</text>
+  <text x="430" y="884" font-size="15" fill="#1F6FEB" font-weight="bold">三问 1 命中 → L2-S（默认）</text>
 
   <!-- L2-F 完整 9 步 -->
-  <rect x="760" y="560" width="340" height="330" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
-  <text x="780" y="592" font-size="18" font-weight="bold" fill="#8250DF">L2-F 完整 9 步</text>
-  <text x="780" y="620" font-size="16" fill="#57606A">1 接收指令（任务本质一句话）</text>
-  <text x="780" y="644" font-size="16" fill="#57606A">2 调研实际资源（证据/契约/对接真相表）</text>
-  <text x="780" y="668" font-size="16" fill="#57606A">3 双调研一次完成（联网+复用，设计前置留档）</text>
-  <text x="780" y="692" font-size="16" fill="#57606A">4 复述理解（目标/边界/验收，用户确认）</text>
-  <text x="780" y="716" font-size="16" fill="#57606A">5 疑问必问（结束回合等待）</text>
-  <text x="780" y="740" font-size="16" fill="#57606A">6 产品五问 + 判级 + 回滚点</text>
-  <text x="780" y="764" font-size="16" fill="#57606A">7 规划与验收文档（3-5 条可验证）</text>
-  <text x="780" y="788" font-size="16" fill="#57606A">8 执行（目标模式预算自停）</text>
-  <text x="780" y="812" font-size="16" fill="#57606A">9 自查归档（GATE + 五查 + 留档）</text>
-  <rect x="780" y="830" width="300" height="40" rx="8" fill="#FFF1F0" stroke="#D1242F" stroke-width="1"/>
-  <text x="796" y="855" font-size="15" fill="#D1242F">L3 → 额外「暂停先问 + 命令清单等确认」</text>
+  <rect x="760" y="604" width="340" height="330" rx="12" fill="#FFFFFF" stroke="#8250DF" stroke-width="2"/>
+  <text x="780" y="636" font-size="18" font-weight="bold" fill="#8250DF">L2-F 完整 9 步</text>
+  <text x="780" y="664" font-size="16" fill="#57606A">1 接收指令（任务本质一句话）</text>
+  <text x="780" y="688" font-size="16" fill="#57606A">2 调研实际资源（证据/契约/对接真相表）</text>
+  <text x="780" y="712" font-size="16" fill="#57606A">3 双调研一次完成（联网+复用，设计前置留档）</text>
+  <text x="780" y="736" font-size="16" fill="#57606A">4 复述理解（目标/边界/验收，用户确认）</text>
+  <text x="780" y="760" font-size="16" fill="#57606A">5 疑问必问（结束回合等待）</text>
+  <text x="780" y="784" font-size="16" fill="#57606A">6 产品五问 + 判级 + 回滚点</text>
+  <text x="780" y="808" font-size="16" fill="#57606A">7 规划与验收文档（3-5 条可验证）</text>
+  <text x="780" y="832" font-size="16" fill="#57606A">8 执行（目标模式预算自停）</text>
+  <text x="780" y="856" font-size="16" fill="#57606A">9 自查归档（GATE + 五查 + 留档）</text>
+  <rect x="780" y="874" width="300" height="40" rx="8" fill="#FFF1F0" stroke="#D1242F" stroke-width="1"/>
+  <text x="796" y="899" font-size="15" fill="#D1242F">L3 → 额外「暂停先问 + 命令清单等确认」</text>
 
   <!-- 图例 -->
-  <text x="48" y="916" font-size="15" fill="#8C959F">图例：绿 = L1 快速道（可逆小改）｜ 蓝 = L2-S 短工作流（默认）｜ 紫 = L2-F 完整 9 步（大模块/复杂）｜ 红 = L3 强制道（先问再动）</text>
+  <text x="48" y="956" font-size="15" fill="#8C959F">图例：绿 = L1 快速道（可逆小改）｜ 蓝 = L2-S 短工作流（默认）｜ 紫 = L2-F 完整 9 步（大模块/复杂）｜ 红 = L3 强制道（先问再动）｜ L1/L2 速判前置，L3 封闭清单 6 项为准</text>
 </svg>
