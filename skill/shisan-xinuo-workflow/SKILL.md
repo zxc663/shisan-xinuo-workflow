@@ -4,7 +4,7 @@ description: "一句话定位：把任何工程任务强制按「三级跑道（
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 2.7.0
+  version: 2.7.1
   tags:
     - agent-skill
     - workflow-governance
@@ -330,7 +330,7 @@ metadata:
 ## 11. 会话状态面（会话末一致性报告——给用户复核；不是「合规 / 有效」自证）
 
 ```
-注入版本: <2.7.0>
+注入版本: <2.7.1>
 细则命中: grep -cE 'references/details|details[ #]+[0-9]{2,3}|细则[ #]+[0-9]{2,3}' <会话产物> → N（0 照报 0）；打开类: [契约]×N / [运维]×N
                    （取证对象=任务记录/会话产物中的细则引用，**只认完整前缀形态** `details #239` / `细则 #233` / `references/details`——裸 `#NNN` 已废弃：无法区分细则编号与 GitHub issue 编号【假阳性实证 9/10】；引用规范见 details.md 头部。产物内嵌本状态面模板时命令定义行自身计 1 次自指——对纯任务记录取证或人工剔除。历史演进见 EVIDENCE §十）
 上下文预算: ~X tokens（阈值 150-200K → 压缩 + 重载序）
