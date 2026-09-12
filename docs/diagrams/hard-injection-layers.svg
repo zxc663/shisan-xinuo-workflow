@@ -7,7 +7,7 @@
   <rect width="1200" height="650" fill="#FFFFFF"/>
   <rect x="8" y="8" width="1184" height="634" rx="14" fill="#F6F8FA" stroke="#D0D7DE"/>
 
-  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">硬注入 = 三层承载（每次会话强制生效）</text>
+  <text x="48" y="50" font-size="22" font-weight="bold" fill="#1F2328">硬注入 = 三层承载 + hooks 层（每次会话强制生效 · v2.7.0）</text>
 
   <!-- 触发 -->
   <rect x="330" y="70" width="540" height="60" rx="10" fill="#FFFFFF" stroke="#1F2328" stroke-width="2"/>
@@ -33,8 +33,8 @@
   <text x="494" y="202" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">规则层</text>
   <text x="450" y="238" font-size="18" font-weight="bold" fill="#1F2328">injection-core 核心全文</text>
   <text x="450" y="266" font-size="16" fill="#57606A">判级速查 / 主流程（三级跑道）</text>
-  <text x="450" y="290" font-size="16" fill="#57606A">必问协议 / 红线 / 留档</text>
-  <text x="450" y="318" font-size="16" fill="#57606A">写入平台注入点，每会话强制生效</text>
+  <text x="450" y="290" font-size="16" fill="#57606A">必问协议（十维）+ 红线 + 留档</text>
+  <text x="450" y="318" font-size="16" fill="#57606A">5,991 字符 ≤ 6K 硬上限（近上限）</text>
   <text x="450" y="350" font-size="15" fill="#8C959F">验收判据：读到「在场提示」或</text>
   <text x="450" y="374" font-size="15" fill="#8C959F">zxc663 自检彩蛋正常回话</text>
 
@@ -43,11 +43,11 @@
   <rect x="816" y="184" width="112" height="28" rx="14" fill="#1F6FEB"/>
   <text x="872" y="202" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">配置文件层</text>
   <text x="820" y="238" font-size="18" font-weight="bold" fill="#1F2328">hooks / 全局设置</text>
-  <text x="820" y="266" font-size="16" fill="#57606A">SessionStart / SessionEnd 钩子</text>
-  <text x="820" y="290" font-size="16" fill="#57606A">平台级「新会话自动加载」</text>
-  <text x="820" y="318" font-size="16" fill="#57606A">门控提醒零误触发（机评实证）</text>
-  <text x="820" y="350" font-size="15" fill="#8C959F">只写规则层、记忆文件空白时，</text>
-  <text x="820" y="374" font-size="15" fill="#8C959F">新会话仍可能不识别 → 三层同写</text>
+  <text x="820" y="266" font-size="16" fill="#57606A">SessionStart 常驻提醒</text>
+  <text x="820" y="290" font-size="16" fill="#57606A">（状态行模板+TOP 一行+GATE 指针）</text>
+  <text x="820" y="318" font-size="16" fill="#57606A">PostToolUseFailure 错误时刻 TOP 推送</text>
+  <text x="820" y="350" font-size="15" fill="#8C959F">三层同写 + hooks 层：门控提醒零误触发</text>
+  <text x="820" y="374" font-size="15" fill="#8C959F">（机评实证）；只写一层新会话仍可能不识别</text>
 
   <!-- 按需注入对比 -->
   <rect x="150" y="440" width="900" height="90" rx="12" fill="#FFFFFF" stroke="#8C959F" stroke-dasharray="6 4"/>
