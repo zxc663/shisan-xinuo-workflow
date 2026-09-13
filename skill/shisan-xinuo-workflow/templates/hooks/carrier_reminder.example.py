@@ -8,14 +8,17 @@ from pathlib import Path
 # 附加承载检查提醒行。措辞与注入核心常驻保留集同源，改措辞先改注入核心再同步此处。
 DISCIPLINE_PACK = (
     "[工作流纪律包·hooks 通道]\n"
-    "状态行：每会话首产物输出一行 `Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> "
+    "每轮复述：每一用户轮首产物=复述（新任务全量三行；追加/继续=一行：收到 X｜理解为 Y｜边界 Z）\n"
+    "状态行（开工/阶段边界）：`Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> "
     "confirm=<无需/已问/豁免:理由>`\n"
+    "回指加载：本核心为瘦身版——以 Skill 工具加载 shisan-xinuo-workflow（SKILL.md），"
+    "细则/模板按症状索引回指\n"
     "错误必查 TOP（处置后必留 errpath 行 症状→处置路径）："
     "#294 Edit 报 not read/modified=文件双通道混用｜#233 命名直觉=假绿｜#228 改包先重编｜"
     "#229 常驻进程旧 dist｜#214 响应分层断言｜#163 统一错误契约｜"
     "#256·#270 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体\n"
     "收尾 GATE 9 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt"
-    "（权威定义=注入核心交付段）"
+    "（权威定义=注入核心交付段；refs 填 grep 实测值，禁自估）"
 )
 CARRIER_HINT = (
     "承载检查提醒：当前目录是 git 项目但 memory/agent-log.md 不存在。"
