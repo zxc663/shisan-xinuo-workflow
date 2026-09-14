@@ -224,7 +224,7 @@ shisan-xinuo-workflow/              ← 仓库根
 │   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
 │   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表）
 │   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/一档制档案 agent-log-template）
-│   └── references/（injection-core · workflows · details 322条/17类 · rules 47条 ·
+│   └── references/（injection-core · workflows · details 330条/17类 · rules 47条 ·
 │       security · never-list · skill-usage · new-project-bootstrap · local-model-glossary）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
