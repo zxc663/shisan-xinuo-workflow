@@ -3,7 +3,7 @@
 > **渐进式工程治理 Skill——不是把整本手册砸进上下文，而是像神经系统：只在任务到达某一步骤时，注入那一步所需的少量规则。**
 > A progressive, on-demand engineering-governance Skill: injects only the few rules a step needs, when that step arrives.
 
-![version](https://img.shields.io/badge/version-2.7.2-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
+![version](https://img.shields.io/badge/version-2.8.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platforms](https://img.shields.io/badge/platforms-Codex%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Trae%20%7C%20Windsurf%20%7C%20WorkBuddy-orange)
 
 > **作者的话 · A word from the author**
 >
@@ -177,7 +177,7 @@
 | v7 修正效力 | 交互 goal（47min） | 1 会话 | 修正批 3 条行为质变实证 ✅（必问十维四问结构化/设计契约先行/资源利用）；git 首日条款在 details T2 无症状不触达=分层缺口 ❌ | #312-#315（设计评审暂停/资源盘点/换通道/plan 载体） |
 | v8 接手遗留项目 | goal 时间盒（23min） | 1 会话 | 无文档 Flask 遗留单体全链交付：MPV 缺口五项自主识别+46 项接口走查全过 ✅；git 首日再现弱项 ❌ | **#316 接手必补功能全景文档**；#307 场景化上移注入核心 |
 
-**下一轮路测计划（已收官；下一轮基线 v2.7.2）**：
+**下一轮路测计划（已收官；下一轮基线 v2.8.0——路测 v11 待执行）**：
 
 - **验证对象**（v6-v8 修正批的效力复测）：①#312 设计评审暂停——L2-F 设计档落档后是否真停（确认先于写码）；②#316 接手遗留项目必补功能全景文档——逐页面/路由+角色动线是否产出；③降采样合法化行为——显式声明 vs 静默跳过的边界执行；④#307 git 首日场景化修订效力——接手他人库是否先 commit 基线再动手。
 - **跑前确认**：注入副本重部署+新会话读到「在场提示 v2.7.2」；判分预注册（NQ 主表延续），scorecards 逐会话落盘。
@@ -214,7 +214,7 @@
 shisan-xinuo-workflow/              ← 仓库根
 ├── README.md / CHANGELOG.md / RELEASE-CHECKLIST.md / EVIDENCE.md / LICENSE
 ├── 项目信息.md                      ← 中文维护文档（决策追溯 + 发布记录）
-├── package.json（2.7.2）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
+├── package.json（2.8.0）· docs/reference-sources.md · .github/workflows/（CI：verify-release）
 ├── dist/                           ← 发布 zip（gitignore 产物：从 Release 下载或脚本打包，不入仓）
 ├── scripts/syncer.py               ← 自更新三路合并（体检/备份→skill-backups/外置/迁移/覆盖/双落盘）
 ├── scripts/verify-release.ps1      ← 发布校验（内容锚点/hooks/版本+package/泄漏/正文净化/索引完整性）
