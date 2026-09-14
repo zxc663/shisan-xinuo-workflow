@@ -189,6 +189,15 @@ if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
 }
 Add-Result ($probsF.Count -eq 0) "F 索引完整性(details 编号连续+症状索引全覆盖)" $(if($probsF.Count -eq 0){"OK ($($nums.Count) 编号全覆盖·活跃数见 deploy --check)"}else{$probsF -join ";"})
 
+# ---------- G. 事实对账（facts_sync 单源：活跃细则数/条目范围 声明值 vs 计算值；v2.8.x 修正批——文档同步差异机制修法） ----------
+$probsG = @()
+$factsSync = Join-Path $Root "scripts\facts_sync.py"
+if (Test-Path $factsSync) {
+    $gOut = python $factsSync --check 2>&1
+    if ($LASTEXITCODE -ne 0) { $probsG += ($gOut | Where-Object { $_ -match 'DIFF|未找到' } | Select-Object -First 4) }
+} else { $probsG += "缺 scripts/facts_sync.py" }
+Add-Result ($probsG.Count -eq 0) "G 事实对账(细则数/条目范围 单源)" $(if($probsG.Count -eq 0){$gOut | Select-Object -Last 1}else{$probsG -join ";"})
+
 # ---------- 汇总输出 ----------
 Write-Host ""
 Write-Host "=== verify-release 结果 ===" -ForegroundColor Cyan
