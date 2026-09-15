@@ -101,41 +101,34 @@ $baseVer = ((Get-Content $main -Raw -Encoding UTF8 | Select-String -Pattern '(?s
 $pkgVersion = ((Get-Content (Join-Path $Root "package.json") -Raw -Encoding UTF8 | ConvertFrom-Json).version)
 Add-Result ($baseVer -eq $pkgVersion) "C 版本一致(交付物=package.json)" "SKILL version=$baseVer ; package.json version=$pkgVersion"
 
-# ---------- D. 泄漏红线（发布物范围） ----------
+# ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16） ----------
 if (-not $SkipLeak) {
-    $leakPaths = @(
-        (Join-Path $Root "skill"),
-        (Join-Path $Root "README.md"),
-        (Join-Path $Root "package.json"),
-        (Join-Path $Root "LICENSE"),
-        (Join-Path $Root "scripts"),
-        (Join-Path $Root "docs\reference-sources.md"),
-        (Join-Path $Root "CHANGELOG.md"),
-        (Join-Path $Root "EVIDENCE.md"),
-        (Join-Path $Root "RELEASE-CHECKLIST.md")
-    )
+    $tracked = (git -c core.quotepath=false ls-files) | Where-Object { $_ -and $_ -notmatch "^(scripts/|EVIDENCE\.md$|docs/roadtest-)" }
     $tokenPats = @('ghp_[A-Za-z0-9]{20,}', 'gho_[A-Za-z0-9]{20,}', 'github_pat_[A-Za-z0-9_]{20,}')
     $leakHits = @()
-    foreach ($lp in $leakPaths) {
-        if (-not (Test-Path $lp)) { continue }
-        Get-ChildItem -Path $lp -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
-            $rel = $_.FullName.Substring($Root.Length + 1)
-            $text = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
-            # 1) 无歧义的真实泄漏特征：作者机密目录 / 本仓真实路径 / 真实用户主目录。
-            #    不匹配 `…` 占位符（文档示例 `C:\Users\…` 不是 [A-Za-z]），
-            #    也不匹配本脚本自身定义的正则文本，故无自引用误报。
-            if ($text -match 'D:\\Agent个人资源|Agent个人资源\\02-Gitee|Agent个人资源\\机密资源|D:\\Agent工作流启动包|C:\\Users\\[A-Za-z]') {
+    $scanned = 0
+    foreach ($rel in $tracked) {
+        $fp = Join-Path $Root $rel
+        if (-not (Test-Path $fp)) { continue }
+        $scanned += 1
+        $text = Get-Content $fp -Raw -ErrorAction SilentlyContinue
+        if (-not $text) { continue }
+            # 1) 无歧义的真实泄漏特征：作者机密目录 / 本仓真实路径 / 真实用户主目录（正反斜杠双形态）。
+            #    不匹配 `…` 占位符（文档示例 `C:\Users\…` 不是 [A-Za-z]）；
+            #    scripts/ 整体豁免=脚本自身正则文本自引用（审查 F-16 建议 3）；
+            #    EVIDENCE.md 与 docs/roadtest-*.md=历史过程档豁免（其中运行路径属史料，清理票在 2.9）。
+            if ($text -match 'D:\\Agent个人资源|Agent个人资源\\02-Gitee|Agent个人资源\\机密资源|D:\\Agent工作流启动包|[A-Za-z]:[\\/]+Users[\\/]+[A-Za-z]') {
                 $leakHits += "$rel :: 引外部磁盘/个人路径"
             }
             # 2) 令牌原文
             foreach ($tp in $tokenPats) { if ($text -match $tp) { $leakHits += "$rel :: 疑似令牌明文(已掩码)" ; break } }
-            # 3) 发布物内出现个人版路径（README 版本说明豁免）
-            if (($rel -notlike "README.md") -and ($text -match 'versions[\/]personal-zh')) {
+            # 3) 发布物内出现个人版路径（README 版本说明豁免；排除账目四文件豁免——.gitignore/AGENTS/project-info/项目信息 对 gitignore 目录的功能性记载非泄漏，单一表述源裁决留 2.9）
+            $exemptPersonal = @('.gitignore', 'AGENTS.md', 'docs/project-info.md', '项目信息.md')
+            if (($exemptPersonal -notcontains $rel) -and ($rel -notlike "README.md") -and ($text -match 'versions[\/]personal-zh')) {
                 $leakHits += "$rel :: 发布物内引用个人版路径"
             }
-        }
     }
-    Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"0 泄漏"}else{$leakHits -join ";"})
+    Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"扫描面内 $scanned 个 tracked 文件 0 命中（豁免：scripts/ 自引用、历史过程档）"}else{$leakHits -join ";"})
 }
 
 # ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1 起；references 面史料豁免——details 来源字段/节首注记为双击晋升准入证据） ----------
