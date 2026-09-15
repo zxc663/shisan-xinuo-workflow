@@ -186,7 +186,7 @@ if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
         }
         if ($missingIdx.Count -gt 0) { $probsF += "索引未覆盖: #" + ($missingIdx -join ',#') }
         # 3) 关键域行在场（F-23 域可检索断言——域族行被误删即红）
-        foreach ($dom in @('性能与首屏反馈','数据迁移与库变更','超时熔断与限流','备份与恢复演练','项目导航')) {
+        foreach ($dom in @('性能与首屏反馈','数据迁移与库变更','超时熔断与限流','备份与恢复演练','项目导航','结构化日志可观测')) {
             if ($idxSeg -notmatch [regex]::Escape($dom)) { $probsF += "索引缺关键域行[$dom]" }
         }
     }
