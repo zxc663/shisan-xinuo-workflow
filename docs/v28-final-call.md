@@ -11,9 +11,13 @@
 3. 机制发现反哺部署口径：注入版本=会话创建时快照（手动 /compact 冻结、平台自动压缩刷新）→ **发行动作必须追加「重启 ZCode 应用」步骤**，否则 GUI 长活会话吃旧注入（v11 头条实证：2.8.0 部署后 204 请求仍 v2.7.1）。
 4. hooks 三通道（SessionStart/UserPromptSubmit/PostToolUse+Failure）实测在岗：Bash 失败守卫双实验闭环、每轮再触达在主控与被测双端生效。
 
-## 二、2.8 发行清单（发行仍须用户另批）
+## 二、审查会话结果（09-15 08:1x 完成，报告=skill-review/REPORT.md 54KB）
 
-前置：GitHub classic PAT 轮换（用户）＋ClawHub scans 复查。动作：verify 7/7（含 G 事实对账）→ dist 重打 → 五副本重部署 → **重启 ZCode 应用** → 新会话注入探针（v2.8.0 锚+330 条确认）→ GitHub/Gitee/npm/ClawHub/About 同步 → 回执。
+新会话独立审查 30 项发现（P0×3/P1×11/P2×16）：三 P0（syncer 越界删除用户记忆/泄漏门禁假绿/复述条款三源冲突）**已于 09:00 前当轮修复并验证**（沙箱复现复测 PASS/扫描面 tracked 全量+双斜杠正则/两处公开路径清理/SKILL 三处对齐+口径关系行）；F-15 装副本落后经 syncer 重跑修复（v2.8.0）。**P1×11/P2×16 → 2.9 修正批**（类数 23 单源化/facts_sync 盲区/ANCHOR 单一文件化/症状索引 28 族无入口/F-21 --check 假绿/#328-#332 条文裁决等）。
+
+## 三、2.8 发行清单（发行仍须用户另批）
+
+前置：GitHub classic PAT 轮换（用户）＋ClawHub scans 复查。动作：syncer 同步装副本 → verify 7/7（含 G 事实对账）→ dist 重打 → 五副本重部署 → syncer 双副本 → **重启 ZCode 应用** → 新会话注入探针（v2.8.0 锚+330 条确认）→ GitHub/Gitee/npm/ClawHub/About 同步 → 回执。
 
 ## 三、2.9 议程（本次延后项归集）
 

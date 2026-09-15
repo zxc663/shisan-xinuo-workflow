@@ -156,13 +156,17 @@ def main():
             # 旧锚清扫（批 4 D3）：识别全部「在场提示」锚点块（标题行→下一个 1-2 级标题或文件尾）全部移除——
             # 治「每次追加新锚、旧版本锚永久残留」的机制根因（记忆层旧锚跨版本残留三例实证），随后写入唯一最新锚
             outl, i = [], 0
+            removed_preview = []
             while i < len(mem_prev.splitlines(keepends=True)):
                 ln = mem_prev.splitlines(keepends=True)[i]
                 if re.match(r'^#{2,4} 在场提示 · 工作流 Skill 现已在场', ln):
                     vm = re.search(r'v\d+\.\d+\.\d+', ln)
                     cleaned_versions.append(vm.group(0) if vm else '?')
                     i += 1
-                    while i < len(mem_prev.splitlines(keepends=True)) and not re.match(r'^##?[^#]', mem_prev.splitlines(keepends=True)[i]):
+                    # 停止条件（2.8.x 修正：任意层级标题即停，防吞锚点后同层级用户内容）：
+                    # 旧判据 ^##?[^#] 只停在 H1/H2，锚点后同/更深层级标题的用户段落会被静默删除
+                    while i < len(mem_prev.splitlines(keepends=True)) and not re.match(r'^#{1,6}(\s|$)', mem_prev.splitlines(keepends=True)[i]):
+                        removed_preview.append(mem_prev.splitlines(keepends=True)[i].rstrip())
                         i += 1
                     while outl and outl[-1].strip() == "":
                         outl.pop()
@@ -170,6 +174,10 @@ def main():
                 outl.append(ln)
                 i += 1
             mem_prev = "".join(outl)
+            if removed_preview:
+                print(f'[记忆清扫留痕] 本块将删除 {len(removed_preview)} 行（预览前 5 行，完整内容见备份）：')
+                for rl in removed_preview[:5]:
+                    print('  -', rl[:80])
         sep = "\n\n---\n" if mem_prev.strip() else ""
         mem_new = mem_prev.rstrip() + sep + body
         clean_tag = f"；旧锚清扫 {len(cleaned_versions)} 块[{','.join(cleaned_versions)}]" if cleaned_versions else ""
