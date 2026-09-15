@@ -70,6 +70,9 @@ def main():
         req = j.get('request', {}) or {}
         body = req.get('body', {}) or {}
         msgs = req.get('messages') or body.get('messages') or []
+        # 窗口化记录判别（v15 发现）：长会话 rollout 可能记录增量窗口（首条非 system），
+        # 此时头部注入锚不在窗口内——anchor 判 N/A 不计入分母（防伪影假阴性）。
+        windowed = bool(msgs) and msgs[0].get('role') != 'system'
         texts = [msg_text(m) for m in msgs]
         resp = j.get('response', {}) or {}
         tools = []
@@ -85,7 +88,8 @@ def main():
             'modelId': (j.get('model', {}) or {}).get('modelId', '') or resp.get('modelId', ''),
             'messages_logged': bool(msgs),
             'input_tokens': ((resp.get('usage', {}) or {}).get('inputTokens') or 0),
-            'anchor': any('在场提示' in t and 'shisan-xinuo-workflow' in t for t in texts),
+            'windowed': windowed,
+            'anchor': (not windowed) and any('在场提示' in t and 'shisan-xinuo-workflow' in t for t in texts),
             'anchor_slots': [i for i, t in enumerate(texts) if '在场提示' in t],
             'anchor_ver': next((anchor_ver(t) for t in texts if '在场提示' in t), None),
             'hooks_pack': any('工作流纪律包·hooks 通道' in t for t in texts),
@@ -104,7 +108,7 @@ def main():
         'requests': len(reqs),
         'models': sorted({r['modelId'] for r in reqs if r['modelId']}),
         'input_tokens': sum(r['input_tokens'] for r in reqs),
-        'nq5': f"{sum(1 for r in reqs if r['anchor'])}/{len(reqs)}",
+        'nq5': f"{sum(1 for r in reqs if r['anchor'])}/{sum(1 for r in reqs if not r['windowed'])}（窗口化 {sum(1 for r in reqs if r['windowed'])} 请求 N/A）",
         'anchor_slots': sorted({i for r in reqs for i in r['anchor_slots']}),
         'anchor_versions': sorted({str(r['anchor_ver']) for r in reqs if r['anchor_ver']}),
         'hooks_pack': f"{sum(1 for r in reqs if r['hooks_pack'])}/{len(reqs)}",
