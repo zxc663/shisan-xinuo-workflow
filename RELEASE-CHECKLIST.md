@@ -5,14 +5,14 @@
 
 ## A. 本仓已备（2.9 批施工产出；[ ] = 终局门禁复跑后确认回填）
 
-- [ ] 版本锁 2.9.0（package.json / SKILL frontmatter / README 徽章与版本历史 / docs/project-info / reference-sources / AGENTS / 项目信息 §六·四 About 口径）——verify C 项 PASS
-- [ ] 内容 v2.9.0 全量：审查 P1×11+P2×16 机制级（F-02 类数单源化/F-03 facts_sync 承载点补齐/F-04 verify A 双口径/F-06 #272 文件名/F-10 #328 判级权威锚定/F-12 #329 适用前提/F-13 #330 名词通用化/F-14 #332 适用范围+SKILL §2.0 前置门/F-17 ANCHOR 单一文件化/F-18 #327-#331 回指/F-19/F-23/F-24 索引三修/F-20 hooks 交付面四子项/F-21 --check 取 package.json/F-22 覆盖边界/F-26 install-skill 清扫/F-27 作者标识判据/F-28 路径对齐/F-29 裸 # 两豁免/F-30-1/2/3）+ v11 四项（注入快照探针提示/#327 裁决定版/#312 增量豁免/#326 适用性）+ G 清单四条（#333-#335+security §1.7）
-- [ ] 承载点口径（活跃 333 条/24 类 全仓一致；facts_sync G 项 PASS：单源 333/上限 335/类数 24/节头范围断言）
-- [ ] verify-release 终局复跑 7/7 ALL PASS（A 项双口径打印：PS/UTF-16 + Python/code-point 双 ≤6000）
-- [ ] dist/shisan-xinuo-workflow-v2.9.0.zip 重打 + Set-diff 双检
-- [ ] 五副本重部署 v2.9.0（备份 `.bak-<ts>-pre-v2.9.0`）→ `deploy_injection.py --check --version 2.9.0` 严格 5/5 PASS count=333（--check 缺 --version 时自动取 package.json 严格校验——F-21 修复后缺省不再恒 PASS）
-- [ ] syncer 双副本 exit=0；**deploy 写入后按提示重启 ZCode 应用+新会话探针**（v11①模板化输出）
-- [ ] 提交 main（本地 commit）；**push 单独批准**
+- [x] 版本锁 2.9.0（package.json / SKILL frontmatter / README 徽章与版本历史 / docs/project-info / reference-sources / AGENTS；项目信息 §六·四 About 口径待发行批校算）——verify C 项 PASS（2.9.0=2.9.0）
+- [x] 内容 v2.9.0 全量：审查 P1×11+P2×16 机制级（F-02 类数单源化/F-03 facts_sync 承载点补齐/F-04 verify A 双口径/F-06 #272 文件名/F-10 #328 判级权威锚定/F-12 #329 适用前提/F-13 #330 名词通用化/F-14 #332 适用范围+SKILL §2.0 前置门/F-17 ANCHOR 单一文件化/F-18 #327-#331 回指/F-19/F-23/F-24 索引三修/F-20 hooks 交付面四子项/F-21 --check 取 package.json/F-22 覆盖边界/F-26 install-skill 清扫/F-27 作者标识判据/F-28 路径对齐/F-29 裸 # 两豁免/F-30-1/2/3）+ v11 四项（注入快照探针提示/#327 裁决定版/#312 增量豁免/#326 适用性）+ G 清单四条（#333-#335+security §1.7）
+- [x] 承载点口径（活跃 333 条/24 类 全仓一致；facts_sync G 项 PASS：单源 333/上限 335/类数 24/节头范围断言）
+- [x] verify-release 终局复跑 7/7 ALL PASS（A 项双口径打印：PS/UTF-16 + Python/code-point 双 ≤6000；2026-09-16 复跑绿）
+- [x] dist/shisan-xinuo-workflow-v2.9.0.zip 重打 + Set-diff 双检（49 项/283,366B，49=49）
+- [x] 五副本重部署 v2.9.0（备份 `.bak-20260916-pre-v2.9.0`）→ 严格 5/5 PASS count=333；deploy 写入后自动输出探针+重启提示（v11①）
+- [x] syncer 双副本 exit=0（.agents 主+.workbuddy --dest/--memory-target）；**重启 ZCode 应用+新会话探针待用户执行**（发行批前置）
+- [x] 提交 main（本地 commit e0d24e8 路测收官+本批回填）；**push 单独批准**
 
 ## B. 全渠道发行命令清单（v2.9.0 · 待用户批准后执行 ⏳）
 
@@ -54,4 +54,4 @@
 
 - v2.8.0 全渠道已发行（回执见 git 历史版本清单）；ClawHub 1.0.14/1.0.15/1.0.16 scans pending 遗留。
 - GitHub classic PAT 未轮换（用户侧遗留最高优先）。
-- 本批路测续跑：S-B′（ferry 库存前端+连库实测）等 GUI 窗执行——**S-B′ 测 2.8.0 副本行为基线，须在五副本重部署前完成**（重部署顺序约束）。
+- 本批路测续跑已完成（2026-09-16：S-B′/S-A′ 余轮/压缩测针/S-D′，EVIDENCE §三十一）——顺序约束已解除，重部署段执行完毕。
