@@ -553,3 +553,19 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 **局限（如实）**：S-A′ rollout 已被 CLI 清刷（教训 #31），压缩事件以 UI 截图+上下文计数佐证；主控扮演用户=F15 预注册协议；S-B′ 无压缩事件（#326 N/A）。
 
 **判定**：v2.8.0 行为效力验证（v10 全绿+v11 抽样+本轮全量续跑）=**通过并收口**；路测证据链闭合，后续批次以 2.9.0 为新基线。
+
+## 三十二、无头循环路测 v12/v13/v14＋P1 随仓＋TOP 错号修复＋WorkBuddy 复核（2026-09-16 · 用户令「无头路测补缺口，自主循环推进至 08:50，禁真实电脑操作 MCP」）
+
+**范围**：v12 思考链/前置族对照（3 会话）＋迭代 2（scripts/evals 随仓＋TOP 错号修复批）＋v13 无头三通道（3 会话）＋v14 探针/复述观察（2 会话）＋WorkBuddy 注入面复核（只读取证）。工件 D:/roadtest-v12、D:/roadtest-v13、D:/roadtest-v14；预注册 docs/roadtest-v12-plan.md、docs/roadtest-v13-plan.md；判分器随仓 scripts/evals/extract_roadtest.py。
+
+**头条一（思考链触达缺口行为对照实证）**：同任务域隐式 vs 显式对照——隐式审查（复现用户原话风格）思考链族 verdict=none＋五问✗＋前置门✗（与主控会话审计构成缺口第 2 独立样本）；显式点名 verdict=**real**（三拆/约束/因果链/编号引用四标记全中＋五问✓＋前置门✓＋GATE refs=14 grep 实测＋自建 perf-bench 真跑）。**能力在场，缺自动触发**——修复路径 A（注入核心置换）/B（hooks 行）成立性增强（N=1/格，描述性）。
+**头条二（探针首跑回本）**：probe_detail_lookup 24 用例首跑 23/24，唯一 FAIL 揪出**常驻面 TOP 错号**（「响应体只消费一次」错挂 details #270 实为 #269，v2.0.5 索引错位遗传 16 天）——7 活体承载点修复＋索引移域＋探针重跑 24/24；npm「探针 24/24」承诺首获随仓可复跑件。
+**头条三（无头三通道全通）**：TOP 错误推送到达（Bash 失败→TOP 进上下文，v28 问题 6 无头闭环）；L3 必问红线机械命中（破坏性指令文件面零改动＋L3 判级＋AskUserQuestion 不可用即降级结构化文本协议＋结束回合等待＋轻量回滚凭证——红线面最强样本）；lookup 真实执行（toolCalls 级证据＋errpath 实贴＋fixture 残留态识别后转向 11 场景+2 对照组复核）。
+**健康面**：v12-v14 八会话注入锚 51/51 请求在场（v2.9.0）＋hooks 纪律包全绿＋Skill 工具 8/8 自发加载＋GATE 9 字段全绿；新 hooks 文本（#269）新会话实证 33 处、旧错号残留 0（deploy 后探针闭环）。
+**观察面（好坏同列）**：首响应复述形态 v12 3/3 ↔ v13 0/3 ↔ v14 长指令 1/1 教科书级——与 prompt 形态相关（单一动词/破坏性指令倾向直动），N 小不立结论；已列下轮专场景。
+
+**方法论三发现（判分基建级）**：①ZCode rollout 3.12.1 格式变更（messages body→request 层）——旧解析器全失效，repo 判分器已按双位兼容重写；②rollout 轮转清刷提速至 **分钟级**（判分后数分钟原始件即失，「跑一个判一个」从纪律升级为硬约束，extract JSON 为唯一存证）；③无头面注入槽位=AGENTS.md 注入块＋SessionStart/UserPromptSubmit hooks 双通道（非 GUI 面 messages[0]）——NQ-5 口径按面分治。
+
+**WorkBuddy 注入面复核（face G n=24 遗留定论尝试）**：三判据（锚整句/注入首行/hooks 横幅）×近 15 pid 全 592 trace 文件全零→宽松命中经上下文核验=SKILL.md 读取倒影＋自查自述；近期 pid 无 generation 载荷 span（大 gen 文件属采样期外 pid 且键名 messages→prompt）——**注入在缺性判别通道断供，按四要件降「未定论」，70% 无法复核**；文件面健康（AGENTS.md+MEMORY.md 锚在盘）；hooks=平台功能缺位成立（ZCode 侧同判据可检出=对照组）。唯一可信判别=行为面探针 zxc663（用户侧，候选队列）。取证明细 D:/roadtest-v14/workbuddy-forensics.md。
+
+**局限（如实）**：每格 N=1；无 GUI 面对照（面域分离不外推）；C1/C3 与 v13-TOP/ASK rollout 原始件已分钟级清刷（extract JSON 为准）；WorkBuddy 探针待用户执行。
