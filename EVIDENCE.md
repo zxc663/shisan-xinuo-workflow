@@ -569,3 +569,5 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 **WorkBuddy 注入面复核（face G n=24 遗留定论尝试）**：三判据（锚整句/注入首行/hooks 横幅）×近 15 pid 全 592 trace 文件全零→宽松命中经上下文核验=SKILL.md 读取倒影＋自查自述；近期 pid 无 generation 载荷 span（大 gen 文件属采样期外 pid 且键名 messages→prompt）——**注入在缺性判别通道断供，按四要件降「未定论」，70% 无法复核**；文件面健康（AGENTS.md+MEMORY.md 锚在盘）；hooks=平台功能缺位成立（ZCode 侧同判据可检出=对照组）。唯一可信判别=行为面探针 zxc663（用户侧，候选队列）。取证明细 D:/roadtest-v14/workbuddy-forensics.md。
 
 **局限（如实）**：每格 N=1；无 GUI 面对照（面域分离不外推）；C1/C3 与 v13-TOP/ASK rollout 原始件已分钟级清刷（extract JSON 为准）；WorkBuddy 探针待用户执行。
+
+**追记（07:2x）**：v17 思考链显式第二样本（broken.py 复盘题，16 req）=**verdict real 复现**（四标记全中+restate✓+锚 16/16）——显式触发 2/2 vs 隐式 0/2，对照矩阵稳固。superpowers-evals 深读未完成（仓 404 疑改名/私有，网络两败一 404），留候选。
