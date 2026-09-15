@@ -14,6 +14,7 @@
 - [x] syncer 双副本 exit=0（.agents 主+.workbuddy --dest/--memory-target）；**重启 ZCode 应用+新会话探针待用户执行**（发行批前置）
 - [x] 提交 main（本地 commit e0d24e8 路测收官+本批回填）；**push 单独批准**
 - [x] 口径修正批（2026-09-16 审查批 f75eb95+本批）：独立审查报告 docs/audit-v290-review-20260916.md——A 族口径 9 处+同族 5 处+B 族正文历史残留 3 处全修+facts_sync CARRIERS 补 AGENTS.md/reference-sources 第二形态+CHANGELOG 补段；facts_sync/verify 复跑绿。**豁免面义务：本清单=时点快照，每批次开工强制重写（防过期口径指挥发行）**
+- [x] 自主循环批（2026-09-16 05:5x-07:2x，用户令「无头路测补缺口循环至 08:50」）：①审查/对比/触达审计三报告（docs/audit-v290-review、docs/comparison-v290-analysis、docs/audit-cot-touch）②**TOP 错号修复**（「响应体只消费一次」#270→细则 #269，7 活体承载点+索引移域，探针首跑揪出）③**scripts/evals 随仓**（判分器+24 用例探针 24/24——npm 卖点首获可复跑件；仓库工具层不进 dist）④五副本重部署（.bak-20260916-pre-v2.9.0）+syncer 双副本+已部署 hooks（roadtest-v260）补丁 ⑤无头路测 v12-v17 共 10 会话（EVIDENCE §三十二）⑥About §六·五 草案预置（251 字）⑦**发行批新增注意：dist 重打时 tools 须含 scripts/evals 吗——不含（evals=仓库工具层，随 GitHub 仓分发不随 zip）；injection-core 已改（#269），重打前确认 zip 内 details/injection-core 为本 HEAD 版**
 
 ## B. 全渠道发行命令清单（v2.9.0 · 待用户批准后执行 ⏳）
 
