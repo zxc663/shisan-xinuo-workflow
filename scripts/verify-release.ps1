@@ -8,6 +8,9 @@
       B. hooks 三层齐全：templates/hooks/ 含 session-start / session-end / hooks.json，且 hooks.json 同时声明 SessionStart 与 SessionEnd
       C. 版本一致：SKILL.md metadata.version == package.json version
       D. 泄漏红线：发布物范围内不出现个人版路径 / 外部机密目录 / 本仓真实路径 / 真实用户主目录 / 令牌原文（ghp_/gho_/github_pat_）
+      E. 正文净化：常驻/模板面过程注记（日期/拍板/批次词/sess_）命中 = 0
+      F. 索引完整性：details.md 症状索引全覆盖（编号连续、每条细则 ≥1 症状域）
+      G. 事实对账：细则数/条目范围与 details 计算单源一致（facts_sync）
     用途：发布前必跑，任一项不过即退出码 1。本脚本只读、非破坏性，不改动任何文件。
 .PARAMETER Root
     项目根目录，默认取脚本所在目录的上一级。

@@ -13,11 +13,11 @@
 
 ## 二、审查会话结果（09-15 08:1x 完成，报告=skill-review/REPORT.md 54KB）
 
-新会话独立审查 30 项发现（P0×3/P1×11/P2×16）：三 P0（syncer 越界删除用户记忆/泄漏门禁假绿/复述条款三源冲突）**已于 09:00 前当轮修复并验证**（沙箱复现复测 PASS/扫描面 tracked 全量+双斜杠正则/两处公开路径清理/SKILL 三处对齐+口径关系行）；F-15 装副本落后经 syncer 重跑修复（v2.8.0）。**P1×11/P2×16 → 2.9 修正批**（类数 23 单源化/facts_sync 盲区/ANCHOR 单一文件化/症状索引 28 族无入口/F-21 --check 假绿/#328-#332 条文裁决等）。
+新会话独立审查 30 项发现（P0×3/P1×11/P2×16）：三 P0（syncer 越界删除用户记忆/泄漏门禁假绿/复述条款三源冲突）**已于 09:00 前当轮修复并验证**（沙箱复现复测 PASS/扫描面 tracked 全量+双斜杠正则/两处公开路径清理/SKILL 三处对齐+口径关系行）；F-15 装副本落后经 syncer 重跑修复（v2.8.0）。**P1×11/P2×16 → 2.9 修正批**（类数 23 单源化/facts_sync 盲区/ANCHOR 单一文件化/症状索引 28 族无入口/F-21 --check 假绿/#328-#332 条文裁决等）。**（2026-09-15 发行前复核闭环）**：P0×3 修复经本批复跑机证（verify 7/7 D 项 tracked 扫描 0 命中+F-01 每轮复述 grep 三源同义+A/G PASS）；F-15 由五副本重部署 --version 2.8.0 check 5/5 闭环；P1/P2 归类逐条复核无拦发行项，明细见 memory/platform-audit-2609/review-v28-recheck.md；本批仅修随发行面带出的客观口径值（package.json description 314→330/details §23 节头/AGENTS 门禁项数/verify .DESCRIPTION/发行状态表等 9 处）。
 
 ## 三、2.8 发行清单（发行仍须用户另批）
 
-前置：GitHub classic PAT 轮换（用户）＋ClawHub scans 复查。动作：syncer 同步装副本 → verify 7/7（含 G 事实对账）→ dist 重打 → 五副本重部署 → syncer 双副本 → **重启 ZCode 应用** → 新会话注入探针（v2.8.0 锚+330 条确认）→ GitHub/Gitee/npm/ClawHub/About 同步 → 回执。
+前置：GitHub classic PAT 轮换（用户）＋ClawHub scans 复查。（2026-09-15 状态：仍待用户执行，发行批动工前确认；其余筹备项=verify 7/7+dist+五副本重部署+syncer 双副本已由发行前准备批完成）动作：syncer 同步装副本 → verify 7/7（含 G 事实对账）→ dist 重打 → 五副本重部署 → syncer 双副本 → **重启 ZCode 应用** → 新会话注入探针（v2.8.0 锚+330 条确认）→ GitHub/Gitee/npm/ClawHub/About 同步 → 回执。
 
 ## 三、2.9 议程（本次延后项归集）
 

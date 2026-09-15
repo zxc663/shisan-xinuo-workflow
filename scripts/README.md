@@ -4,7 +4,7 @@
 
 ## 零零、build-dist.ps1（发行 zip 打包）
 
-从仓库抽 v2.2.0 发布物到 `dist/shisan-xinuo-workflow-v<version>.zip`（staging 暂存目录法 + Set-diff 双检后压缩）。幂等：目标 zip 已存在先删再建。含 `scripts/` 维护工具与 `skill/` 主交付物全树，用于 GitHub/Gitee Release 附件。
+从仓库抽**当前版本（版本号读 package.json）**发布物到 `dist/shisan-xinuo-workflow-v<version>.zip`（staging 暂存目录法 + Set-diff 双检后压缩）。幂等：目标 zip 已存在先删再建。含 `scripts/` 维护工具与 `skill/` 主交付物全树，用于 GitHub/Gitee Release 附件。
 
 ## 〇、install-skill.ps1（一键安装 · agent- 前缀自适配）
 
@@ -46,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 只读、非破坏性，不改动任何文件。
 
-### 校验项（A–F，v2.8.0 当前口径）
+### 校验项（A–G 七项，v2.8.0 当前口径）
 
 | 项 | 检查内容 | 通过标准 |
 |---|---|---|
@@ -56,6 +56,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 | **D 泄漏红线** | 发布物范围（`skill/` + README/CHANGELOG/EVIDENCE/RELEASE-CHECKLIST + docs/reference-sources.md + package.json/LICENSE + `scripts/`——与 `build-dist.ps1` 打包面同集合） | 无作者机密目录路径 / 无本仓真实绝对路径 / 无真实用户主目录路径（`C:\Users\<名>…`）/ 无令牌原文（ghp_/gho_/github_pat_）/ 发布物内无个人版路径引用（README 版本说明豁免；占位符 `…` 属文档示例，不算泄漏） |
 | **E 正文净化（常驻/模板面）** | `SKILL.md` + `injection-core.md` + references 各 md（details 除外）| 常驻/模板面过程注记（日期/拍板/批次词/sess_）命中 = 0；references 行级来源豁免（`*来源/晋升*` + 节首注记） |
 | **F 索引完整性** | `details.md` 头部症状索引表全覆盖 | 编号 1-N 连续、每条细则 ≥1 症状域覆盖（无未索引条目） |
+| **G 事实对账** | 细则数/条目范围与 `scripts/facts_sync.py` 单源一致（v2.8.0 新增） | FACTS PASS（承载点全部与单源一致；活跃细则数与条目上限由 details 计算而非硬编码） |
 
 ### 退出码
 
@@ -67,14 +68,16 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ### 预期当前输出
 
-v2.3.0 单版本配置下当前应全 PASS：
+v2.8.0 单版本配置下（verify 7 项）当前应全 PASS：
 
 ```
-[PASS] A 内容锚点(主交付物全量特性)   (OK)
-[PASS] B hooks 三层齐全(主交付物)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.3.0 ; package.json version=2.3.0)
-[PASS] D 泄漏红线(发布物)   (0 泄漏)
+[PASS] A 内容锚点+字符预算(主交付物全量特性)   (OK)
+[PASS] B hooks 三层(警告级)   (OK)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.8.0 ; package.json version=2.8.0)
+[PASS] D 泄漏红线(发布物)   (扫描面内 tracked 文件 0 命中)
 [PASS] E 正文净化(常驻/模板面过程注记=0)   (OK)
+[PASS] F 索引完整性(details 编号连续+症状索引全覆盖)   (OK)
+[PASS] G 事实对账(细则数/条目范围 单源)   (FACTS PASS)
 ```
 
 ### 何时必跑
