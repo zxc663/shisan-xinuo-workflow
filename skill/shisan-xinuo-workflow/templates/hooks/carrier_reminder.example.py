@@ -3,6 +3,18 @@ import os
 import sys
 from pathlib import Path
 
+def _hook_log(msg):
+    """钩子异常/静默兜底：写独立 hook-log（不入会话输出）；位置可用 HOOK_LOG 环境变量覆盖。"""
+    import os
+    from datetime import datetime
+    p = os.environ.get('HOOK_LOG') or os.path.join(os.path.expanduser('~'), '.zcode', 'cli', 'hooks-log.txt')
+    try:
+        with open(p, 'a', encoding='utf-8') as f:
+            f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}" + chr(10))
+    except Exception as e:
+        _hook_log(f'{__file__}: 输出推送失败 {e}')
+
+
 # SessionStart 纪律包注入（hooks=实证最强触达载体）：每次会话启动无条件注入最小纪律包
 # （状态行模板 + TOP 一行 + GATE 指针）；cwd 是 git 项目且无 memory/agent-log.md 时
 # 附加承载检查提醒行。措辞与注入核心常驻保留集同源，改措辞先改注入核心再同步此处。
@@ -29,8 +41,9 @@ CARRIER_HINT = (
 try:
     raw = sys.stdin.read()
     payload = json.loads(raw) if raw.strip() else {}
-except Exception:
+except Exception as e:
     payload = {}
+    _hook_log(f'{__file__}: stdin 解析失败 {e}')
 
 context = DISCIPLINE_PACK
 cwd = payload.get("cwd") or os.getcwd()
@@ -38,9 +51,9 @@ try:
     root = Path(cwd)
     if (root / ".git").exists() and not (root / "memory" / "agent-log.md").is_file():
         context += "\n" + CARRIER_HINT
-except Exception:
-    pass
+except Exception as e:
+    _hook_log(f'{__file__}: 异常 {e}')
 try:
     print(json.dumps({"additionalContext": context}, ensure_ascii=False))
-except Exception:
-    pass  # 任何异常静默放行，不阻塞会话
+except Exception as e:
+    _hook_log(f'{__file__}: 异常 {e}')  # 任何异常静默放行，不阻塞会话

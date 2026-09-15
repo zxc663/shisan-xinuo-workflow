@@ -56,7 +56,7 @@ if (-not (Test-Path $main)) {
 # ---------- A. 内容锚点（门禁修复：校验内容覆盖度，防「门禁全绿但内容降级」） ----------
 $anchorsSkill = @(
     "L2-S",            # 三级跑道·短工作流
-    "L2-F",            # 三级跑道·完整 11 步
+    "L2-F",            # 三级跑道·完整 9 步
     "对接真相",         # 对接真相清单
     "GATE:",           # GATE 完成块
     "zxc663",          # 彩蛋自检
@@ -69,7 +69,7 @@ $anchorsSkill = @(
 $anchorsCore = @(
     "L2-S", "L2-F", "对接真相", "三级同步链", "Base directory",
     "保留清单",          # v2.1 Preserver 保留清单五必留（压缩/折叠/交接前核对）
-    "项目级注入点"       # v2.1.1 开工六步：项目规则文件按平台注入点表定名
+    "项目级注入点"       # 承载检查：项目规则文件按平台注入点表定名
 )
 $newBootstrap = Join-Path $skDir "references\new-project-bootstrap.md"
 $probsA = @()
@@ -84,7 +84,10 @@ if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
     if ($coreLen -gt 6000) { $probsA += "injection-core 字符数 $coreLen 超硬上限 6000（常驻瘦身预算，目标 4K）" }
 }
 if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-bootstrap.md" }
-Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core $coreLen 字符 ≤6000）"}else{$probsA -join ";"})
+$pyLen = 0
+try { $pyLen = [int](python -c "import sys; print(len(open(sys.argv[1], encoding='utf-8').read().replace(chr(13),'')))" "$core" 2>$null) } catch { $pyLen = -1 }
+if ($pyLen -gt 6000 -and $pyLen -ge 0) { $probsA += "injection-core Python/code-point 口径 $pyLen 超 6000" }
+Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤6000）"}else{$probsA -join ";"})
 
 # ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
@@ -131,7 +134,7 @@ if (-not $SkipLeak) {
                 $leakHits += "$rel :: 发布物内引用个人版路径"
             }
     }
-    Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"扫描面内 $scanned 个 tracked 文件 0 命中（豁免：scripts/ 自引用、历史过程档）"}else{$leakHits -join ";"})
+    Add-Result ($leakHits.Count -eq 0) "D 泄漏红线(发布物)" $(if($leakHits.Count -eq 0){"扫描面内 $scanned 个 tracked 文件 0 命中（豁免：scripts/ 自引用、历史过程档；作者标识判据=security.md §5）"}else{$leakHits -join ";"})
 }
 
 # ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1 起；references 面史料豁免——details 来源字段/节首注记为双击晋升准入证据） ----------
@@ -166,13 +169,14 @@ $probsF = @()
 $detailsPath = Join-Path $skDir "references\details.md"
 if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
     $dtxt = Get-Content $detailsPath -Raw -Encoding UTF8
-    # 1) 编号连续：条目编号 = 行首 `N. `（含标签可选）
-    $nums = [regex]::Matches($dtxt, '(?m)^(\d+)\. ') | ForEach-Object { [int]$_.Groups[1].Value }
-    $nums = $nums | Sort-Object -Unique
-    $expect = 1..($nums.Count)
-    $gap = Compare-Object $expect $nums
+    # 1) 编号连续：条目编号 = 行首 `N. `（含标签可选）；特殊槽（〔预留槽〕/〔归档〕）不参与覆盖断言（F-19：索引不挂预留槽）
+    $allNums = [regex]::Matches($dtxt, '(?m)^(\d+)\. ') | ForEach-Object { [int]$_.Groups[1].Value }
+    $special = [regex]::Matches($dtxt, '(?m)^(\d+)\. .*(〔预留槽〕|〔归档〕)') | ForEach-Object { [int]$_.Groups[1].Value }
+    $nums = $allNums | Where-Object { $special -notcontains $_ } | Sort-Object -Unique
+    $expect = 1..($allNums | Sort-Object -Unique | Select-Object -Last 1)
+    $gap = Compare-Object $expect ($allNums | Sort-Object -Unique)
     if ($gap) { $probsF += "编号不连续: $($gap | ForEach-Object { $_.InputObject } | Select-Object -First 5)..." }
-    # 2) 索引段覆盖：## 症状索引 与 ## 1. 之间每个编号出现 ≥1 次
+    # 2) 索引段覆盖：## 症状索引 与 ## 1. 之间每个活跃编号出现 ≥1 次
     $mIdx = [regex]::Match($dtxt, '(?s)## 症状索引.*?(?=\n## 1\.)')
     if (-not $mIdx.Success) { $probsF += "缺症状索引段" } else {
         $idxSeg = $mIdx.Value
@@ -181,6 +185,10 @@ if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
             if ($idxSeg -notmatch ('#' + $n + '([,\s]|$)')) { $missingIdx += $n }
         }
         if ($missingIdx.Count -gt 0) { $probsF += "索引未覆盖: #" + ($missingIdx -join ',#') }
+        # 3) 关键域行在场（F-23 域可检索断言——域族行被误删即红）
+        foreach ($dom in @('性能与首屏反馈','数据迁移与库变更','超时熔断与限流','备份与恢复演练','项目导航')) {
+            if ($idxSeg -notmatch [regex]::Escape($dom)) { $probsF += "索引缺关键域行[$dom]" }
+        }
     }
 }
 Add-Result ($probsF.Count -eq 0) "F 索引完整性(details 编号连续+症状索引全覆盖)" $(if($probsF.Count -eq 0){"OK ($($nums.Count) 编号全覆盖·活跃数见 deploy --check)"}else{$probsF -join ";"})
