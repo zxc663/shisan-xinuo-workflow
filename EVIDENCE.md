@@ -537,3 +537,19 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 **验证**：verify 7/7 ALL PASS 终局（v2.9.0；A 双口径/F 333 编号全覆盖+五域行/G FACTS PASS 333/335/24/节头）；deploy --check F-21 生效实测（五副本 330 真实 FAIL=副本落后如实暴露）；py_compile 三脚本+hooks 三模板语法 OK；hooks.example.json JSON valid。
 
 **未验证项**：五副本重部署 v2.9.0+syncer 双副本+dist 重打（**待 S-B′ 路测完成后执行**——S-B′ 测 2.8.0 副本行为基线，重部署顺序约束）；发行面（L3 另批）；hooks 活体迁移出 roadtest 目录（候选队列，等拍板）；S-B′ GUI 窗。
+
+
+## 三十一、路测 v11 全量续跑（2026-09-16 · v28 计划剩余场景收官）
+
+**范围**：S-B′（ferry 库存前端+连库实测，GUI 主战场，sess_f790c097）+ S-A′ 余轮（dev-env-checker 轮 5-6+手动 /compact 测针，sess_80d31924）+ S-D′ 补样本（无头 SD11，sess_e32b9fb3）+ face G n=22/n=23 归档。summary=D:oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
+
+**头条一（回指加载行为面首实证）**：S-B′ 会话 Skill 工具真实调用 `{"skill":"shisan-xinuo-workflow"}`——v2.8.0「回指加载强制」从机制在场走到行为发生（v11 系列三样本 0 加载后首例自发加载）。
+**头条二（注入快照机制行为面因果闭环）**：S-A′（09-14 创建，v2.7.1 冻结注入）压缩后首轮复述/判级保持但无接续声明、无重载 Skills——被测看不到 2.8.0 的 #326 条款；与新会话（2.8.0 快照）行为面全绿形成同机对照，§二十九追记二的机制定论补全行为后果实证，「发行后重启 ZCode」步骤依据夯实。
+**NQ-5**：S-B′ 88/89 请求注入锚在 messages[0]（在场提示+hooks 纪律包+每轮复述同步到达）；S-D′ 无头面 SessionStart 纪律包 5/5。
+**代际对照（#327 效力）**：v10 S-B「refs=3 自估未实测」（n=23 自报）↔ v11 S-B′「refs=1 grep 实测」+S-A′ 轮 5「refs=细则引用3处(#233 两处…#294 一处…)」——条款效力有对照实证。
+**行为面广度**：#284 设计档前置（inventory-frontend.md+按档回指）、#233 对接真相表 8 端点带 source:line+实测响应、复用铁律、errpath 六项真实处置、/compact 压缩 208,416→26,341 实证、sha256 核对 exe=commit。
+**真实性**：ferry 连库全链通（MySQL 建库导种/Docker ferry-redis/8002+9527 双 200/内嵌浏览器走查截图）；ferry 3 commit+ferry_web 1 commit+dev-env-checker 2 commit，工作树干净。
+
+**局限（如实）**：S-A′ rollout 已被 CLI 清刷（教训 #31），压缩事件以 UI 截图+上下文计数佐证；主控扮演用户=F15 预注册协议；S-B′ 无压缩事件（#326 N/A）。
+
+**判定**：v2.8.0 行为效力验证（v10 全绿+v11 抽样+本轮全量续跑）=**通过并收口**；路测证据链闭合，后续批次以 2.9.0 为新基线。
