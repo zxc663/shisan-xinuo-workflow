@@ -28,7 +28,7 @@ DISCIPLINE_PACK = (
     "错误必查 TOP（处置后必留 errpath 行 症状→处置路径）："
     "#294 Edit 报 not read/modified=文件双通道混用｜#233 命名直觉=假绿｜#228 改包先重编｜"
     "#229 常驻进程旧 dist｜#214 响应分层断言｜#163 统一错误契约｜"
-    "#256·#270 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体\n"
+    "#256·#269 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体\n"
     "收尾 GATE 9 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt"
     "（权威定义=注入核心交付段；refs 填 grep 实测值，禁自估）"
 )
