@@ -1,8 +1,8 @@
-# 发行执行清单（v2.8.0 待发行 · 2026-09-15 发行前准备批完成；发行仍须用户另批）
+# 发行执行清单（v2.8.0 · 2026-09-15 已全渠道发行；本档为发行回执与历史命令清单）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
 > **版本沿革**：v2.6.0/v2.7.0/v2.7.1 已全渠道发行（GitHub/Gitee/npm/ClawHub/About；v2.5.0-v2.7.1 Gitee 四版补发完成 2026-09-12）。**v2.8.0 = 行为效力验证通过版**（docs/v28-final-call.md 定调：路测 v10 全绿 EVIDENCE §二十九 + v11 抽样正向 EVIDENCE 追记二/四 + 独立审查 30 项 P0 当轮闭环 P1/P2 入 2.9；facts_sync 事实对账 verify 7/7；细则 330 条/17 类；内容定稿 39cc21a+c450950+80b31be+e0dac4d 合入态）。
-> **发行前前置（用户侧，本批不代做）**：①GitHub classic PAT 轮换（v2.0.3 起遗留）②ClawHub security scans 复查（1.0.14/1.0.15，pending）。两项完成并告知后再动发行批。
+> **发行回执（2026-09-15）**：五渠道已发行（GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending）。**残留待办**：①GitHub classic PAT 轮换（v2.0.3 起遗留，发行毕即应轮换）②ClawHub security scans 复查（1.0.14/1.0.15/1.0.16，pending）。
 
 ## A. 本仓已备（发行前准备批产出；[ ] = 终局门禁复跑后确认回填）
 
@@ -23,12 +23,12 @@
 
 | # | 渠道 | 命令要点 | 状态 |
 |---|---|---|---|
-| 1 | push | `git push origin main` + `git tag v2.8.0 <commit> && git push origin v2.8.0`（走代理） | ⏳ 待批 |
-| 2 | GitHub Release | 创建 Release v2.8.0（标题+要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`；REST JSON body 无 BOM UTF8） | ⏳ 待批 |
-| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（仓库 `.npmrc` 的 `${GITHUB_TOKEN}` 变量引用法）——description 已校 330/17 类口径 | ⏳ 待批 |
-| 4 | ClawHub | 提交 v2.8.0 更新（沿用 1.0.x 递增；先复查 1.0.14/1.0.15 scans） | ⏳ 待批+scans |
-| 5 | About | GitHub 侧 PATCH（**用 项目信息.md §六·四 PATCH 压缩版，发行时校算 ≤350**；完整版作口径基准） | ⏳ 待批 |
-| 6 | Gitee | push/tag v2.8.0 + Release + About（令牌已轮换 2026-09-12，32-hex 有效） | ⏳ 待批 |
+| 1 | push | `git push origin main` + `git tag v2.8.0 <commit> && git push origin v2.8.0`（走代理） | ✅ 完成（main+tag v2.8.0 fcb0399） |
+| 2 | GitHub Release | 创建 Release v2.8.0（标题+要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`；REST JSON body 无 BOM UTF8） | ✅ 完成（id=388839566，zip 271,482B） |
+| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（仓库 `.npmrc` 的 `${GITHUB_TOKEN}` 变量引用法）——description 已校 330/17 类口径 | ✅ 完成（@zxc663/shisan-xinuo-workflow@2.8.0，38 文件） |
+| 4 | ClawHub | 提交 v2.8.0 更新（沿用 1.0.x 递增；先复查 1.0.14/1.0.15 scans） | ⏳ 已提交 1.0.16（scans 待过） |
+| 5 | About | GitHub 侧 PATCH（**用 项目信息.md §六·四 PATCH 压缩版，发行时校算 ≤350**；完整版作口径基准） | ✅ 完成（GitHub+Gitee len=265） |
+| 6 | Gitee | push/tag v2.8.0 + Release + About（令牌已轮换 2026-09-12，32-hex 有效） | ✅ 完成（push+tag+Release id=1144623+zip 附件） |
 | 7 | PAT 轮换 | 发行完成即 GitHub classic PAT 轮换（用户生成新 PAT → 更新机密文档 → 旧作废） | ⏳ 用户侧 |
 
 ## C. 复用要点（v2.6.0-v2.7.1 实证沿用）
@@ -58,4 +58,4 @@
 - v2.7.0/v2.7.1 已全渠道（GitHub/Gitee/npm/ClawHub 1.0.14/1.0.15/About）；Gitee v2.5.0-v2.7.1 四版补发完成回执在场。
 - ClawHub 1.0.14/1.0.15 security scans 仍 pending——发行批第一动作复查。
 - GitHub classic PAT 未轮换——v2.8.0 发行前置（用户侧）。
-- 本清单/README/项目信息/CHANGELOG 均以「v2.8.0 待发行」为当前态，杜绝发行前双源矛盾（F-08/F-30-5 修正落实）。
+- 本清单/README/项目信息/CHANGELOG 均已校准为「v2.8.0 已发行」态（2026-09-15 发行批后一致性复核）。

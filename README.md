@@ -246,14 +246,14 @@ shisan-xinuo-workflow/              ← 仓库根
 
 | 渠道 | 最新已发行 | 状态 |
 |---|---|---|
-| GitHub Release | v2.7.1（2026-09-12，附 dist zip） | **v2.8.0 待发行**（发行前准备完成，待用户批准后 L3 执行） |
-| npm `@zxc663/shisan-xinuo-workflow` | 2.7.1 | **2.8.0 待发行**（description 待同步 330/17 类口径） |
-| Gitee 镜像 | v2.7.1（2026-09-12） | v2.5.0/v2.6.0/v2.7.0/v2.7.1 四版已补发（含 zip 资产） |
-| ClawHub | 1.0.15 | security scans 复查待办（1.0.14/1.0.15） |
-| skills.sh / About 双端 | 收录 / v2.7.1 文案 | 随 GitHub 同步（v2.8.0 发行时 About 用 项目信息 §六·四 330 口径） |
+| GitHub Release | **v2.8.0**（2026-09-15，附 dist zip） | ✅ 已发行（Release id=388839566，zip 271,482B） |
+| npm `@zxc663/shisan-xinuo-workflow` | **2.8.0** | ✅ 已发行（description 已含 330 条细则 17 类口径；38 文件） |
+| Gitee 镜像 | **v2.8.0**（2026-09-15） | ✅ 已发行（tag+Release id=1144623+zip 附件 271,482B） |
+| ClawHub | **1.0.16** | ⏳ 已提交（pending-publication，security scans 复查待办：1.0.14/1.0.15/1.0.16） |
+| skills.sh / About 双端 | **v2.8.0 文案** | ✅ 随 GitHub/Gitee 同步（About PATCH len=265 ≤350，§六·四 330 口径） |
 | 各平台注入副本（本机） | **v2.8.0** | 五副本 check 5/5（count=330，与源库一致） |
 
-> 本表快照时间：2026-09-15（发行前准备批完成后）。发行史明细见 CHANGELOG / RELEASE-CHECKLIST / 项目信息.md。
+> 本表快照时间：2026-09-15（v2.8.0 已全渠道发行后）。发行史明细见 CHANGELOG / RELEASE-CHECKLIST / 项目信息.md。
 
 ## 参考项目 · Reference projects
 
@@ -311,7 +311,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **每版一句话；完整明细统一归档 [`CHANGELOG.md`](CHANGELOG.md)（逐版台账）与 git 历史，本节不再重复。**
 
-- **v2.8.0**（2026-09-15 定调·发行前准备完成，待发行）：2.7.2 修正批整体并入（每轮复述强制 / 回指加载 ANCHOR+hooks 双通道 / 压缩接续+重载在用 Skills #326 / 系统级配置判级 #328 / 账目对账 #330 / 纯文档 commit 基线 #331 / 开工前置强制门 #332 / post_tool_guard Bash 失败守卫 / UserPromptSubmit 每轮再触达）+ 独立审查 30 项 P0 当轮闭环（P1×11+P2×16 入 2.9）+ facts_sync 事实对账（verify 7/7）；细则 **330 条/17 类**。
+- **v2.8.0**（2026-09-15 已全渠道发行）：2.7.2 修正批整体并入（每轮复述强制 / 回指加载 ANCHOR+hooks 双通道 / 压缩接续+重载在用 Skills #326 / 系统级配置判级 #328 / 账目对账 #330 / 纯文档 commit 基线 #331 / 开工前置强制门 #332 / post_tool_guard Bash 失败守卫 / UserPromptSubmit 每轮再触达）+ 独立审查 30 项 P0 当轮闭环（P1×11+P2×16 入 2.9）+ facts_sync 事实对账（verify 7/7）；细则 **330 条/17 类**。
 - **v2.7.1**（2026-09-12 补丁版·描述口径同步）：npm/GitHub/Gitee/ClawHub 全渠道介绍文案同步 v2.7.0 完整口径（314 条细则 / 17 类 / 注入核心 5,991 字符 ≤6K / hooks 纪律包 / GATE 九字段）；修复 README 文件尾孤儿字符；六·三 About 口径基准更新（5,203→5,991 / 303→314）。
 - **v2.7.0**（2026-09-12 本地批次收口定稿，已发行——push/发行单独批准，Gitee 侧待补）：条款六销项（GATE 9 字段单源 / errpath 事后化 / lookup 修复模板 / 状态行 / 微轮次豁免 / 记忆路由裁决）+ **注入核心瘦身 11,560→5,991 字符**（≤6K 硬上限内；在场提示单一权威源）+ **hooks 纪律包注入**（SessionStart 常驻提醒 + PostToolUseFailure 错误时刻 TOP 推送）+ 判例审入（294→303）+ **必问底线十维**（路测 v6 驱动，#306-#311）+ **评审与接手批**（#307 git 场景化上移 / #312-#315 / #316 接手必补全景）+ **复杂度减法批**（GATE 一行式分级定版 / 三源压义务清单 / 降采样合法化）+ 路测 v5-v8 八轮（无头面注入断裂发现 / NQ 主表首跑 / 真实项目实测）；**活跃 314 条·17 类定稿**。
 - **v2.6.0**（2026-09-09 已发行；Gitee 侧待补）：流程简化（开工六步→四步 / L2-F 11→9 步 / 完成后更新序 6→4）+ 设计规范档前置 + 平台原生记忆分工 + 跨项目经验回流与触达渠道修复（细则 283→294、detail_lookup 一键检索端口、部署工具化）。
