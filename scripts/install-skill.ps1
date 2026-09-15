@@ -68,6 +68,8 @@ $root = Split-Path -Parent $PSScriptRoot
 $probeOrder = @("workbuddy", "claude", "agents", "codex", "cursor", "trae", "zcode")
 
 # ---------- 平台 -> 技能目录 / 注入点 ----------
+# 路径口径对齐（F-28）：技能目录以本机活体 Base directory 为准（zcode/agents 共用 $HOME\.agents\skills——
+# 与 syncer.py --dest 默认、deploy_injection.py SKILL_SRC 派生同源；前缀由 -Prefix 参数控制，非目录差异）
 $skillsMap = @{
     "claude"    = @{ dir = "$HOME\.claude\skills";      inject = "" }
     "codex"     = @{ dir = "$HOME\.codex\skills";       inject = "$HOME\.codex\AGENTS.md" }
@@ -75,7 +77,7 @@ $skillsMap = @{
     "agents"    = @{ dir = "$HOME\.agents\skills";      inject = "" }
     "cursor"    = @{ dir = "$HOME\.cursor\skills";      inject = "" }
     "trae"      = @{ dir = "$HOME\.trae\skills";        inject = "$HOME\.trae-cn\user_rules\shisan-xinuo-workflow.md" }
-    "zcode"     = @{ dir = "$HOME\.zcode\skills";       inject = "$HOME\.zcode\AGENTS.md" }
+    "zcode"     = @{ dir = "$HOME\.agents\skills";      inject = "$HOME\.zcode\AGENTS.md" }
 }
 
 if (-not $Source) { $Source = Join-Path $root "skill\shisan-xinuo-workflow" }
@@ -198,15 +200,42 @@ if ($MemoryFile) {
                 # 提取模板中代码块内的锚点（首行为在场提示）；避免把模板说明注释写进记忆文件
                 $m = [regex]::Match($anchorText, '(?s)```markdown\r?\n(.*?)\r?\n```')
                 if ($m.Success) { $anchorBody = $m.Groups[1].Value } else { $anchorBody = $anchorText }
+                # 版本占位替换（对齐 syncer：模板 vX.Y.Z → 源 SKILL.md frontmatter 版本，防占位符落盘）
+                $skFront = Get-Content -Raw -Encoding UTF8 (Join-Path $Source "SKILL.md")
+                $vm = [regex]::Match($skFront, '(?m)^\s*version:\s*([0-9]+\.[0-9]+\.[0-9]+)')
+                if ($vm.Success) { $anchorBody = $anchorBody.Replace("vX.Y.Z", "v$($vm.Groups[1].Value)") }
+                else { Write-Warning "[记忆] SKILL.md 未解析到版本号，锚点保留 vX.Y.Z 占位" }
                 $prev = ""
+                $cleanedVersions = @()
                 if (Test-Path $MemoryFile) {
                     Copy-Item -Path $MemoryFile -Destination "$MemoryFile.bak-$ts" -Force
                     $prev = Get-Content -Raw -Encoding UTF8 $MemoryFile
                     Write-Host "[记忆] 备份既有记忆文件 → $MemoryFile.bak-$ts"
+                    # 旧锚清扫（F-26，判据对齐 syncer P0 修复版）：「在场提示」锚点块（标题行起 → 任意层级标题即停）整体移除，
+                    # 治「每次追加新锚、旧版本锚永久残留」；删除留痕输出，完整内容见备份
+                    $kept = New-Object System.Collections.Generic.List[string]
+                    $removed = New-Object System.Collections.Generic.List[string]
+                    $inAnchor = $false
+                    foreach ($ln in ($prev -split "(?<=`n)")) {
+                        if ($ln -match '^#{2,4} 在场提示 · 工作流 Skill 现已在场') {
+                            $inAnchor = $true
+                            $vhit = [regex]::Match($ln, 'v\d+\.\d+\.\d+')
+                            $cleanedVersions += $(if ($vhit.Success) { $vhit.Value } else { '?' })
+                            continue
+                        }
+                        if ($inAnchor -and $ln -match '^#{1,6}(\s|$)') { $inAnchor = $false }
+                        if ($inAnchor) { $removed.Add($ln) } else { $kept.Add($ln) }
+                    }
+                    if ($removed.Count -gt 0) {
+                        Write-Host "[记忆清扫留痕] 本块将删除 $($removed.Count) 行（预览前 5 行，完整内容见备份）："
+                        $removed | Select-Object -First 5 | ForEach-Object { Write-Host "  - $($_.TrimEnd().Substring(0, [Math]::Min(80, $_.TrimEnd().Length)))" }
+                    }
+                    $prev = ($kept -join "")
                 }
                 $sep = if ($prev.Trim().Length -gt 0) { "`n`n---`n" } else { "" }
                 Set-Content -Path $MemoryFile -Value ($prev.TrimEnd() + $sep + $anchorBody) -Encoding UTF8
-                Write-Host "[记忆] $(if ($prev.Trim().Length -gt 0) { '合并（既有内容保留在上方）' } else { '新建' }) → $MemoryFile"
+                $cleanTag = if ($cleanedVersions.Count -gt 0) { "；旧锚清扫 $($cleanedVersions.Count) 块[$($cleanedVersions -join ',')]" } else { "" }
+                Write-Host "[记忆] $(if ($prev.Trim().Length -gt 0) { '合并（既有内容保留在上方）' } else { '新建' }) → $MemoryFile$cleanTag"
                 Write-Host "[记忆] 在场提示已写入首行 —— 新会话读到即识别「工作流 Skill 现已在场」"
             }
         }
