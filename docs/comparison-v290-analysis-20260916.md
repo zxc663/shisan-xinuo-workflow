@@ -58,3 +58,10 @@
 - 建议 3（承接 P2）：platform-adaptation.md 增「平台能力矩阵」，把 Cursor glob/Kiro fileMatch/ZCode 无 SessionEnd/WorkBuddy hooks 缺位等显式记档（C3）。
 - 建议 4：README 对比段补 rulesync/Kiro 两个新对标（现对比表只对手写 AGENTS.md）；发行文案可加「唯一含规则口径对账器（facts_sync）的 Skill」一句。
 - 建议 5：观察 rulesync 的 ZCode 目标支持与 agentskills.io 标准演进，不动手。
+
+## 附录（2026-09-16 14:5x 追记 · 批 5 源码级补强：superpowers-evals 真身）
+
+- 真身定位：`prime-radiant-inc/superpowers-evals`（114★，2,006 commits，TypeScript/Bun；obra/superpowers=其私有主的公开镜像）。harness 名 **Quorum**：驱动 9 个真实 coding-agent CLI（Claude/Codex/Antigravity/Gemini/Hermes/Kimi/OpenCode/Pi/Copilot）＋ **Gauntlet（LLM 判分）** ＋确定性 post-checks。
+- 定位自述：「eval lab for **workflow compliance**: skill triggering, worktree behavior, subagent coordination, verification reflexes, review quality, cost-shaping」——与本 Skill「纪律被验证」维度正面同类。
+- **可借鉴三形态**：①**treatment/stock 双臂内置**（conversation_routine_use 套件：同 harness/模型/effort 下「superpowers: none」对照臂 vs 处理臂，36-attempt 级样本）——正对本仓「规则有效性 A/B 未达显著」的实验缺口，对照臂已是其产品形态；②**对话式场景＋私有判据＋独立 assessor**（author 写 user-like 对话与 Acceptance Criteria，判据不进被测上下文，capture 后独立 assessor 判分）——防自评污染（对应本仓 S3 假 errpath 教训的机制化）；③**隔离 HOME＋双模式安全线**（throwaway per-run home＋静态 checks 可 CI/live evals 仅信任维护者）。
+- 本仓对位：scripts/evals 判分器（rollout 逐请求结构判分）=同方向轻量第一步；差距=无对照臂自动化、判分与被测同体（自评）、无隔离环境。**结论加严**：C1 缺口的成熟形态明确为「双臂对照＋独立判分＋隔离环境」，本仓补齐顺序建议=先对照臂（每次路测强制加无规则 arm）→再判分隔离（判据预注册私有化）→隔离环境最后。
