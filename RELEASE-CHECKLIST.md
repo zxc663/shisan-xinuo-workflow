@@ -1,18 +1,18 @@
-# 发行执行清单（v2.9.0 · 批次施工完成待发行；上版 v2.8.0 回执要点见版本沿革行，全文在 git 历史）
+# 发行执行清单（v2.9.0 · 发行批已回填；上版 v2.8.0 回执要点见版本沿革行，全文在 git 历史）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
-> **版本沿革**：v2.8.0 已全渠道发行（2026-09-15：GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending；回执全文见 git 历史与本清单 v2.8.0 版）。**v2.9.0 = 2.9 修正批+续批**（独立审查 P1×11+P2×16 机制级 23 项+v11 新增四项裁决+G 清单四点调研立条 #333-#335+G 直写批 #336-#344+#295 双击转正；细则终态 343 条/24 类——333 为修正批时点值；facts_sync 断言升级：类数=分节数+节头范围；docs/design-specs/g-items-research-290.md 调研档）。
+> **版本沿革**：v2.8.0 已全渠道发行（2026-09-15：GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending；回执全文见 git 历史与本清单 v2.8.0 版）。**v2.9.0 = 2.9 修正批+续批**（独立审查 P1×11+P2×16 机制级 23 项+v11 新增四项裁决+G 清单四点调研立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则终态 **344 条/25 类**——343/24 为转正批时点值，345 为条目上限；facts_sync 断言升级：类数=分节数+节头范围；docs/design-specs/g-items-research-290.md 调研档）。
 
 ## A. 本仓已备（2.9 批施工产出；[ ] = 终局门禁复跑后确认回填）
 
 - [x] 版本锁 2.9.0（package.json / SKILL frontmatter / README 徽章与版本历史 / docs/project-info / reference-sources / AGENTS；项目信息 §六·四 About 口径待发行批校算）——verify C 项 PASS（2.9.0=2.9.0）
-- [x] 内容 v2.9.0 全量（含 G 直写批 #336-#344+#295 双击转正，细则 343）：审查 P1×11+P2×16 机制级（F-02 类数单源化/F-03 facts_sync 承载点补齐/F-04 verify A 双口径/F-06 #272 文件名/F-10 #328 判级权威锚定/F-12 #329 适用前提/F-13 #330 名词通用化/F-14 #332 适用范围+SKILL §2.0 前置门/F-17 ANCHOR 单一文件化/F-18 #327-#331 回指/F-19/F-23/F-24 索引三修/F-20 hooks 交付面四子项/F-21 --check 取 package.json/F-22 覆盖边界/F-26 install-skill 清扫/F-27 作者标识判据/F-28 路径对齐/F-29 裸 # 两豁免/F-30-1/2/3）+ v11 四项（注入快照探针提示/#327 裁决定版/#312 增量豁免/#326 适用性）+ G 清单四条（#333-#335+security §1.7）
-- [x] 承载点口径（活跃 343 条/24 类 全仓一致；facts_sync G 项 PASS：单源 343/上限 344/类数 24/节头范围断言——G 直写批时点 342，#295 转正后终态 343，2026-09-16 复验）
+- [x] 内容 v2.9.0 全量（含 G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345，细则 344）：审查 P1×11+P2×16 机制级（F-02 类数单源化/F-03 facts_sync 承载点补齐/F-04 verify A 双口径/F-06 #272 文件名/F-10 #328 判级权威锚定/F-12 #329 适用前提/F-13 #330 名词通用化/F-14 #332 适用范围+SKILL §2.0 前置门/F-17 ANCHOR 单一文件化/F-18 #327-#331 回指/F-19/F-23/F-24 索引三修/F-20 hooks 交付面四子项/F-21 --check 取 package.json/F-22 覆盖边界/F-26 install-skill 清扫/F-27 作者标识判据/F-28 路径对齐/F-29 裸 # 两豁免/F-30-1/2/3）+ v11 四项（注入快照探针提示/#327 裁决定版/#312 增量豁免/#326 适用性）+ G 清单四条（#333-#335+security §1.7）
+- [x] 承载点口径（活跃 **344 条/25 类** 全仓一致；facts_sync G 项 PASS：单源 344/上限 345/类数 25/节头范围断言——推荐序施工批终态，2026-09-16 复验）
 - [x] verify-release 终局复跑 7/7 ALL PASS（A 项双口径打印：PS/UTF-16 + Python/code-point 双 ≤6000；2026-09-16 复跑绿）
-- [x] dist/shisan-xinuo-workflow-v2.9.0.zip 终版重打（**已于 2026-09-16 07:22 循环批提前完成**——Set-diff 双检 49=49、289,627B；python 实测：details 最大编号 344/活跃 343＋#295 转正条在包＋injection-core #269 新 TOP 无 #270 残留＋scripts/evals 不随 zip；旧 333 中间态 zip 备份 .bak-20260916-333interim。发行批仍须复核本行三项实测后上传）
-- [x] 五副本重部署 v2.9.0（备份 `.bak-20260916-pre-v2.9.0`+G 直写批后再部署）→ 严格 5/5 PASS count=342（G 直写批时点；#295 转正批后再部署复验 5/5 count=343，2026-09-16 审查批机证复现）；deploy 写入后自动输出探针+重启提示（v11①）
+- [x] dist/shisan-xinuo-workflow-v2.9.0.zip 终版重打（**已于 2026-09-16 13:5x 推荐序施工批再重打**——Set-diff 双检 49=49、291,937B；python 五点实测：**#345 走查收敛判据在包＋#295 转正条在包＋#269 新 TOP 无旧 #270 残留＋PA 平台能力矩阵＋hooks 思考链行**；scripts/evals 不随 zip；**发行批复核五点半实测通过（2026-09-16 本批）**）
+- [x] 五副本重部署 v2.9.0（备份 `.bak-20260916-pre-v2.9.0`）→ 严格 5/5 PASS count=344（2026-09-16 推荐序施工批后再部署复验，本发行批机证复现）；deploy 写入后自动输出探针+重启提示（v11①）
 - [x] syncer 双副本 exit=0（.agents 主+.workbuddy --dest/--memory-target）；**重启 ZCode 应用+新会话探针待用户执行**（发行批前置）
-- [x] 提交 main（本地 commit e0d24e8 路测收官+本批回填）；**push 单独批准**
+- [x] 提交 main（本地 commit 098dd0b 推荐序施工批+本批回填）；**push 单独批准**
 - [x] 口径修正批（2026-09-16 审查批 f75eb95+本批）：独立审查报告 docs/audit-v290-review-20260916.md——A 族口径 9 处+同族 5 处+B 族正文历史残留 3 处全修+facts_sync CARRIERS 补 AGENTS.md/reference-sources 第二形态+CHANGELOG 补段；facts_sync/verify 复跑绿。**豁免面义务：本清单=时点快照，每批次开工强制重写（防过期口径指挥发行）**
 - [x] 自主循环批（2026-09-16 05:5x-07:2x，用户令「无头路测补缺口循环至 08:50」）：①审查/对比/触达审计三报告（docs/audit-v290-review、docs/comparison-v290-analysis、docs/audit-cot-touch）②**TOP 错号修复**（「响应体只消费一次」#270→细则 #269，7 活体承载点+索引移域，探针首跑揪出）③**scripts/evals 随仓**（判分器+24 用例探针 24/24——npm 卖点首获可复跑件；仓库工具层不进 dist）④五副本重部署（.bak-20260916-pre-v2.9.0）+syncer 双副本+已部署 hooks（roadtest-v260）补丁 ⑤无头路测 v12-v17 共 10 会话（EVIDENCE §三十二）⑥About §六·五 草案预置（251 字）⑦**发行批新增注意：dist 重打时 tools 须含 scripts/evals 吗——不含（evals=仓库工具层，随 GitHub 仓分发不随 zip）；injection-core 已改（#269），重打前确认 zip 内 details/injection-core 为本 HEAD 版**
 
@@ -24,7 +24,7 @@
 |---|---|---|---|
 | 1 | push | `git push origin main` + `git tag v2.9.0 <commit> && git push origin v2.9.0`（走代理） | ⏳ |
 | 2 | GitHub Release | 创建 Release v2.9.0（要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`） | ⏳ |
-| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（`.npmrc` 变量引用法）——description 已校 343/24 类口径 | ⏳ |
+| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（`.npmrc` 变量引用法）——description 已校 344/25 类口径 | ⏳ |
 | 4 | ClawHub | 提交 v2.9.0 更新（1.0.x 递增；先复查 1.0.14/1.0.15/1.0.16 scans） | ⏳ |
 | 5 | About | 双端 PATCH（项目信息 §六·四 压缩版，发行时校算 ≤350） | ⏳ |
 | 6 | Gitee | push/tag v2.9.0 + Release + About（32-hex 令牌） | ⏳ |
@@ -32,7 +32,7 @@
 
 ## C. 复用要点（v2.6.0-v2.8.0 实证沿用）
 
-- About description 限 350 字符（GitHub API 422）——发行时 `python -c` 校算 len ≤350；**新 description 含 343/24 口径，压缩版需重算**。
+- About description 限 350 字符（GitHub API 422）——发行时 `python -c` 校算 len ≤350；**新 description 含 344/25 口径，压缩版需重算（六·五 草案实测 251 字符 ≤350）**。
 - dist 打包 `scripts/build-dist.ps1`（版本号读 package.json；Set-diff 双检）；Release 资产上传走 `uploads.github.com` + `-L`；REST JSON body 无 BOM UTF8。
 - npm publish 用 GITHUB_TOKEN 环境变量法。
 - 泄漏扫描面=git tracked 全量（豁免 scripts/ 自引用+历史过程档；作者标识判据=security.md §5——F-27）。
@@ -43,9 +43,9 @@
 
 ## D. 发行后校准清单（预注册探针）
 
-1. **本地注入探针**：重启 ZCode 应用 → 新开会话确认「在场提示 · v2.9.0」+ 复述/状态行首产物 + 细则 342 条口径在场 + `zxc663` 应答版本 v2.9.0。
+1. **本地注入探针**：重启 ZCode 应用 → 新开会话确认「在场提示 · v2.9.0」+ 复述/状态行首产物 + 细则 344 条口径在场 + `zxc663` 应答版本 v2.9.0。
 2. **GitHub**：`git ls-remote origin refs/tags/v2.9.0` 在场；Release id 回执 + dist zip 字节一致。
-3. **npm**：`npm view @zxc663/shisan-xinuo-workflow@2.9.0` —— version=2.9.0 + description 含「342 条细则 24 类」。
+3. **npm**：`npm view @zxc663/shisan-xinuo-workflow@2.9.0` —— version=2.9.0 + description 含「344 条细则 25 类」。
 4. **About**：desc_len 回执 ≤350。
 5. **Gitee**：tag/Release/About 三件回执。
 6. **ClawHub**：scans 通过复查（1.0.14/1.0.15/1.0.16 遗留 + 2.9.0 提交）。

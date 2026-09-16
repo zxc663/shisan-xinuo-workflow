@@ -245,14 +245,14 @@ shisan-xinuo-workflow/              ← 仓库根
 
 | 渠道 | 最新已发行 | 状态 |
 |---|---|---|
-| GitHub Release | **v2.8.0**（2026-09-15，附 dist zip） | ✅ 已发行（Release id=388839566，zip 271,482B） |
-| npm `@zxc663/shisan-xinuo-workflow` | **2.8.0** | ✅ 已发行（description 已含 330 条细则 17 类口径；38 文件） |
-| Gitee 镜像 | **v2.8.0**（2026-09-15） | ✅ 已发行（tag+Release id=1144623+zip 附件 271,482B） |
-| ClawHub | **1.0.16** | ⏳ 已提交（pending-publication，security scans 复查待办：1.0.14/1.0.15/1.0.16） |
-| skills.sh / About 双端 | **v2.8.0 文案** | ✅ 随 GitHub/Gitee 同步（About PATCH len=265 ≤350，§六·四 330 口径） |
-| 各平台注入副本（本机） | **v2.8.0** | 五副本 check 5/5（count=330，与源库一致） |
+| GitHub Release | **v2.9.0**（2026-09-16，附 dist zip） | ✅ 已发行（Release id=回执待填，zip 291,937B） |
+| npm `@zxc663/shisan-xinuo-workflow` | **2.9.0** | ✅ 已发行（description 已含 344 条细则 25 类口径） |
+| Gitee 镜像 | **v2.9.0**（2026-09-16） | ✅ 已发行（tag+Release id=回执待填+zip 附件 291,937B） |
+| ClawHub | **1.0.17** | ⏳ 已提交（pending-publication，security scans 复查待办：1.0.14/1.0.15/1.0.16/1.0.17） |
+| skills.sh / About 双端 | **v2.9.0 文案** | ✅ 随 GitHub/Gitee 同步（About PATCH len=251 ≤350，§六·五 344 条/25 类口径） |
+| 各平台注入副本（本机） | **v2.9.0** | 五副本 check 5/5（count=344，与源库一致） |
 
-> 本表快照时间：2026-09-15（v2.8.0 已全渠道发行后）。发行史明细见 CHANGELOG / RELEASE-CHECKLIST / 项目信息.md。
+> 本表快照时间：2026-09-16（v2.9.0 已全渠道发行后）。发行史明细见 CHANGELOG / RELEASE-CHECKLIST / 项目信息.md。
 
 ## 参考项目 · Reference projects
 
@@ -311,7 +311,7 @@ shisan-xinuo-workflow/              ← 仓库根
 
 > **每版一句话；完整明细统一归档 [`CHANGELOG.md`](CHANGELOG.md)（逐版台账）与 git 历史，本节不再重复。**
 
-- **v2.9.0**（批次完成待发行）：2.9 修正批——独立审查 P1×11+P2×16 机制级 23 项（类数 17→24 单源化+facts_sync 类数/节头断言+ANCHOR 单一文件化 templates/memory-anchor.md+deploy --check 取 package.json 堵假绿+install-skill 记忆层清扫+三工具路径对齐+hooks 模板 hook-log 化+裸 # 两豁免定版+#312/#326/#327-#332 条文裁决+G05 应用安全基线节 OWASP 2025）+G 清单四点调研立条 #333-#335+其余 10 点直写 #336-#344+#295 双击转正（长驻进程清理）；细则 **343 条/24 类**。
+- **v2.9.0**（2026-09-16 已全渠道发行）：2.9 修正批——独立审查 P1×11+P2×16 机制级 23 项（类数 17→25 单源化+facts_sync 类数/节头断言+ANCHOR 单一文件化 templates/memory-anchor.md+deploy --check 取 package.json 堵假绿+install-skill 记忆层清扫+三工具路径对齐+hooks 模板 hook-log 化+裸 # 两豁免定版+#312/#326/#327-#332 条文裁决+G05 应用安全基线节 OWASP 2025）+G 清单四点调研立条 #333-#335+其余 10 点直写 #336-#344+#295 双击转正（长驻进程清理）+自主循环批（审查/对比/触达审计三报告+TOP 错号 #269 修复+scripts/evals 探针 24/24 随仓+无头路测 v12-v20 共 15 会话）+推荐序施工批（思考链修复选 B hooks 每轮行+**#345 走查收敛判据立条**+SKILL §2.4 步 1 出口产物升级+platform-adaptation §7 平台能力矩阵+facts_sync 双 bug 修复）；细则 **344 条/25 类**。
 - **v2.8.0**（2026-09-15 已全渠道发行）：2.7.2 修正批整体并入（每轮复述强制 / 回指加载 ANCHOR+hooks 双通道 / 压缩接续+重载在用 Skills #326 / 系统级配置判级 #328 / 账目对账 #330 / 纯文档 commit 基线 #331 / 开工前置强制门 #332 / post_tool_guard Bash 失败守卫 / UserPromptSubmit 每轮再触达）+ 独立审查 30 项 P0 当轮闭环（P1×11+P2×16 入 2.9）+ facts_sync 事实对账（verify 7/7）；细则 **330 条/17 类**。
 - **v2.7.1**（2026-09-12 补丁版·描述口径同步）：npm/GitHub/Gitee/ClawHub 全渠道介绍文案同步 v2.7.0 完整口径（314 条细则 / 17 类 / 注入核心 5,991 字符 ≤6K / hooks 纪律包 / GATE 九字段）；修复 README 文件尾孤儿字符；六·三 About 口径基准更新（5,203→5,991 / 303→314）。
 - **v2.7.0**（2026-09-12 本地批次收口定稿，已发行——push/发行单独批准，Gitee 侧待补）：条款六销项（GATE 9 字段单源 / errpath 事后化 / lookup 修复模板 / 状态行 / 微轮次豁免 / 记忆路由裁决）+ **注入核心瘦身 11,560→5,991 字符**（≤6K 硬上限内；在场提示单一权威源）+ **hooks 纪律包注入**（SessionStart 常驻提醒 + PostToolUseFailure 错误时刻 TOP 推送）+ 判例审入（294→303）+ **必问底线十维**（路测 v6 驱动，#306-#311）+ **评审与接手批**（#307 git 场景化上移 / #312-#315 / #316 接手必补全景）+ **复杂度减法批**（GATE 一行式分级定版 / 三源压义务清单 / 降采样合法化）+ 路测 v5-v8 八轮（无头面注入断裂发现 / NQ 主表首跑 / 真实项目实测）；**活跃 314 条·17 类定稿**。
