@@ -109,11 +109,11 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
             problems.append(f'{rel}: {m.group(0)[:40]!r} 声明 {m.groupdict()} ≠ 单源 n={COUNT}/c={CLASSES}')
             if fix_holder['fix']:
                 fix_holder['changed'] = True
-                for grp, val in bad:
+                # 同一 match 内多命名组时按 span 起点降序替换：先改靠后的组，
+                # 前面组的 span 不受位移影响（正序替换会漏改/错位后续组——2026-09-16 实证）
+                for grp, val in sorted(bad, key=lambda x: -m.span(x[0])[0]):
                     s, e = m.span(grp)
-                    delta = len(str(val)) - (e - s)
                     t = t[:s] + str(val) + t[e:]
-                    m = re.search(pat, t[max(0, s - 40):], re.M) or m
     return t
 
 
@@ -128,6 +128,8 @@ def check(fix=False):
         if fix_holder['changed']:
             open(p, 'w', encoding='utf-8', newline='').write(t)
             fix_holder['changed'] = False
+            if rel.endswith('.json'):
+                json.loads(open(p, encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
             t2 = open(p, encoding='utf-8').read()
             for pat in patterns:
                 for m in re.finditer(pat, t2, re.M):
