@@ -22,12 +22,12 @@
 
 | # | 渠道 | 命令要点 | 状态 |
 |---|---|---|---|
-| 1 | push | `git push origin main` + `git tag v2.9.0 <commit> && git push origin v2.9.0`（走代理） | ⏳ |
-| 2 | GitHub Release | 创建 Release v2.9.0（要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`） | ⏳ |
-| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（`.npmrc` 变量引用法）——description 已校 344/25 类口径 | ⏳ |
-| 4 | ClawHub | 提交 v2.9.0 更新（1.0.x 递增；先复查 1.0.14/1.0.15/1.0.16 scans） | ⏳ |
-| 5 | About | 双端 PATCH（项目信息 §六·四 压缩版，发行时校算 ≤350） | ⏳ |
-| 6 | Gitee | push/tag v2.9.0 + Release + About（32-hex 令牌） | ⏳ |
+| 1 | push | `git push origin main` + `git tag v2.9.0 <commit> && git push origin v2.9.0`（走代理） | ✅ 2026-09-16（commit c947280） |
+| 2 | GitHub Release | 创建 Release v2.9.0（要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`） | ✅ id=389686193（zip asset id=567360240, 291,937B） |
+| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（`.npmrc` 变量引用法）——description 已校 344/25 类口径 | ✅ @zxc663/shisan-xinuo-workflow@2.9.0（38 文件） |
+| 4 | ClawHub | 提交 v2.9.0 更新（1.0.x 递增；先复查 1.0.14/1.0.15/1.0.16 scans） | ✅ 1.0.17 已提交（pending-publication，scans 复查待办） |
+| 5 | About | 双端 PATCH（项目信息 §六·四 压缩版，发行时校算 ≤350） | ✅ GitHub+Gitee len=251（六·五 344/25 口径） |
+| 6 | Gitee | push/tag v2.9.0 + Release + About（32-hex 令牌） | ✅ push+tag+Release id=1147118（zip 附件 id=3209813）+About len=251 |
 | 7 | PAT 轮换 | 发行完成即 GitHub classic PAT 轮换（用户侧） | ⏳ 用户侧 |
 
 ## C. 复用要点（v2.6.0-v2.8.0 实证沿用）
