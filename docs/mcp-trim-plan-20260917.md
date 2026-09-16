@@ -65,3 +65,12 @@
 ## 附：顺带发现
 
 图 3 会话（魔搭 ModelScope/DeepSeek-V4.1-Flash）为工作流**跨模型触达正样本**：复述、Context 状态行、Skill 回指加载全自发——建议记入 face G 对照样本（n 可 +1）。
+
+## 执行回执（2026-09-17 00:35 批，计划模式获批后施工）
+
+- **拍板**：AskUserQuestion 4/4 推荐项（浏览器四套全禁 / github_mcp 按需 / computer-use 常驻 / 我改 config）；其余 6 项按推荐默认随计划批准生效。
+- **机制更正**：注入窗**非「固定前 5 server」**——同配置不同会话 `mcp.tools.registered`=234（15 server 全进）/65/52 三样本（日志实测）→ **动态预算**（疑随模型上下文窗口浮动）；browser 族 111 工具=预算大头结论不变。
+- **前置核查**：zcode-configuration-guide 官方口径无 per-server `disabled` 字段 → 移除+sidecar 定案；workspace 级 `<repo>/.zcode/config.json → mcp.servers` 为按项目装回通道（自动连接）。
+- **已执行（MCP 批）**：备份 `config.json.bak-20260917-003508` → 移除 7 server（browser360/browser_tools/chrome-devtools/playwright/github_mcp/firecrawl/reactbits）+ `android-emulator@zcode-plugins-official→false`；留档 `mcp-disabled-20260917.json`；**hooks/provider/model 三段与备份深比较零变动（脚本断言 PASS）**；重放脚本 `C:/Users/zxc66/tools/mcp-trim-apply-20260917.py`（防运行中应用回写覆盖，可重跑）。
+- **已执行（状态条 asar 修复批，用户「也修」指令确认）**：pull `35ff516→ac328de`（behind 13 清零，worktree `injected v10`）→ 新回滚锚 `app.asar.zusage-rollback-20260917-003508`（307,867,553B）→ dry-run 过目 → 实装：重打包+结构自检 PASS（header ok/注入行符合预期/语法 exit=0）；**运行中原子替换被锁（WinError 5）**——补丁版在 `app.asar.zusage.tmp` 待 finalize：完全退出 ZCode 后监控窗自动完成，或手动 `python patch_install.py install --finalize`。装后 grep 注入行=0（如实标注：未完成，待重启兑现）。
+- **验收状态**：待用户重启——**一次「完全退出→重开」同时兑现两批**（MCP 裁剪走新会话快照 + 状态条 finalize）。四条验收：①面板 MCP 占比 ≤30% ②computer-use 冒烟 ③github_mcp 按需闭环演练（顺延至首次需要时，需两次重启）④一周日耗对比（基线 ≈6 亿/天）。重启后若工具数未降：先重跑重放脚本（防运行中回写），再查桌面端 Settings→MCP。
