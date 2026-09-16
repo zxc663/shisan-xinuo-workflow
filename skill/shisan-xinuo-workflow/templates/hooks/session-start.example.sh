@@ -12,6 +12,7 @@ echo "PRIORITY: follow the engineering-governance discipline before starting wor
 echo "  - Triage: L1 fast lane · L2 record · L3 ASK FIRST"
 echo "  - Modes: normal (ask) / goal (autonomous; secrets + destructive ops pause)"
 echo "  - Secrets red line · rollback point before destructive ops · task records"
+echo "  - Complex tasks: split essence/necessary/habit -> list constraints+assumptions -> causal chain 3-5 hops -> act on the binding constraint (rules #7-#11)."
 echo "  - Never fake completion — label unfinished work."
 if [ -f "$RULE_FILE" ]; then
   echo "Rules: $RULE_FILE"

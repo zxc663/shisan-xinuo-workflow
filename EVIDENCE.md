@@ -573,3 +573,5 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 **追记（07:2x）**：v17 思考链显式第二样本（broken.py 复盘题，16 req）=**verdict real 复现**（四标记全中+restate✓+锚 16/16）——显式触发 2/2 vs 隐式 0/2，对照矩阵稳固。superpowers-evals 深读未完成（仓 404 疑改名/私有，网络两败一 404），留候选。
 
 **追记二（07:3x）**：v18 隐式第三样本（lookup 数据流审查题，11 req）=verdict none——**隐式 0/3 vs 显式 2/2 对照矩阵定型**；健康面锚 11/11＋GATE 9/9 持续。思考链触达缺口的修复必要性证据链闭合（主控会话审计→v12-C1→v18 三点一线），修复路径 A/B 决策待用户拍板。
+
+**追记三（13:5x，条款修订批施工）**：用户「全按推荐序」→ 思考链修复裁决=**选 B hooks 每轮行**（依据：hooks 通道 11/11 到场＋缺口失效模式=prompt 形态效应恰为 B 正对治＋注入核心仅余 55 字符；被否 A 留前提＋重开条件）→ 施工五件：hooks 纪律包思考链行（carrier_reminder 双事件共用+session-start）＋**细则 #345 走查收敛判据**（C2 对标，新节 §25，细则 343→344·24→**25 类**）＋SKILL §2.4 步 1 出口产物升级（三拆+约束=自检位）＋platform-adaptation §7 平台能力矩阵＋README 对标 FAQ。**v20 探针实证：新行 14 处到场**（机制→行为闭环）。**工具缺陷双杀（如实）**：①facts_sync --fix 同 match 双命名组正序替换漏写 c 组（343→344 时 13 处类数位漏改）→span 降序替换修复；②错位替换曾把 package.json 键名 version 写坏为 "25rs25n"——**verify C 项网兜住**（version 空→FAIL），fix 流程补 JSON 合法性断言。终态：verify 7/7＋FACTS PASS＋dist 重打五点实测（#345/索引/PA 矩阵/hooks 行/#269 全在包）。

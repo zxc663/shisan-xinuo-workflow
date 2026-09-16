@@ -174,4 +174,16 @@
 
 ## 6. 生成规则文件的体量
 
+## 7. 平台能力矩阵（触达面差异速查 · 2026-09-16 机证口径）
+
+> 用途：选注入通道前对照平台能力边界（与 §2 注入点表、hooks 模板 INSTALL 段互补）；只填有机证/官方文档佐证的格。机证来源：路测 v12-v19（EVIDENCE §三十二）＋ WorkBuddy traces 复核。
+
+| 能力 | ZCode | WorkBuddy | 对标参照（Cursor / Kiro） |
+|---|---|---|---|
+| hooks 事件 | 7 事件（SessionStart/UserPromptSubmit/PostToolUse(Failure)/Stop…；**无 SessionEnd**） | **无 hooks 事件系统**（结构性缺位，非部署缺位） | Kiro hooks=独立特性；Cursor 无通用 hooks |
+| 每轮再触达 | ✓ 双点（SessionStart+UserPromptSubmit 同一纪律包） | ✗ | Cursor auto-glob / Kiro fileMatch=按文件域条件加载（知识到场≠纪律消费） |
+| 全局规则文件 | ~/.zcode AGENTS.md ✓ 每会话注入 | **全局 AGENTS.md 平台不读**；MEMORY.md=真记忆通道 | AGENTS.md 标准被 60k+ 项目/多工具读取 |
+| 会话取证通道 | rollout jsonl（**分钟级清刷**；messages 在 request 层；长会话窗口化记录） | traces（近期会话无模型请求载荷；generation span 键名已变） | — |
+| 按域条件加载 | ✗（症状索引=模型手动等价物） | ✗ | Cursor auto-glob / Kiro fileMatch ✓（平台原生） |
+
 **按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
