@@ -42,7 +42,7 @@
 
 ## 五、改法（批准后执行，预计 10 分钟）
 
-1. 备份 `C:/Users/zxc66/.zcode/cli/config.json` → 同目录 `config.json.bak-<YYYYMMDD-HHmmss>`。
+1. 备份 `<用户主目录>/.zcode/cli/config.json` → 同目录 `config.json.bak-<YYYYMMDD-HHmmss>`。
 2. `mcp.servers` 移除 B/C 档条目（原文完整保留在备份；另出 `mcp-disabled-<ts>.json` 清单留档备查）。
 3. `enabledPlugins`：android-emulator → false（computer-use 视拍板）。
 4. **重启 ZCode**（注入配置=会话创建时快照，不重启不生效——v11 实证①）。
@@ -71,7 +71,7 @@
 - **拍板**：AskUserQuestion 4/4 推荐项（浏览器四套全禁 / github_mcp 按需 / computer-use 常驻 / 我改 config）；其余 6 项按推荐默认随计划批准生效。
 - **机制更正**：注入窗**非「固定前 5 server」**——同配置不同会话 `mcp.tools.registered`=234（15 server 全进）/65/52 三样本（日志实测）→ **动态预算**（疑随模型上下文窗口浮动）；browser 族 111 工具=预算大头结论不变。
 - **前置核查**：zcode-configuration-guide 官方口径无 per-server `disabled` 字段 → 移除+sidecar 定案；workspace 级 `<repo>/.zcode/config.json → mcp.servers` 为按项目装回通道（自动连接）。
-- **已执行（MCP 批）**：备份 `config.json.bak-20260917-003508` → 移除 7 server（browser360/browser_tools/chrome-devtools/playwright/github_mcp/firecrawl/reactbits）+ `android-emulator@zcode-plugins-official→false`；留档 `mcp-disabled-20260917.json`；**hooks/provider/model 三段与备份深比较零变动（脚本断言 PASS）**；重放脚本 `C:/Users/zxc66/tools/mcp-trim-apply-20260917.py`（防运行中应用回写覆盖，可重跑）。
+- **已执行（MCP 批）**：备份 `config.json.bak-20260917-003508` → 移除 7 server（browser360/browser_tools/chrome-devtools/playwright/github_mcp/firecrawl/reactbits）+ `android-emulator@zcode-plugins-official→false`；留档 `mcp-disabled-20260917.json`；**hooks/provider/model 三段与备份深比较零变动（脚本断言 PASS）**；重放脚本 `<用户工具目录>/mcp-trim-apply-20260917.py`（防运行中应用回写覆盖，可重跑）。
 - **已执行（状态条 asar 修复批，用户「也修」指令确认）**：pull `35ff516→ac328de`（behind 13 清零，worktree `injected v10`）→ 新回滚锚 `app.asar.zusage-rollback-20260917-003508`（307,867,553B）→ dry-run 过目 → 实装：重打包+结构自检 PASS（header ok/注入行符合预期/语法 exit=0）；**运行中原子替换被锁（WinError 5）**——补丁版在 `app.asar.zusage.tmp` 待 finalize：完全退出 ZCode 后监控窗自动完成，或手动 `python patch_install.py install --finalize`。装后 grep 注入行=0（如实标注：未完成，待重启兑现）。
 - **验收（09-17 00:4x，用户重启后）**：①**MCP 裁剪机证通过**——config 幸存重启（保留 4 server + 插件 false），新会话 `mcp.tools.registered` **reg=45 / srvN=7** 与保留清单 1+2+1+2+30+3+6 分毫不差（对照裁剪前 234/15，**工具面 -81%**），browser 族/github_mcp/firecrawl/reactbits/android-emulator 全部不在场，computer-use 30 工具在场=验收②同时机证达成；②状态条 MCP 冒烟通过（token_usage 正常响应）；③github 按需闭环顺延至首次需要时；④日耗基线已取（09-17 当日 CLI 面 7.12M；官方面板 ≈6 亿/天待一周对比）。
-- **唯一遗留 = asar finalize**：`ZUSAGE_NO_MONITOR=1` 抑制了本该在退出时自动 finalize 的监控窗（errpath 归执行侧），重启窗口期无人接手；补丁版在 `app.asar.zusage.tmp` 待替换。另发现 `patch_install.py install --finalize` **独立探测幻影定位到不存在的 D:\ZCode**（活体=C 盘，Get-Process 实证；上游探测 bug 候选，可反馈 xhwxt）→ 改用直接 Move 替换：**完全退出 ZCode（任务管理器 ZCode.exe=0，当前 17 个）**后 `Move-Item -Force "C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\app.asar.zusage.tmp" "C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\app.asar"`，重开即悬浮条 + /usage。回滚锚 `app.asar.zusage-rollback-20260917-003508` 不动。
+- **唯一遗留 = asar finalize**：`ZUSAGE_NO_MONITOR=1` 抑制了本该在退出时自动 finalize 的监控窗（errpath 归执行侧），重启窗口期无人接手；补丁版在 `app.asar.zusage.tmp` 待替换。另发现 `patch_install.py install --finalize` **独立探测幻影定位到不存在的盘外应用目录**（活体=C 盘，Get-Process 实证；上游探测 bug 候选，可反馈 xhwxt）→ 改用直接 Move 替换：**完全退出 ZCode（任务管理器 ZCode.exe=0，当前 17 个）**后 `Move-Item -Force "<应用安装目录>\resources\app.asar.zusage.tmp" "<应用安装目录>\resources\app.asar"`，重开即悬浮条 + /usage。回滚锚 `app.asar.zusage-rollback-20260917-003508` 不动。
