@@ -24,14 +24,15 @@
 - **意外发现（留 Loop-4 对账）**：无头面纪律触达=活体（v5 时代 0/13 → 现行为面活体）——通道归属待查（hooks SessionStart vs 全局 AGENTS.md 注入），对账方法=rollout messages[0] 注入锚
 - 心得：条款「在场→行为」在 L3 与承载面闭合；探针即夹具（output.txt 被探针自己归类进 txt/＝任务真实性的旁证）
 
-
-1. **行为面探针**：zcode CLI 无头通道本机 PATH 缺失（exempt 记录在案）——通道恢复后跑 L3 必问场景+开工四步场景探针（scripts/evals/extract_roadtest.py 判分），验证新条款行为面（守候/批派/分级委托三场景）
-2. **部署批（待用户授权）**：injection-core/hooks 模板/五副本 syncer 重部署——平台全局注入层属授权边界，本批源库已就绪、部署未做；部署后新会话探针验收（在场提示+zxc663）
-3. U3 双落点文案（GATE 聊天面一行）——injection-core 字符预算 5,945/6,000，需等量压缩后随部署批
-4. U2 细则条目化候选（三层对账 SOP 入 details 取证类——若入条则 344→345 全仓口径涟漪，走 facts_sync --fix 流程）
-5. dist 重打/版本号 3.0 bump/发行＝发行批动作，待用户批准（本批不动 package.json）
+## 排程（Loop-4+ 候选，按优先级）
+1. **无头注入通道对账**：headless 面触达活体（v5 时代 0/13 → 现行为面活体）的通道归属取证（rollout messages[0] 注入锚：hooks SessionStart vs 全局 AGENTS.md）——定性后定 headless 判分口径
+2. **行为面探针扩展**：委托分级场景（只读 vs 实施双委托查包级别）+守候场景探针（新 #320 条款行为面）；L3/承载已 PASS 不复测
+3. **部署批（待用户授权）**：injection-core/hooks 模板/五副本 syncer 重部署——平台全局注入层属授权边界，源库已就绪；部署后新会话探针验收（在场提示+zxc663）
+4. U3 双落点文案（GATE 聊天面一行）——injection-core 字符预算 5,945/6,000，需等量压缩后随部署批
+5. U2 细则条目化候选（三层对账 SOP 入 details 取证类——若入条则 344→345 全仓口径涟漪，走 facts_sync --fix 流程）
+6. dist 重打/版本号 3.0 bump/发行＝发行批动作，待用户批准（本批不动 package.json）
 
 ## 边界与豁免累计
-- 无头探针：zcode CLI 不在 PATH，exempt（Loop-1 记录）
+- ~~无头探针不可用~~ → Loop-3 已解除（通道=node 调 zcode.cjs，不在 PATH 但可直接调用）
 - 部署面：未授权不动（injection-core/hooks/五副本/dist 全保持 2.9.0 现状）
-- 行为面验证：纸面盲测=文本面证据；行为面证据待探针通道或用户真实会话取样
+- 行为面验证：L3/承载双 PASS；聊天面状态行/复述的 -p 取证面限制如实记录；委托分级/守候场景行为面待 Loop-4
