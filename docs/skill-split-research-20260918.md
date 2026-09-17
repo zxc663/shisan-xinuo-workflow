@@ -70,7 +70,30 @@
 - **Q4 角色包来源**：A 移植开源改造（BMAD persona/Roo modes/Claude subagents——能复用绝不自研）B 本仓三模板原地扩维（补 dispatch 矩阵+能力门控声明）C 混合（框架借开源、审查清单从本仓 344 细则本土化生成）。
 - **Q5 实际实践痛点映射**（按你的纠正：不问理想流程，问实际）：你在「主控/并行/多分支」的实际操作里，当前最希望工作流接住的是哪些？A 多会话/多分支的状态接力与交接（#326 压缩接续一类）B 并行子代理的纪律下发与结果合并 C 主控长会话的上下文代谢（折叠/盘点）D 都不急，拆分不为这个设计。
 
-## 6. 来源清单
+## 6. R1 答案记录与 Q4 补调研（2026-09-18 追加）
+
+**R1 答案**：Q1=ABCD 全要（四目标并列，冲突仲裁序留 R3）｜Q2=B 维持 6K 核心只拆不压｜Q3=A v3.0 破坏性重组+迁移说明｜Q4=再调研｜Q5=D 跳过（拆分不为实践痛点设计）。用户角色定义：**角色=实践开发中按不同要求/流程/场景切换时的角色角度+所要求的流程**。
+
+**Q4 补调研（gh 实证，找「上千种角色提示词汇总」）**——未找到字面 1000+ 开发角色库，四个高星候选按贴合度排序：
+
+| 仓库 | 规模 | 结构 | 与用户角色定义贴合度 |
+|---|---|---|---|
+| **wshobson/agents** ⭐39,752 | **94 插件/202 agents/183 skills/105 commands** | 单一源 plugins/ → 6 harness 原生产物（Claude/Codex/Cursor/OpenCode/Antigravity/Copilot/Pi），marketplace 制 | 高：多 harness 单源分发=本仓 syncer 五副本的成熟形态参照 |
+| **VoltAgent/awesome-claude-code-subagents** ⭐25,157 | **161 subagents / 10 类目** | 分类索引（语言/架构/质量/安全/运维/数据/AI/文档/业务/生产力）+每角色 SKILL.md | **最高**：按开发场景分类的角色角度库，正对「场景切换时的角色角度」 |
+| x1xhlol/system-prompts-and-models-of-ai-tools ⭐143,697 | 26+ 产品真实系统提示词 | 全文 dump | 低（是系统提示词不是角色库） |
+| f/prompts.chat ⭐170,568 | 150+ "Act as X" | 通用角色扮演 | 低（聊天人格非开发角色） |
+
+**角色解剖学（综合 VoltAgent/wshobson/BMAD，供 R2-Q4）**：一个可复用角色文件=①身份与视角 ②适用场景/触发条件 ③**所要求的流程**（用户定义字段）④审查/执行清单（维度）⑤出口契约（输出格式）⑥能力边界（工具/权限声明）。分类索引覆盖：前端/后端/架构/测试/安全/运维/数据/文档/性能/重构——与本仓 details 25 类高度重合，**分类学可借、内容面用本仓细则本土化**。
+
+## 7. R2 五问（方案取舍层，待答）
+
+- **Q1 结构定案**：A 单入口强化 vs B 双层（元核心 Skill+工具箱家族）vs C 多家族（倾向排除）。**推荐 B**——四目标中「维护代谢+分发」A 案无法兼顾（单入口仍是 mega），触达由 R1-Q2=B（6K 核心不压）兜底；v3.0 已获准破坏性重组。
+- **Q2 工具箱家族粒度与数量上限**：≤3 个｜≤5 个｜不设上限靠治理规则（零调用退出线）。**推荐 ≤5+治理规则**——防 44 条目式清单膨胀复发，每家族须有独立 description 触发面。
+- **Q3 入口正文内容归属**（29,633 字符→官方 <500 行）：A 只留加载后行动契约+路由表（最激进）｜B 跑道骨架（三级跑道全流程一页）+路由表｜C 现状仅删冗余。**推荐 B**——加载后 agent 能直接按跑道干活（行动契约），细节下沉 references/（形态已在）。
+- **Q4 角色包形态与来源**：A BMAD 式具名 persona 文件族（主控显式 dispatch）｜B Roo 式 mode-switch（平台无原生机制，提示词模拟）｜C **混合：VoltAgent 161 角色分类学做对照面+六字段解剖学（身份/场景/流程要求/清单/出口/权限）+内容面从本仓 344 细则本土化**。**推荐 C**。
+- **Q5 必问边界迁移**（「什么是流程中必问」）：元核心常驻的必问面保留多少？A 全部必问协议+判级留核心（现状）｜B 只留 L3 封闭清单+红线，场景性必问（地基六问 #306 等）下沉对应流程包｜C 必问协议条款化下沉，核心只留「必问=触发即停」原则句。**推荐 B**——L3+红线是跨场景不变量，场景性必问随场景包按需载。
+
+## 8. 来源清单
 
 - 第一方规范：ZCode skill-creator 插件 SKILL.md（本地实测：500 行/三层披露/description 推开写/过度规定检测）
 - 社区：[Firecrawl: 14 best Claude Code skills](https://www.firecrawl.dev/blog/best-claude-code-skills)、[MindStudio: Mega vs Modular Skills](https://www.mindstudio.ai/blog/mega-skills-vs-modular-skills-claude-code)、[A Mental Model for Claude Code](https://levelup.gitconnected.com/a-mental-model-for-claude-code-skills-subagents-and-plugins-3dea9924bf05)
