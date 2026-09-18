@@ -1,0 +1,45 @@
+交付完成，全部验证通过。
+
+## 变更摘要
+
+在 `calc.py` 新增 `subtract(a, b)`（返回 `a - b`，与既有 `add` 同级、同风格），并在 `test_calc.py` 补 2 条 unittest 用例：普通例 `subtract(5, 3) == 2`、负数例 `subtract(-3, 5) == -8`。
+
+负数例我特意选成「负操作数 + 负结果」合并覆盖的一例——需求限定只有 2 例，这个取值能同时覆盖负数输入与负数输出，且能捕获三类典型写错方式（`a+b`、`abs(a-b)`、被减数与减数写反）。被否候选和重开条件写进了 `memory/agent-log.md` 的决策审计段。
+
+## 影响模块清单
+
+| 文件 | 性质 |
+|---|---|
+| `calc.py` | 任务改动：新增 `subtract`（`add` 未动） |
+| `test_calc.py` | 任务改动：清掉 `# tests` 占位行，落 2 条用例 |
+| `AGENTS.md` | 承载：新建项目级规则（ZCode 与 Codex 同构 = 项目根 `AGENTS.md`；此前不存在同名文件，无覆盖） |
+| `docs/project-info.md` | 承载：六节索引 |
+| `memory/agent-log.md` | 承载：一档制四区，已填真实状态/教训/流水 |
+| `.gitignore` | 附带：忽略 `__pycache__/`、`*.pyc` |
+
+## 验证证据（均为实测，可重跑）
+
+- 主验证：`python -m unittest -v test_calc` → `Ran 2 tests … OK`，**exit=0**。计数 N=2 与用例数一致，不是「跑过就算过」。
+- 变异检查（排除空断言）：把实现临时改成 `return a + b` → `FAILED (failures=2)`、**exit=1**，两条用例都变红；还原后复跑 exit=0。
+- 改动前对照组：空壳 `test_calc.py` → `Ran 0 tests … NO TESTS RAN`、**exit=5**。这纠正了我原本的假设（旧版本是 exit 0），已作为教训 #1 写入档案：跨版本不能硬编码「无测试=exit 0」。
+
+过程中有一次自查拦截：首次提交混入了 `__pycache__/*.pyc`，已 `git rm --cached` 移出版本控制、补 `.gitignore` 并 amend，当前工作树干净。
+
+## 未覆盖项与风险
+
+未验证：纯负操作数组合（如 `-2 - (-7)`）、浮点输入、非数值/字符串输入、超长整数——需求只要求 2 例，这些我按边界声明而非静默放过。另：核心纪律里的「≥2 种负载形状」在纯同步算术函数上不适用（无快慢/并发负载形状），已按 N/A 声明。
+
+技术选型说明：环境无 pytest（`import pytest` 实测 ModuleNotFoundError），所以测试用 stdlib `unittest`，保证离线可真跑、无新依赖。
+
+## 回滚方案
+
+回滚基线 = git `7d1df96`（改动前的 baseline 提交，含原 `add` 版 `calc.py` 与空壳 `test_calc.py`）。回滚命令：`git reset --hard 7d1df96`，或只退代码文件 `git checkout 7d1df96 -- calc.py test_calc.py`。本块成果在 `0bff0ff`，仅本地提交、未 push。
+
+## 建议你重点抽查
+
+`subtract(-3, 5)` 这个负数用例是否符合你对「负数一例」的口径——如果你要的是纯负操作数组合，我按重开条件补一条即可。
+
+Context: state=新建 L=L2-S confirm=无需（需求明示无歧义）
+
+GATE: {level=L2-S, v=calc.py 新增 subtract + test_calc.py 补 2 用例（含承载三件与 .gitignore）, cmd="python -m unittest -v test_calc", exit=0（主验证）；变异检查 exit=1（failures=2，用例均变红）(注:逗号在字段值内), files=calc.py, test_calc.py, AGENTS.md, docs/project-info.md, memory/agent-log.md, .gitignore, refs=3（grep 实测：AGENTS.md 2 / docs/project-info.md 1 / agent-log 0）, errpath=提交混入 __pycache__/*.pyc→git rm --cached + .gitignore + amend 重提；空壳测试 exit=5→已入教训区 #1, lessons=①unittest 无用例时退出码语义依版本而异（本机 3.12.10 为 NO TESTS RAN/exit=5），收集成功判据应核对 Ran N tests 而非退出码 ②测试非空转的证明靠变异检查：实现改坏后用例必须变红 ③「多文件=持续全套」场景下，再小的任务也要建承载，否则下个会话无档案可读, exempt=联网双调研/产品五问/plan 文档（L2-S 选道豁免，已声明）；未验证项：纯负操作数组合、浮点、非数值输入、超长整数；多负载形状要求（#266）在纯同步函数上不适用, caps=Skill shisan-xinuo-workflow（已加载，回指生效）；能力检索 1 次未命中（清单内无适配「Python 纯函数+单测」的 Skill/MCP，按归因自写）, effort=能力检索 1 次；需求澄清照报「无需追问（用户明示）」；边界用例 2 条 + 变异检查 1 轮 + 改动前对照组 1 轮, stop_reason=—}
+
