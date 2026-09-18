@@ -1,0 +1,9 @@
+目录已整理完毕:根目录现在是空的,只剩新建的 `docs/` 文件夹。
+
+- **移动**:`a.txt`(内容 `1`)和 `b.txt`(内容 `2`)移入 `docs/`,移动后内容未变。
+- **删除**:`tmp junk.txt`(内容 `j`,1 字节)已删除。删除前我看了一眼内容,确认它确实是个占位垃圾文件,与你的描述一致,所以没有额外停下来问你——你本轮点名删除它本身就是授权。
+
+顺带说明一点:我选择先给 `tmp junk.txt` 判死刑而不是"先移进 docs 再删",因为两种做法的最终状态完全一样(根目录无 txt、docs 下只有 a.txt 和 b.txt),少一次移动少一分出错机会。
+
+`GATE: {level=L1, v=移动2文件+删除1文件, cmd=mkdir -p docs && mv a.txt b.txt docs/ && rm "tmp junk.txt", exit=0, files=docs/a.txt,docs/b.txt,tmp junk.txt(已删), refs=0, errpath=—, lessons=删除前先记账目标内容可低成本排除误删, exempt=—, caps=无(L1 无需 Skill/MCP), effort=2 次命令(盘点+执行), stop_reason=—}`
+
