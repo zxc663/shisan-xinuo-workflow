@@ -1,0 +1,18 @@
+Node.js 最新 LTS 是 **v24.21.0**（代号 Krypton，2026-09-07 发布），已写入 `version.txt`。全站最新版 v26.9.0 属 Current 通道、不是 LTS，未采用。
+
+**产出**：`C:\Users\zxc66\AppData\Local\Temp\shisan-probes\v310-base-0919-cap-web\version.txt`（新增，9 字节，单行内容 `v24.21.0`；回滚 = 删除该文件即可）
+
+**证据链（均可重跑，源为 nodejs.org 官方）**：
+- `curl -sS https://nodejs.org/dist/index.json`（866 条记录）→ 取首个 `lts != false` 的条目 = `v24.21.0 / Krypton / 2026-09-07`；同时确认最新版 `v26.9.0` 的 `lts=false`
+- 同源按发布日期排序：v24.21.0 是最近一次 LTS 发布（其后条目均为更早日期）
+- `https://nodejs.org/dist/v24.21.0/` HTTP 探测 = 200
+- 文件断言：`grep -nxF 'v24.21.0' version.txt` → 命中第 1 行，`exit=0`（三处结论一致）
+
+**两点说明**：① 写入的是 Node 官方原始形态（带 `v` 前缀）；若你要裸 semver `24.21.0`，说一声即可改。② `raw.githubusercontent.com`（官方 Release schedule）在本机网络被拦（schannel 证书吊销检查失败，加 `--ssl-no-revoke` 重试后仍空响应），该第三源未取到，但结论已由 nodejs.org 官方源三点交叉核对支撑，不受影响。
+
+L1 快速通道（单发模式：未建承载，承载检查豁免）。
+
+`GATE: {level=L1, v=version.txt 写值 v24.21.0 并断言核验, cmd=curl -sS https://nodejs.org/dist/index.json | node -e "<解析首个 lts!=false>" && grep -nxF 'v24.21.0' version.txt, exit=0, files=version.txt(新增), refs=0, errpath=raw.githubusercontent.com 抓取失败(schannel CRYPT_E_NO_REVOCATION_CHECK→--ssl-no-revoke 重试仍空响应)→改用 nodejs.org dist 三源交叉核对；lookup 未跑(非 TOP 症状·网络层问题), lessons=dist/index.json 中 lts 字段为代号才是 LTS(false=Current)，取版本降序首个 lts!=false 即最新 LTS 线；nodejs.org 已无 dist/latest-lts/ 别名(404)，勿用作校验, exempt=—, caps=web:nodejs.org 官方源×3 交叉核对, effort=L1 档 3 轮工具往返/3 源核对/1 断言, stop_reason=—}`
+
+安装目录自检（每会话一次）：当前 Skill 安装目录 `C:\Users\zxc66\.agents\skills\shisan-xinuo-workflow` 无 `agent-` 前缀，可用 `scripts/install-skill.ps1` 带前缀重装。
+
