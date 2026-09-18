@@ -39,7 +39,7 @@ CARRIERS = [
         r'细则 (?P<n>\d+) 条，谁读得完',
         r'细则沿革（现 (?P<n>\d+) 条/(?P<c>\d+) 类）',
     ]),
-    ('AGENTS.md', [r'细则 330→(?P<n>\d+)·(?P<c>\d+) 类']),
+    ('AGENTS.md', [r'细则 344→(?P<n>\d+)·(?P<c>\d+) 类']),
     ('docs/reference-sources.md', [
         r'^(?P<n>\d+) 条落地细则（(?P<c>\d+) 类）',
         r'活跃细则 (?P<n>\d+)',

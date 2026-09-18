@@ -11,7 +11,7 @@
   - 注入锚: 前缀消息任意槽位含「在场提示·…shisan-xinuo-workflow·vX.Y.Z」，记录槽位与版本
   - hooks 纪律包: 全历史消息含「工作流纪律包·hooks 通道」
   - 思考链族: 三拆（本质/必要/惯性）＋约束显式＋因果链＋rules 编号引用 → real/hint/none 三档
-  - 前置门/五问/步1出口产物/GATE 9 字段/Skill 加载（toolCalls input.skill）
+  - 前置门/五问/步1出口产物/GATE 11 字段（caps/effort）/Skill 加载（toolCalls input.skill）
 """
 import json, os, re, sys, io, argparse
 

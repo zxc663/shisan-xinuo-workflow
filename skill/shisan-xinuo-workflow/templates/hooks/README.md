@@ -8,7 +8,7 @@
 - `session-end.example.sh` —— 会话收尾横幅（最终验证 / 任务记录 / 记忆同步 / 密钥红线 / 显式清理）
 - `hooks.example.json` —— 插件/通用形状示例：`SessionStart` / `Stop` 各挂一条 `bash <script>` 命令（注意 ZCode 实测：ZCode 无 `SessionEnd` 事件，会话结束事件名为 `Stop`）
 - `hooks.example.config.json` —— **配置文件形状示例**（`hooks.events.<Event>` 必须为「组数组」，组=`{matcher?, hooks:[…]}`；必须 `enabled: true` 才生效；含 `PostToolUseFailure` 组形状）
-- `carrier_reminder.example.py` —— SessionStart **纪律包注入**：每次会话启动无条件注入最小纪律包（状态行模板+TOP 一行+GATE 9 字段指针）；git 项目缺 `memory/agent-log.md` 时附加承载检查提醒行。措辞与注入核心常驻保留集同源，改措辞先改注入核心再同步此处
+- `carrier_reminder.example.py` —— SessionStart **纪律包注入**：每次会话启动无条件注入最小纪律包（状态行模板+TOP 一行+GATE 11 字段指针）；git 项目缺 `memory/agent-log.md` 时附加承载检查提醒行。措辞与注入核心常驻保留集同源，改措辞先改注入核心再同步此处
 - `top_push.example.py` —— PostToolUseFailure **TOP 推送**：工具执行失败时推送「错误必查 TOP」一行（错误发生=最强触发时机）；平台不支持该事件时降级为仅 SessionStart 纪律包（已含 TOP 行）
 - `post_tool_guard.example.py` —— PostToolUse **Bash 失败守卫**：ZCode 的 PostToolUseFailure 事件不覆盖 Bash 非零退出（受控实验：`false` 后无 Failure 事件，Bash 非零退出不入该通道），本守卫注册在全量 PostToolUse 事件上，仅 Bash 且 `tool_response.status=failed`/`exitCode≠0` 时推送 TOP 一行（Edit 等失败仍走 Failure 通道，防双推）。注册示例：config.json hooks.events 增 `PostToolUse` → 本脚本
 

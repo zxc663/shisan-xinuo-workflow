@@ -48,8 +48,8 @@
   <!-- n6 -->
   <rect x="40" y="1010" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
   <text x="60" y="1044" font-size="20" font-weight="bold" fill="#1F2328">6 执行与验证 → 交付（GATE 一行式）</text>
-  <text x="60" y="1076" font-size="16" fill="#57606A">GATE 9 字段一行可复跑：level / v / cmd / exit / files</text>
-  <text x="60" y="1104" font-size="16" fill="#57606A">/ refs / errpath / lessons / exempt（包级 9 字段 / 子块简式 3 字段）</text>
+  <text x="60" y="1076" font-size="16" fill="#57606A">GATE 11 字段一行可复跑：level / v / cmd / exit / files / caps / effort</text>
+  <text x="60" y="1104" font-size="16" fill="#57606A">/ refs / errpath / lessons / exempt（包级 11 字段 / 子块简式 3 字段）</text>
   <text x="60" y="1132" font-size="16" fill="#8C959F">出口：GATE + 交付五查 + 归档（真实运行，没跑 = 未完成）</text>
 
   <!-- n7 -->
