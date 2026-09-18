@@ -2,23 +2,21 @@
 
 **十三希诺 · 纪律元工作流（v3.1.0）**——让规则**真正被消费**、让结论**可复算**的工程治理元 Skill。中文优先，单版本分发。
 
+> **一句话定位**：它不是让 Agent 更聪明的提示词，而是把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构——过程可追责，结论可复核。
+
 > **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **367 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix (judge j2.2, with fingerprints), **18/18** judge gold-sample regression, 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
-## 口径块 · Facts at a glance
+## 作者的话 · A note from the author
 
-| 项 | 值 |
-| --- | --- |
-| 版本 | **v3.1.0**（发行前准备态；上一版 v3.0.0 已全渠道发行 2026-09-18） |
-| 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
-| 细则库 | **367 条 / 29 类**（编号至 `#368`；类数=分节数，单源断言） |
-| 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
-| 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.2，scorecard 带被测副本/平台/判据指纹）；**判据金样本回归 18/18**（正例 7 / 负例 11）；同批输出两版判据重判：j1.0 18/20 → j2.2 **20/20**（判据效应与行为方差分离） |
-| 判据可信度 | 判据版本化（j1.0→j2.2）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
-| 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
+> **「工程化的确定性和稳定性，才是让 AI Agent 从玩具落到实地的真正要点。」**
+
+我做这套东西，不是为了给 Agent 再加一层规则，而是因为反复看到同一类失败：**规则在场却不被执行，结论自述却无法复算**。所以这里的每条机制最后都落到三件事上——可复跑的 `GATE` 证据、可追责的过程留档、以及从 v3.1 起可复算的判据与指纹。
+
+它不承诺让模型更聪明；它承诺的是：过程对得起复核，结论对得起复算。如果你只用一句话判断它值不值得装——**看它有没有让"我验证过了"变成"你可以自己验一遍"**。
 
 ## 目录 · Contents
 
+- [作者的话](#作者的话--a-note-from-the-author)
 - [为什么用它](#为什么用它--why-this)
 - [它为谁解决什么](#它为谁解决什么--who-its-for)
 - [工作原理（文字版）](#工作原理文字版--how-it-works)
@@ -29,6 +27,7 @@
 - [验证与路测](#验证与路测--evidence)
 - [快速体验](#快速体验--quick-start)
 - [安装与注入](#安装与注入--install--inject)
+- [口径块](#口径块--facts-at-a-glance)
 - [仓库结构](#仓库结构--repository-layout)
 - [版本说明](#版本说明--editions)
 - [局限与代价](#局限与代价--limitations)
@@ -175,6 +174,19 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 ```
 
 **平台注入点**：Codex → `AGENTS.md`；Claude Code → `CLAUDE.md`；Trae → 项目级规则文件；WorkBuddy → `MEMORY.md`；ZCode → `AGENTS.md`。完整注入点表与降级链见 `references/platform-adaptation.md`。
+
+## 口径块 · Facts at a glance
+
+| 项 | 值 |
+| --- | --- |
+| 版本 | **v3.1.0**（发行前准备态；上一版 v3.0.0 已全渠道发行 2026-09-18） |
+| 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
+| 细则库 | **367 条 / 29 类**（编号至 `#368`；类数=分节数，单源断言） |
+| 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
+| 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.2，scorecard 带被测副本/平台/判据指纹）；**判据金样本回归 18/18**（正例 7 / 负例 11）；同批输出两版判据重判：j1.0 18/20 → j2.2 **20/20**（判据效应与行为方差分离） |
+| 判据可信度 | 判据版本化（j1.0→j2.2）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
+| 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
 
 ## 仓库结构 · Repository layout
 
