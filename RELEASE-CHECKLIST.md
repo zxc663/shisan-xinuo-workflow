@@ -1,4 +1,4 @@
-# 发行执行清单（v3.0.0 · 本批；v2.9.0 及更早批次回执要点见各节沿革行，全文在 git 历史）
+# 发行执行清单（**v3.1.0 · 本批（准备态）**；v3.0.0 发行回执见 I 节；v2.9.0 及更早批次回执要点见各节沿革行，全文在 git 历史）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
 > **版本沿革**：v2.8.0 已全渠道发行（2026-09-15：GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending；回执全文见 git 历史与本清单 v2.8.0 版）。**v2.9.0 = 2.9 修正批+续批**（独立审查 P1×11+P2×16 机制级 23 项+v11 新增四项裁决+G 清单四点调研立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则终态 **344 条/25 类**——343/24 为转正批时点值，345 为条目上限；facts_sync 断言升级：类数=分节数+节头范围；docs/design-specs/g-items-research-290.md 调研档）。
@@ -95,3 +95,38 @@
 | 7 | 门禁与发布物 | 发行前 `verify-release.ps1` 7/7 ALL PASS + `facts_sync` PASS（366 条/28 类）；dist zip 58 条目、发布物内 0 泄漏（唯一命中=门禁脚本自身正则，既有豁免） |
 
 **残留在办**：ClawHub scans 复查（1.0.14-1.0.18）；GitHub classic PAT 轮换（用户侧）；部署后 A/B 全矩阵复测（H 节）。
+
+---
+
+## J. v3.1.0 发行批清单（准备态 · 2026-09-19 · 待用户批准后执行发行/推送）
+
+### J-1 准备态已完成（源库侧，本地 commit 不 push）
+
+| # | 项 | 状态 | 证据 |
+|---|---|---|---|
+| 1 | 判据可信度批施工（判据版本化/金样本回归/指纹/分型/聚合器/判据史） | ✅ | `scripts/probe_runner.py`（j2.2）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
+| 2 | 两处裁决落地（multi-task 维持 FAIL / `verify_trace`+`effort` 去自满足） | ✅ | 判据自测负对照 `rat-obvious/modified-no-verify` 必 FAIL |
+| 3 | 细则 #368 立条 + 全承载点同步 | ✅ | `facts_sync --check` PASS（活跃 **367** / 上限 **368** / 类数 **29**） |
+| 4 | 口径校对（README 主口径行/条目上限入断言；verify 7→**8 项**） | ✅ | 补口前 `FACTS FAIL 4 处` → 修后 PASS |
+| 5 | README 按项目实质重构（口径块/原理/证据/用法，含 v3.1 判据可信度节） | ✅ | `README.md`（形态冒烟首行断言通过） |
+| 6 | Skill 本体净化 + 版本升板 3.1.0（三包 frontmatter + package.json） | ✅ | `verify` C 项：SKILL version=3.1.0；A 项家族包三包一致 |
+| 7 | 发行材料（CHANGELOG / 发行说明 / About 草案 / 升级指南） | ✅ | `CHANGELOG.md`、`docs/release-notes-v3.1.0.md`、`项目信息.md` §六·七、G 节 |
+| 8 | dist 重打（v3.1.0 zip）+ 发布物泄漏 0 | ⏳ 见 J-2 | `scripts/build-dist.ps1` |
+| 9 | 门禁终局 | ⏳ 见 J-2 | `verify-release` 8/8 + `facts_sync` PASS + `--judge-selftest` 18/18 |
+| 10 | 平台注入副本重部署（五平台）+ 新会话验收 | ⏳ 见 J-2 | `scripts/deploy_injection.py`、`scripts/syncer.py --family` |
+
+### J-2 待执行（需用户批准的最小动作集）
+
+1. **门禁终局复跑**：`verify-release.ps1`（8/8）→ `facts_sync --check` → `probe_runner --judge-selftest`（18/18）。
+2. **dist 重打**：`pwsh scripts/build-dist.ps1` → `dist/shisan-xinuo-workflow-v3.1.0.zip`；Set-diff 双检 + 发布物 0 泄漏。
+3. **注入副本重部署**：`deploy_injection.py`（codex/claude/trae/workbuddy/zcode）+ `syncer.py --family`；
+   验收 = 新会话读到「在场提示 · v3.1.0」+ `zxc663` 应答（注入版本=会话创建时快照，**须重启应用**）。
+4. **发行**（需明确批准）：GitHub push+tag `v3.1.0` + Release（zip 附件）→ npm（GitHub Packages）→ Gitee →
+   ClawHub → About 双端 PATCH（`项目信息.md` §六·七 口径）。
+5. **发行物终版重打**：回执写入 README/CHANGELOG/本档后重打 zip 并替换双端资产（沿用 v3.0.0 同型）。
+
+### J-3 v3.1.0 口径（发行时校对用）
+
+- 细则 **367 条 / 29 类**（编号至 `#368`）；注入核心 ≤6000 字符双口径；`GATE` **12 字段**定版。
+- 门禁 **8 项**；判据金样本回归 **18/18**；无头全矩阵 **20/20**（判据 j2.2）。
+- 三包版本 3.1.0（core / flows / roles）。
