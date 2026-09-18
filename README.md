@@ -2,7 +2,7 @@
 
 **十三希诺 · 纪律元工作流（v3.0.0）**——让规则**真正被消费**的工程治理元 Skill。中文优先，单版本分发。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **366 lessons across 28 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: 52 behaviour probes at **98.1%** on the v2.9.0 baseline, **18/19** on the v3.0 scenario matrix, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **367 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: 52 behaviour probes at **98.1%** on the v2.9.0 baseline, **18/19** on the v3.0 scenario matrix, plus an independent review pass.
 
 ## 口径块 · Facts at a glance
 
@@ -10,7 +10,7 @@
 | --- | --- |
 | 版本 | **v3.0.0**（已全渠道发行 2026-09-18） |
 | 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
-| 细则库 | **366 条 / 28 类**（编号至 `#367`；类数=分节数，单源断言） |
+| 细则库 | **367 条 / 29 类**（编号至 `#368`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
 | 行为面 | v2.9.0 基线 52 探针 **51 PASS = 98.1%**；v3.0 场景矩阵 19 场景 **18/19**（唯一 FAIL 经双击复采判为单例方差）；v3.0.0 注入副本冒烟 **2/2 · GATE 12/12** |
@@ -46,7 +46,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 2. **门禁化**——每个任务块收尾产出可复跑的 `GATE` 行（含真实命令与退出码），验证变成**证据**而非声明。
 3. **承载化**——项目根落 `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区），跨会话续接有据可查。
 4. **注入化**——五种平台各有注入适配，规则在新会话**在场**；验收判据是平台解析到的 Base directory，不是文件里的版本号。
-5. **教训化**——踩过的坑按症状索引入库（366 条/28 类），下次同类症状先检索再动手。
+5. **教训化**——踩过的坑按症状索引入库（367 条/29 类），下次同类症状先检索再动手。
 
 ## 它为谁解决什么 · Who it's for
 
@@ -93,7 +93,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 开工四步 | 复述 → 承载 → 记忆对齐 → 能力检索与选道 | 注入核心 |
 | 状态行 | `Context: state=… L=… confirm=…`，每轮首产物可校验 | 注入核心 |
 | `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变） | 核心 §9 + `scripts/gate_audit.py` |
-| 细则库 | 366 条 / 28 类，症状索引检索键 100% 覆盖 | `references/details.md` |
+| 细则库 | 367 条 / 29 类，症状索引检索键 100% 覆盖 | `references/details.md` |
 | 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
 | 项目承载 | `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区）+ 项目级规则文件 | 模板 + 核心 §5 |
 | 平台注入 | 五平台注入点表、按需/强制两种模式、备份合并不覆盖 | `references/platform-adaptation.md` + `scripts/deploy_injection.py` |

@@ -33,6 +33,10 @@ CLASSES = len(re.findall(r'^## \d+\. ', details, re.M))
 CARRIERS = [
     ('README.md', [
         r'现 \*\*(?P<n>\d+) 条 / (?P<c>\d+) 类\*\*',
+        r'\| 细则库 \| \*\*(?P<n>\d+) 条 / (?P<c>\d+) 类\*\*（编号至 `#(?P<e>\d+)`',
+        r'\| 细则库 \| (?P<n>\d+) 条 / (?P<c>\d+) 类，症状索引检索键',
+        r'按症状索引入库（(?P<n>\d+) 条/(?P<c>\d+) 类）',
+        r'\*\*(?P<n>\d+) lessons across (?P<c>\d+) categories\*\*',
         r'details (?P<n>\d+)条/(?P<c>\d+)类',
         r'体量大（\*\*(?P<n>\d+) 条\*\*）',
         r'不用背 (?P<n>\d+) 条',
@@ -101,6 +105,10 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
             bad.append(('n', COUNT))
         if 'c' in m.groupdict() and m.group('c') and int(m.group('c')) != CLASSES:
             bad.append(('c', CLASSES))
+        # 'e' = 条目上限（编号至 #N）——v3.1 补：README 口径行同句写「编号至 #N」，
+        # 旧表只断言条数/类数，导致上限漂移（367 vs 368）不被门禁捕获
+        if 'e' in m.groupdict() and m.group('e') and int(m.group('e')) != MAX_ENTRY:
+            bad.append(('e', MAX_ENTRY))
         if bad:
             problems.append(f'{rel}: {m.group(0)[:40]!r} 声明 {m.groupdict()} ≠ 单源 n={COUNT}/c={CLASSES}')
             if fix_holder['fix']:

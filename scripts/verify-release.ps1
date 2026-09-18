@@ -11,6 +11,7 @@
       E. 正文净化：常驻/模板面过程注记（日期/拍板/批次词/sess_）命中 = 0
       F. 索引完整性：details.md 症状索引全覆盖（编号连续、每条细则 ≥1 症状域）
       G. 事实对账：细则数/条目范围与 details 计算单源一致（facts_sync）
+      H. 判据自测：路测判据金样本回归（正/负对照全过）——判据即代码，改判据须过回归（v3.1）
     用途：发布前必跑，任一项不过即退出码 1。本脚本只读、非破坏性，不改动任何文件。
 .PARAMETER Root
     项目根目录，默认取脚本所在目录的上一级。
@@ -224,6 +225,15 @@ if (Test-Path $factsSync) {
     if ($LASTEXITCODE -ne 0) { $probsG += ($gOut | Where-Object { $_ -match 'DIFF|未找到' } | Select-Object -First 4) }
 } else { $probsG += "缺 scripts/facts_sync.py" }
 Add-Result ($probsG.Count -eq 0) "G 事实对账(细则数/条目范围 单源)" $(if($probsG.Count -eq 0){$gOut | Select-Object -Last 1}else{$probsG -join ";"})
+
+# ---------- H. 判据自测（v3.1 判据可信度批：判据改动须过金样本回归，含负对照） ----------
+$probsH = @()
+$probeRunner = Join-Path $Root "scripts\probe_runner.py"
+if (Test-Path $probeRunner) {
+    $hOut = python $probeRunner --judge-selftest 2>&1
+    if ($LASTEXITCODE -ne 0) { $probsH += ($hOut | Where-Object { $_ -match '\[BAD\]|^BAD:' } | Select-Object -First 4) }
+} else { $probsH += "缺 scripts/probe_runner.py" }
+Add-Result ($probsH.Count -eq 0) "H 判据自测(金样本回归 正/负对照)" $(if($probsH.Count -eq 0){$hOut | Select-Object -Last 1}else{$probsH -join ";"})
 
 # ---------- 汇总输出 ----------
 Write-Host ""
