@@ -122,7 +122,7 @@ def main():
             continue
         if not a.version:
             print('--version 必填（写入模式）'); sys.exit(1)
-        bak = p.with_name(p.name + f'.bak-{datetime.now(TZ).strftime("%Y%m%d")}-pre-v{a.version}')
+        bak = p.with_name(p.name + f'.bak-{datetime.now(TZ).strftime("%Y%m%d-%H%M%S")}-pre-v{a.version}')
         shutil.copy2(p, bak)
         core = CORE.read_text(encoding='utf-8-sig').replace('\r', '').strip()
         out = HEADER.format(version=a.version, plat=plat, skill_src=src, count=count, classes=classes, now=now).rstrip()
