@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-18（v3.0 批①-⑤口径） ｜ 判级：L2-F v3.0 重构批（批① 立条 #346-356／批②③ 两包落地／批④ 键补全 100%／批⑤ 独立审查+P0 修复；verify 7/7；细则 366 条/28 类〔未发行〕）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0 已全渠道发行（2026-09-15，回执见项目信息 §五）；**v2.9.0 已全渠道发行（2026-09-16，回执见项目信息 §五）**。
+> 更新：2026-09-18（v3.0 收尾批 ⑥ + 缺口补充批） ｜ 判级：L2-F v3.0 重构批（批①-⑤ + 收尾批 ⑥：三包部署面统一／探针 harness 收编 `scripts/probe_runner.py`／缺口补充（监控 V1-V7：隔离断言+发布面双因分离+取证口径两行+部署批 A/B 设计）／README 重构〔去图·纯文本〕；verify 7/7；细则 366 条/28 类〔未发行〕）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0/v2.9.0 已全渠道发行（回执见项目信息 §五）；**v3.0.0 本地在途——发行材料见 RELEASE-CHECKLIST F-H 节**。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.9.0+）。
@@ -32,23 +32,23 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 11 字段）+ references（injection-core/details 366 条 28 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 11 字段、injection-core、details、rules |
+| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 366 条 28 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
 | skill/shisan-xinuo-flows/ | 已实现（v3.0 批次②） | 流程包：SKILL.md（加载后行动契约+依赖声明）+ references/workflows.md（9 类工作流/澄清/双调研/复用五问）+ templates 7 件（规划/验收/任务记录/复盘/回滚点/预算/压缩保留） | flows、workflows、流程包、模板、9 类工作流 |
 | skill/shisan-xinuo-roles/ | 已实现（v3.0 批次③） | 角色包：SKILL.md（dispatch 矩阵+行动契约+依赖声明）+ roles/ 8 角色六字段（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | roles、角色包、dispatch、critic、debugger |
-| scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁 7 项）/ facts_sync.py（事实对账） | install-skill、syncer、verify-release、facts_sync、门禁、三路合并 |
-| docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
+| scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配，三包 `-Family`）/ syncer.py（三路合并，`--family` 全家族）/ verify-release.ps1（发布门禁 7 项）/ facts_sync.py（事实对账）/ deploy_injection.py（五平台注入）/ gate_audit.py（GATE 外部抽检）/ probe_runner.py（行为面探针 harness：隔离断言+双因分离+scorecard 随仓）/ detail_lookup.py（细则检索端口） | install-skill、syncer、verify-release、facts_sync、deploy_injection、gate_audit、probe_runner、门禁 |
+| docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源）/ skill-split-plan-v3.0.md（v3.0 施工计划与进度表）/ independent-review-v3.0-20260918.md（独立审查报告）/ roadtest-scorecards/（行为面 scorecard 时序库）/ incidents/（事故取证与交接件） | project-info、reference-sources、计划档、独立审查、scorecards、incidents |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：一档制 `agent-log.md` 四区（状态段/教训区/偏好段/流水区；旧五件套历史原件在 legacy-pre-v250/ 只读） | agent-log、记忆、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（v2.9.0 终版已重打 49=49/291,937B，2026-09-16 五点实测通过；v2.8.0 及更早历史版在位；随 Release 附带） | 发行 zip、发布包、dist |
+| dist/ | 已实现（gitignore） | 发行 zip（v2.9.0 终版 291,937B 已发行；**v3.0.0 待重打**——三包体系发行物，见 RELEASE-CHECKLIST F 节；v2.8.0 及更早历史版在位） | 发行 zip、发布包、dist、v3.0.0 |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
-| RELEASE-CHECKLIST.md | 已实现 | 发行清单（v2.9.0 发行批已回填；上版 v2.8.0 全渠道已回执） | 发行台账、渠道回执、门禁、发行后校准 |
+| RELEASE-CHECKLIST.md | 已实现 | 发行清单（v3.0.0 本批：F 发行增量/G 升级指南/H 部署后 A/B 复测；v2.9.0 及更早批次回执见各节沿革行） | 发行台账、渠道回执、门禁、升级指南、A/B 复测 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |
 
 ## ④ 调研导航（改什么 → 查哪）
 - 改主流程/判级 → SKILL §2/§2.2（**三级同步链：§2.2 → injection-core → 平台注入副本，改完全链重部署**）。
 - 改细则 → references/details.md（编号须连续、全仓口径 grep：条数/类数/版本号；引用规范禁裸 #N）。
 - 改注入/触达 → platform-adaptation.md（注入点表 §2.1/§2.2）+ memory-anchor.md。
-- 发行 → scripts/README.md（装机/校验）+ RELEASE-CHECKLIST.md（v2.9.0 已回填；v3.0 批次在途）。
+- 发行 → scripts/README.md（装机/校验）+ RELEASE-CHECKLIST.md（v3.0.0 F-H 节：三包/口径/dist/升级指南/A-B 复测）。
 - 口径核账/细则数 → scripts/facts_sync.py（单源对账，verify G 项底层）。
 - 决策追溯 → 项目信息.md（§三 决策 1-53）+ memory/task-log/。
 

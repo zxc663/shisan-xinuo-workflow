@@ -1,4 +1,4 @@
-# 发行执行清单（v2.9.0 · 发行批已回填；上版 v2.8.0 回执要点见版本沿革行，全文在 git 历史）
+# 发行执行清单（v3.0.0 · 本批；v2.9.0 及更早批次回执要点见各节沿革行，全文在 git 历史）
 
 > 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
 > **版本沿革**：v2.8.0 已全渠道发行（2026-09-15：GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending；回执全文见 git 历史与本清单 v2.8.0 版）。**v2.9.0 = 2.9 修正批+续批**（独立审查 P1×11+P2×16 机制级 23 项+v11 新增四项裁决+G 清单四点调研立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则终态 **344 条/25 类**——343/24 为转正批时点值，345 为条目上限；facts_sync 断言升级：类数=分节数+节头范围；docs/design-specs/g-items-research-290.md 调研档）。
@@ -57,3 +57,27 @@
 - v2.8.0 全渠道已发行（回执见 git 历史版本清单）；ClawHub 1.0.14/1.0.15/1.0.16 scans pending 遗留。
 - GitHub classic PAT 未轮换（用户侧遗留最高优先）。
 - 本批路测续跑已完成（2026-09-16：S-B′/S-A′ 余轮/压缩测针/S-D′，EVIDENCE §三十一）——顺序约束已解除，重部署段执行完毕。
+
+## F. v3.0.0 发行批增量（本批施工面）
+
+- **交付物形态**：三包体系——`shisan-xinuo-workflow`（核心）+ `shisan-xinuo-flows`（流程包）+ `shisan-xinuo-roles`（角色包）；三包 `name/version` 与 `package.json` 一致（verify-release A 项家族包断言）。
+- **口径基线（本批）**：活跃细则 **366 条**（条目编号至 #367，预留/归档槽不计入）/ **28 类**；注入核心双口径 ≤6000 字符；GATE **12 字段**定版（新增 `stop_reason`）。
+- **待重打**：`dist/shisan-xinuo-workflow-v3.0.0.zip`（`scripts/build-dist.ps1`）；npm 侧 description 口径同步「366 条细则 28 类」。
+- **迁移说明**：CHANGELOG v3.0.0 行（本档同批）+ 升级指南见 G 节。
+- **About 双端**：desc_len ≤350，含三包体系与 366/28 口径。
+
+## G. 升级指南（v2.9.0 → v3.0.0）
+
+1. **取包**：npm/GitHub 用户 `npx skills add zxc663/shisan-xinuo-workflow`；本地源库用户 `python scripts/syncer.py`。
+2. **注入副本重部署**：`python scripts/deploy_injection.py --only <平台>`（本批五平台：codex/claude/trae/workbuddy/zcode）；部署后**重启对应应用 + 新开会话**，验收「在场提示 · v3.0.0」+ `zxc663` 应答（注入版本=会话创建时快照）。
+3. **包拆分升级**：flows/roles 为新增独立包（可选装）；已装核心者用 `python scripts/syncer.py --family` 同步三包。
+4. **hooks 副本**：`templates/hooks/carrier_reminder.example.py` 升级至 12 字段 + 思考链钩子；已部署副本须同步（config 指向仓外脚本——改模板≠改副本）。
+5. **兼容性**：v3.0.0 内容 = v2.9.0 的超集（骨架重排 + 条款增补），无破坏性接口变更；GATE 11→12 字段为增量，旧 GATE 行仍可读。
+
+## H. 部署后行为面 A/B 复测（V7 · 部署批验收判分项）
+
+- **基线**：v2.9.0 旧副本 52 探针 **51 PASS = 98.1%**（分析见夜班报告 A13/G11）；v3.0.0 注入后 19 场景批 **18/19 PASS**（唯一 FAIL=skip-floor「下限未达未照报」，双击复采 ×2 后判为单例方差）。
+- **复测命令**：`python scripts/probe_runner.py --label v300-ab all`（同夹具同判据；harness 默认探针根落系统临时目录，仓外隔离）。
+- **预期改善点**：`multi-task`（L 类灰色带）、`skip-floor`（下限未达=照报）、`gate-fields`（12 字段覆盖）。
+- **判据**：复测结果与基线同表并列写入 EVIDENCE；**改善/持平/退化**三态显式标注，退化即回滚候选。
+- **scorecard 归档**：`docs/roadtest-scorecards/<标签>.jsonl`（随仓分发，形成跨夜可比时序库）。

@@ -58,10 +58,6 @@ CARRIERS = [
      [r'47 条 / (?P<n>\d+) 细则']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
      [r'活跃 (?P<n>\d+) 条，类数=分节数 (?P<c>\d+)']),
-    (os.path.join('docs', 'diagrams', 'working-principle.svg'), [
-        r'落地细则 (?P<n>\d+) 条 / (?P<c>\d+) 类',
-        r'按症状类（(?P<n>\d+) 条/(?P<c>\d+) 类）',
-    ]),
 ]
 RANGE_CARRIER = (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
                  r'1\.–(?P<n>\d{1,3})\.')
