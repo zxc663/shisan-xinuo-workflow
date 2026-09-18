@@ -223,7 +223,7 @@ metadata:
 
 | 文件 | 内容 | 何时加载 |
 |---|---|---|
-| `references/injection-core.md` | 平台无关常驻核心（判级速查/开工四步/三模式/红线/GATE 11 字段/TOP+检索端口） | 硬注入时；「写进我的平台规则」 |
+| `references/injection-core.md` | 平台无关常驻核心（判级速查/开工四步/三模式/红线/GATE 12 字段/TOP+检索端口） | 硬注入时；「写进我的平台规则」 |
 | `references/platform-adaptation.md` | 平台检测/注入点表/提问降级链/结构化提问协议 | 平台未知/注入点存疑 |
 | `references/skill-usage.md` | Skill 发现/注册机制+加载决策路由 | Skill 选型纠结/弱模型场景 |
 | `references/rules.md` | 编号工程纪律 47 条（地基） | 纪律争议/查规则原文 |

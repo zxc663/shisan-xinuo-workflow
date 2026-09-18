@@ -1,4 +1,4 @@
-# 维护脚本使用文档（install-skill.ps1 + verify-release.ps1 + syncer.py）
+# 维护脚本使用文档（install-skill.ps1 + verify-release.ps1 + syncer.py + probe_runner.py）
 
 仓库维护工具：**一键安装（agent- 前缀自适配）** + **发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器** + **发行 zip 打包器**。install-skill.ps1 面向用户安装（git 分发用）；后三者是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
 

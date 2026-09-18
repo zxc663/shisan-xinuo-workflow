@@ -1,6 +1,7 @@
 # ZCode 数据库损坏事故 · 处置与交接（2026-09-18）
 
-> 用途：本文件是**交接件**——2026-09-18 23:00 之后的修复轮次照此执行；如判据或路径有变，先改本文件再动手。
+> 用途：本文件是**交接件**——2026-09-18 的修复轮次照此执行；如判据或路径有变，先改本文件再动手。
+> 路径口径：仓内版本已脱敏（`<USERPROFILE>` / `<备份根>`）；含本机绝对路径的完整原件留本地 `memory/incidents/`（随 `.gitignore` 不入仓）。
 
 ## 一句话
 
@@ -10,11 +11,11 @@
 
 用户授权「删呗，修复吧」（项目文件另有留档）后按 **A 路线（抢救 → 重建）** 执行完毕。
 
-1. **文本抢救（先做，只读）** → `D:\zcode-db-rescue-output\`
+1. **文本抢救（先做，只读）** → `<备份根>\zcode-db-rescue-output\`
    - `tasks-index.sqlite.strings.txt` —— 59,454 段 / 3,701,394 字符
    - `db.sqlite.strings.txt` —— 3,276,292 段 / 628,173,639 字符（≈736 MB，可用 `rg` 离线检索历史会话正文）
    - `task-titles-recovered.txt` —— 183 条去重任务标题 + 15 个去重工作区路径（可对账、可辅助人工重建任务列表）
-2. **移库（移动而非删除，可回滚）** → `D:\zcode-backup-20260918\10-已移除的损坏库\`（`tasks-index.sqlite`、`cli-db.sqlite` 及各自 `-shm`/`-wal`，共 4 件）
+2. **移库（移动而非删除，可回滚）** → `<备份根>\zcode-backup-20260918\10-已移除的损坏库\`（`tasks-index.sqlite`、`cli-db.sqlite` 及各自 `-shm`/`-wal`，共 4 件）
 3. **应用重建并验证**：
 
 | 判据 | 实测 |
@@ -29,7 +30,7 @@
 ## 报错原文与日志对证
 
 - 启动报告（用户提供）：`startupId=d151e689-5dc7-4680-890c-2aedf789e79a`、`attemptId=b03e697b-fa61-48b7-950e-c736588f4bfc`、`sequence=6`、`phase=failed`、`failedPhase=preparing_host_storage`、`errorCode=corrupt`、`sqliteCode=11`、`systemCode=ERR_SQLITE_ERROR`。
-- 日志对证 `C:\Users\zxc66\.zcode\v2\logs\2026-09-18.log`：
+- 日志对证 `<USERPROFILE>\.zcode\v2\logs\2026-09-18.log`：
   - `09:32:35` `[database-startup] terminal status=ready`（最后一次健康启动，durationMs=5487）
   - `09:44:40` `terminal status=failed errorCode=corrupt`（durationMs=223）
   - `09:45:59` `terminal status=failed errorCode=corrupt`（durationMs=263）
@@ -39,8 +40,8 @@
 
 | 库 | 路径 | 大小 | mtime | `PRAGMA quick_check` | 证据 |
 | --- | --- | --- | --- | --- | --- |
-| 任务索引 | `C:\Users\zxc66\.zcode\v2\tasks-index.sqlite` | 7,864,320 B | 2026-09-18 09:44:40 | `database disk image is malformed` | U+FFFD 22,075 处（≈0.56% 字节被替换）；4096 页首字节有效页类型占比 5.0% |
-| CLI 会话库 | `C:\Users\zxc66\.zcode\cli\db\db.sqlite` | 822,472,704 B | 2026-09-18 09:44:27 | `database disk image is malformed` | U+FFFD 6,427,474 处（≈0.8%）；页首有效类型占比 6.4% |
+| 任务索引 | `<USERPROFILE>\.zcode\v2\tasks-index.sqlite` | 7,864,320 B | 2026-09-18 09:44:40 | `database disk image is malformed` | U+FFFD 22,075 处（≈0.56% 字节被替换）；4096 页首字节有效页类型占比 5.0% |
+| CLI 会话库 | `<USERPROFILE>\.zcode\cli\db\db.sqlite` | 822,472,704 B | 2026-09-18 09:44:27 | `database disk image is malformed` | U+FFFD 6,427,474 处（≈0.8%）；页首有效类型占比 6.4% |
 
 - 两个文件的**前 4096 字节干净**（U+FFFD = 0），从第 4096 字节起被文本化重写——与「全树消毒」动作时间窗吻合。
 - 健康对照：Codex 侧 SQLite 全绿（`~/.codex` 下 `goals_1 / logs_2 / memories_1 / queue_1 / state_5 / thread_history_1 / sqlite\codex-dev.db` 均 `ok`）。**本事故只伤 ZCode 数据面。**
@@ -62,9 +63,9 @@
 
 ## 备份位置（已执行）
 
-- `D:\zcode-backup-20260918\01-dot-zcode\` —— 3.082 GB / 13,588 文件 / 失败 0（robocopy /E，exit=1=成功）
-- `D:\zcode-backup-20260918\02-Roaming-ZCode\` —— 711.97 MB / 18,406 文件 / 失败 0
-- `D:\zcode-backup-20260918\00-损坏库快照\` —— 两个受损库原件快照；哈希见同目录 `HASHES.txt`
+- `<备份根>\zcode-backup-20260918\01-dot-zcode\` —— 3.082 GB / 13,588 文件 / 失败 0（robocopy /E，exit=1=成功）
+- `<备份根>\zcode-backup-20260918\02-Roaming-ZCode\` —— 711.97 MB / 18,406 文件 / 失败 0
+- `<备份根>\zcode-backup-20260918\00-损坏库快照\` —— 两个受损库原件快照；哈希见同目录 `HASHES.txt`
 
 ## 修复选项（23:00 轮次择一执行）
 
@@ -80,13 +81,13 @@
 Get-Process | Where-Object { $_.ProcessName -match 'ZCode' }
 ```
 
-1）抢救文本（只读，输出 `D:\zcode-db-rescue-output\`）
+1）抢救文本（只读，输出 `<备份根>\zcode-db-rescue-output\`）
 
 ```powershell
 $code = @'
 import re, os
-src=[r'C:\Users\zxc66\.zcode\v2\tasks-index.sqlite', r'C:\Users\zxc66\.zcode\cli\db\db.sqlite']
-out=r'D:\zcode-db-rescue-output'; os.makedirs(out, exist_ok=True)
+src=[r'<USERPROFILE>\.zcode\v2\tasks-index.sqlite', r'<USERPROFILE>\.zcode\cli\db\db.sqlite']
+out=r'<备份根>\zcode-db-rescue-output'; os.makedirs(out, exist_ok=True)
 for p in src:
     d=open(p,'rb').read()
     t=d.decode('utf-8','replace')
@@ -101,19 +102,19 @@ $code | python -
 2）移库（先建目标目录；移动而非删除，可回滚）
 
 ```powershell
-$move='D:\zcode-backup-20260918\10-已移除的损坏库'; New-Item -ItemType Directory -Force -Path $move | Out-Null
-Move-Item 'C:\Users\zxc66\.zcode\v2\tasks-index.sqlite' (Join-Path $move 'tasks-index.sqlite.corrupt-20260918') -Force
-Move-Item 'C:\Users\zxc66\.zcode\cli\db\db.sqlite' (Join-Path $move 'cli-db.sqlite.corrupt-20260918') -Force
-Remove-Item 'C:\Users\zxc66\.zcode\cli\db\db.sqlite-shm','C:\Users\zxc66\.zcode\cli\db\db.sqlite-wal' -Force -ErrorAction SilentlyContinue
+$move='<备份根>\zcode-backup-20260918\10-已移除的损坏库'; New-Item -ItemType Directory -Force -Path $move | Out-Null
+Move-Item '<USERPROFILE>\.zcode\v2\tasks-index.sqlite' (Join-Path $move 'tasks-index.sqlite.corrupt-20260918') -Force
+Move-Item '<USERPROFILE>\.zcode\cli\db\db.sqlite' (Join-Path $move 'cli-db.sqlite.corrupt-20260918') -Force
+Remove-Item '<USERPROFILE>\.zcode\cli\db\db.sqlite-shm','<USERPROFILE>\.zcode\cli\db\db.sqlite-wal' -Force -ErrorAction SilentlyContinue
 ```
 
 3）启动并验证（判据：出现 `status":"ready"`，且不再出现 `errorCode":"corrupt"`）
 
 ```powershell
-Start-Process 'C:\Users\zxc66\AppData\Local\Programs\ZCode\ZCode.exe'
+Start-Process '<USERPROFILE>\AppData\Local\Programs\ZCode\ZCode.exe'
 Start-Sleep -Seconds 45
-Select-String -Path 'C:\Users\zxc66\.zcode\v2\logs\2026-09-18.log' -Pattern 'database-startup\] terminal' | Select-Object -Last 3
-Test-Path 'C:\Users\zxc66\.zcode\v2\tasks-index.sqlite'
+Select-String -Path '<USERPROFILE>\.zcode\v2\logs\2026-09-18.log' -Pattern 'database-startup\] terminal' | Select-Object -Last 3
+Test-Path '<USERPROFILE>\.zcode\v2\tasks-index.sqlite'
 ```
 
 4）界面走查：任务列表可打开、可新建任务、设置页模型/provider 正常显示。

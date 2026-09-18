@@ -585,3 +585,22 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 - **触达矩阵自然实验（同主控同夜三种委托种群）**：顶层真实会话（注入核心＋hooks 在场）首产物复述 8/8 合规；实施型子代理（主控内联纪律包）委托标记 4/7；只读型子代理（无任何通道）0/7——「主会话靠注入副本、子代理靠委托纪律包直送」（SKILL §6）获量化验证；主控自发风险分级（写路径带包/只读不带）实证于条款修订（rules §28 分级定版）。
 - **两实锤回流**：①子代理批派限流自亡（批派 5 席 2 席自亡＋用户明令弃用子代理通道→rules §28 分级+details #281⑤ 限流感知派发）；②会话内 CronCreate 自指守候失效（项目级判例复踩，双击晋升门槛达成→details #320 守候独立性句）。
 - **局限（如实）**：观察窗=单夜单项目，描述性证据不作因果宣称；监控会话自身方法学盲区一并记录——请求间隔统计无法区分定时器回灌轮与自驱轮（「每 15 分钟心跳与行为相符」初判因此撤回，机制判断须见到机制载体再定论）。
+
+## 三十四、v3.0 缺口补充批 · 监控 V1-V7 处置 + 探针 harness 收编（2026-09-18）
+
+**输入（缺口源）**：夜班监控《05-缺口分析报告》（G11-G16/A13-A19）与《06-优化建议书》（V1-V8，仓外 skill-monitor-20260917）。
+
+**处置**：
+
+- **V2（P1·harness 收编+探针隔离）**：仓外 `probe_runner_v3.py` 收编为仓内 `scripts/probe_runner.py`——①探针工作根默认落系统临时目录，内置**隔离断言**（仓库内探针根直接 exit 2；探针根内出现 runner/标记文件即拒跑）；②路径全参数化（`--probe-root/--score-dir/--zcode/--timeout`，无个人绝对路径硬编码）；③scorecard 默认落 `docs/roadtest-scorecards/`（随仓归档＝跨夜可比时序库）。
+- **V3（P2·发布面单变量分离）**：`l3-publish` 判据拆 `blocked_by_discipline` / `blocked_by_env` 双字段；新增变体场景 `rel-dryrun`（`npm publish --dry-run` 前置）——纯纪律拦截可单独判分，不再被 ENEEDAUTH 稀释。
+- **V4/V5（P2·取证口径两行）**：并入 `details #330`——触达证据只认 rollout/请求体层（hooks 落盘面不构成触达反证；三层实测可不一致）；rollout/model-io 滑窗清刷（8 行→1 行实测）→先落快照再比对、逐会话即时收割、禁事后补测。
+- **V1（P1·L 类灰色带）**：维持双击观察（Loop-16 n=2 同题对照 1 PASS/1 FAIL，第二例未现）；条款措辞与常驻判分夹具（`multi-task`）已在库，再现实例即立条。
+- **V6（P3·深夜待机降频）**：属主控调度偏好，不写 Skill 条款，仅呈报留档。
+- **V7（P1·部署批 A/B 验收）**：写入 `RELEASE-CHECKLIST.md` G/H 节（基线对照表 + 复测命令 + 改善/持平/退化三态判据）。
+- **V8（利用率）**：处置由用户流承接（批次④处置清单）；本批挂钩=「任何保留/裁剪决策后用本 harness 跑行为面+触达面复测」。
+
+**本批机证（真实探针，非自述）**：`python scripts/probe_runner.py --label smoke l3-delete gate-grade` → **2/2 PASS · gate_fields=12/12**（探针跑在 v3.0.0 注入副本上；scorecard=`docs/roadtest-scorecards/smoke.jsonl`）。
+**环境发现（随批修复）**：headless CLI 需 `ZCODE_BUILTIN_PROVIDER_CONFIG_FILE` / `ZCODE_PERSONAL_PROVIDER_CONFIG_FILE`（App 派生环境自带，裸 shell 缺）——缺失时报「无法定位 CLI ZCode Built-in Provider Config」；harness 已内置自解析（runtime/provider 最新 zcode-builtin.json + 个人 provider_config.json）。
+
+**未验证/边界**：V1 立条与否待第二例独立样本；A/B 复测本批只落设计，待部署批执行后回填本节。
