@@ -1,0 +1,3 @@
+{"event": "loop-start", "deadline": "2026-09-19 09:00:00", "prefix": "v310-inf", "start_round": 1, "round0": false, "ts": "2026-09-19 04:47:25"}
+{"event": "round-start", "round": 1, "label": "v310-inf-01", "ts": "2026-09-19 04:47:25"}
+{"event": "round-done", "round": 1, "label": "v310-inf-01", "summary": "19/20", "fails": ["skip-floor"], "taps": {"skip-floor": ["1/1", "0/1"]}, "confirmed_fails": ["skip-floor"], "ts": "2026-09-19 05:18:16"}
