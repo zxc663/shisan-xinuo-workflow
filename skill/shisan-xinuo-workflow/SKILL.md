@@ -228,7 +228,7 @@ metadata:
 | `references/skill-usage.md` | Skill 发现/注册机制+加载决策路由 | Skill 选型纠结/弱模型场景 |
 | `references/rules.md` | 编号工程纪律 47 条（地基） | 纪律争议/查规则原文 |
 | `shisan-xinuo-flows`（流程包） | 9 类任务工作流分册/澄清流程/双调研/复用五问/产品五问深度/模板 7 件 | 核心路由命中流程场景/任务类型不明/规划质量存疑 |
-| `references/details.md` | 落地细则 365 条·28 类（症状索引→按类加载；一键检索 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`） | 症状关键词命中踩坑类别；不熟悉领域即兴发挥前 |
+| `references/details.md` | 落地细则 366 条·28 类（症状索引→按类加载；一键检索 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`） | 症状关键词命中踩坑类别；不熟悉领域即兴发挥前 |
 | `references/security.md` | 密钥红线/应急响应/供应链与 SBOM | 接触密钥/疑似泄露/发布/依赖引入 |
 | `references/never-list.md` | 永不清单 7 类（明确禁止项） | 开工/提交/任何 L3 前**三读逐条核对** |
 | `references/new-project-bootstrap.md` | 新项目 4 步引导 | 首次任务/无 `memory/` |

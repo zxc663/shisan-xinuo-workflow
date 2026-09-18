@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-18（v3.0 批①-⑤口径） ｜ 判级：L2-F v3.0 重构批（批① 立条 #346-356／批②③ 两包落地／批④ 键补全 100%／批⑤ 独立审查+P0 修复；verify 7/7；细则 365 条/28 类〔未发行〕）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0 已全渠道发行（2026-09-15，回执见项目信息 §五）；**v2.9.0 已全渠道发行（2026-09-16，回执见项目信息 §五）**。
+> 更新：2026-09-18（v3.0 批①-⑤口径） ｜ 判级：L2-F v3.0 重构批（批① 立条 #346-356／批②③ 两包落地／批④ 键补全 100%／批⑤ 独立审查+P0 修复；verify 7/7；细则 366 条/28 类〔未发行〕）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0 已全渠道发行（2026-09-15，回执见项目信息 §五）；**v2.9.0 已全渠道发行（2026-09-16，回执见项目信息 §五）**。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.9.0+）。
@@ -32,7 +32,7 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 11 字段）+ references（injection-core/details 365 条 28 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 11 字段、injection-core、details、rules |
+| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 11 字段）+ references（injection-core/details 366 条 28 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 11 字段、injection-core、details、rules |
 | skill/shisan-xinuo-flows/ | 已实现（v3.0 批次②） | 流程包：SKILL.md（加载后行动契约+依赖声明）+ references/workflows.md（9 类工作流/澄清/双调研/复用五问）+ templates 7 件（规划/验收/任务记录/复盘/回滚点/预算/压缩保留） | flows、workflows、流程包、模板、9 类工作流 |
 | skill/shisan-xinuo-roles/ | 已实现（v3.0 批次③） | 角色包：SKILL.md（dispatch 矩阵+行动契约+依赖声明）+ roles/ 8 角色六字段（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | roles、角色包、dispatch、critic、debugger |
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁 7 项）/ facts_sync.py（事实对账） | install-skill、syncer、verify-release、facts_sync、门禁、三路合并 |
