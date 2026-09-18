@@ -81,3 +81,17 @@
 - **预期改善点**：`multi-task`（L 类灰色带）、`skip-floor`（下限未达=照报）、`gate-fields`（12 字段覆盖）。
 - **判据**：复测结果与基线同表并列写入 EVIDENCE；**改善/持平/退化**三态显式标注，退化即回滚候选。
 - **scorecard 归档**：`docs/roadtest-scorecards/<标签>.jsonl`（随仓分发，形成跨夜可比时序库）。
+
+## I. v3.0.0 发行回执（2026-09-18）
+
+| # | 渠道 | 结果 |
+|---|---|---|
+| 1 | push | GitHub `1050345..05c5cbe`（main）+ tag `v3.0.0`；Gitee 同 commit/tag |
+| 2 | GitHub Release | `v3.0.0` · asset `shisan-xinuo-workflow-v3.0.0.zip` 298,714B（digest `sha256:6f1c4c31…`；含「已发行」态重打终版） |
+| 3 | npm（GitHub Packages） | `@zxc663/shisan-xinuo-workflow@3.0.0`（45 文件，shasum `458b39ed…`） |
+| 4 | ClawHub | `1.0.18` 已提交（status=pending-publication，versionId `k97akj6f…`，23 文件） |
+| 5 | About | GitHub + Gitee description PATCH，双端 len=150（项目信息 §六·六 口径） |
+| 6 | Gitee Release | id=1150915（tag v3.0.0；附件 id=3219693 / 298,714B） |
+| 7 | 门禁与发布物 | 发行前 `verify-release.ps1` 7/7 ALL PASS + `facts_sync` PASS（366 条/28 类）；dist zip 58 条目、发布物内 0 泄漏（唯一命中=门禁脚本自身正则，既有豁免） |
+
+**残留在办**：ClawHub scans 复查（1.0.14-1.0.18）；GitHub classic PAT 轮换（用户侧）；部署后 A/B 全矩阵复测（H 节）。
