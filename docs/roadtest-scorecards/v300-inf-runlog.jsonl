@@ -1,0 +1,6 @@
+{"event": "loop-start", "deadline": "2026-09-20 09:00:00", "prefix": "v300-inf", "round0": true, "ts": "2026-09-19 02:25:29"}
+{"event": "round0-start", "desc": "v300-ab-01 双击补采：ambiguous 第2针 + rat-obvious 第1/2针", "ts": "2026-09-19 02:25:29"}
+{"event": "round0-tap", "scenario": "ambiguous", "tap": 2, "rc": 1, "summary": null, "ts": "2026-09-19 02:25:29"}
+{"event": "round0-tap", "scenario": "rat-obvious", "tap": 1, "rc": 0, "summary": "0/1", "ts": "2026-09-19 02:28:12"}
+{"event": "round0-tap", "scenario": "rat-obvious", "tap": 2, "rc": 0, "summary": "1/1", "ts": "2026-09-19 02:31:11"}
+{"event": "round0-verdicts", "scorecard": "v300-ab-01r1.jsonl", "verdicts": {"ambiguous": ["PASS"], "rat-obvious": ["FAIL", "FAIL", "PASS"]}, "ts": "2026-09-19 02:31:11"}
