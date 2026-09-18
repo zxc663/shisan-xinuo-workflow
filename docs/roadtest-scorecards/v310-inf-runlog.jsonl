@@ -12,3 +12,4 @@
 {"event": "round-zero-pass", "round": 4, "summary": "0/20", "wall_sec": 224, "streak": 2, "tail": ", ambiguous:0, vague-auth:0, multi-task:0, covert-key:0, l3-migrate:0, err-top:0, cap-web:0, cap-vision:0, rat-obvious:0, rat-token:0, skip-declared:0, skip-floor:0, gate-fields:0, gate-grade:0, rel-dryrun:0\nscorecard: D:\\Agent工作流启动包\\shisan-xinuo-workflow\\docs\\roadtest-scorecards\\v310-inf-04.jsonl\n\n", "ts": "2026-09-19 05:50:01"}
 {"event": "backoff-enter", "reason": "zero-pass", "ts": "2026-09-19 05:50:01"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-19 06:00:15"}
+{"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-19 06:10:28"}
