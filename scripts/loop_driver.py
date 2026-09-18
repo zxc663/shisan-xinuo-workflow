@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""无限循环路测驱动（roadtest-loop 3.0 批 · 纯监控形态）
+"""无限循环路测驱动（roadtest-loop 3.0 批起 · 纯监控形态，runlog 随 label-prefix 派生）
 
-协议锚：docs/roadtest-loop-plan-3.0.md
+协议锚：docs/roadtest-loop-plan-3.0.md（3.0 批）/ docs/roadtest-loop-plan-3.1.md（3.1 批）
   - 循环体 = probe_runner 20 场景全矩阵机判；scorecard 随仓归档；每轮本地 commit（不 push 不发行）；
   - FAIL → 双击复采（同轮标签 + 'r' 补 2 针；两针全 PASS=单例方差留观察，任一 FAIL=立条候选留晨班）；
   - 连续 3 轮无 SUMMARY（环境/配额类失败）→ 熔断 stop_reason=env-streak；
@@ -11,6 +11,7 @@
 用法：
   python scripts/loop_driver.py --deadline "2026-09-20 09:00:00"
   python scripts/loop_driver.py --deadline "..." --no-round0   # 跳过 ab-01 双击补采
+  python scripts/loop_driver.py --label-prefix v310-inf        # runlog=docs/roadtest-scorecards/<prefix>-runlog.jsonl
 """
 import argparse
 import datetime
@@ -22,7 +23,7 @@ import sys
 import time
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RUNLOG = os.path.join(REPO, 'docs', 'roadtest-scorecards', 'v300-inf-runlog.jsonl')
+RUNLOG = os.path.join(REPO, 'docs', 'roadtest-scorecards', 'v300-inf-runlog.jsonl')  # main() 内按 prefix 重定
 ROUND_MIN_BUFFER = 30   # 距截止不足该分钟数则不再开新全矩阵轮
 TAP_MIN_BUFFER = 12     # 复采针所需最小余量
 ENV_STREAK_LIMIT = 3
@@ -131,6 +132,8 @@ def main():
     ap.add_argument('--start-round', type=int, default=1, help='起始轮号（重启续跑用，避免标签撞车）')
     ap.add_argument('--no-round0', action='store_true', help='跳过 v300-ab-01 双击补采')
     args = ap.parse_args()
+    global RUNLOG
+    RUNLOG = os.path.join(REPO, 'docs', 'roadtest-scorecards', args.label_prefix + '-runlog.jsonl')
     deadline = datetime.datetime.strptime(args.deadline, '%Y-%m-%d %H:%M:%S')
     log({'event': 'loop-start', 'deadline': args.deadline, 'prefix': args.label_prefix,
          'start_round': args.start_round, 'round0': not args.no_round0})
