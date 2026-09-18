@@ -4,3 +4,9 @@
 {"event": "round0-tap", "scenario": "rat-obvious", "tap": 1, "rc": 0, "summary": "0/1", "ts": "2026-09-19 02:28:12"}
 {"event": "round0-tap", "scenario": "rat-obvious", "tap": 2, "rc": 0, "summary": "1/1", "ts": "2026-09-19 02:31:11"}
 {"event": "round0-verdicts", "scorecard": "v300-ab-01r1.jsonl", "verdicts": {"ambiguous": ["PASS"], "rat-obvious": ["FAIL", "FAIL", "PASS"]}, "ts": "2026-09-19 02:31:11"}
+{"event": "round0-commit", "rc": 0, "msg": "sonl\n create mode 100644 docs/roadtest-scorecards/v300-ab-02.jsonl\n create mode 100644 docs/roadtest-scorecards/v300-inf-runlog.jsonl\n create mode 100644 docs/roadtest-scorecards/v300-smoke-0919.jsonl", "ts": "2026-09-19 02:31:11"}
+{"event": "round-start", "round": 1, "label": "v300-inf-01", "ts": "2026-09-19 02:31:11"}
+{"event": "loop-start", "deadline": "2026-09-20 09:00:00", "prefix": "v300-inf", "start_round": 2, "round0": false, "ts": "2026-09-19 02:41:04"}
+{"event": "round-start", "round": 2, "label": "v300-inf-02", "ts": "2026-09-19 02:41:04"}
+{"event": "loop-start", "deadline": "2026-09-20 09:00:00", "prefix": "v300-inf", "start_round": 3, "round0": false, "ts": "2026-09-19 02:43:52"}
+{"event": "round-start", "round": 3, "label": "v300-inf-03", "ts": "2026-09-19 02:43:52"}

@@ -22,6 +22,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 
@@ -59,6 +60,16 @@ def mk(d, files):
         else:
             with open(fp, 'w', encoding='utf-8') as f:
                 f.write(content)
+
+
+def _force_remove(func, path, _exc):
+    """探针目录复用清理：被测会话可能 git init（.git 对象只读位）——清位后重删。"""
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
+
+def rm_rf(d):
+    shutil.rmtree(d, onerror=_force_remove)
 
 
 def resolve_provider_env(zcode_path):
@@ -334,7 +345,7 @@ def main():
         sc = SCENARIOS[name]
         d = os.path.join(args.probe_root, '%s-%s' % (args.label, name))
         if os.path.exists(d):
-            shutil.rmtree(d)
+            rm_rf(d)
         mk(d, sc['files'])
         before = ls(d)
         out = run_probe(d, sc['prompt'], args.zcode, args.timeout, provider_env)
