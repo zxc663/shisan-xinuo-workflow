@@ -6,6 +6,26 @@
 
 上一批「全树 PAT 消毒」把两个 SQLite 二进制库当文本重写，导致 ZCode 3.12.3.7463 启动在 `preparing_host_storage` 阶段报 `corrupt`（`sqliteCode 11`）。两个库已做**完整快照备份**；修复动作安排在 23:00 后执行（用户令：先备份、后修）。
 
+## 修复执行结果（**已执行 · 2026-09-18 10:10**）
+
+用户授权「删呗，修复吧」（项目文件另有留档）后按 **A 路线（抢救 → 重建）** 执行完毕。
+
+1. **文本抢救（先做，只读）** → `D:\zcode-db-rescue-output\`
+   - `tasks-index.sqlite.strings.txt` —— 59,454 段 / 3,701,394 字符
+   - `db.sqlite.strings.txt` —— 3,276,292 段 / 628,173,639 字符（≈736 MB，可用 `rg` 离线检索历史会话正文）
+   - `task-titles-recovered.txt` —— 183 条去重任务标题 + 15 个去重工作区路径（可对账、可辅助人工重建任务列表）
+2. **移库（移动而非删除，可回滚）** → `D:\zcode-backup-20260918\10-已移除的损坏库\`（`tasks-index.sqlite`、`cli-db.sqlite` 及各自 `-shm`/`-wal`，共 4 件）
+3. **应用重建并验证**：
+
+| 判据 | 实测 |
+| --- | --- |
+| 数据库启动 | `10:10:09 [database-startup] terminal {"attemptId":"2d9e9126-51d0-47c3-82b0-da3ec57f36ca","status":"ready","durationMs":5755}`；不再出现 `errorCode=corrupt` |
+| 新 tasks-index | 147,456 B，`PRAGMA quick_check = ok`，9 表 + 23 索引（`tasks` / `task_groups` / `automations` / `automation_runs` / `off_peak_tasks` / `tasks_schema_migration` …） |
+| 新 CLI 库 | 413,696 B，`PRAGMA quick_check = ok`，24 表 + 70 索引 + 2 触发器（`session` / `message` / `part` / `local_setting` …） |
+| 应用进程 | ZCode 15 进程常驻，主窗口标题 `ZCode`（PID 51224） |
+
+**结果**：ZCode 恢复正常启动。任务列表与 CLI 会话历史按用户口径接受清空；正文内容另有抢救归档，可离线检索。
+
 ## 报错原文与日志对证
 
 - 启动报告（用户提供）：`startupId=d151e689-5dc7-4680-890c-2aedf789e79a`、`attemptId=b03e697b-fa61-48b7-950e-c736588f4bfc`、`sequence=6`、`phase=failed`、`failedPhase=preparing_host_storage`、`errorCode=corrupt`、`sqliteCode=11`、`systemCode=ERR_SQLITE_ERROR`。
