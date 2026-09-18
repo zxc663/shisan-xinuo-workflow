@@ -214,7 +214,7 @@ metadata:
 
 ## 10. 路由表与引用加载
 
-**路由表（dispatch，按需加载、用完不驻留）**：调试/排错 → `shisan-xinuo-flows`·排错工作流｜新功能/多文件 → flows·对应工作流分册｜设计类 → flows·设计调研 + `shisan-xinuo-roles`·设计角色｜审查/验收 → roles 包（critic/风险/安全 dispatch 矩阵）｜Skill/工具选型纠结 → `references/skill-usage.md`｜平台注入问题 → `references/platform-adaptation.md`。
+**路由表（dispatch，按需加载、用完不驻留）**：调试/排错 → `shisan-xinuo-flows`·排错工作流｜新功能/多文件 → flows·对应工作流分册｜设计类 → flows·设计调研 + `shisan-xinuo-roles`·frontend｜审查/验收 → roles 包（8 角色 dispatch：critic/风险/安全/调试/契约/测试/前端/性能）｜Skill/工具选型纠结 → `references/skill-usage.md`｜平台注入问题 → `references/platform-adaptation.md`。
 
 | 文件 | 内容 | 何时加载 |
 |---|---|---|

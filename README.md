@@ -226,11 +226,13 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── skill/shisan-xinuo-workflow/    ← 纪律元核心（v3.0 批次①：跑道骨架+宪章五维+场景路由）
 │   ├── SKILL.md（§0 宪章/强制分级 · §2 跑道骨架+能力检索 · §4 必问+停型门禁 · §6 GATE 11 字段
 │   │   · §7 借口拦截 · §8 记录纪律 · §9 状态面 · §10 路由表 · §11 速查表）
-│   ├── templates/（agent-log-template / project-rules / memory-anchor / workspace-memory / hooks / agents）
+│   ├── templates/（agent-log-template / project-rules / memory-anchor / workspace-memory / hooks）
 │   └── references/（injection-core · details 355条/26类 · rules 47条 · security · never-list ·
 │       skill-usage · platform-adaptation · new-project-bootstrap · local-model-glossary）
 ├── skill/shisan-xinuo-flows/       ← 流程包（v3.0 批次②：9 类工作流分册 + 澄清/双调研/复用五问 + 模板 7 件；独立可装）
 │   └── SKILL.md · references/workflows.md · templates/（规划/验收/任务记录/复盘/回滚点/预算/压缩保留）
+├── skill/shisan-xinuo-roles/       ← 角色包（v3.0 批次③：8 角色六字段 + dispatch 矩阵；独立可装）
+│   └── SKILL.md · roles/（critic · risk-reviewer · security-auditor · debugger · contract · test · frontend · perf）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
 
