@@ -15,7 +15,7 @@
   python facts_sync.py --check   # 对账：任一承载点声明 ≠ 单源 → exit 1（verify G 项调用）
   python facts_sync.py --fix     # 校正：把偏差承载点改写为单源值（读回断言）
 """
-import io, re, sys, os
+import io, json, re, sys, os
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

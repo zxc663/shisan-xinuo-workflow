@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > *25文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-16（发行批口径校准） ｜ 判级：L2-F v2.9.0 修正批（独立审查 P1×11+P2×16 机制级 23 项+v11 四项裁决+G 清单四点立条；facts_sync 类数/节头断言升级；verify 7/7；细则 344 条/25 类）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0 已全渠道发行（2026-09-15，回执见项目信息 §五）；**v2.9.0 已全渠道发行（2026-09-16，回执见项目信息 §五）**。
+> 更新：2026-09-16（发行批口径校准） ｜ 判级：L2-F v2.9.0 修正批（独立审查 P1×11+P2×16 机制级 23 项+v11 四项裁决+G 清单四点立条；facts_sync 类数/节头断言升级；verify 7/7；细则 355 条/26 类）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0 已全渠道发行（2026-09-15，回执见项目信息 §五）；**v2.9.0 已全渠道发行（2026-09-16，回执见项目信息 §五）**。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.9.0+）。
@@ -21,7 +21,7 @@
 
 ## ② 目标规划（当前阶段）
 - 已完成：v2.0.6→**v2.9.0 全渠道发行（2026-09-16，回执=项目信息 §五）**——v2.0.6（08-31）/v2.1.0+v2.1.1（09-02）/v2.2.0（09-02）/v2.3.0（09-03）/v2.5.0（09-08）/v2.6.0（09-09）/v2.7.0+v2.7.1（09-12）/v2.8.0（09-15）/v2.9.0（09-16）逐版已发行。
-- 当前：**v2.9.0 发行批（2026-09-16，已全渠道发行）**——2.9 修正批 23 机制级+v11 四项裁决+G 清单四点立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则 344 条/25 类（终态；v2.8.0 发行时点 330/17）；五副本重部署 count=344 5/5；路测 v11-v20 全量收官（EVIDENCE §三十一/三十二）；口径修正批+自主循环批+推荐序施工批已落地；**发行批：verify 7/7+五副本 5/5+dist 五点半实测全绿**。
+- 当前：**v2.9.0 发行批（2026-09-16，已全渠道发行）**——2.9 修正批 23 机制级+v11 四项裁决+G 清单四点立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则 355 条/26 类（终态；v2.8.0 发行时点 330/17）；五副本重部署 count=344 5/5；路测 v11-v20 全量收官（EVIDENCE §三十一/三十二）；口径修正批+自主循环批+推荐序施工批已落地；**发行批：verify 7/7+五副本 5/5+dist 五点半实测全绿**。
 - 上一：**v2.5.0 批次（2026-09-08，已发行）**——留档一档制（memory/agent-log.md 四区取代五件套，旧项目沿用兼容；四 Skill 全修含蒸馏版 1.1.0/1.2.0×2）+ 设计前先调研成熟设计（并入设计铁律/复用铁律）+ agent-log-template 新模板。
 - 上一：**v2.4.0 批次（2026-09-08 本地完成，内容并入 v2.5.0 发行）**——三平台全量取证（ZCode 98/Codex 83/WorkBuddy 60 会话，产物 memory/forensics-2026-09-08/）驱动白名单修补：场景判定反转（判定不清默认按持续）+ 细则三层结构（T1 注入核心/T2 症状检索/T3 领域查询）+ 防棘轮（details 头+SKILL §0）+ 消重（§3 步骤6↔§2.0 步骤4 收敛）+ 紧凑档窗口下限 ≥16K；新发现 N1-N8 只记录待审。
 - 上一：**v2.3.0 批次（已全渠道发行 2026-09-03）**——场景化（单发文档豁免 details #283）+ 写作重构（SKILL §10 总纲 + AGENTS.md 维护纪律 + workflows 日期裁决）+ Steer 纠偏续跑（#280）+ Parallel 依赖协议（#281）+ 回指理解双强制（project-rules 回指段 + §0 每消息严谨分析，details #282）+ 审计修复 1-7（症状索引表 283 全覆盖 + verify F 项门禁 + GATE errpath）。
@@ -32,7 +32,7 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v2.9.0） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 344 条 25 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
+| skill/shisan-xinuo-workflow/ | 已实现（v2.9.0） | 唯一主交付物：SKILL.md（§0-§13）+ references（injection-core/details 355 条 26 类/rules 47 条/workflows/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（含 hooks/agents） | SKILL.md、injection-core、details、rules、references、glossary、templates、hooks、agents |
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配）/ syncer.py（三路合并）/ verify-release.ps1（发布门禁 7 项）/ facts_sync.py（事实对账） | install-skill、syncer、verify-release、facts_sync、门禁、三路合并 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源） | project-info、reference-sources、调研导航 |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
