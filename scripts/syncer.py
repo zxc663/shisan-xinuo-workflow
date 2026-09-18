@@ -44,7 +44,27 @@ def main():
     ap.add_argument("--dest", default=os.path.expanduser(r"~\.agents\skills\shisan-xinuo-workflow"))
     ap.add_argument("--backup-dir", default="", help="备份目录（默认：dest 的上级父目录下 skill-backups/，位于平台扫描路径之外）")
     ap.add_argument("--memory-target", default="", help="硬注入记忆层目标文件（如 ~/.workbuddy/MEMORY.md）：把 templates/memory-anchor.md 锚点块合并写入（先备份 .bak-<ts>）；留空则不写记忆层。默认行为保持纯 skill 副本同步。")
+    ap.add_argument("--family", action="store_true", help="多包模式（v3.0）：同步 skill/ 下全部家族包（核心+flows+roles）到 ~/.agents/skills/ 同名目录（逐包调用本脚本；--dry/--backup-dir 透传）")
     a = ap.parse_args()
+
+    if a.family:
+        import subprocess
+        fam_root = os.path.join(REPO_ROOT, "skill")
+        pkgs = sorted(d for d in os.listdir(fam_root) if os.path.isdir(os.path.join(fam_root, d)))
+        base = os.path.expanduser(r"~\.agents\skills")
+        rc = 0
+        print(f"[family] 家族包 {len(pkgs)} 个: {pkgs}")
+        for p in pkgs:
+            args = [sys.executable, os.path.abspath(__file__),
+                    "--src", os.path.join(fam_root, p),
+                    "--dest", os.path.join(base, p)]
+            if a.dry: args.append("--dry")
+            if a.backup_dir: args += ["--backup-dir", a.backup_dir]
+            print(f"\n===== family: {p} =====")
+            rc = max(rc, subprocess.run(args).returncode)
+        print(f"\n[family done] exit={rc}（各包详情见上方分节；验收看 Base directory）")
+        return rc
+
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fmt = datetime.now().strftime("%Y%m%d-%H%M%S")
 
