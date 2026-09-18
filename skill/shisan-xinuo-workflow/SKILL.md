@@ -4,7 +4,7 @@ description: "纪律元工作流（核心）：把任何工程任务强制按「
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   tags:
     - agent-skill
     - workflow-governance

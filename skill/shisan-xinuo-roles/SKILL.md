@@ -4,7 +4,7 @@ description: "十三希诺工作流·角色包：8 个审查/执行角色（crit
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.0.0
+  version: 3.1.0
   tags:
     - agent-skill
     - review-roles

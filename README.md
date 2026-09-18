@@ -1,20 +1,21 @@
 # Shisan Xinuo Agent Workflow
 
-**十三希诺 · 纪律元工作流（v3.0.0）**——让规则**真正被消费**的工程治理元 Skill。中文优先，单版本分发。
+**十三希诺 · 纪律元工作流（v3.1.0）**——让规则**真正被消费**、让结论**可复算**的工程治理元 Skill。中文优先，单版本分发。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **367 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: 52 behaviour probes at **98.1%** on the v2.9.0 baseline, **18/19** on the v3.0 scenario matrix, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **367 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix (judge j2.2, with fingerprints), **18/18** judge gold-sample regression, 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
 ## 口径块 · Facts at a glance
 
 | 项 | 值 |
 | --- | --- |
-| 版本 | **v3.0.0**（已全渠道发行 2026-09-18） |
+| 版本 | **v3.1.0**（发行前准备态；上一版 v3.0.0 已全渠道发行 2026-09-18） |
 | 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
 | 细则库 | **367 条 / 29 类**（编号至 `#368`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v2.9.0 基线 52 探针 **51 PASS = 98.1%**；v3.0 场景矩阵 19 场景 **18/19**（唯一 FAIL 经双击复采判为单例方差）；v3.0.0 注入副本冒烟 **2/2 · GATE 12/12** |
-| 门禁 | `scripts/verify-release.ps1` **7 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账） |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.2，scorecard 带被测副本/平台/判据指纹）；**判据金样本回归 18/18**（正例 7 / 负例 11）；同批输出两版判据重判：j1.0 18/20 → j2.2 **20/20**（判据效应与行为方差分离） |
+| 判据可信度 | 判据版本化（j1.0→j2.2）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
+| 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
 
 ## 目录 · Contents
 
@@ -74,6 +75,8 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 
 **状态锚定（v3.0 机制）**：状态段首行 `STATE: task_id|level|route|confirm|gates_passed|last_errpath` 单行结构化；跨天首轮、子任务派发前、判级选道前三触发重读；复述不出 `level/confirm` 即视为状态失效。
 
+**判据可信度（v3.1 机制）**：判据与结论都是工件，不是自述——①判据改动**只许**修「不识别合规形态」方向，且必须 bump 判据版本 + 过金样本回归（正例必放行、负对照必拒）+ 版本史留档；②每条路测结论带**指纹**（被测副本哈希 / 平台版本 / 判据版本 / 夹具哈希），无指纹的通过率不构成跨批次结论；③环境失败行按**证据**剔除（provider 报错栈 / 空输出），不得与行为失败混计；④`GATE` 合规率按**形态分型**统计（包级 12 字段 / 子块简式 / 杂键），不以单一字段数判合规。落地件：`scripts/probe_runner.py`（`--judge-selftest` / `--rescore`）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md`。
+
 ## 三包体系 · Packages
 
 三个包可独立安装、组合使用，共同构成一套完整纪律体系：
@@ -99,8 +102,10 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 平台注入 | 五平台注入点表、按需/强制两种模式、备份合并不覆盖 | `references/platform-adaptation.md` + `scripts/deploy_injection.py` |
 | hooks 加固 | SessionStart/Stop 常驻提醒（可选加固面，非运行时必需） | `templates/hooks/` |
 | 委托纪律包 | 子代理不继承注入——委托必须内联最小纪律包 | 核心 §6 + 角色包 |
-| 行为面 harness | 19 场景探针矩阵（+发布面双因变体），隔离断言 + scorecard 随仓归档 | `scripts/probe_runner.py` |
-| 门禁 | 7 项发行门禁 + 事实对账单源断言 | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
+| 行为面 harness | 20 场景探针矩阵（19 + 发布面双因变体），隔离断言 + scorecard 随仓归档 | `scripts/probe_runner.py` |
+| 判据自证 | 判据版本化 + 金样本回归（`--judge-selftest`）+ 同批输出两版判据离线重判（`--rescore`）+ 判据版本史 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
+| 时序库聚合 | 作废行机器签名剔除 + GATE 形态分型 + 改善/持平/退化三态对比 | `scripts/scorecard_agg.py` |
+| 门禁 | **8 项**发行门禁（含 H 判据自测）+ 事实对账单源断言（含条目上限） | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
 | 自更新 | 三路合并同步多平台副本，备份落平台扫描路径外 | `scripts/syncer.py` |
 | 自检彩蛋 | 会话内输入 `zxc663` → 注入方式 / 已应用轮数 / 源库 vs 副本版本 | 核心 §11 |
 
@@ -134,6 +139,9 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 红线行为面 | 密钥（含 covert 变体）/ 发布 / 删除 / 迁移 / 笼统授权 全绿（双样本） | `EVIDENCE.md` §三十三 |
 | 独立审查 | 由另一模型无头新会话只读审查（口径一致性/字段/引用/包路径），P0×1 当日修复，P1/P2/P3 分诊并回填 | [`docs/independent-review-v3.0-20260918.md`](docs/independent-review-v3.0-20260918.md) |
 | 无头 vs 交互面对照 | 同一平台：无头 `-p` 面注入 0/13 断裂；交互面注入 111/112 在场——**注入面效力只能由真会话验证** | `EVIDENCE.md` §二十六 |
+| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.2）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
+| 判据金样本回归 | **18/18**（正例 7 / 负例 11）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」等负对照 | `python scripts/probe_runner.py --judge-selftest` |
+| 判据修订史 | j1.0→j2.2 三处修订逐条附依据（项目终态三候选 + 设计原文对账 + 两处自证风险裁决） | `docs/roadtest-scorecards/JUDGELOG.md` |
 
 ## 快速体验 · Quick start
 
@@ -142,7 +150,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
    - 仓库直装：`git clone <repo>` → `pwsh scripts/install-skill.ps1`
 2. **重开一个新会话**（注入版本=会话创建时快照），输入 `zxc663` 自检：应回答「注入方式 / 已应用轮数 / 源库 vs 副本版本 / Base directory」。
 3. **给它一个真实任务**：观察三个标志物——①每轮首产物是复述 + 状态行；②关键决策会先问（而不是先做）；③任务块末尾有 `GATE:` 单行与可复跑命令。
-4. **想验行为面**：`python scripts/probe_runner.py --label demo l1-rename l3-delete`（探针默认落在系统临时目录，与仓库隔离）。
+4. **想验行为面**：`python scripts/probe_runner.py --label demo l1-rename l3-delete`（探针默认落在系统临时目录，与仓库隔离）；**想验判据**：`python scripts/probe_runner.py --judge-selftest`（零 API 成本，正/负对照全过才算判据可用）。
 
 ## 安装与注入 · Install & inject
 
@@ -159,9 +167,11 @@ python scripts/deploy_injection.py --check --only zcode        # 注入副本验
 python scripts/syncer.py
 python scripts/syncer.py --family                 # 全家族包逐包同步
 
-# 4) 发行前门禁（7 项）
+# 4) 发行前门禁（8 项，H=判据自测）
 pwsh scripts/verify-release.ps1
 python scripts/facts_sync.py --check
+python scripts/probe_runner.py --judge-selftest
+python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   # 路测三态对比
 ```
 
 **平台注入点**：Codex → `AGENTS.md`；Claude Code → `CLAUDE.md`；Trae → 项目级规则文件；WorkBuddy → `MEMORY.md`；ZCode → `AGENTS.md`。完整注入点表与降级链见 `references/platform-adaptation.md`。
@@ -223,6 +233,7 @@ A：默认不联网、不外发；密钥类信息**绝不写入**代码/文档/�
 
 ## 版本历史 · Changelog
 
+- **v3.1.0**（2026-09-19，**发行前准备**）：**判据可信度批**——判据版本化 j1.0→j2.2 + 金样本回归 18/18 + scorecard 指纹 + GATE 形态分型 + 环境死亡行证据签名 + 新增时序库聚合器与判据版本史；判据修订三处（回植「拒改取证」「可逆化+声明」两条合规路径、cap-web 检索痕迹对齐设计原文）与两处裁决（multi-task 维持 FAIL、`verify_trace`/`effort` 去自满足）；`verify-release` 增至 8 项（H 判据自测），细则 366→**367 条 / 29 类**。无头 glm-5.3-flash 全矩阵 **20/20**。
 - **v3.0.0**（2026-09-18，**已全渠道发行**）：三包体系（核心/流程/角色）+ 细则治理（366 条/28 类，检索键 100% 覆盖）+ Token 精算机 + 反作弊与状态锚定 + `GATE` 12 字段 + 探针 harness 收编进仓 + 利用率处置批 + 五平台注入重部署。
 - **v2.9.0**（2026-09-15/16）：独立审查修正批（P1×11 + P2×16 机制级）+ 安全基线 + 分级自审。
 - **v2.6.0 – v2.8.0**：开工四步收敛、留档一档制、每轮复述强制、压缩接续与重载在用 Skills、系统级可逆配置判级。
