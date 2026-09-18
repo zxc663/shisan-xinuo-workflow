@@ -35,7 +35,7 @@
 | [Claude Code subagents](https://code.claude.com/docs/en/agent-sdk/subagents) | .claude/agents/*.md 用户自定义 | frontmatter: name/description/system prompt | **`tools` 字段白名单** + 独立上下文窗口 | description=主代理调度路由（when to use） | 官方 docs |
 | [obra/superpowers](https://github.com/obra/superpowers) | spec→plan→**subagent-driven development**（每任务派子代理+审查内嵌循环） | 计划写给「热情但无判断力的初级工程师」=身份降级假设 | 子代理隔离上下文 | TDD 红/绿、YAGNI、DRY 纪律内嵌 | README 实测 |
 | 本环境 judge（第一方实例） | 视觉验收判定者 | 「THE single visual acceptance pass」 | read-only+指定工具 | **逐页 JSON verdict（pass/fail+证据）** | 本会话在场的活样本 |
-| **本仓三模板**（[templates/agents](D:\Agent工作流启动包\shisan-xinuo-workflow\skill\shisan-xinuo-workflow\templates\agents)） | critic（对抗式评审）/risk-reviewer（风险两模式）/security-auditor（L3+推送前） | 身份句+触发时机（description） | **✗ 无工具门控概念**（平台子代理无 tools 字段机制→只能 prompt 声明降级） | 发现/待澄清/残余风险/结论+严重度 ✔ | 本地实测 |
+| **本仓三模板**（`skill/shisan-xinuo-workflow/templates/agents/`） | critic（对抗式评审）/risk-reviewer（风险两模式）/security-auditor（L3+推送前） | 身份句+触发时机（description） | **✗ 无工具门控概念**（平台子代理无 tools 字段机制→只能 prompt 声明降级） | 发现/待澄清/残余风险/结论+严重度 ✔ | 本地实测 |
 
 **缺口判定（对照五要素）**：本仓模板身份✔维度✔出口契约✔，**能力门控✗（平台限制，降级方案未写明）、路由✗（何时调谁只有 SKILL §13 一行提及，无「症状→角色」dispatch 矩阵）、调用率未测（无任何真实调用记录在案——不得假绿，标注未测）**。
 **用户判断「缺的不是规则而是实践开发问题」的机制解释**：details 344 条=**事后**教训库（踩过什么坑），三角色=**事前**审查体，但实践开发高频维度（构建失败/契约不匹配/测试假绿/前端渲染/性能劣化/并发竞态）没有对应角色实例——规则回答「过去错在哪」，没有人回答「现在该派谁、查什么、按什么顺序」。角色提示词=把审查维度**人格化为可路由的执行体**，方向成立。
