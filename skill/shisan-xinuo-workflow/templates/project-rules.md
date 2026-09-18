@@ -11,7 +11,7 @@
 - **开工四步**：复述 → 承载检查（memory 一档制+本文件+project-info 六节）→ 记忆对齐（读 agent-log 状态段一屏）→ 判级（L1 直接做/L2 记录做/L3 先问）。
 - **每轮首产物=复述**：新任务全量三行；追加/继续也须一行（收到 X｜理解为 Y｜边界 Z）——用户随时校验理解，无例外。
 - **状态行**（开工与阶段边界）：`Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> confirm=<无需/已问/豁免:理由>`。
-- **收尾**：GATE 单行 11 字段 `GATE: {level=,v=,cmd=,exit=,files=,refs=(grep 实测),errpath=,lessons=,exempt=,caps=,effort=}`；agent-log 流水一行+状态段刷新。
+- **收尾**：GATE 单行 12 字段 `GATE: {level=,v=,cmd=,exit=,files=,refs=(grep 实测),errpath=,lessons=,exempt=,caps=,effort=,stop_reason=(未触发填—)}`；agent-log 流水一行+状态段刷新。
 - **红线三条**：密钥绝不落盘｜重大改动先回滚点｜不假实现（未验证显式标注）。
 
 ## 项目纪律（只写本项目特有，<无则整节删>）

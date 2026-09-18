@@ -65,7 +65,8 @@
 | #355 | GATE 11 字段与判分口径（caps/effort） | SKILL §6 + injection-core GATE 段 + details §26 |
 | #356 | 宪章五维与五门 | SKILL §0 + details §26 |
 
-> 已立条（批次① 施工）：details §26 类、症状索引 6 行、facts_sync 全承载点 355 条/26 类一致。
+> 已立条（批次① 施工）：details §26 类、症状索引 6 行、facts_sync 全承载点一致。
+> **精算机批追加（2026-09-18 批⑤后完善）**：**#357-#362**（details §27；GATE 11→12 字段含 `stop_reason`；用户「Token 精算机」补充——双向仲裁/分档预算/白名单天花板/沉淀外部化/子代理隔离/止损）。
 
 ## 四、基线存档（v2.9.0 = pre-v300）
 

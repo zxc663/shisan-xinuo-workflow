@@ -30,7 +30,7 @@ DISCIPLINE_PACK = (
     "#294 Edit 报 not read/modified=文件双通道混用｜#233 命名直觉=假绿｜#228 改包先重编｜"
     "#229 常驻进程旧 dist｜#214 响应分层断言｜#163 统一错误契约｜"
     "#256·#269 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体\n"
-    "收尾 GATE 11 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort"
+    "收尾 GATE 12 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort/stop_reason"
     "（权威定义=注入核心交付段；refs 填 grep 实测值，禁自估）"
 )
 CARRIER_HINT = (

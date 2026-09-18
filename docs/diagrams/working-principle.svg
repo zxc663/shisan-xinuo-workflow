@@ -48,14 +48,14 @@
   <!-- n6 -->
   <rect x="40" y="1010" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#2DA44E" stroke-width="2"/>
   <text x="60" y="1044" font-size="20" font-weight="bold" fill="#1F2328">6 执行与验证 → 交付（GATE 一行式）</text>
-  <text x="60" y="1076" font-size="16" fill="#57606A">GATE 11 字段一行可复跑：level / v / cmd / exit / files / caps / effort</text>
-  <text x="60" y="1104" font-size="16" fill="#57606A">/ refs / errpath / lessons / exempt（包级 11 字段 / 子块简式 3 字段）</text>
+  <text x="60" y="1076" font-size="16" fill="#57606A">GATE 12 字段一行可复跑：level / v / cmd / exit / files / caps / effort / stop_reason</text>
+  <text x="60" y="1104" font-size="16" fill="#57606A">/ refs / errpath / lessons / exempt（包级 12 字段 / 子块简式 3 字段）</text>
   <text x="60" y="1132" font-size="16" fill="#8C959F">出口：GATE + 交付五查 + 归档（真实运行，没跑 = 未完成）</text>
 
   <!-- n7 -->
   <rect x="40" y="1196" width="720" height="150" rx="12" fill="#FFFFFF" stroke="#D0D7DE"/>
   <text x="60" y="1230" font-size="20" font-weight="bold" fill="#1F2328">7 规则地基（渐进式加载）</text>
-  <text x="60" y="1262" font-size="16" fill="#57606A">编号纪律 + 落地细则 355 条 / 26 类（症状索引）</text>
+  <text x="60" y="1262" font-size="16" fill="#57606A">编号纪律 + 落地细则 361 条 / 27 类（症状索引）</text>
   <text x="60" y="1290" font-size="16" fill="#57606A">错误必查 TOP 内联 + detail_lookup 一键检索 + 冲突仲裁序五级</text>
   <text x="60" y="1318" font-size="16" fill="#8C959F">出口：引用完整前缀 «details #NNN»，禁裸编号（假阳性 9/10 实锤）</text>
 
@@ -85,7 +85,7 @@
 
   <text x="820" y="268" font-size="17" font-weight="bold" fill="#1F2328">按步加载</text>
   <text x="820" y="296" font-size="16" fill="#57606A">references 按需</text>
-  <text x="820" y="322" font-size="16" fill="#57606A">details 按症状类（355 条/26 类）</text>
+  <text x="820" y="322" font-size="16" fill="#57606A">details 按症状类（361 条/27 类）</text>
   <line x1="820" y1="344" x2="1140" y2="344" stroke="#D0D7DE"/>
 
   <text x="820" y="376" font-size="17" font-weight="bold" fill="#1F2328">动态路由</text>
