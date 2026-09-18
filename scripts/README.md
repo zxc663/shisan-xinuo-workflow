@@ -46,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 只读、非破坏性，不改动任何文件。
 
-### 校验项（A–G 七项，v2.8.0 当前口径）
+### 校验项（A–G 七项）
 
 | 项 | 检查内容 | 通过标准 |
 |---|---|---|
@@ -68,12 +68,12 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ### 预期当前输出
 
-v2.8.0 单版本配置下（verify 7 项）当前应全 PASS：
+单版本配置下（verify 7 项）当前应全 PASS：
 
 ```
 [PASS] A 内容锚点+字符预算(主交付物全量特性)   (OK)
 [PASS] B hooks 三层(警告级)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.8.0 ; package.json version=2.8.0)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.9.0 ; package.json version=2.9.0)
 [PASS] D 泄漏红线(发布物)   (扫描面内 tracked 文件 0 命中)
 [PASS] E 正文净化(常驻/模板面过程注记=0)   (OK)
 [PASS] F 索引完整性(details 编号连续+症状索引全覆盖)   (OK)

@@ -14,7 +14,7 @@
 **批次计划（一批一会话+断点交接；每批呈你验收）**：
 - **批次 0（前置）**：计划文档落档｜19 场景探针矩阵设计表呈审｜条款编号分配表｜基线冻结（git tag `pre-v300`+旧版基线存档）。【✅ 已完成，见本档 §二-§四】
 - **批次 ①（核心骨架+宪章收缩）**：SKILL.md 14 节去向：§0 元规则→改写（+强制四级+中文约定）｜§1 保留压缩｜§2 改写=骨架 v2｜§3 压缩（首次部署才做，指向 platform-adaptation）｜§4 必问→L3+红线留核心+需求工程分档+计划模式必问｜§5 保留+分级标注｜§6/§7 并入部件 5 门禁出口（完成六件套+用户验收门）｜§8 压缩+借口拦截表新节｜§9 改写=路由表｜§10 压缩+异常观察记录｜§11 保留压缩｜§12 速查表删除或压成一页锚表（与正文去重）｜§13 分流到包（核心留指向）；新增「能力检索/工程 Token 观」两部件。injection-core 更新（新增条款并入，保持 ≤6K）；rules.md 保持按需引用。出口=新版 SKILL.md（≤18K 字符/≤383 行）+注入核心；验收=verify-release 7/7+新会话探针+字符数达标。
-- **批次 ②（流程包 shisan-xinuo-flows）**：迁入 workflows.md（9 类工作流）、双调研/五问深度/复用五问、模板 8 件（plan/task-record/acceptance/retrospective/rollback/prompt-budget/compact-retention/writing）；新 SKILL.md=description 触发面+依赖声明；核心路由表对接。验收=flows 触发探针+核心不含流程细节。
+- **批次 ②（流程包 shisan-xinuo-flows）**：迁入 workflows.md（9 类工作流）、双调研/五问深度/复用五问、模板 8 件〔勘误：实测 7 件，见 §五〕（plan/task-record/acceptance/retrospective/rollback/prompt-budget/compact-retention/writing）；新 SKILL.md=description 触发面+依赖声明；核心路由表对接。验收=flows 触发探针+核心不含流程细节。
 - **批次 ③（角色包 shisan-xinuo-roles）**：映射表先过目→8 角色六字段定稿；dispatch 矩阵；templates/agents 迁移。验收=dispatch 探针+角色抽查。
 - **批次 ④（细则与治理）**：键补全（46% 无键→≥90%）+症状索引重生成+F 项门禁核对+零引用候选清单；含「workspace 级迁移建议清单+disable overrides 建议名单」（利用率处置=用户批准后另行执行 config 动作）。
 - **批次 ⑤（独立审查与修正）**：开 GLM-5.3-Flash 新会话只读独立审查（口径一致性/术语/编号/事实对账/缺口），输出审查清单→修正批（范围用户核定）。
@@ -84,7 +84,7 @@
 | ② | 流程包 shisan-xinuo-flows | ✅ 完成（2026-09-18 本会话；迁移 workflows.md+模板 7 件（原估 8 实测 7）＋新 SKILL（行动契约+依赖声明）；核心路由/引用承载点全同步） |
 | ③ | 角色包 shisan-xinuo-roles（映射表先过目） | ✅ 完成（2026-09-18 本会话；映射表呈审稿 90267c5→按继续批准；8 角色六字段定稿+dispatch 矩阵+三模板 git mv 改造+承载点同步） |
 | ④ | 细则治理（键补全+索引+零引用候选+利用率处置清单） | ✅ 完成（2026-09-18 本会话；检索键 **73→355 全覆盖 100%**（域名+标题机械生成）；零引用候选沿用批 3 口径 #288-#291 留观察；**处置清单落档 docs/resource-disposal-list-20260918.md（建议件，config 零改动）**） |
-| ⑤ | 独立审查（GLM-5.3-Flash 新会话）+修正批 | 待 |
+| ⑤ | 独立审查（GLM-5.3-Flash 新会话）+修正批 | ✅ 审查执行完成（2026-09-18 无头驱动，报告归档 docs/independent-review-v3.0-20260918.md：P0×1/P1×11/P2×12/P3×7 区间）；P0 文本损坏三连已修（`d9a6c4c`）；**修正批 A/B/C 待用户核定后执行** |
 
 ## 六、TODO 清单（12 项，批次归属）
 

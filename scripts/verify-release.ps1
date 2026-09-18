@@ -87,6 +87,20 @@ if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-boo
 $pyLen = 0
 try { $pyLen = [int](python -c "import sys; print(len(open(sys.argv[1], encoding='utf-8').read().replace(chr(13),'')))" "$core" 2>$null) } catch { $pyLen = -1 }
 if ($pyLen -gt 6000 -and $pyLen -ge 0) { $probsA += "injection-core Python/code-point 口径 $pyLen 超 6000" }
+# 形态冒烟（v3.0 批⑤：纯数值门禁对同长度文本损坏盲区——首行形态断言）
+$formChecks = @(
+    @('README.md', 0, '# Shisan Xinuo Agent Workflow'),
+    @('AGENTS.md', 1, '> 本仓库 ='),
+    @('docs/project-info.md', 2, '> **本文件是索引入口')
+)
+foreach ($fc in $formChecks) {
+    $fp2 = Join-Path $Root $fc[0]
+    if (Test-Path $fp2) {
+        $fl = @(Get-Content $fp2 -First ($fc[1] + 1) -Encoding UTF8)[$fc[1]]
+        if (-not $fl -or -not $fl.StartsWith($fc[2])) { $probsA += "形态冒烟失败：$($fc[0]) 第 $($fc[1]+1) 行形态异常" }
+    }
+}
+
 Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤6000）"}else{$probsA -join ";"})
 
 # ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
