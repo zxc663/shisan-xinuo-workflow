@@ -54,4 +54,4 @@
 ## 7. Skill 与 MCP / 工具的关系（能力边界）
 
 - Skill 可能携带 tools / MCP（按平台机制暴露）；触发 Skill 即解锁其工具，使用纪律与分级 / 留痕 / 成本规则一致（`rules.md` §28/§29）。
-- Skill 能力缺失时按 `security.md` / `workflows.md`「能力缺失降级」降级，不阻塞。
+- Skill 能力缺失时按 `security.md` / 流程包（`shisan-xinuo-flows`）「能力缺失降级」降级，不阻塞。

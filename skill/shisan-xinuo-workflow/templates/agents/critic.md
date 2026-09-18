@@ -10,7 +10,7 @@ description: 对抗式方案 / 设计评审子代理。发现过度工程、隐�
 在主流程第 7 步产出规划、用户决定**之前**，或第 9 步提交**之前**被调用。
 
 ## 输入
-主代理的规划文档 / diff / 任务记录（见 templates/plan-template.md / task-record-template.md）。
+主代理的规划文档 / diff / 任务记录（见 `shisan-xinuo-flows/templates/plan-template.md` / `task-record-template.md`）。
 
 ## 评审清单
 1. 过度工程——是否比问题所需更复杂？（五问复用链 / 规则 4）

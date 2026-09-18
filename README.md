@@ -100,7 +100,7 @@
 | 能力 | 说明 | 入口 |
 |---|---|---|
 | 第 0 步平台检测与硬加载 | 检测平台 → 定位真实注入点 → 按需(精简) / 强制(injection-core 全文)，备份后合并绝不覆盖 | SKILL §3 · injection-core.md · platform-adaptation.md |
-| **三级跑道** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 9 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.2-2.4 · workflows §0.6 |
+| **三级跑道** | L1 快速通道 / **L2-S 短工作流**（默认小模块）/ L2-F 完整 9 步（大模块专属）——防流程空转与 token 浪费 | SKILL §2.3-2.5 · flows §0.6 |
 | **开工序列四步** | 复述+状态行 → 承载检查（扫描/定根/建补一气呵成+git 开局场景化）→ 记忆对齐（最小读取）→ 判级选道 | SKILL §2.0 · injection-core |
 | **细则一键检索端口** | `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory；scripts/ 已随包分发）：关键词/编号/症状域三查，命中行即 errpath 证据。**机评样本：端到端真实执行多例（含诚实报 0）；召回修复后探针 24/24（英文错误码/双词 AND/自然长句全转正）；已知残留短板：自诊可解问题不触发——触发行为另轮验证** | scripts/detail_lookup.py · SKILL §9 |
 | **设计规范档前置** | 设计类动作（前端尤甚）逐组件调研成熟规范 → 强制留档 `docs/design-specs/` → 设计档**经用户确认才写码**（#312）→ 按档设计并回指 | details #284/#312 · injection-core 设计铁律 |
@@ -223,12 +223,14 @@ shisan-xinuo-workflow/              ← 仓库根
 ├── scripts/detail_lookup.py        ← 细则一键检索端口（关键词/编号/症状域）
 ├── scripts/facts_sync.py           ← 细则数/条目范围事实对账（活跃细则数=details 计算单源，verify G 项底层）
 ├── scripts/deploy_injection.py     ← 注入副本一键部署（备份→组装→写入→锚点验收）
-├── skill/shisan-xinuo-workflow/    ← 唯一主交付物（中文执行化全文 v2.0 · 单版本权威）
-│   ├── SKILL.md（§0 元规则 · §2 三级跑道 · §4 必问+RE · §5 判级分流 · §7 门禁 · §9 引用表
-│   │   · §10 记录纪律 · §11 状态面（含上下文账本）· §12 速查表）
-│   ├── templates/（规划/验收/任务记录(GATE)/复盘/回滚/预算/钩子/子代理/一档制档案 agent-log-template）
-│   └── references/（injection-core · workflows · details 355条/26类 · rules 47条 ·
-│       security · never-list · skill-usage · new-project-bootstrap · local-model-glossary）
+├── skill/shisan-xinuo-workflow/    ← 纪律元核心（v3.0 批次①：跑道骨架+宪章五维+场景路由）
+│   ├── SKILL.md（§0 宪章/强制分级 · §2 跑道骨架+能力检索 · §4 必问+停型门禁 · §6 GATE 11 字段
+│   │   · §7 借口拦截 · §8 记录纪律 · §9 状态面 · §10 路由表 · §11 速查表）
+│   ├── templates/（agent-log-template / project-rules / memory-anchor / workspace-memory / hooks / agents）
+│   └── references/（injection-core · details 355条/26类 · rules 47条 · security · never-list ·
+│       skill-usage · platform-adaptation · new-project-bootstrap · local-model-glossary）
+├── skill/shisan-xinuo-flows/       ← 流程包（v3.0 批次②：9 类工作流分册 + 澄清/双调研/复用五问 + 模板 7 件；独立可装）
+│   └── SKILL.md · references/workflows.md · templates/（规划/验收/任务记录/复盘/回滚点/预算/压缩保留）
 └── versions/personal-zh/           ← 本地私有工作台版（gitignore，不进公开仓/发布物）
 ```
 
