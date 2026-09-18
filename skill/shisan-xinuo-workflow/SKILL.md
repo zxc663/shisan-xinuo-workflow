@@ -117,7 +117,7 @@ metadata:
 
 ### 2.7 新项目 / 状态澄清（回指）
 
-工作区无 `memory/` 骨架或无 `docs/` 指导 → 按 `references/new-project-bootstrap.md` 走六节索引（架构/目标/模块表/调研导航/参考资源/复述确认）。目标或现状模糊 → `references/workflows.md` §0.0 澄清流程（一次一问→澄清纪要→回选道）。
+工作区无 `memory/` 骨架或无 `docs/` 指导 → 按 `references/new-project-bootstrap.md` 走六节索引（架构/目标/模块表/调研导航/参考资源/复述确认）。目标或现状模糊 → `shisan-xinuo-flows` §0.0 澄清流程（一次一问→澄清纪要→回选道）。
 
 ## 3. 平台检测与注入（首次部署才做）
 
@@ -222,13 +222,13 @@ metadata:
 | `references/platform-adaptation.md` | 平台检测/注入点表/提问降级链/结构化提问协议 | 平台未知/注入点存疑 |
 | `references/skill-usage.md` | Skill 发现/注册机制+加载决策路由 | Skill 选型纠结/弱模型场景 |
 | `references/rules.md` | 编号工程纪律 47 条（地基） | 纪律争议/查规则原文 |
-| `references/workflows.md` | 澄清流程/联网调研依据/完善度诊断/9 类任务工作流/复用五问/调研矩阵 | 任务类型不明/规划质量存疑 |
+| `shisan-xinuo-flows`（流程包） | 9 类任务工作流分册/澄清流程/双调研/复用五问/产品五问深度/模板 7 件 | 核心路由命中流程场景/任务类型不明/规划质量存疑 |
 | `references/details.md` | 落地细则 355 条·26 类（症状索引→按类加载；一键检索 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`） | 症状关键词命中踩坑类别；不熟悉领域即兴发挥前 |
 | `references/security.md` | 密钥红线/应急响应/供应链与 SBOM | 接触密钥/疑似泄露/发布/依赖引入 |
 | `references/never-list.md` | 永不清单 7 类（明确禁止项） | 开工/提交/任何 L3 前**三读逐条核对** |
 | `references/new-project-bootstrap.md` | 新项目 4 步引导 | 首次任务/无 `memory/` |
 | `references/local-model-glossary.md` | 本地模型部署术语表 | 本地模型部署/紧凑档适配 |
-| `templates/` | agent-log/project-rules/memory-anchor/规划/任务记录/复盘/回滚点/预算/验收/hooks/agents | 承载创建或对应产物时复制填写（不原地编辑） |
+| `templates/` | agent-log/project-rules/memory-anchor/workspace-memory + hooks/ | 承载创建与平台注入时复制填写（不原地编辑） |
 
 **错误处置入口**：错误/API 意外形态/未知字段/新依赖不生效 → **先对「错误必查 TOP」内联处置** → 完成后留 **errpath 行**（症状→处置路径：TOP 命中 / lookup 执行[贴命中行] / 未跑[理由]）→ 需要按症状检索时跑 `detail_lookup.py`；**引用统一完整前缀** `details #N` / `细则 #N`（禁裸 `#N`）。
 **错误必查 TOP**：`details #294` 文件双通道混用=Edit 报 not read（占错误 55%）｜#233 命名直觉=假绿｜#228 改包先重编｜#229 常驻进程旧 dist｜#214 响应分层断言｜#163 统一错误契约｜#256/#269 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体。
