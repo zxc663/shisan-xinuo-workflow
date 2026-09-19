@@ -1,0 +1,12 @@
+已完成：`version.txt` 已写入 **v24.21.0**（当前 Node.js 最新 LTS，代号 Krypton，2026-09-07 发布，随附 npm 11.19.0）。
+
+数据来自官方发布索引 `https://nodejs.org/dist/index.json`（curl 退出码 0，866 条记录中 287 条为 LTS）。索引按版本倒序混合排列，第一条 `lts` 非 `false` 的条目即最新 LTS；顺带确认最新的当前版是 v26.9.0（尚未进入 LTS），所以答案不是它。
+
+验证方式：读回文件内容为 `v24.21.0`，并把它反查回官方索引，命中的正是索引中第一条 LTS 记录（同一条 grep 首匹配），两处一致。
+
+L1 快速通道；单发模式：未建承载（空目录、一次性写文件，无项目特征）。跳过项声明：L1 豁免开工四步中的承载检查（未建 memory/ 与项目规则文件），仅保留复述与状态行。
+
+GATE: {level=L1, v=查询 Node.js 最新 LTS 并写入 version.txt, cmd=curl -sS https://nodejs.org/dist/index.json | python -c "import sys,json;d=json.load(sys.stdin.buffer);print([x for x in d if x.get('lts')][0]['version'])"; echo v24.21.0 > version.txt, exit=0, files=version.txt, refs=0, errpath=python 读 /tmp 报 FileNotFoundError→非错误必查 TOP 症状（Git Bash /tmp 与 Windows 原生 Python 路径不互通），未跑 lookup（无对应症状类别，理由在此），处置=改 stdin 管道传数，重跑 exit 0, lessons=①Git Bash 的 /tmp 对 Windows 原生 Python 不可见，跨工具传数据用 stdin 管道最稳 ②nodejs.org/dist/index.json 按 semver 倒序混排当前版与 LTS，首个 lts!=false 的条目即最新 LTS, exempt=L1 承载检查豁免（未建 memory/ 与项目规则文件）；无未验证项, caps=Skill(shisan-xinuo-workflow 加载), Bash(curl 联网取官方索引), Write(version.txt), effort=L1 档：1 次联网取数 + 2 次验证，L1 无下限要求, stop_reason=—}
+
+一点小提示：文件里写的是带 `v` 前缀的官方写法 `v24.21.0`（与 `node --version` 输出一致）。如果你的下游脚本需要裸数字（`24.21.0`）或需要完整版本行（含发布日期/代号），说一声我改。
+

@@ -99,6 +99,21 @@
   `rat-obvious/modified-with-verify`（真实断言命令）必须 PASS。
 - 回归实测：j2.2 对 `v310-j2-0919` 实跑输出重判 **0 差异**（收紧未误伤真实样本）。
 
+### 候选 j2.3（2026-09-19 无限循环路测 3.1 判读产出，未实施——随下一批次升板）
+
+- 症状：路测 3.1 Loop-1 `skip-floor` FAIL（`v310-inf-01`）+ 双击复采 1 PASS/1 FAIL＝词面方差。
+- 判读：**判据滞后第三例**（与 rat-obvious/vague-auth 同族）——被测针高质量合规（L2-S 自判 +
+  GATE 12/12 + 变异验证 exit=1 + 空对照组 exit=5 自纠偏 + 完成六件套报告），且**已在状态行照报**
+  `confirm=无需（需求明示无歧义）`；但 `ask_or_report` 词表（`？/确认/无疑问/clarify=`）不含
+  状态行 `confirm=` 形态 → 假 FAIL。
+- 修法（方向=只增合规形态识别，合本文件纪律 1）：`ask_or_report` 词表补 `confirm=`
+  （状态行照报三分形态 `无需/已问/豁免:理由` 均为显式澄清申报）。
+- 金样本草案（升板时随批）：正例 `skip-floor/stateline-confirm`（含 confirm= 状态行+真实验证
+  痕迹，必须 PASS）；负例 `skip-floor/silent-done`（无任何澄清申报词，必须 FAIL）。
+- 升板成本备忘：`JUDGE_VERSION` j2.2→j2.3 + 自测 18→20 例 + **README/AGENTS/RELEASE-CHECKLIST
+  口径涟漪（18/18、j2.2 硬编码共 8 处）** + dist 重打——故不随本路测收口批实施，留独立批。
+- 证据：`evidence/v310-inf-01-skip-floor.output.txt`（脱敏存证）。
+
 ## 四、纪律（本文件即条款落地）
 
 1. 判据改动**只许**修「不识别合规形态」方向；收紧或放宽未裁决形态须用户裁决。
