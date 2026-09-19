@@ -83,7 +83,19 @@
 - **scorecard 归档**：`docs/roadtest-scorecards/<标签>.jsonl`（随仓分发，形成跨夜可比时序库）。
 - **复测结果（2026-09-19 夜班回填·截至本日 09:00 中期快照，全文=EVIDENCE §三十五）**：有效样本 76 针（边界 ts<04:28:57 换面 v3.1.0 前；作废 29 行=provider 瞬时窗）——**j1 口径 66/76=86.8%；剔除判据滞后 8 行后行为面 74/76=97.4%** vs 基线 98.1%＝**持平**。三态：改善=skip-floor 2/2（基线唯一 FAIL 转 PASS）+ambiguous 行为面 6/6；持平=l3 家族/对抗变体/承载/交付面全绿；退化候选（待晨裁非定论）=multi-task 1 例行为 FAIL（**Loop-16 重开候选达双击**）、rat-obvious j1 2/8（判据效应为主，j2.1 已回植拒改取证路径）、vague-auth 1 例（判据滞后）、cap-web 1 例（env 方差待归因）。**不触发回滚**（行为面持平；退化候选全部有判据/方差归因路径）。
 
-## I. v3.0.0 发行回执（2026-09-18）
+## I-1. v3.1.0 发行回执（2026-09-19）
+
+| # | 渠道 | 结果 |
+|---|---|---|
+| 1 | push | GitHub `892b3e4..ad3f876`（main）+ tag `v3.1.0`；Gitee 同 commit/tag |
+| 2 | GitHub Release | `v3.1.0` · asset `shisan-xinuo-workflow-v3.1.0.zip`（含「已发行」态重打终版，332,763B） |
+| 3 | npm（GitHub Packages） | `@zxc663/shisan-xinuo-workflow@3.1.0`（45 文件，shasum `e1ede926…`） |
+| 4 | ClawHub | `1.0.19` 已提交（pending security scans，平台侧待过审） |
+| 5 | About | GitHub + Gitee description PATCH，双端 len=191（项目信息 §六·七 口径） |
+| 6 | Gitee Release | id=1153127（tag v3.1.0；附件 id=3225663 / 332,433B） |
+| 7 | 门禁与发布物 | 发行前 `verify-release.ps1` **8/8** ALL PASS + `facts_sync` PASS（**368 条/29 类**）+ `--judge-selftest` **21/21**（j2.4）；dist zip 60 项、发布物内 0 泄漏；五平台注入重部署 `--check` 5/5 v3.1.0/368 |
+
+## I-2. v3.0.0 发行回执（2026-09-18）
 
 | # | 渠道 | 结果 |
 |---|---|---|
@@ -99,7 +111,7 @@
 
 ---
 
-## J. v3.1.0 发行批清单（准备态 · 2026-09-19 · 待用户批准后执行发行/推送）
+## J. v3.1.0 发行批清单（**已执行** · 2026-09-19 发行；回执见 I-1 节）
 
 ### J-1 准备态已完成（源库侧，本地 commit 不 push）
 
@@ -107,24 +119,22 @@
 |---|---|---|---|
 | 1 | 判据可信度批施工（判据版本化/金样本回归/指纹/分型/聚合器/判据史） | ✅ | `scripts/probe_runner.py`（**j2.4**）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
 | 2 | 两处裁决落地（multi-task 维持 FAIL / `verify_trace`+`effort` 去自满足） | ✅ | 判据自测负对照 `rat-obvious/modified-no-verify` 必 FAIL |
-| 3 | 细则 #368 立条 + 全承载点同步 | ✅ | `facts_sync --check` PASS（活跃 **367** / 上限 **368** / 类数 **29**） |
+| 3 | 细则 #368/#369 立条 + 全承载点同步 | ✅ | `facts_sync --check` PASS（活跃 **368** / 上限 **369** / 类数 **29**） |
 | 4 | 口径校对（README 主口径行/条目上限入断言；verify 7→**8 项**） | ✅ | 补口前 `FACTS FAIL 4 处` → 修后 PASS |
 | 5 | README 按项目实质重构（口径块/原理/证据/用法，含 v3.1 判据可信度节） | ✅ | `README.md`（形态冒烟首行断言通过） |
 | 6 | Skill 本体净化 + 版本升板 3.1.0（三包 frontmatter + package.json） | ✅ | `verify` C 项：SKILL version=3.1.0；A 项家族包三包一致 |
 | 7 | 发行材料（CHANGELOG / 发行说明 / About 草案 / 升级指南） | ✅ | `CHANGELOG.md`、`docs/release-notes-v3.1.0.md`、`项目信息.md` §六·七、G 节 |
-| 8 | dist 重打（v3.1.0 zip）+ 发布物泄漏 0 | ⏳ 见 J-2 | `scripts/build-dist.ps1` |
-| 9 | 门禁终局 | ⏳ 见 J-2 | `verify-release` 8/8 + `facts_sync` PASS + `--judge-selftest` **20/20** |
+| 8 | dist 重打（v3.1.0 zip）+ 发布物泄漏 0 | ✅ | `scripts/build-dist.ps1` |
+| 9 | 门禁终局 | ✅ | `verify-release` **8/8** + `facts_sync` PASS + `--judge-selftest` **21/21**（j2.4） |
 | 10 | 平台注入副本重部署（五平台）+ 新会话验收 | ⏳ 见 J-2 | `scripts/deploy_injection.py`、`scripts/syncer.py --family` |
 
-### J-2 待执行（需用户批准的最小动作集）
+### J-2 已执行（2026-09-19；逐项回执=I-1 节）
 
-1. **门禁终局复跑**：`verify-release.ps1`（8/8）→ `facts_sync --check` → `probe_runner --judge-selftest`（**20/20**）。
-2. **dist 重打**：`pwsh scripts/build-dist.ps1` → `dist/shisan-xinuo-workflow-v3.1.0.zip`；Set-diff 双检 + 发布物 0 泄漏。
-3. **注入副本重部署**：`deploy_injection.py`（codex/claude/trae/workbuddy/zcode）+ `syncer.py --family`；
-   验收 = 新会话读到「在场提示 · v3.1.0」+ `zxc663` 应答（注入版本=会话创建时快照，**须重启应用**）。
-4. **发行**（需明确批准）：GitHub push+tag `v3.1.0` + Release（zip 附件）→ npm（GitHub Packages）→ Gitee →
-   ClawHub → About 双端 PATCH（`项目信息.md` §六·七 口径）。
-5. **发行物终版重打**：回执写入 README/CHANGELOG/本档后重打 zip 并替换双端资产（沿用 v3.0.0 同型）。
+1. ✅ 门禁终局：`verify-release` **8/8** + `facts_sync` PASS（368/369/29）+ `--judge-selftest` **21/21**（j2.4）。
+2. ✅ dist 重打：`build-dist.ps1` → 60 项 zip，Set-diff 60=60 + 发布物 0 泄漏（verify D 项）。
+3. ✅ 注入副本重部署：五平台 PASS（备份 `.bak-20260919-131927-pre-v3.1.0`）+ `--check` **5/5 v3.1.0/368** + `syncer --family`。
+4. ✅ 发行（用户批准）：GitHub push `892b3e4..ad3f876` + tag `v3.1.0` + Release → npm 3.1.0（45 文件）→ Gitee（Release 1153127+附件）→ ClawHub 1.0.19（pending scans）→ About 双端 PATCH len=191。
+5. ✅ 发行物终版重打：已发行态校准写回后重打 + 双端资产替换（沿 v3.0.0 同型；GitHub clobber + Gitee 附件替换）。
 
 ### J-3 v3.1.0 口径（发行时校对用）
 
