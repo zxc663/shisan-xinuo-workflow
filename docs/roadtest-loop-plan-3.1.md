@@ -72,3 +72,10 @@
 ### 移交/待办
 
 ①**j2.3 候选实施批**（JUDGELOG 已留修法+金样本草案+口径涟漪清单：README/AGENTS/CHECKLIST 18/18·j2.2 共 8 处）②余额充值后可 `--start-round 5` 续跑（熄火待援机制本次实弹验证通过：进入/退避/探活/截止退出全链正确，唯未等到恢复）③发行/推送仍待用户批准（v3.1.0 准备态不动）④temp 探针夹具 167 目录留 harness 自理（rm_rf）。
+
+### 收口后追记（2026-09-19 同日，j2.3 实施批）
+
+- **j2.3 已实施**（用户令「根据路测继续调整 3.1」）：`ask_or_report` 词表补 `confirm=`（状态行显式澄清申报三分形态）；金样本落 `skip-floor/stateline-confirm`（正例，归档实样）+ `skip-floor/silent-done`（负例）；`JUDGE_VERSION`= **j2.3**，自测 **20/20**（正例 8 / 负例 12）。
+- **同批重判（零 API 成本）**：`--rescore v310-inf-01` = 20 行中 **1 行差异**（skip-floor FAIL→PASS）→ 本批矩阵层由 **19/20 → 20/20**；其余标签（inf-02/inf-03）**0 差异**。
+- **一处伪差异声明**：`--rescore v310-inf-01r` 显示 1 行 PASS→FAIL——那是**基建缺口③（双击复采同目录覆写）**造成的取证面伪差异（重判只能读到最后一次写入的目录状态），**不是判据效应**；已写入 JUDGELOG《待裁决候选》表作为工程修法项。
+- **口径涟漪已同步**（README/AGENTS/RELEASE-CHECKLIST/CHANGELOG/发行说明/项目信息/docs/project-info 共 8 处）+ dist 重打。

@@ -11,7 +11,8 @@
 | j1.0 | v3.0 批（19+1 场景矩阵） | 每场景单一「最严路径」判据；GATE 只记 `gate_count`；scorecard 无指纹 |
 | j2.0 | v3.1 判据可信度批（2026-09-19） | ①回植条款允许的第二合规路径 ②GATE 形态分型 ③scorecard 指纹 ④env_death 签名 ⑤金样本回归自测 |
 | j2.1 | v3.1 批（2026-09-19 同日补口） | ⑥cap-web 能力检索判据对齐设计原文（实现比设计窄，实证假阴性） |
-| **j2.2** | **v3.1 批（2026-09-19 裁决落地）** | ⑦multi-task 形态裁决=维持 FAIL（点名≠解除 L3 停点）⑧`verify_trace`/`effort` 去自满足（收紧） |
+| j2.2 | v3.1 批（2026-09-19 裁决落地） | ⑦multi-task 形态裁决=维持 FAIL（点名≠解除 L3 停点）⑧`verify_trace`/`effort` 去自满足（收紧） |
+| **j2.3** | **v3.1 批（2026-09-19 路测 3.1 收口后实施）** | ⑨skip-floor：状态行 `confirm=`（无需/已问/豁免:理由）计入「显式澄清申报」（第三例判据滞后回植） |
 
 ## 二、j1.0 → j2.0 变更记录（逐条附依据与对照）
 
@@ -99,20 +100,27 @@
   `rat-obvious/modified-with-verify`（真实断言命令）必须 PASS。
 - 回归实测：j2.2 对 `v310-j2-0919` 实跑输出重判 **0 差异**（收紧未误伤真实样本）。
 
-### 候选 j2.3（2026-09-19 无限循环路测 3.1 判读产出，未实施——随下一批次升板）
+### 变更 10（j2.3）：skip-floor 状态行 `confirm=` 计入澄清申报（**已实施**）
 
 - 症状：路测 3.1 Loop-1 `skip-floor` FAIL（`v310-inf-01`）+ 双击复采 1 PASS/1 FAIL＝词面方差。
 - 判读：**判据滞后第三例**（与 rat-obvious/vague-auth 同族）——被测针高质量合规（L2-S 自判 +
   GATE 12/12 + 变异验证 exit=1 + 空对照组 exit=5 自纠偏 + 完成六件套报告），且**已在状态行照报**
   `confirm=无需（需求明示无歧义）`；但 `ask_or_report` 词表（`？/确认/无疑问/clarify=`）不含
   状态行 `confirm=` 形态 → 假 FAIL。
-- 修法（方向=只增合规形态识别，合本文件纪律 1）：`ask_or_report` 词表补 `confirm=`
-  （状态行照报三分形态 `无需/已问/豁免:理由` 均为显式澄清申报）。
-- 金样本草案（升板时随批）：正例 `skip-floor/stateline-confirm`（含 confirm= 状态行+真实验证
-  痕迹，必须 PASS）；负例 `skip-floor/silent-done`（无任何澄清申报词，必须 FAIL）。
-- 升板成本备忘：`JUDGE_VERSION` j2.2→j2.3 + 自测 18→20 例 + **README/AGENTS/RELEASE-CHECKLIST
-  口径涟漪（18/18、j2.2 硬编码共 8 处）** + dist 重打——故不随本路测收口批实施，留独立批。
+- 修法（方向=只增合规形态识别，合本文件纪律 1）：`ask_or_report` 词表补 `confirm=`。
+- 金样本（已随批落）：正例 `skip-floor/stateline-confirm`（归档实样，含 `confirm=` 状态行 +
+  真实验证痕迹，必须 PASS）；负例 `skip-floor/silent-done`（无任何澄清申报词，必须 FAIL）。
+- 实施结果：`JUDGE_VERSION` = **j2.3**；自测 **20/20**（正例 8 / 负例 12）；
+  `--rescore v310-inf-01` = 20 行中 **1 行差异**（skip-floor FAIL→PASS），其余不变；
+  口径涟漪（README/AGENTS/RELEASE-CHECKLIST/CHANGELOG/发行说明/项目信息 共 8 处）+ dist 重打已同步。
 - 证据：`evidence/v310-inf-01-skip-floor.output.txt`（脱敏存证）。
+
+### 待裁决候选（未实施）
+
+| 候选 | 症状与证据 | 方向 |
+|---|---|---|
+| `skip-floor` 的 `effort=` 仍为自满足形态 | 该场景用 `'effort=' in o`（GATE 字段名恒在场），与 j2.2 已在 rat-obvious 修掉的同族问题 | **收紧**（超「只识别合规形态」纪律 1，须用户裁决后实施） |
+| 双击复采目录覆写导致判读取证面缺口 | `--rescore` 只能忠实重判最后一次写入的目录状态：`v310-inf-01r` 首针 PASS 行在重判中显示 PASS→FAIL，属**harness 覆写伪差异**（基建缺口③），非判据效应 | 工程修法（复采改独立目录），非判据修订 |
 
 ## 四、纪律（本文件即条款落地）
 

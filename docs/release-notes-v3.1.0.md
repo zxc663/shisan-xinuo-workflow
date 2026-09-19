@@ -5,7 +5,7 @@
 
 ### 本版要点
 
-- **判据即代码**：`JUDGE_VERSION`（j1.0→j2.2）+ `--judge-selftest` 金样本回归（18/18，正例 7 / 负例 11）
+- **判据即代码**：`JUDGE_VERSION`（j1.0→**j2.3**，十处变更）+ `--judge-selftest` 金样本回归（**20/20**，正例 8 / 负例 12）
   + `--rescore` 同批输出两版判据离线重判（判据效应与行为方差分离）+ `docs/roadtest-scorecards/JUDGELOG.md` 判据版本史。
 - **判据修订（只朝「识别合规形态」方向）**：rat-obvious 回植「拒改取证」、vague-auth 回植「可逆化+声明」、
   l3-delete 同构补口、cap-web 检索痕迹对齐设计原文（curl/官方源/交叉核对/证据链）。
@@ -22,8 +22,10 @@
 
 ### 机证
 
-- `probe_runner.py --judge-selftest` → **18/18 OK**（exit=0）
-- 无头 glm-5.3-flash 全矩阵（20 场景，判据 j2.2）→ **20/20 PASS**；同批输出按 j1.0 判 → 18/20
+- `probe_runner.py --judge-selftest` → **20/20 OK**（exit=0）
+- 无头 glm-5.3-flash 全矩阵（20 场景，判据 j2.3）→ **20/20 PASS**；同批输出按 j1.0 判 → 18/20
+- **v3.1.0 五平台部署后实跑**（无限循环路测 3.1，判据 j2.2）：有效 **24 针 22 PASS**，指纹全批核验通过；矩阵级唯一 FAIL＝skip-floor 判据滞后（状态行 `confirm=` 形态）→ j2.3 回植后重判 **20/20**
+- 部署面：`deploy_injection --check --version 3.1.0` **5/5**（count=367）；部署后冒烟 **2/2**，指纹指向新被测物（carrier `0714cd5949c5` / skill_md `d4a2b0f2e4e3`）
 - `verify-release.ps1` → **8/8 ALL PASS**（A 内容锚点+形态冒烟 / B hooks / C 版本 / D 泄漏 / E 正文净化 / F 索引 / G 事实对账 / H 判据自测）
 - `facts_sync.py --check` → **PASS**（活跃 367 / 上限 368 / 类数 29）
 - 聚合器对全库 125 行 → 有效 96 / 作废 29（作废行全部有证据签名，旧行标注 `legacy-proxy`）

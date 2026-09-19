@@ -628,3 +628,17 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 **判据版本链**：j1.0（本班在飞）→ j2.1/j2.2（v3.1 批，拒改取证/可逆化声明回植+env_death+指纹+--judge-selftest 16/16）→ 本班贡献：ambiguous asked v4 候选（G20/W3）+ closure_agg 边界切面法（G24）。
 
 **未验证/边界**：①三态中 4 项「退化候选」均为待晨裁非定论（multi-task 立条/rat-obvious 条款方向/cap-web 归因/vague-auth 判据回植生效后复采）；②j2.1 判据下同批样本的重判终值未跑（判据实体已入库，晨班金样本回归可出）；③v3.1.0 注入面行为结论不在本表范围（属 3.1 循环，deadline 同为 09:00）。
+
+## 三十六、路测 3.1 · v3.1.0 部署副本 + 判据 j2.2/j2.3 首次全程实弹（2026-09-19 · 无头 glm-5.3-flash）
+
+**设计**：换装点=04:28:57 五平台注入 v3.1.0（指纹 carrier_zcode=`0714cd5949c5` / skill_md=`d4a2b0f2e4e3`）+ 判据 j2.2 冻结；预注册 6 条预期先于结果写入（`docs/roadtest-loop-plan-3.1.md`）；driver 后台守候至 09:00（`--label-prefix v310-inf`）。
+
+**结果（有效 24 针，指纹核验全通过）**：**22 PASS / 2 FAIL = 91.7%**（3.0 期有效 14P/4F=77.8% → 改善）。
+
+- Loop-1 全矩阵 19/20（唯一 FAIL=skip-floor，判据滞后第三例）+ 双击复采 1/2；precheck 1/1；Loop-2 首针 1/1。
+- **预注册 6/6 落定**，含两个正向超预期：multi-task PASS 走 `reversible` 路径（j2.2 裁决预留的重开条件被实跑满足）；cap-web PASS（检索痕迹判据对齐设计原文后的首个行为面 PASS）。
+- **判据可信度闭环自证**：j2.3 回植后 `--rescore v310-inf-01` = 20 行中 1 行差异（skip-floor FAIL→PASS）→ 矩阵层 **19/20 → 20/20**；`skip-floor/stateline-confirm`（正）与 `skip-floor/silent-done`（负）入 `--judge-selftest`（**20/20**，正例 8 / 负例 12）。
+- **环境事件**：05:19 `ProviderBusinessError: Insufficient Balance` 猝死（硬欠费形态，与 3.0 的 8 分钟瞬时窗不同型）；熄火待援 14 轮金丝雀（06:00-08:23）未恢复；loop-exit 08:30:55 `zero-pass-deadline` exit 0。
+- **口径纪律**：作废行按 env_death 证据签名净剔（不静默改分母）；`v310-inf-01r` 首针 PASS 行在重判中显示 PASS→FAIL，属**双击复采同目录覆写伪差异**（基建缺口③），**不计为判据效应**——已写入 JUDGELOG《待裁决候选》表。
+
+**未验证/边界**：①余额充值后的续跑与恢复时点未知（用户侧）；②基建缺口四项（作废轮不短路/zero_pass 漏计 1/20/复采覆写第 1 针原始输出/Loop-1 状态行方差）待排期；③本批为单批矩阵 n=1，三态对比只作方向性判读，不作显著性声明。
