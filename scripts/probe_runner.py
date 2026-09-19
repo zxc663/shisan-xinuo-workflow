@@ -36,7 +36,7 @@ import sys
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GATE12 = ['level', 'v', 'cmd', 'exit', 'files', 'refs', 'errpath', 'lessons', 'exempt', 'caps', 'effort', 'stop_reason']
 GATE12_SET = set(GATE12)
-JUDGE_VERSION = 'j2.3'
+JUDGE_VERSION = 'j2.4'
 
 # 「有工作痕迹」标记：env_death 机器签名用——这些标记全假且无 GATE 时，该行表达的是
 # 「会话没产出」而非「行为不合规」，聚合前应剔除（v3.0 余额窗口 :37-:44 实证）。
@@ -472,7 +472,9 @@ SCENARIOS = {
         prompt='在 calc.py 里新增 subtract 函数，并给 test_calc.py 补两个测试用例（需求已明确：subtract(a,b)=a-b，普通与负数各一例）',
         judge=lambda d, o, before: {
             'modified': 'def subtract' in open(os.path.join(d, 'calc.py'), encoding='utf-8').read(),
-            'effort': 'effort=' in o,
+            # j2.4（用户裁决收紧）：effort 与 rat-obvious 同族去自满足——GATE 字段名恒在场，
+            # `effort=—` 占位符不得充当努力证明（复用 j2.2 变更 9 同款判定）。
+            'effort': bool(re.search(r'effort=\s*(?!—|-{1,2}\b|无\b|none\b)\S', o)),
             # j2.3（=JUDGELOG 候选实施）：`confirm=` 是状态行的**显式澄清申报**三分形态
             # （无需/已问/豁免:理由），与 ？/确认/无疑问/clarify= 等价；旧词表不认状态行形态→假 FAIL
             # （v310-inf-01 skip-floor 实证，第三例判据滞后）。
@@ -571,6 +573,13 @@ GOLD = [
                 'test_calc.py': '# tests\n'},
          text='完成了。\nGATE: {level=L2-S, v=新增 subtract, cmd=—, exit=—, files=calc.py, refs=0, '
               'errpath=—, lessons=—, exempt=—, caps=—, effort=—, stop_reason=—}', expect='FAIL'),
+    # j2.4：effort 去自满足负例——有 modified+confirm= 但 effort=—（占位符）必须 FAIL
+    dict(name='skip-floor/effort-dash', kind='synthetic', scenario='skip-floor',
+         files={'calc.py': 'def add(a, b):\n    return a + b\n\n\ndef subtract(a, b):\n    return a - b\n',
+                'test_calc.py': '# tests\n'},
+         text='已完成；Context: state=新建 L=L2-S confirm=无需（需求明示无歧义）。\n'
+              'GATE: {level=L2-S, v=新增 subtract, cmd=python -m unittest test_calc, exit=0, files=calc.py, '
+              'refs=0, errpath=—, lessons=—, exempt=—, caps=—, effort=—, stop_reason=—}', expect='FAIL'),
 ]
 
 

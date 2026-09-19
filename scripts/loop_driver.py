@@ -3,7 +3,8 @@
 
 协议锚：docs/roadtest-loop-plan-3.0.md（3.0 批）/ docs/roadtest-loop-plan-3.1.md（3.1 批）
   - 循环体 = probe_runner 20 场景全矩阵机判；scorecard 随仓归档；每轮本地 commit（不 push 不发行）；
-  - FAIL → 双击复采（同轮标签 + 'r' 补 2 针；两针全 PASS=单例方差留观察，任一 FAIL=立条候选留晨班）；
+  - FAIL → 双击复采（<label>r1/r2 独立目录各补 1 针，防 output.txt 覆写伪差异；作废行不参与复采与统计；
+    两针全 PASS=单例方差留观察，任一 FAIL=立条候选留晨班）；
   - 连续 3 轮无 SUMMARY（环境/配额类失败）→ 熔断 stop_reason=env-streak；
   - 守候独立性：普通后台子进程驱动，禁用会话内 CronCreate（details #320）；
   - 判据冻结：运行期不改 probe_runner 判据（JUDGELOG 纪律），判读留晨班收口轮。
@@ -108,6 +109,24 @@ def verdicts(label):
     return out
 
 
+def round_rows(label):
+    """读该标签 scorecard 全部行（作废行判定用：gate_count=0=环境死亡签名，不计行为统计）。"""
+    p = os.path.join(REPO, 'docs', 'roadtest-scorecards', label + '.jsonl')
+    rows = []
+    if not os.path.exists(p):
+        return rows
+    with open(p, encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rows.append(json.loads(line))
+            except ValueError:
+                continue
+    return rows
+
+
 def commit(msg):
     subprocess.run(['git', 'add', 'docs/roadtest-scorecards'], cwd=REPO,
                    capture_output=True, text=True)
@@ -154,7 +173,7 @@ def main():
     round_no = args.start_round - 1
     streak = 0
     zero_pass = 0
-    totals = {'rounds': 0, 'probes': 0, 'pass': 0, 'taps': 0, 'commits_fail': 0}
+    totals = {'rounds': 0, 'probes': 0, 'pass': 0, 'voids': 0, 'taps': 0, 'commits_fail': 0}
     stop_reason = 'deadline'
     while datetime.datetime.now() < deadline - datetime.timedelta(minutes=ROUND_MIN_BUFFER):
         round_no += 1
@@ -179,7 +198,15 @@ def main():
             continue
         streak = 0
         n_pass, _n_total = s.split('/')
-        if n_pass == '0':
+        # 行级读取：作废行（gate_count=0=环境死亡签名）不参与复采、行为统计与熄火判定
+        rows = round_rows(label)
+        voids = [r for r in rows if r.get('gate_count', 0) == 0]
+        eff = [r for r in rows if r.get('gate_count', 0) > 0]
+        eff_pass = sum(1 for r in eff if r.get('verdict') == 'PASS')
+        # 熄火前兆两形态：①整轮 0 PASS；②死亡边界轮——有真针但真针全 FAIL 且作废行数 > 2×真针数
+        # （修「1/20」漏计：死亡卡在首针后时旧逻辑把 zero_pass 清零）
+        env_stall = (n_pass == '0') or (bool(eff) and eff_pass == 0 and len(voids) > 2 * len(eff))
+        if env_stall:
             zero_pass += 1
         else:
             zero_pass = 0
@@ -192,11 +219,8 @@ def main():
                 break
             zero_pass = 0
             continue
-        v = verdicts(label)
-        fails = sorted({sc for sc, vs in v.items() if 'FAIL' in vs})
-        n_probes = sum(len(x) for x in v.values())
-        n_pass = sum(x.count('PASS') for x in v.values())
-        # 双击复采（判据冻结，只补针不改判）
+        fails = sorted({r['scenario'] for r in eff if 'FAIL' in r.get('verdict', '')})
+        # 双击复采（判据冻结，只补针不改判；r1/r2 独立目录，第 1 针 output.txt 不再被覆写）
         taps = {}
         if fails:
             for scen in fails:
@@ -204,10 +228,15 @@ def main():
                 for _tap in (1, 2):
                     if datetime.datetime.now() >= deadline - datetime.timedelta(minutes=TAP_MIN_BUFFER):
                         break
-                    rc2, out2, _att = run_with_retry(label + 'r', [scen], 20)
+                    rc2, out2, _att = run_with_retry('%sr%d' % (label, _tap), [scen], 20)
                     ss.append(summary_of(out2) or ('rc%d' % rc2))
                 taps[scen] = ss
-        confirmed = sorted({sc for sc, vs in verdicts(label + 'r').items() if 'FAIL' in vs}) if taps else []
+        confirmed = set()
+        for _tap in (1, 2):
+            for sc, vs in verdicts('%sr%d' % (label, _tap)).items():
+                if 'FAIL' in vs:
+                    confirmed.add(sc)
+        confirmed = sorted(confirmed) if taps else []
         log({'event': 'round-done', 'round': round_no, 'label': label, 'summary': s,
              'fails': fails, 'taps': taps, 'confirmed_fails': confirmed})
         crc, cmsg = commit('chore(roadtest): %s 全矩阵 scorecards（无限循环 auto，不 push）' % label)
@@ -215,8 +244,9 @@ def main():
             totals['commits_fail'] += 1
         log({'event': 'round-commit', 'round': round_no, 'rc': crc, 'msg': cmsg if crc else 'ok'})
         totals['rounds'] += 1
-        totals['probes'] += n_probes
-        totals['pass'] += n_pass
+        totals['probes'] += len(eff)
+        totals['pass'] += eff_pass
+        totals['voids'] += len(voids)
         totals['taps'] += sum(len(x) for x in taps.values())
 
     log({'event': 'loop-exit', 'stop_reason': stop_reason, 'rounds': round_no,
