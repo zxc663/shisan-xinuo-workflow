@@ -642,3 +642,25 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 - **口径纪律**：作废行按 env_death 证据签名净剔（不静默改分母）；`v310-inf-01r` 首针 PASS 行在重判中显示 PASS→FAIL，属**双击复采同目录覆写伪差异**（基建缺口③），**不计为判据效应**——已写入 JUDGELOG《待裁决候选》表。
 
 **未验证/边界**：①余额充值后的续跑与恢复时点未知（用户侧）；②基建缺口四项（作废轮不短路/zero_pass 漏计 1/20/复采覆写第 1 针原始输出/Loop-1 状态行方差）待排期；③本批为单批矩阵 n=1，三态对比只作方向性判读，不作显著性声明。
+
+
+## 三十七、v3.1.0 发行批准批 + 独立审查处置（2026-09-19）
+
+**四件套（用户批准「Loop-16 立条，skip-floor 判据收紧，工程修法，v3.1.0 发行/推送」）**：
+- 判据 **j2.4**（变更 10）：skip-floor `effort` 去自满足（`effort=—` 占位符不充当努力证明）；自测 **21/21**（正 8/负 13）；`--rescore v310-inf-01` 与 j2.3 同形 1 行差异=收紧零附带伤害。
+- 细则 **#369**「L3 数据删除的无人值守合规双路径」立条（details §29，**368 条/上限 #369**；facts --fix 15 处承载点同步）；症状索引补「L3 无人值守与必问底线」组（verify F 项首次拦截→补齐后过）。
+- loop_driver 工程修法三件：复采 `<label>r1/r2` 独立目录／作废行不计复采·统计·熄火／死亡边界轮（作废>2×真针且真针全 FAIL）计熄火。
+- 门禁：facts PASS（368/369/29）+ verify **8/8** + judge-selftest 21/21（commit ad3f876 前批 A）。
+
+**发行回执（五渠道）**：
+- GitHub push `892b3e4..ad3f876` + tag `v3.1.0` + Release（首版 asset 332,433B → 终版 clobber 332,763B）；npm `@zxc663/shisan-xinuo-workflow@3.1.0`（45 文件，shasum `e1ede926…`）；Gitee Release 1153127（附件 3225663 已删→**3225756/332,763B**；删除端点实测=`/releases/{rid}/attach_files/{aid}`）；ClawHub **1.0.19**（pending security scans）；About 双端 PATCH len=191 + homepage 补设。
+- 代理停摆复用 v3.0.0 处置路径：`git -c http.proxy= 直连`（errpath 留账）。
+- dist 终版重打三滚（口径逐步校准 321,983→332,678→**332,763B**，60 项 Set-diff 60=60，0 泄漏）。
+
+**独立审查处置（外部审查报告 P1×2+P2×6，逐项对账）**：
+- **P1-1 公开 CI 三连红（CRLF）**：根因=autocrlf 检出使 PowerShell `.Length` 计入 70 个 CR（6070>6000）；修复=A 项计数统一去 CR 口径 + `.gitattributes`（8 类文本恒 LF）+ workflow 触发面加 push main + `permissions: contents: read`（commit 107f69d）；**克隆等价面复现验证=verify 8/8 ALL PASS**（同脚本 CI 等价 checkout 由 FAIL 转 PASS）。
+- **P1-2 发行口径漂移**：已发行态全链写回（AGENTS/CHANGELOG/README/release-notes/项目信息 §五/CHECKLIST J 节已执行化+I-1 回执表）+ Release 正文重写（首版正文含「未发行/20/20」残留已替换）。
+- **P2**：①release-notes 机证 20/20→**21/21** 已修并入 Release 正文；②GitHub description 实测已是新口径（审查快照早于 PATCH）+ homepage 补设；③README 补 npm 渠道如实说明（GitHub Packages 需 PAT，npmjs 未分发）；④`.codex` flows/roles 副本 3.0.0→**3.1.0** 同步（备份 `.bak-20260919-pre-v3.1.0`）；⑤issue #1 回复与 CONTRIBUTING/SECURITY/模板=**留用户批准**（对外通信）；⑥CI 触发面随 P1-1 修复一并落地。
+- **injection-core 零余量（审查建议留 ≥100 字符）**：结构风险已由 .gitattributes+去 CR 双修消除（CRLF 虚高不再可达 6000 上限）；内容裁剪涉 Skill 正文改动，**留下一内容批**（重开条件=任何 CRLF blob 再次入库或下次内容批顺手裁）。
+
+**未验证项**：ClawHub 1.0.19 平台侧过审（pending）；CI 实际 run 转绿（需 push 后 Actions 页确认——本轮 push 已含修复）；`npx skills add` 实装验证（审查豁免项延续）。
