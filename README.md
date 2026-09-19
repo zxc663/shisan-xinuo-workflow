@@ -4,7 +4,7 @@
 
 > **一句话定位**：它不是让 Agent 更聪明的提示词，而是把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构——过程可追责，结论可复核。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **367 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.3, with fingerprints), **20/20** judge gold-sample regression, 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks, a project-level ledger (`memory/agent-log.md`), platform injection adapters for five agent platforms, and a symptom-indexed library of **368 lessons across 29 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **21/21** judge gold-sample regression, 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
 ## 作者的话 · A note from the author
 
@@ -46,7 +46,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 2. **门禁化**——每个任务块收尾产出可复跑的 `GATE` 行（含真实命令与退出码），验证变成**证据**而非声明。
 3. **承载化**——项目根落 `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区），跨会话续接有据可查。
 4. **注入化**——五种平台各有注入适配，规则在新会话**在场**；验收判据是平台解析到的 Base directory，不是文件里的版本号。
-5. **教训化**——踩过的坑按症状索引入库（367 条/29 类），下次同类症状先检索再动手。
+5. **教训化**——踩过的坑按症状索引入库（368 条/29 类），下次同类症状先检索再动手。
 
 ## 它为谁解决什么 · Who it's for
 
@@ -95,7 +95,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 开工四步 | 复述 → 承载 → 记忆对齐 → 能力检索与选道 | 注入核心 |
 | 状态行 | `Context: state=… L=… confirm=…`，每轮首产物可校验 | 注入核心 |
 | `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变） | 核心 §9 + `scripts/gate_audit.py` |
-| 细则库 | 367 条 / 29 类，症状索引检索键 100% 覆盖 | `references/details.md` |
+| 细则库 | 368 条 / 29 类，症状索引检索键 100% 覆盖 | `references/details.md` |
 | 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
 | 项目承载 | `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区）+ 项目级规则文件 | 模板 + 核心 §5 |
 | 平台注入 | 五平台注入点表、按需/强制两种模式、备份合并不覆盖 | `references/platform-adaptation.md` + `scripts/deploy_injection.py` |
@@ -138,10 +138,10 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 红线行为面 | 密钥（含 covert 变体）/ 发布 / 删除 / 迁移 / 笼统授权 全绿（双样本） | `EVIDENCE.md` §三十三 |
 | 独立审查 | 由另一模型无头新会话只读审查（口径一致性/字段/引用/包路径），P0×1 当日修复，P1/P2/P3 分诊并回填 | [`docs/independent-review-v3.0-20260918.md`](docs/independent-review-v3.0-20260918.md) |
 | 无头 vs 交互面对照 | 同一平台：无头 `-p` 面注入 0/13 断裂；交互面注入 111/112 在场——**注入面效力只能由真会话验证** | `EVIDENCE.md` §二十六 |
-| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.3）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
-| v3.1.0 部署后实跑（无限循环路测 3.1） | 有效 **24 针 22 PASS**（判据 j2.2，指纹全符）；矩阵级唯一 FAIL=skip-floor 判据滞后（状态行 `confirm=` 形态），j2.3 回植后重判 **20/20** | `docs/roadtest-loop-plan-3.1.md`、`v310-inf-01.jsonl` |
-| 判据金样本回归 | **20/20**（正例 8 / 负例 12）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
-| 判据修订史 | j1.0→j2.3 十处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态） | `docs/roadtest-scorecards/JUDGELOG.md` |
+| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.4）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
+| v3.1.0 部署后实跑（无限循环路测 3.1） | 有效 **24 针 22 PASS**（判据 j2.2，指纹全符）；矩阵级唯一 FAIL=skip-floor 判据滞后（状态行 `confirm=` 形态），j2.3/j2.4 修订后重判 **20/20** | `docs/roadtest-loop-plan-3.1.md`、`v310-inf-01.jsonl` |
+| 判据金样本回归 | **21/21**（正例 8 / 负例 13）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
+| 判据修订史 | j1.0→j2.4 十一处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态） | `docs/roadtest-scorecards/JUDGELOG.md` |
 
 ## 快速体验 · Quick start
 
@@ -182,11 +182,11 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 | --- | --- |
 | 版本 | **v3.1.0**（发行前准备态；上一版 v3.0.0 已全渠道发行 2026-09-18） |
 | 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
-| 细则库 | **367 条 / 29 类**（编号至 `#368`；类数=分节数，单源断言） |
+| 细则库 | **368 条 / 29 类**（编号至 `#369`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.3）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹，全批指纹核验通过）；**判据金样本回归 20/20**（正例 8 / 负例 12）；同批输出两版判据重判：j1.0 18/20 → j2.2/j2.3 **20/20**（判据效应与行为方差分离） |
-| 判据可信度 | 判据版本化（j1.0→j2.3）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹，全批指纹核验通过）；**判据金样本回归 21/21**（正例 8 / 负例 13）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**（判据效应与行为方差分离） |
+| 判据可信度 | 判据版本化（j1.0→j2.4）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
 | 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
 
 ## 仓库结构 · Repository layout
@@ -246,7 +246,7 @@ A：默认不联网、不外发；密钥类信息**绝不写入**代码/文档/�
 
 ## 版本历史 · Changelog
 
-- **v3.1.0**（2026-09-19，**发行前准备**）：**判据可信度批**——判据版本化 j1.0→j2.3 + 金样本回归 20/20 + scorecard 指纹 + GATE 形态分型 + 环境死亡行证据签名 + 新增时序库聚合器与判据版本史；判据修订三处（回植「拒改取证」「可逆化+声明」两条合规路径、cap-web 检索痕迹对齐设计原文）、两处裁决（multi-task 维持 FAIL、`verify_trace`/`effort` 去自满足）与状态行 `confirm=` 形态补口（第三例判据滞后）；`verify-release` 增至 8 项（H 判据自测），细则 366→**367 条 / 29 类**。无头全矩阵 **20/20**；v3.1.0 部署后无限循环实跑 **24 针 22 PASS**。
+- **v3.1.0**（2026-09-19，**发行前准备**）：**判据可信度批**——判据版本化 j1.0→j2.4 + 金样本回归 21/21 + scorecard 指纹 + GATE 形态分型 + 环境死亡行证据签名 + 新增时序库聚合器与判据版本史；判据修订三处（回植「拒改取证」「可逆化+声明」两条合规路径、cap-web 检索痕迹对齐设计原文）、两处裁决（multi-task 维持 FAIL、`verify_trace`/`effort` 去自满足）与状态行 `confirm=` 形态补口（第三例判据滞后）；`verify-release` 增至 8 项（H 判据自测），细则 366→**368 条 / 29 类**（#368 判据即代码 + #369 L3 无人值守双合规路径）。无头全矩阵 **20/20**；v3.1.0 部署后无限循环实跑 **24 针 22 PASS**。
 - **v3.0.0**（2026-09-18，**已全渠道发行**）：三包体系（核心/流程/角色）+ 细则治理（366 条/28 类，检索键 100% 覆盖）+ Token 精算机 + 反作弊与状态锚定 + `GATE` 12 字段 + 探针 harness 收编进仓 + 利用率处置批 + 五平台注入重部署。
 - **v2.9.0**（2026-09-15/16）：独立审查修正批（P1×11 + P2×16 机制级）+ 安全基线 + 分级自审。
 - **v2.6.0 – v2.8.0**：开工四步收敛、留档一档制、每轮复述强制、压缩接续与重载在用 Skills、系统级可逆配置判级。
