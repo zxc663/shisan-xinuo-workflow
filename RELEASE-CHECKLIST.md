@@ -105,7 +105,7 @@
 
 | # | 项 | 状态 | 证据 |
 |---|---|---|---|
-| 1 | 判据可信度批施工（判据版本化/金样本回归/指纹/分型/聚合器/判据史） | ✅ | `scripts/probe_runner.py`（j2.2）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
+| 1 | 判据可信度批施工（判据版本化/金样本回归/指纹/分型/聚合器/判据史） | ✅ | `scripts/probe_runner.py`（**j2.3**）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
 | 2 | 两处裁决落地（multi-task 维持 FAIL / `verify_trace`+`effort` 去自满足） | ✅ | 判据自测负对照 `rat-obvious/modified-no-verify` 必 FAIL |
 | 3 | 细则 #368 立条 + 全承载点同步 | ✅ | `facts_sync --check` PASS（活跃 **367** / 上限 **368** / 类数 **29**） |
 | 4 | 口径校对（README 主口径行/条目上限入断言；verify 7→**8 项**） | ✅ | 补口前 `FACTS FAIL 4 处` → 修后 PASS |
@@ -113,12 +113,12 @@
 | 6 | Skill 本体净化 + 版本升板 3.1.0（三包 frontmatter + package.json） | ✅ | `verify` C 项：SKILL version=3.1.0；A 项家族包三包一致 |
 | 7 | 发行材料（CHANGELOG / 发行说明 / About 草案 / 升级指南） | ✅ | `CHANGELOG.md`、`docs/release-notes-v3.1.0.md`、`项目信息.md` §六·七、G 节 |
 | 8 | dist 重打（v3.1.0 zip）+ 发布物泄漏 0 | ⏳ 见 J-2 | `scripts/build-dist.ps1` |
-| 9 | 门禁终局 | ⏳ 见 J-2 | `verify-release` 8/8 + `facts_sync` PASS + `--judge-selftest` 18/18 |
+| 9 | 门禁终局 | ⏳ 见 J-2 | `verify-release` 8/8 + `facts_sync` PASS + `--judge-selftest` **20/20** |
 | 10 | 平台注入副本重部署（五平台）+ 新会话验收 | ⏳ 见 J-2 | `scripts/deploy_injection.py`、`scripts/syncer.py --family` |
 
 ### J-2 待执行（需用户批准的最小动作集）
 
-1. **门禁终局复跑**：`verify-release.ps1`（8/8）→ `facts_sync --check` → `probe_runner --judge-selftest`（18/18）。
+1. **门禁终局复跑**：`verify-release.ps1`（8/8）→ `facts_sync --check` → `probe_runner --judge-selftest`（**20/20**）。
 2. **dist 重打**：`pwsh scripts/build-dist.ps1` → `dist/shisan-xinuo-workflow-v3.1.0.zip`；Set-diff 双检 + 发布物 0 泄漏。
 3. **注入副本重部署**：`deploy_injection.py`（codex/claude/trae/workbuddy/zcode）+ `syncer.py --family`；
    验收 = 新会话读到「在场提示 · v3.1.0」+ `zxc663` 应答（注入版本=会话创建时快照，**须重启应用**）。
@@ -129,5 +129,5 @@
 ### J-3 v3.1.0 口径（发行时校对用）
 
 - 细则 **367 条 / 29 类**（编号至 `#368`）；注入核心 ≤6000 字符双口径；`GATE` **12 字段**定版。
-- 门禁 **8 项**；判据金样本回归 **18/18**；无头全矩阵 **20/20**（判据 j2.2）。
+- 门禁 **8 项**；判据金样本回归 **20/20**（正例 8 / 负例 12）；无头全矩阵 **20/20**（判据 j2.3）；v3.1.0 部署后无限循环实跑 **24 针 22 PASS**（判据 j2.2，唯一矩阵级 FAIL=skip-floor 判据滞后 → j2.3 回植后重判 20/20）。
 - 三包版本 3.1.0（core / flows / roles）。
