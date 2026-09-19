@@ -92,7 +92,7 @@
 | 3 | npm（GitHub Packages） | `@zxc663/shisan-xinuo-workflow@3.1.0`（45 文件，shasum `e1ede926…`） |
 | 4 | ClawHub | `1.0.19` 已提交（pending security scans，平台侧待过审） |
 | 5 | About | GitHub + Gitee description PATCH，双端 len=191（项目信息 §六·七 口径） |
-| 6 | Gitee Release | id=1153127（tag v3.1.0；附件 id=3225663 / 332,433B） |
+| 6 | Gitee Release | id=1153127（tag v3.1.0；附件 3225663 首版已删 → 终版 id=3225756 / 332,763B） |
 | 7 | 门禁与发布物 | 发行前 `verify-release.ps1` **8/8** ALL PASS + `facts_sync` PASS（**368 条/29 类**）+ `--judge-selftest` **21/21**（j2.4）；dist zip 60 项、发布物内 0 泄漏；五平台注入重部署 `--check` 5/5 v3.1.0/368 |
 
 ## I-2. v3.0.0 发行回执（2026-09-18）
