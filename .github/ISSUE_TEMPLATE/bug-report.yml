@@ -1,0 +1,31 @@
+name: 问题报告 · Bug report
+description: 条款触发不良行为 / 口径不一致 / 工具脚本缺陷
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 领域
+      options:
+        - 行为面（条款在会话中触发不良/不触发应触发）
+        - 口径核对（数字/计数/版本/回执不一致）
+        - 工具脚本（scripts/ 下 harness/门禁/部署/同步）
+        - 平台注入（某平台安装/注入/触达问题）
+        - 文档（README/发行说明/项目信息）
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 证据
+      description: 会话输出片段 / 复现命令与退出码 / 核对过程。有证据的报告修复优先级最高。
+      placeholder: 尽量附可重跑命令或原始输出
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / 平台
+      placeholder: "v3.1.0 · ZCode 0.16.9 / Claude Code / Codex / Trae / WorkBuddy"
+    validations:
+      required: true

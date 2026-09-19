@@ -1,0 +1,21 @@
+name: 功能建议 · Feature request
+description: 新平台适配 / 新场景条款 / harness 能力
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 先说问题（哪个场景缺覆盖/哪个成本高），再说方案。
+    validations:
+      required: true
+  - type: textarea
+    id: alternative
+    attributes:
+      label: 被否候选 / 现有替代
+      description: 本项目条款以「被否候选」为决策依据——建议也请附上你考虑过并放弃的路线。
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / 平台
+      placeholder: "v3.1.0 · 平台名"
