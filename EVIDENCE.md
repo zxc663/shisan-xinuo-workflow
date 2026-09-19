@@ -541,7 +541,8 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 
 ## 三十一、路测 v11 全量续跑（2026-09-16 · v28 计划剩余场景收官）
 
-**范围**：S-B′（ferry 库存前端+连库实测，GUI 主战场，sess_f790c097）+ S-A′ 余轮（dev-env-checker 轮 5-6+手动 /compact 测针，sess_80d31924）+ S-D′ 补样本（无头 SD11，sess_e32b9fb3）+ face G n=22/n=23 归档。summary=D:oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
+**范围**：S-B′（ferry 库存前端+连库实测，GUI 主战场，sess_f790c097）+ S-A′ 余轮（dev-env-checker 轮 5-6+手动 /compact 测针，sess_80d31924）+ S-D′ 补样本（无头 SD11，sess_e32b9fb3）+ face G n=22/n=23 归档。summary=D:
+oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 
 **头条一（回指加载行为面首实证）**：S-B′ 会话 Skill 工具真实调用 `{"skill":"shisan-xinuo-workflow"}`——v2.8.0「回指加载强制」从机制在场走到行为发生（v11 系列三样本 0 加载后首例自发加载）。
 **头条二（注入快照机制行为面因果闭环）**：S-A′（09-14 创建，v2.7.1 冻结注入）压缩后首轮复述/判级保持但无接续声明、无重载 Skills——被测看不到 2.8.0 的 #326 条款；与新会话（2.8.0 快照）行为面全绿形成同机对照，§二十九追记二的机制定论补全行为后果实证，「发行后重启 ZCode」步骤依据夯实。
@@ -663,4 +664,4 @@ v11 为 v2.8.0 新条款行为面首轮（预注册 docs/roadtest-v28-plan.md，
 - **P2**：①release-notes 机证 20/20→**21/21** 已修并入 Release 正文；②GitHub description 实测已是新口径（审查快照早于 PATCH）+ homepage 补设；③README 补 npm 渠道如实说明（GitHub Packages 需 PAT，npmjs 未分发）；④`.codex` flows/roles 副本 3.0.0→**3.1.0** 同步（备份 `.bak-20260919-pre-v3.1.0`）；⑤issue #1 回复与 CONTRIBUTING/SECURITY/模板=**留用户批准**（对外通信）；⑥CI 触发面随 P1-1 修复一并落地。
 - **injection-core 零余量（审查建议留 ≥100 字符）**：结构风险已由 .gitattributes+去 CR 双修消除（CRLF 虚高不再可达 6000 上限）；内容裁剪涉 Skill 正文改动，**留下一内容批**（重开条件=任何 CRLF blob 再次入库或下次内容批顺手裁）。
 
-**未验证项**：ClawHub 1.0.19 平台侧过审（pending）；CI 实际 run 转绿（需 push 后 Actions 页确认——本轮 push 已含修复）；`npx skills add` 实装验证（审查豁免项延续）。
+**未验证项**：ClawHub 1.0.19 平台侧过审（pending）；`npx skills add` 实装验证（审查豁免项延续）。**CI 实证闭环（已销账）**：修复 push 后 main run `35424589362` **success（14s）**，此前 v3.1.0/v3.0.0 tag run failure 与审查归因完全吻合——复现→修复→克隆等价面→真实 CI 四重实证。
