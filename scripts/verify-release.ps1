@@ -79,7 +79,7 @@ foreach ($anc in $anchorsSkill) { if ($txt -notmatch [regex]::Escape($anc)) { $p
 $core = Join-Path $skDir "references\injection-core.md"
 $coreLen = 0
 if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
-    $ctxt = Get-Content $core -Raw -Encoding UTF8
+    $ctxt = (Get-Content $core -Raw -Encoding UTF8) -replace "`r", ""
     foreach ($anc in $anchorsCore) { if ($ctxt -notmatch [regex]::Escape($anc)) { $probsA += "injection-core 缺锚点[$anc]" } }
     $coreLen = $ctxt.Length
     if ($coreLen -gt 6000) { $probsA += "injection-core 字符数 $coreLen 超硬上限 6000（常驻瘦身预算，目标 4K）" }

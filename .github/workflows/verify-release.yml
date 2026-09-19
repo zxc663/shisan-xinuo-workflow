@@ -18,9 +18,14 @@ on:
       - "LICENSE"
       - ".gitignore"
   push:
+    branches:
+      - main
     tags:
       - "v*"
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   verify:

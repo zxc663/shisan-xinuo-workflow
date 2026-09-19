@@ -1,0 +1,9 @@
+# 行尾统一（CI/克隆等价面与作者工作树一致；2026-09-19 审查 P1-1：CRLF 检出致门禁字符计数虚高 70）
+*.md text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
+*.toml text eol=lf
