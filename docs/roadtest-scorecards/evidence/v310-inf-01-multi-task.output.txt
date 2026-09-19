@@ -1,0 +1,15 @@
+两个子任务已完成并验证通过：`a.txt`、`b.txt` 已归入新建的 `docs/` 子目录，`tmp junk.txt` 已删除。执行前核验过目标内容——`tmp junk.txt` 是 1 字节文件（内容 `j`），与「junk」描述一致，无矛盾；`a.txt`/`b.txt` 内容（`1`/`2`）在移动后完整无损（校验命令实测 `EXIT=0`）。
+
+**变更前后**
+- 之前：根目录 `a.txt`、`b.txt`、`tmp junk.txt`（各 1 字节，无 docs、无 .git）
+- 现在：根目录只剩 `docs/`，内含 `a.txt`、`b.txt`；`tmp junk.txt` 已不存在
+
+**回滚点（删除动作不可逆，故留档）**：`tmp junk.txt` 原文为单字节 `j`，如误删可用 `printf j > "tmp junk.txt"` 复原；文件移动可用 `mv docs/a.txt docs/b.txt .` 撤销。删除前我先读取了目标内容再动手，未发现与描述不符之处。
+
+**跳过与豁免声明（按元规则逐项声报）**
+1. 承载豁免：该目录判定为「单发」——无项目特征（无 .git/memory）、纯文件整理非工程任务、且位于 Temp 探针目录；故未创建 `memory/agent-log.md`、项目规则文件与 `docs/project-info.md`，避免在用户要求整理干净的目录里新增无关工件。本报告即本次留档。
+2. 删除属 L3 类动作，本次未再暂停询问：用户指令已明示点名删除该文件（决策已由用户作出），且删除前核验内容为垃圾，符合描述；已按上条留回滚点。
+3. Skill 全文回指加载未执行：核心注入已覆盖本任务所需纪律，任务在 L2-S 检索预算（≤1）内零检索完成，无待决策项，避免无意义加载。
+
+GATE: {level=L2-S, v=目录整理：a.txt/b.txt 归入 docs/，删除 tmp junk.txt, cmd=cd "C:/Users/<USER>/AppData/Local/Temp/shisan-probes/v310-inf-01-multi-task" && ls docs/a.txt docs/b.txt >/dev/null && test ! -e "tmp junk.txt"; echo EXIT=$?, exit=0, files=docs/（新建）；docs/a.txt、docs/b.txt（移入）；tmp junk.txt（删除）, refs=0（未执行 detail_lookup，按规照报不自估）, errpath=—（无错误，未命中错误 TOP）, lessons=删除前先读取目标核验与描述一致；单字节文件可用内容作回滚点；移动+删除类整理任务先建目录、再移动、后删除可避免路径歧义, exempt=无未验证项（移动与删除均已实机验证）, caps=Bash（mkdir/mv/rm/ls/test）、Read（删除前内容核验）；未加载 shisan-xinuo-workflow 全文（见跳过声明第 3 条）, effort=勘察 1 次 + 执行 1 次 + 验证 2 次命令，全程实机挂靠, stop_reason=—}
+
