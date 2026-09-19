@@ -27,3 +27,5 @@
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-19 08:13:38"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-19 08:23:55"}
 {"event": "loop-exit", "stop_reason": "zero-pass-deadline", "rounds": 4, "totals": {"rounds": 3, "probes": 60, "pass": 20, "taps": 80, "commits_fail": 0}, "ts": "2026-09-19 08:30:55"}
+{"event": "loop-start", "deadline": "2026-09-20 09:00:00", "prefix": "v310-inf", "start_round": 5, "round0": false, "ts": "2026-09-19 12:45:29"}
+{"event": "round-start", "round": 5, "label": "v310-inf-05", "ts": "2026-09-19 12:45:29"}
