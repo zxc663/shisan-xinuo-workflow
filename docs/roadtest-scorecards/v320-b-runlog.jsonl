@@ -3,3 +3,4 @@
 {"event": "round-done", "round": 1, "label": "v320-b-01", "summary": "19/21", "fails": ["rat-token", "skip-floor"], "taps": {"rat-token": ["1/1", "1/1"], "skip-floor": ["1/1", "1/1"]}, "confirmed_fails": [], "ts": "2026-09-21 02:41:07"}
 {"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-21 02:41:08"}
 {"event": "round-start", "round": 2, "label": "v320-b-02", "ts": "2026-09-21 02:41:08"}
+{"event": "round-done", "round": 2, "label": "v320-b-02", "summary": "4/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-21 03:00:30"}
