@@ -8,13 +8,17 @@
   python scripts/deploy_injection.py --version 2.6.0            # 全部平台
   python scripts/deploy_injection.py --version 2.6.0 --only zcode,codex
   python scripts/deploy_injection.py --check                    # 只验收不写入（版本+锚点 grep）
+  python scripts/deploy_injection.py --check --hash             # 追加「载体内容哈希」验收（细则 #374）
 
 设计: 路径从 USERPROFILE 派生（不硬编码个人路径）；写前备份 .bak-<ts>-pre-v<版本>；
       在场提示锚块单一权威源=templates/memory-anchor.md（本脚本读取+关键行断言，禁内嵌第二份——F-17）；
       --check 不带 --version 时取 package.json 版本严格校验（F-21 假绿防线）；
       写入完成后输出重启+探针验收提示（注入快照=会话创建时快照——v11 机制定论）。
+      --hash：--check 时追加内容哈希验收——版本串一致≠内容一致（细则 #374）；
+      哈希不可判定的旧格式副本报 [WARN] 不计 FAIL，重部署一次即带标记。
 """
 import argparse, io, json, re, shutil, sys, os
+import hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -47,6 +51,27 @@ HEADER = '''# 全局 Agent 工作流核心（十三希诺工作流 · 每会话�
 # 在场提示锚块：单一权威源 = templates/memory-anchor.md（F-17 单一文件化；本脚本不再内嵌第二份锚文本）。
 # 读取后仅替换 vX.Y.Z 占位为版本；缺关键行即报错（防模板被误改后静默降级）。
 ANCHOR_REQUIRED_LINES = ('在场提示', '每轮复述', '前置门', '细则 #326', '细则 #332', '注入版本')
+
+# 内容哈希验收（细则 #374）：源库载体哈希 vs 副本内载体段哈希
+CORE_MARK = '# 全局 Agent 工作流核心'
+ANCHOR_START_MARK = '### 在场提示 · 工作流 Skill 现已在场'
+CORE_HASH_TAG = '<!-- core-sha256:{h} -->'
+
+
+def sha256_text(s):
+    return hashlib.sha256(s.encode('utf-8')).hexdigest()[:12]
+
+
+def core_body(t):
+    """从注入副本/源库文本中切出载体段（CORE_MARK → 锚块起点，剔除哈希标记行）；缺标记返回 None。"""
+    i = t.find(CORE_MARK)
+    if i < 0:
+        return None
+    j = t.find(ANCHOR_START_MARK, i)
+    seg = t[i:] if j < 0 else t[i:j]
+    seg = '\n'.join(ln for ln in seg.replace('\r', '').split('\n')
+                    if '<!-- core-sha256:' not in ln)
+    return seg.strip()
 
 
 def load_anchor(version):
@@ -94,6 +119,7 @@ def main():
     ap.add_argument('--version', default=None)
     ap.add_argument('--only', default=None, help='逗号分隔平台名')
     ap.add_argument('--check', action='store_true')
+    ap.add_argument('--hash', action='store_true', help='--check 时追加载体内容哈希验收（细则 #374）')
     a = ap.parse_args()
     only = set(a.only.split(',')) if a.only else None
     count = details_count()
@@ -106,6 +132,10 @@ def main():
         print(f'[check] 未显式给 --version，取 package.json 当前版本 v{a.version} 做严格校验')
 
     fails = []
+    src_core = CORE.read_text(encoding='utf-8-sig').replace('\r', '').strip()
+    src_hash = sha256_text(core_body(src_core) or src_core)
+    if a.hash:
+        print(f'[hash] 源库载体 core-sha256={src_hash}')
     for name, path, plat, anchor, src in targets(only):
         p = Path(path)
         if not p.exists():
@@ -119,6 +149,16 @@ def main():
             print(f'[{"PASS" if ok else "FAIL"}] {name} v={v} count={count}')
             if not ok:
                 fails.append(name)
+            if a.hash:
+                body = core_body(t)
+                if body is None:
+                    print(f'  [WARN] {name}: 缺载体标记，哈希不可判定（重部署一次即带标记）')
+                else:
+                    h = sha256_text(body)
+                    same = (h == src_hash)
+                    print(f'  [{"HASH-OK" if same else "HASH-DRIFT"}] {name}: copy=sha256:{h} src=sha256:{src_hash}')
+                    if not same:
+                        fails.append(f'{name}(hash-drift)')
             continue
         if not a.version:
             print('--version 必填（写入模式）'); sys.exit(1)
@@ -126,7 +166,7 @@ def main():
         shutil.copy2(p, bak)
         core = CORE.read_text(encoding='utf-8-sig').replace('\r', '').strip()
         out = HEADER.format(version=a.version, plat=plat, skill_src=src, count=count, classes=classes, now=now).rstrip()
-        out += '\n\n---\n\n' + core
+        out += '\n\n---\n\n' + core + '\n' + CORE_HASH_TAG.format(h=sha256_text(core))
         if anchor:
             out += load_anchor(a.version)
         p.write_text(out, encoding='utf-8-sig', newline='')

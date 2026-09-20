@@ -683,3 +683,24 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **与该文对账结论**：成立 5 项（流程合规≠结果正确 / memory 膨胀 / 跨平台漂移 / 评测自证 / 评测偏合规而非效果）；部分成立 6 项（L3 边界、必问瓶颈、GATE 证据层、细则膨胀、记忆陈旧、judge 复杂度、可审计性 vs 生产力）；误读 1 项（「≥2 种负载形状」条文原文为**下限**且根因来自 `details #266` 并发实证，非固定数量指标——其建议的「按风险选最富信息量负载」作为表述澄清可采纳）。
 
 **未验证/边界**：①修正批未部署，结论不代表新内容行为面；②未做真会话交互面走查（无头面与交互面注入效力不同）；③探针 7 针小样本，不构成比率；④未做外部盲评（提案 P-D）；⑤`--exclude-recollect` 开关未入门禁 H 项，若定为正式口径需补负对照。
+
+## 三十九、评审提案落刀批（2026-09-20 · 用户令「push，自主验证落刀条款级 6 项提案」）
+
+**范围**：审计报告 §七 的 P-A~P-F 六项条款级提案全部落地（P-G「About 双变体入单源」未列入本轮，留待下批）；边界=**只改源库**（不重部署/不 bump 版本/不发行）。
+
+**落刀清单（逐项 → 落地件 → 机证）**：
+
+| 提案 | 内容 | 落地件 | 机证 |
+|---|---|---|---|
+| P-A L3 边界 | 清单外高危域执行层枚举（CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写）；清单语义不变 | `细则 #370` + SKILL §2.2 回指 + 注入核心一行 + `scripts/risk_scan.py` | risk_scan 正例（CI workflow + OAuth redirect → HIT(2) exit 1）/ 负例（改按钮颜色 → PASS exit 0） |
+| P-B GATE 证据层 | 可选 `ev=`（exec/cover/invariant/indep；L2-F/高风险至少一项非 exec）；12 字段定版不变 | `细则 #371` + SKILL §6 + 注入核心 GATE 段 + `gate_audit --gate/--high-risk/--independent-cmd` + 判据 **j2.5**（场景 `gate-ev` + 2 金样本） | gate_audit 负例（`ev=exec` + high-risk → MISMATCH exit 1）/ 正例（`ev=exec+indep` → PASS exit 0）；`--judge-selftest` **23/23**（正 9/负 14） |
+| P-C memory 结构 | **维持一档制** + 双指标上限（行数 × 体积先到者）+ 机械归档 + 活头部时间戳 | `细则 #372` + SKILL §8 + 注入核心 + `scripts/agent_log_rotate.py` + `templates/agent-log-template.md` | 本仓实跑：流水区 223 行/251.3 KB → 归档 52 条 → **139 行/149.4 KB**，复跑 exit 0 |
+| P-D 评测体系 | ①机器事实优先于 LLM 判据 ②公开数字须随仓可复算工件 ③效果主张须先有外部盲评对照 | `细则 #373` + `docs/design-specs/blind-eval-design.md`（设计档，不跑批） | 设计档落盘；`scorecard_agg --exclude-recollect` 使复采口径可机检（前批） |
+| P-E 分发形态 | 副本验收=内容哈希（版本串一致 ≠ 内容一致）；薄适配方向 | `细则 #374` + `deploy_injection --check --hash` + `platform-adaptation` 注记 | 实跑：源库 core-sha256=`2a64ca815ad4`；五平台副本 `HASH-DRIFT`（zcode/codex/claude/trae/workbuddy）——**证明副本内容与源库已不一致**（正是本条要拦的形态） |
+| P-F 表述澄清 | 「≥2 种负载形状」= 下限非指标，按风险选最富信息量负载 | `细则 #266` 就地澄清 + 注入核心红线句 + `roles/perf.md` + README 脚注（前批） | 三处承载点 grep 一致 |
+
+**口径涟漪**：`facts_sync --fix` 15 处（细则 368→**373 条**、类 29→**30 类**、条目范围 1.–374.）；judge 版本 j2.4→**j2.5**、金样本 21/21→**23/23**（README/CONTRIBUTING/AGENTS/docs 同步；CHANGELOG 与 v3.1.0 发行说明属历史档，保留当时口径）。
+
+**未验证/边界（重要）**：①**源库领先于已部署副本**——副本仍是 v3.1.0（368/29，旧核心文本），故 `deploy_injection --check` 与 `--hash` **预期红**，重部署后恢复；②`ev=` 未对存量高风险场景**追溯加严**（只作用于新场景与金样本），故既有矩阵结论不失效——是否全面加严另开裁决；③新场景 `gate-ev` **未跑实弹探针**（已部署副本不认识 `ev=`，跑了必然 FAIL 且只反映未部署态；本批以金样本正负对照闭环该判据），实弹留到重部署批；④`risk_scan.py` 为关键词召回端口，非判级权威，存在漏报（同义表达）与误报（词面命中）双向风险，未做召回率实测；⑤P-C 归档后**未做真实新会话续接走查**（只机检结构）；⑥P-D 盲评为设计档，未跑批。
+
+**本批 GATE**：`GATE: {level=L2-F, v=评审提案落刀批（#370-#374 五条 + 四个机检端口 + 判据 j2.5）, cmd=powershell -File scripts/verify-release.ps1 && python scripts/facts_sync.py && python scripts/probe_runner.py --judge-selftest, exit=0, files=skill/(SKILL+details+injection-core+template+perf),scripts/(risk_scan,agent_log_rotate,gate_audit,probe_runner,deploy_injection),README/AGENTS/CONTRIBUTING/EVIDENCE/项目信息/docs, refs=0, errpath=①probe_runner 插入 gate_ev 时误伤 _reversible 定义（IndentationError）→重定位函数边界后 23/23 通过；②复采正则首版 `-r\d*` 漏配 `01r`→改 `\d+r\d*`, lessons=新增判据字段必须同时处理「形态分型」（可选键不计杂键）与「金样本正负对照」，否则要么误伤历史行要么无负例；条款落刀要先问「部署面会不会因此变红」并显式声明预期态, exempt=副本未重部署（预期红）/ev 未对存量场景追溯加严/risk_scan 召回率未测/盲评未跑, caps=web（GitHub API 复算）+无头探针（前批 7 针）, effort=六项提案逐项落地+正负例对照+门禁三跑, stop_reason=—}`

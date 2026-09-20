@@ -22,7 +22,7 @@
 - 设计规范档前置：设计类动作（前端尤甚）先逐组件调研成熟规范 → 强制留档 docs/design-specs/ → 按档设计并回指。
 - 细则检索端口：遇错误先对注入核心 TOP 内联处置，处置完成后留 errpath 行（症状→处置路径）；lookup=佐证非事前门槛，按关键词检索跑 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`（技能安装目录=平台解析到的 Base directory）；未执行 lookup 不得自报命中数。
 - 委托子代理：必须内联纪律包（子代理不继承注入副本、不保证自加载 Skill——实测实证；独立工作区另建规范承载）。
-- 完整规则：规则层文件按平台各异——AGENTS.md（Codex/ZCode/WorkBuddy）/ CLAUDE.md（Claude Code）/ .trae/rules/project_rules.md（Trae）/ .cursor/rules/*.mdc（Cursor）/ .windsurferules（Windsurf）/ user_rules；细则 references/（rules.md 47 条 / 368 细则），全表=platform-adaptation.md §2 注入点表。
+- 完整规则：规则层文件按平台各异——AGENTS.md（Codex/ZCode/WorkBuddy）/ CLAUDE.md（Claude Code）/ .trae/rules/project_rules.md（Trae）/ .cursor/rules/*.mdc（Cursor）/ .windsurferules（Windsurf）/ user_rules；细则 references/（rules.md 47 条 / 373 细则），全表=platform-adaptation.md §2 注入点表。
 - 更新协议：`python scripts/syncer.py`（记忆/规则/配置三层随版本同步；WorkBuddy 技能副本加 --dest）；验收以平台解析到的 Base directory 为准。
 - 注入版本：vX.Y.Z ｜ 授权：本锚点由用户授权后注入，未获授权不写。
 ```

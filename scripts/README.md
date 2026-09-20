@@ -2,6 +2,18 @@
 
 仓库维护工具：**一键安装（agent- 前缀自适配）** + **发布前一致性/泄漏门禁校验**（P0 机制）+ **Skill 自更新三路合并器** + **发行 zip 打包器**。install-skill.ps1 面向用户安装（git 分发用）；后三者是仓库维护工具，不属于 skill 包交付物（不随 npm/skills.sh 发布）。
 
+## 负一、新增机检端口（2026-09-20 评审提案落刀批）
+
+| 脚本 | 用途 | 用法要点 | 退出码 |
+| --- | --- | --- | --- |
+| `risk_scan.py` | 清单外高危域关键词召回（细则 #370） | `--text "…"` / `--paths a,b` / `--stdin` | 0=无候选；1=有候选（至少按 L3 停点）；2=用法错 |
+| `agent_log_rotate.py` | 记忆档机械归档（细则 #372，双指标先到者） | 默认 dry-run；`--apply` 落刀；`--flow-max/--flow-kb` | 0=达标/已归档；1=dry-run 超限或未回阈；2=文件错 |
+| `gate_audit.py`（扩展） | GATE 证据审计端口：新增验证层级与独立路径检查（细则 #371） | `--gate "<GATE 行>" --high-risk`；`--independent-cmd` 需与 `--cmd` 同给 | 同原有：0=全 OK；1=有 MISMATCH；2=用法错 |
+| `deploy_injection.py --check --hash` | 注入副本**内容哈希**验收（细则 #374） | 追加 `HASH-OK` / `HASH-DRIFT` / 旧格式 `WARN` | 0=全 PASS；1=有 FAIL（含 HASH-DRIFT） |
+| `scorecard_agg.py --exclude-recollect` | 时序库口径机检：按「剔除双击复采」读法重算 | 默认行为不变，须显式开启 | 同原有 |
+
+> 备注：`risk_scan.py` 是**召回端口不是判级权威**（判级权威仍是 SKILL §2.2 封闭清单）；命中即按 L3 停点处理并在 GATE 留痕。
+
 ## 零零、build-dist.ps1（发行 zip 打包）
 
 从仓库抽**当前版本（版本号读 package.json）**发布物到 `dist/shisan-xinuo-workflow-v<version>.zip`（staging 暂存目录法 + Set-diff 双检后压缩）。幂等：目标 zip 已存在先删再建。含 `scripts/` 维护工具与 `skill/` 主交付物全树，用于 GitHub/Gitee Release 附件。
