@@ -139,10 +139,13 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 红线行为面 | 密钥（含 covert 变体）/ 发布 / 删除 / 迁移 / 笼统授权 全绿（双样本） | `EVIDENCE.md` §三十三 |
 | 独立审查 | 由另一模型无头新会话只读审查（口径一致性/字段/引用/包路径），P0×1 当日修复，P1/P2/P3 分诊并回填 | [`docs/independent-review-v3.0-20260918.md`](docs/independent-review-v3.0-20260918.md) |
 | 无头 vs 交互面对照 | 同一平台：无头 `-p` 面注入 0/13 断裂；交互面注入 111/112 在场——**注入面效力只能由真会话验证** | `EVIDENCE.md` §二十六 |
-| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.4）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
+| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.4；**单批存量样本，含同批重判，非稳定率**）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
 | v3.1.0 部署后实跑（无限循环路测 3.1） | 有效 **24 针 22 PASS**（判据 j2.2，指纹全符）；矩阵级唯一 FAIL=skip-floor 判据滞后（状态行 `confirm=` 形态），j2.3/j2.4 修订后重判 **20/20** | `docs/roadtest-loop-plan-3.1.md`、`v310-inf-01.jsonl` |
 | 判据金样本回归 | **21/21**（正例 8 / 负例 13）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
 | 判据修订史 | j1.0→j2.4 十一处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态） | `docs/roadtest-scorecards/JUDGELOG.md` |
+| 外部评审审计（2026-09-20） | 双轨审计（独立五维 + 与外部评审逐条对账）；**8/8 门禁 / FACTS / 判据自测 21/21 / 新采样 7 针 5 PASS** 实测在档；独立发现 8 项（P2×6 / P3×2），条款级 6 项改动作提案待批 | [`docs/audit-external-review-20260920.md`](docs/audit-external-review-20260920.md) |
+
+> **口径脚注（可复算入口）**：①「24 针」范围 = `precheck 1 + v310-inf-01 20 + 双击复采 v310-inf-01r 2 + v310-inf-02 1`，作废行（`env_death`）全数剔除、双击复采行**计入**；声明后新增的 `v310-inf-05` 不在该分母内。②按「剔除复采」读法重算得 23 有效 / 22 PASS，可用 `python scripts/scorecard_agg.py --exclude-recollect` 机检。③「20/20」为单批样本（含同批重判），不代表稳定通过率；2026-09-20 独立审计的新采样 7 针得 5 PASS / 2 FAIL（失败集=skip-floor / multi-task，与存量批同构）。
 
 ## 分发渠道 · Distribution
 
@@ -201,7 +204,7 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 | 细则库 | **368 条 / 29 类**（编号至 `#369`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹，全批指纹核验通过）；**判据金样本回归 21/21**（正例 8 / 负例 13）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**（判据效应与行为方差分离） |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4，**单批样本**）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹，全批指纹核验通过）；**判据金样本回归 21/21**（正例 8 / 负例 13）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**（判据效应与行为方差分离）；口径构成见「验证与路测」表下脚注 |
 | 判据可信度 | 判据版本化（j1.0→j2.4）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名**（provider 报错栈/空输出）+ GATE 形态分型（包级 12 / 子块简式 / 杂键） |
 | 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
 
@@ -214,7 +217,7 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 │   ├── shisan-xinuo-flows/       # 流程包：9 类工作流分册 + 模板
 │   └── shisan-xinuo-roles/       # 角色包：8 角色 + dispatch 矩阵
 ├── scripts/                      # 工具面：部署/同步/门禁/事实对账/审计/探针
-├── docs/                         # 项目导航 + 计划 + 独立审查 + 路测 scorecards
+├── docs/                         # 项目导航 + 计划 + 独立审查/审计报告 + 路测 scorecards
 ├── memory/                       # 单项目承载（本地档案，随 .gitignore 不入仓）
 ├── dist/                         # 发行 zip（版本化）
 ├── README.md · CHANGELOG.md · EVIDENCE.md · RELEASE-CHECKLIST.md

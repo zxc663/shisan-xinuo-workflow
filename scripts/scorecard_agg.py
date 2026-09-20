@@ -9,6 +9,7 @@
     python scripts/scorecard_agg.py                          # 全库概览
     python scripts/scorecard_agg.py --baseline v300-ab-01 --current v310-j2-0919
     python scripts/scorecard_agg.py --current v310-j2-0919 --fail-on-regress
+    python scripts/scorecard_agg.py --current v310-inf-01 --exclude-recollect
 
 判读口径（AGG_VERSION 冻结）：
   1) 作废行（env_death）：显式字段 env_death=true，或 无 GATE 且无任何工作痕迹标记，或输出近空；
@@ -16,12 +17,15 @@
   2) 通过率=该轮/该场景 有效行内 PASS/有效行数。
   3) 三态：改善 / 持平 / 退化（按场景配对比较，仅两侧都有有效样本时计入）。
   4) 判据版本不同的行**不作直接比较**（打 [judge-mismatch] 标记），这是 v3.0 归因错位的对策。
+  5) 复采行（--exclude-recollect，可选）：文件名形如 `<label>-r[数字].jsonl` 的双击复采行默认计入；
+     声明口径若为「剔除复采」，须显式开启本开关——即默认行为保持不变，剔除从叙述变为可机检。
 """
 import argparse
 import glob
 import io
 import json
 import os
+import re
 import sys
 from collections import defaultdict
 
@@ -30,6 +34,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCORE_DIR = os.path.join(REPO_ROOT, 'docs', 'roadtest-scorecards')
 AGG_VERSION = 'a1.0'
+
+# 复采行识别：文件名以 `<数字>r` 或 `<数字>r<数字>` 结尾（如 `v310-inf-01r.jsonl` / `v300-ab-01r1.jsonl`）
+RECOLLECT_RE = re.compile(r'.*\d+r\d*\.jsonl$')
 
 WORK_MARKERS = {
     'stateLine', 'gate', 'asked', 'organized', 'renamed', 'modified', 'fixed', 'warned', 'delivered',
@@ -84,6 +91,8 @@ def main():
     ap.add_argument('--show-void', action='store_true', help='打印作废行明细')
     ap.add_argument('--json-out', default='', help='写出机器可读汇总 JSON')
     ap.add_argument('--fail-on-regress', action='store_true', help='出现退化场景则 exit 3')
+    ap.add_argument('--exclude-recollect', action='store_true',
+                    help='剔除复采行（文件名 <label>-r[数字].jsonl）；声明口径为「剔除复采」时开启，默认不剔除')
     a = ap.parse_args()
 
     rows = load_rows(a.score_dir)
@@ -93,8 +102,14 @@ def main():
     voids = [(r, void_reason(r)) for r in rows]
     valid = [r for r, why in voids if not why]
     void_rows = [(r, why) for r, why in voids if why]
+    re_collect = []
+    if a.exclude_recollect:
+        re_collect = [r for r in valid if RECOLLECT_RE.match(r.get('_src', ''))]
+        valid = [r for r in valid if not RECOLLECT_RE.match(r.get('_src', ''))]
     print('AGG_VERSION=%s ｜ 总行=%d ｜ 有效=%d ｜ 作废=%d（%.0f%%）'
           % (AGG_VERSION, len(rows), len(valid), len(void_rows), 100.0 * len(void_rows) / len(rows)))
+    if a.exclude_recollect:
+        print('复采行剔除: %d 行（--exclude-recollect；声明口径须与本开关一致）' % len(re_collect))
     print('判据版本分布: ' + ', '.join('%s=%d' % kv for kv in
           sorted(defaultdict(int, {k: sum(1 for r in rows if (r.get('judge_version') or 'j1.0') == k)
                                    for k in {(r.get('judge_version') or 'j1.0') for r in rows}}).items())))
