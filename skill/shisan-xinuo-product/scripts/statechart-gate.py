@@ -5,6 +5,13 @@
   C1 initial 存在  C2 无死端（非终态全有出边）  C3 全可达（initial 出发 BFS）
   C4 错误态（名含 error/fail）必有恢复转换（出边指向非错误态）
   C5 带守卫的转换须有 guardDesc 说明
+
+能力边界（2026-09-21 peer 实战反哺，诚实声明）：
+  本 gate 的 schema=扁平 states（无嵌套/并行区域）。文件级/批量等「粒度语义」
+  只能用「自环+guardDesc 文字约定」表达，gate 查不了粒度是否正确——结构检查
+  （图性质）与领域语义评审（粒度/传播）缺一不可。嵌套 states 支持待真实项目
+  痛了再上（元规则六问裁决，勿提前复杂化）。
+
 用法：python statechart-gate.py --file sc.json
       python statechart-gate.py --selftest
 """
