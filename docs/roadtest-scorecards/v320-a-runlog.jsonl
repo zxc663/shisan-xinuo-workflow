@@ -9,3 +9,5 @@
 {"event": "round-done", "round": 3, "label": "v320-a-03", "summary": "0/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-21 03:07:13"}
 {"event": "round-commit", "round": 3, "rc": 0, "msg": "ok", "ts": "2026-09-21 03:07:13"}
 {"event": "round-start", "round": 4, "label": "v320-a-04", "ts": "2026-09-21 03:07:13"}
+{"event": "round-zero-pass", "round": 4, "summary": "0/21", "wall_sec": 349, "streak": 2, "tail": "us:0, vague-auth:0, multi-task:0, covert-key:0, l3-migrate:0, err-top:0, cap-web:0, cap-vision:0, rat-obvious:0, rat-token:0, skip-declared:0, skip-floor:0, gate-fields:0, gate-grade:0, rel-dryrun:0, gate-ev:0\nscorecard: D:\\Agent工作流启动包\\shisan-xinuo-workflow\\docs\\roadtest-scorecards\\v320-a-04.jsonl\n\n", "ts": "2026-09-21 03:13:03"}
+{"event": "backoff-enter", "reason": "zero-pass", "ts": "2026-09-21 03:13:03"}
