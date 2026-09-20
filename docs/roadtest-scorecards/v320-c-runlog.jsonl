@@ -1,3 +1,5 @@
 {"event": "loop-start", "deadline": "2026-09-21 09:15:00", "prefix": "v320-c", "start_round": 1, "round0": false, "ts": "2026-09-21 01:52:34"}
 {"event": "round-start", "round": 1, "label": "v320-c-01", "ts": "2026-09-21 01:52:34"}
 {"event": "round-done", "round": 1, "label": "v320-c-01", "summary": "18/21", "fails": ["rat-token"], "taps": {"rat-token": ["1/1", "0/1"]}, "confirmed_fails": ["rat-token"], "ts": "2026-09-21 02:42:32"}
+{"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-21 02:42:33"}
+{"event": "round-start", "round": 2, "label": "v320-c-02", "ts": "2026-09-21 02:42:33"}
