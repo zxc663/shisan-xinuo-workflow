@@ -4,3 +4,5 @@
 {"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-21 02:42:33"}
 {"event": "round-start", "round": 2, "label": "v320-c-02", "ts": "2026-09-21 02:42:33"}
 {"event": "round-done", "round": 2, "label": "v320-c-02", "summary": "4/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-21 03:00:49"}
+{"event": "round-commit", "round": 2, "rc": 0, "msg": "ok", "ts": "2026-09-21 03:00:49"}
+{"event": "round-start", "round": 3, "label": "v320-c-03", "ts": "2026-09-21 03:00:49"}
