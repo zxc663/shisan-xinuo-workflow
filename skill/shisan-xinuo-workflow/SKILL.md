@@ -219,12 +219,13 @@ metadata:
 
 ## 10. 路由表与引用加载
 
-**路由表（dispatch，按需加载、用完不驻留）**：调试/排错 → `shisan-xinuo-flows`·排错工作流｜新功能/多文件 → flows·对应工作流分册｜设计类 → flows·设计调研 + `shisan-xinuo-roles`·frontend｜审查/验收 → roles 包（8 角色 dispatch：critic/风险/安全/调试/契约/测试/前端/性能）｜Skill/工具选型纠结 → `references/skill-usage.md`｜平台注入问题 → `references/platform-adaptation.md`。
+**路由表（dispatch，按需加载、用完不驻留）**：调试/排错 → `shisan-xinuo-flows`·排错工作流｜新功能/多文件 → flows·对应工作流分册｜设计类 → flows·设计调研 + `shisan-xinuo-roles`·frontend｜审查/验收 → roles 包（8 角色 dispatch：critic/风险/安全/调试/契约/测试/前端/性能）｜Skill/工具选型纠结 → `references/skill-usage.md`｜产品/交互设计裁决与门禁 → `shisan-xinuo-product` 包（**若在场**：能力地图/判定表/裁决账本/门禁；未装则三缝合点跳过+exempt 声明，见 `references/skill-usage.md` §8）｜平台注入问题 → `references/platform-adaptation.md`。
 
 | 文件 | 内容 | 何时加载 |
 |---|---|---|
 | `references/injection-core.md` | 平台无关常驻核心（判级速查/开工四步/三模式/红线/GATE 12 字段/TOP+检索端口） | 硬注入时；「写进我的平台规则」 |
 | `references/platform-adaptation.md` | 平台检测/注入点表/提问降级链/结构化提问协议 | 平台未知/注入点存疑 |
+| `shisan-xinuo-product`（产品工程包，若在场） | 联通层：功能语义↔交互逻辑契约/判定表/能力地图/裁决账本/门禁 | 前端/功能设计任务且包在场（未装=三缝合点跳过+声明，skill-usage §8） |
 | `references/skill-usage.md` | Skill 发现/注册机制+加载决策路由 | Skill 选型纠结/弱模型场景 |
 | `references/rules.md` | 编号工程纪律 47 条（地基） | 纪律争议/查规则原文 |
 | `shisan-xinuo-flows`（流程包） | 9 类任务工作流分册/澄清流程/双调研/复用五问/产品五问深度/模板 7 件 | 核心路由命中流程场景/任务类型不明/规划质量存疑 |
