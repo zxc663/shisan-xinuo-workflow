@@ -13,3 +13,4 @@
 {"event": "backoff-enter", "reason": "zero-pass", "ts": "2026-09-21 03:13:03"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-21 03:23:17"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-21 03:33:31"}
+{"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-21 03:43:48"}
