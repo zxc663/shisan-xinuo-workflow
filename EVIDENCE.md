@@ -731,3 +731,35 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **未验证/边界**：①GUI 长活会话仍吃旧注入快照——**需用户重启应用 + 新开会话**才算真正生效（验收锚：`在场提示 · v3.1.0` + `373 条细则` + `zxc663` 应答）；②`ev=` 未对存量高风险场景追溯加严（同前批声明）；③WorkBuddy/Trae/Claude 侧只做**文件面**验收（哈希 + grep），未做各平台新会话触达验收（需分别在对应应用内开新会话）；④`risk_scan` 召回率未测；盲评未跑。
 
 **本批 GATE**：`GATE: {level=L2-F, v=副本重部署批（五平台注入 + 六处技能副本 + 新会话行为验收）, cmd=python scripts/deploy_injection.py --check --hash && python scripts/probe_runner.py --label deploy-20260920 l1-rename gate-ev, exit=0, files=五平台注入副本+六处技能副本（仓外）、scripts/deploy_injection.py、docs/roadtest-scorecards/deploy-20260920.jsonl, refs=0, errpath=①--check --hash 恒 HASH-DRIFT 假红→按载体首行整行相等定位+剔除分隔线后 5/5 HASH-OK, lessons=新机检端口必须用「刚成功的部署」做正例对照，否则假红会被读成真实漂移, exempt=GUI 会话未重启（需用户操作）/其它平台未做新会话触达验收/risk_scan 召回率未测, caps=本机五平台注入点+ZCode CLI 探针, effort=五平台部署+双 check+三包双通道同步+2 针实弹+指纹核验, stop_reason=—}`
+
+## 四十一、v3.2.0 发行批（2026-09-20/21 · 用户批准「A：bump 3.2.0 + 全渠道发行 + 三面校准」）
+
+**范围**：版本 3.1.0 → **3.2.0**；三面校准（源库 / 五平台注入副本 / 六处技能副本）；全渠道发行；不新增条款（内容即前两批：审计批 + 落刀批）。
+
+**版本锁全链**：`package.json` 3.2.0 · 三包 frontmatter 3.2.0 · README（标题/口径块/版本历史新行）· CHANGELOG（v3.2.0 节）· AGENTS 基线行 · `docs/project-info.md` 头部 · `docs/reference-sources.md` · `项目信息.md` §六·八 About 口径与 §五 回执 · 发行说明 `docs/release-notes-v3.2.0.md`。
+
+**三面校准（用户明令验收面）**：
+
+| 面 | 校准动作 | 验收（实测） |
+|---|---|---|
+| 源库 | 版本锁全链 + `verify-release` | **8/8 ALL PASS**（A 5948 双口径 / C 3.2.0=3.2.0 / D 0 命中 / F 373 编号全覆盖 / G FACTS / H 23/23）；`facts_sync` PASS（373/374/30） |
+| 五平台注入副本 | `deploy_injection --version 3.2.0`（逐处备份 `*.bak-20260920-234945-pre-v3.2.0`） | **5/5 PASS** + `--check --version 3.2.0` **5/5（count=373）** + `--check --hash` **5/5 HASH-OK**（`sha256:2a64ca815ad4`） |
+| 六处技能副本 | `syncer --family` + WorkBuddy 三包 `--dest` | 三包 × 两通道 **6/6 = 3.2.0**（`.agents/skills` 与 `.workbuddy/skills` 各 core/flows/roles） |
+
+**发行回执（渠道面）**：
+
+| # | 渠道 | 结果 |
+|---|---|---|
+| 1 | GitHub push + tag | ✅ `main 073ea84..d26e888` + tag `v3.2.0`（commit `d26e888`） |
+| 2 | GitHub Release | ✅ **id=392486105**，asset `shisan-xinuo-workflow-v3.2.0.zip`（**id=577094413**，347,556B）；正文=发行说明全文 `https://github.com/zxc663/shisan-xinuo-workflow/releases/tag/v3.2.0` |
+| 3 | npm（GitHub Packages） | ✅ `@zxc663/shisan-xinuo-workflow@3.2.0`（45 文件；`GITHUB_TOKEN` 取自 `gh auth token`，用毕清除） |
+| 4 | Gitee | ⏳ push + tag `v3.2.0` 已完成；**Release 与 About 待执行**（需 32-hex 令牌，未在本机 env；命令见 RELEASE-CHECKLIST L 节） |
+| 5 | ClawHub | ✅ 已提交 `shisan-xinuo-workflow@1.0.20`（**pending security scans**，与既往 1.0.x 递增同口径） |
+| 6 | skills.sh | 自动索引 GitHub（随 push 同步，无需手工动作） |
+| 7 | About | GitHub ✅ PATCH 完成（len=**165** ≤350，六·八 口径）；Gitee ⏳ 待令牌 |
+
+**行为面实弹（诚实口径，N=3）**：`l1-rename` **1/1 PASS**；`gate-ev` **1/3 PASS**（scorecards `deploy-20260920` / `v320-deploy` / `v320-deploy-r2`）。三针指纹一致（`core_md=c06cdb347545` / `judge=j2.5` / `platform=0.16.9`），**同注入、同判据、同平台 ⇒ 差异属行为方差**：样本 1 输出 `ev=exec+indep` 被判 PASS；样本 2/3 完全未输出 `ev=`（样本 3 的 GATE 还出现 `b/cases/d` 杂键）。**结论：`ev=` 条款已落盘、判据已由金样本正负对照闭环（23/23），但实弹未稳定落地——本版不宣称行为面达成**，候选改进（重开条件）见 `docs/release-notes-v3.2.0.md` §七：① hooks 每轮提醒行补 `ev` ② SKILL §2.5 步 9 出口产物显式要求 `ev` ③ 高风险场景矩阵化加严后复采。
+
+**未验证/边界**：①Gitee Release/About 待令牌；②ClawHub 平台过审 pending；③`npx skills add` 实装验证未做；④其它四平台未做各自应用内新会话触达验收（文件面已校）；⑤GUI 会话未重启（用户侧）；⑥`risk_scan` 召回率未测；盲评未跑。
+
+**本批 GATE**：`GATE: {level=L2-F, v=v3.2.0 发行批（版本锁 + 三面校准 + 全渠道）, cmd=powershell -File scripts/verify-release.ps1 && python scripts/facts_sync.py && python scripts/deploy_injection.py --check --hash && python scripts/probe_runner.py --label v320-deploy l1-rename gate-ev, exit=0, files=package.json,skill/*/SKILL.md（三包 frontmatter）,README.md,CHANGELOG.md,AGENTS.md,项目信息.md,docs/(project-info.md,reference-sources.md,release-notes-v3.2.0.md,roadtest-scorecards/v320-deploy*.jsonl),dist/shisan-xinuo-workflow-v3.2.0.zip, refs=0, errpath=①build-dist.ps1 误用 python 调用（SyntaxError）→改 powershell -File，dist 重打 62 项 347,556B；②gate-ev 实弹 1/3（1 PASS + 2 FAIL）→按双击复采口径补第三针，判定行为方差并在发行说明/EVIDENCE/README/CHANGELOG 四处显式声明「不宣称行为面落地」, lessons=版本 bump 后必须三面同校（源库/注入副本/技能副本）——只 bump 源库会造成「副本 v3.2.0 但内容旧」的新形态漂移；明示要求某字段的 prompt 仍有 2/3 不输出＝条款在场≠被消费，发布文案必须按实弹数字写, exempt=Gitee Release/About 待令牌、ClawHub 过审 pending、npx 实装未验、其它四平台触达未验、GUI 未重启, caps=gh CLI（Release/About）+npm+clawhub CLI+syncer 双通道+ZCode 探针, effort=版本全链+三面校准+发行渠道六件+三针实弹+回执五档, stop_reason=—}`
