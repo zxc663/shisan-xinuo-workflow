@@ -155,3 +155,41 @@
 - [ ] `ev=` 未对存量高风险场景追溯加严；`risk_scan.py` 召回率/误报率未实测。
 - [ ] P-C 归档后未做新会话续接走查；P-D 盲评为设计档未跑批。
 - [ ] **用户侧待办**：重启 ZCode 应用 + 新开会话（GUI 长活会话吃旧注入快照），验收锚=`在场提示 · v3.1.0` + `373 条细则` + `zxc663` 应答；其它四平台需在各自应用内开新会话触达验收。
+
+## L. v3.2.0 发行批（**已执行** · 2026-09-20/21；回执见 EVIDENCE §四十一）
+
+**版本面**：3.1.0 → **3.2.0**（`package.json` / 三包 frontmatter / README / CHANGELOG / AGENTS / `docs/project-info.md` / `docs/reference-sources.md` / `项目信息.md` / 发行说明 `docs/release-notes-v3.2.0.md`）。
+
+**三面校准（用户明令验收面）**：
+
+| 面 | 命令 | 结果 |
+|---|---|---|
+| 源库 | `verify-release.ps1` + `facts_sync.py` | **8/8 ALL PASS** + FACTS PASS（373/374/30） |
+| 五平台注入副本 | `deploy_injection --version 3.2.0` → `--check --version 3.2.0` → `--check --hash` | 写入 **5/5 PASS**（备份 `*.bak-20260920-234945-pre-v3.2.0`）· `--check` **5/5**（count=373）· `--hash` **5/5 HASH-OK**（`sha256:2a64ca815ad4`） |
+| 六处技能副本 | `syncer --family` + WorkBuddy 三包 `--dest` | **6/6 = 3.2.0** |
+
+| # | 渠道 | 状态 | 回执 |
+|---|---|---|---|
+| 1 | GitHub push + tag | ✅ | `main 073ea84..d26e888` + tag `v3.2.0` |
+| 2 | GitHub Release | ✅ | **id=392486105**；asset `…v3.2.0.zip` **id=577094413 / 347,556B**；正文=发行说明全文 |
+| 3 | npm（GitHub Packages） | ✅ | `@zxc663/shisan-xinuo-workflow@3.2.0`（45 文件） |
+| 4 | Gitee | ⏳ 部分 | push + tag `v3.2.0` ✅；**Release / About 待 32-hex 令牌**（命令见下方） |
+| 5 | ClawHub | ⏳ 平台侧 | 已提交 `1.0.20`（pending security scans） |
+| 6 | skills.sh | ✅ 自动 | 随 GitHub push 同步索引 |
+| 7 | About | ⏳ 部分 | GitHub ✅ len=**165**（六·八 口径）；Gitee 待令牌 |
+
+**Gitee 待执行命令（需 32-hex 令牌，勿落盘）**：
+
+```bash
+# About（描述）
+curl -X PATCH "https://gitee.com/api/v5/repos/zxc663/shisan-xinuo-workflow" \
+  -d "access_token=<TOKEN>" -d "description=<项目信息 §六·八 中文压缩版>"
+# Release
+curl -X POST "https://gitee.com/api/v5/repos/zxc663/shisan-xinuo-workflow/releases" \
+  -d "access_token=<TOKEN>" -d "tag_name=v3.2.0" -d "name=v3.2.0 发行" -d "body=<发行说明摘要>"
+# 附件上传（POST releases/<id>/attach_files，multipart file=@dist/shisan-xinuo-workflow-v3.2.0.zip）
+```
+
+**行为面实弹（诚实口径）**：`l1-rename` **1/1 PASS**；`gate-ev` **1/3 PASS**（`deploy-20260920` / `v320-deploy` / `v320-deploy-r2`，三针指纹一致 ⇒ 行为方差）。**`ev=` 条款与判据已闭环（金样本 23/23），但实弹未稳定——本版不宣称行为面落地**；候选改进见发行说明 §七。
+
+**用户侧待办**：重启 ZCode 应用 + 新开会话（验收锚=`在场提示 · v3.2.0` + `373 条细则` + `zxc663`）；Gitee 双件需令牌；其它四平台按需开新会话触达验收。

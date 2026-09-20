@@ -168,6 +168,8 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 
 配套动作：每版发行时 GitHub + Gitee 仓库简介（About）双端同步 PATCH。
 
+**v3.2.0 渠道实测（2026-09-20/21）**：GitHub Release `id=392486105`（asset `…v3.2.0.zip` id=577094413 / 347,556B）· npm `@zxc663/shisan-xinuo-workflow@3.2.0`（45 文件）· Gitee push+tag `v3.2.0` ✅（Release/About 待令牌）· ClawHub `1.0.20`（pending security scans）· About GitHub len=165（Gitee 待令牌）· skills.sh 随 push 自动索引。**三面校准**：源库 3.2.0 · 五平台注入 `--check` 5/5 + `--hash` 5/5 `HASH-OK` · 六处技能副本 6/6=3.2.0。
+
 ## 快速体验 · Quick start
 
 1. **装核心包**（任选其一）：
