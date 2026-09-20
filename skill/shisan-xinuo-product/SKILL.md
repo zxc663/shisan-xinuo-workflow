@@ -59,7 +59,7 @@ metadata:
 - `references/capability-map.md`：能力地图（动作时点×症状→能力→出口产物）。
 - `references/decision-ledger.md`：裁决账本（记「为何这么定」；收尾写回；harvest）。
 - `references/registry.md`：组件注册表（**纯检查者**：查「查没查、归因没归因」，不定义组件）。
-- `scripts/registry-gate.py` `scripts/statechart-gate.py`：门禁（各带 `--selftest`）。
+- `scripts/registry-gate.py` `scripts/statechart-gate.py` `scripts/spec-trace-gate.py`（联通行三段/证据真值检查）`scripts/usage-probe.py`（使用率监控——零命中即衰减警报）：门禁均带 `--selftest`。
 
 ## §7 规模分档
 
