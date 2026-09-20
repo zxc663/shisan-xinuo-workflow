@@ -53,7 +53,9 @@ HEADER = '''# 全局 Agent 工作流核心（十三希诺工作流 · 每会话�
 ANCHOR_REQUIRED_LINES = ('在场提示', '每轮复述', '前置门', '细则 #326', '细则 #332', '注入版本')
 
 # 内容哈希验收（细则 #374）：源库载体哈希 vs 副本内载体段哈希
-CORE_MARK = '# 全局 Agent 工作流核心'
+# 注意：注入副本头部首行也含同名前缀（带「—— vX.Y.Z」后缀），故必须**整行相等**匹配载体首行，
+# 否则会把头部也算进载体段、造成恒 HASH-DRIFT 假红。
+CORE_FIRST_LINE = '# 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）'
 ANCHOR_START_MARK = '### 在场提示 · 工作流 Skill 现已在场'
 CORE_HASH_TAG = '<!-- core-sha256:{h} -->'
 
@@ -63,15 +65,26 @@ def sha256_text(s):
 
 
 def core_body(t):
-    """从注入副本/源库文本中切出载体段（CORE_MARK → 锚块起点，剔除哈希标记行）；缺标记返回 None。"""
-    i = t.find(CORE_MARK)
-    if i < 0:
+    """切出载体段（载体首行 → 锚块起点，剔除哈希标记行）；缺载体首行返回 None。"""
+    lines = t.replace('\r', '').split('\n')
+    start = None
+    for n, ln in enumerate(lines):
+        if ln.strip() == CORE_FIRST_LINE:
+            start = n
+            break
+    if start is None:
         return None
-    j = t.find(ANCHOR_START_MARK, i)
-    seg = t[i:] if j < 0 else t[i:j]
-    seg = '\n'.join(ln for ln in seg.replace('\r', '').split('\n')
-                    if '<!-- core-sha256:' not in ln)
-    return seg.strip()
+    out = []
+    for ln in lines[start:]:
+        if ln.startswith(ANCHOR_START_MARK):
+            break
+        if '<!-- core-sha256:' in ln:
+            continue
+        out.append(ln)
+    # 副本在载体与锚块之间有分隔线（`---`）——尾部空行/分隔线不属载体内容
+    while out and (out[-1].strip() == '' or out[-1].strip() == '---'):
+        out.pop()
+    return '\n'.join(out).strip()
 
 
 def load_anchor(version):

@@ -704,3 +704,30 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **未验证/边界（重要）**：①**源库领先于已部署副本**——副本仍是 v3.1.0（368/29，旧核心文本），故 `deploy_injection --check` 与 `--hash` **预期红**，重部署后恢复；②`ev=` 未对存量高风险场景**追溯加严**（只作用于新场景与金样本），故既有矩阵结论不失效——是否全面加严另开裁决；③新场景 `gate-ev` **未跑实弹探针**（已部署副本不认识 `ev=`，跑了必然 FAIL 且只反映未部署态；本批以金样本正负对照闭环该判据），实弹留到重部署批；④`risk_scan.py` 为关键词召回端口，非判级权威，存在漏报（同义表达）与误报（词面命中）双向风险，未做召回率实测；⑤P-C 归档后**未做真实新会话续接走查**（只机检结构）；⑥P-D 盲评为设计档，未跑批。
 
 **本批 GATE**：`GATE: {level=L2-F, v=评审提案落刀批（#370-#374 五条 + 四个机检端口 + 判据 j2.5）, cmd=powershell -File scripts/verify-release.ps1 && python scripts/facts_sync.py && python scripts/probe_runner.py --judge-selftest, exit=0, files=skill/(SKILL+details+injection-core+template+perf),scripts/(risk_scan,agent_log_rotate,gate_audit,probe_runner,deploy_injection),README/AGENTS/CONTRIBUTING/EVIDENCE/项目信息/docs, refs=0, errpath=①probe_runner 插入 gate_ev 时误伤 _reversible 定义（IndentationError）→重定位函数边界后 23/23 通过；②复采正则首版 `-r\d*` 漏配 `01r`→改 `\d+r\d*`, lessons=新增判据字段必须同时处理「形态分型」（可选键不计杂键）与「金样本正负对照」，否则要么误伤历史行要么无负例；条款落刀要先问「部署面会不会因此变红」并显式声明预期态, exempt=副本未重部署（预期红）/ev 未对存量场景追溯加严/risk_scan 召回率未测/盲评未跑, caps=web（GitHub API 复算）+无头探针（前批 7 针）, effort=六项提案逐项落地+正负例对照+门禁三跑, stop_reason=—}`
+
+## 四十、副本重部署批（2026-09-20 · 用户令「副本重部署」）
+
+**范围**：把落刀批（373 条/30 类 + 判据 j2.5 + 四个机检端口）同步到**五平台注入副本 + 六处技能副本**，并做机器验收与新会话行为验收；不 bump 版本、不发行。
+
+**部署（写入面）**：`deploy_injection.py --version 3.1.0` → 五平台 **5/5 PASS**（zcode / codex / claude / trae / workbuddy），每处先备份 `*.bak-20260920-204214-pre-v3.1.0`；注入头注带 `373 条细则·30 类` 与 `core-sha256` 标记。
+
+**机器验收（回读面）**：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 版本 + 计数严格校验 | `deploy_injection --check` | **5/5 PASS**（v3.1.0 / count=373），exit 0 |
+| 载体内容哈希 | `deploy_injection --check --hash` | **5/5 HASH-OK**（源库与五副本同为 `sha256:2a64ca815ad4`），exit 0 |
+| 技能副本同步 | `syncer --family` + WorkBuddy 三包 `--dest` | core 同步 SKILL.md / details.md / injection-core.md / platform-adaptation.md / agent-log-template.md；roles 同步 perf.md；flows/roles/core 三包 exit 0 |
+| 副本落地 grep | 副本内 `#370`~`#374`、双指标、内容哈希关键词 | 六处副本全部命中（details 6 行 / injection-core 2 行 / platform-adaptation 2 行 / agent-log-template 1 行 / SKILL 2 行 / roles·perf 1 行） |
+
+**行为面验收（新会话实弹，label `deploy-20260920`）**：`SUMMARY deploy-20260920: 2/2 PASS`——
+
+- `l1-rename` **PASS**（GATE 形态 partial-10；renamed/brief/stateLine 全真）。
+- `gate-ev` **PASS**（`has_ev=True / ev_non_exec=True / ev_exec_only=False`，GATE 形态 `package-12(13/12)`——**证明 `ev=` 作为可选扩展键不污染 12 字段定版分型**）。
+- **指纹证明结论属于新副本**：`carrier_zcode=8a74176e730a`（旧 2a64… 时代的副本哈希已变）/ `skill_md=74c9fd406353` / `core_md=c06cdb347545` / `platform=0.16.9` / `judge=j2.5`；scorecard=`docs/roadtest-scorecards/deploy-20260920.jsonl`。
+
+**工具自身缺陷（本批发现并修复）**：`--check --hash` 首跑五副本**恒判 HASH-DRIFT 假红**——根因两处：①注入头部首行含与载体首行相同的前缀（`… —— v3.1.0`），提取器按前缀匹配把头部算进载体段；②副本在载体与锚块之间有 `---` 分隔线未剔除。修法=按**载体首行整行相等**定位 + 剔除尾部空行/分隔线；修后 5/5 HASH-OK。**教训**：机检端口首落必须用「刚部署成功的副本」做正例对照，否则假红会被误当真实漂移（本批若不复核，会把一次成功部署报成五次漂移）。
+
+**未验证/边界**：①GUI 长活会话仍吃旧注入快照——**需用户重启应用 + 新开会话**才算真正生效（验收锚：`在场提示 · v3.1.0` + `373 条细则` + `zxc663` 应答）；②`ev=` 未对存量高风险场景追溯加严（同前批声明）；③WorkBuddy/Trae/Claude 侧只做**文件面**验收（哈希 + grep），未做各平台新会话触达验收（需分别在对应应用内开新会话）；④`risk_scan` 召回率未测；盲评未跑。
+
+**本批 GATE**：`GATE: {level=L2-F, v=副本重部署批（五平台注入 + 六处技能副本 + 新会话行为验收）, cmd=python scripts/deploy_injection.py --check --hash && python scripts/probe_runner.py --label deploy-20260920 l1-rename gate-ev, exit=0, files=五平台注入副本+六处技能副本（仓外）、scripts/deploy_injection.py、docs/roadtest-scorecards/deploy-20260920.jsonl, refs=0, errpath=①--check --hash 恒 HASH-DRIFT 假红→按载体首行整行相等定位+剔除分隔线后 5/5 HASH-OK, lessons=新机检端口必须用「刚成功的部署」做正例对照，否则假红会被读成真实漂移, exempt=GUI 会话未重启（需用户操作）/其它平台未做新会话触达验收/risk_scan 召回率未测, caps=本机五平台注入点+ZCode CLI 探针, effort=五平台部署+双 check+三包双通道同步+2 针实弹+指纹核验, stop_reason=—}`

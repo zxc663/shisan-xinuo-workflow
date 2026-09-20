@@ -148,7 +148,8 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 判据金样本回归 | **23/23**（正例 9 / 负例 14）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」「高风险块只填执行证据必 FAIL（`ev=`）」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
 | 判据修订史 | j1.0→j2.5 十二处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态 + 验证层级） | `docs/roadtest-scorecards/JUDGELOG.md` |
 | 外部评审审计（2026-09-20） | 双轨审计（独立五维 + 与外部评审逐条对账）；**8/8 门禁 / FACTS / 判据自测 21/21 / 新采样 7 针 5 PASS** 实测在档；独立发现 8 项（P2×6 / P3×2），条款级 6 项改动作提案待批 | [`docs/audit-external-review-20260920.md`](docs/audit-external-review-20260920.md) |
-| 评审提案落刀批（2026-09-20，**未发行/未部署**） | 6 项条款级提案落地：新增 `细则 #370`-`#374`（清单外高危域枚举 / `GATE ev=` 验证层级 / 记忆档双指标+机械归档 / 机器事实优先+工件随仓 / 副本内容哈希）＋ `risk_scan.py`＋`agent_log_rotate.py`＋`gate_audit --gate/--independent-cmd`＋`deploy_injection --hash`＋判据 j2.5（金样本 **23/23**）；实测 373 条/30 类 · verify 8/8 | `EVIDENCE.md` §三十九 |
+| 评审提案落刀批（2026-09-20，**未发行·已部署**） | 6 项条款级提案落地：新增 `细则 #370`-`#374`（清单外高危域枚举 / `GATE ev=` 验证层级 / 记忆档双指标+机械归档 / 机器事实优先+工件随仓 / 副本内容哈希）＋ `risk_scan.py`＋`agent_log_rotate.py`＋`gate_audit --gate/--independent-cmd`＋`deploy_injection --hash`＋判据 j2.5（金样本 **23/23**）；实测 373 条/30 类 · verify 8/8 | `EVIDENCE.md` §三十九 |
+| 落刀批部署验收（2026-09-20） | 五平台注入 **`--check` 5/5**（v3.1.0/count=373）+ **`--check --hash` 5/5 `HASH-OK`**（源库与五副本同 `sha256:2a64ca815ad4`）；技能副本三包 + WorkBuddy 双通道同步 exit 0；新会话实弹 **2/2 PASS**（指纹 `carrier_zcode=8a74176e730a`/`core_md=c06cdb347545`/`judge=j2.5`，`gate-ev` 输出 `ev_non_exec=True` 且判为 `package-12(13/12)`） | `EVIDENCE.md` §四十 |
 
 > **口径脚注（可复算入口）**：①「24 针」范围 = `precheck 1 + v310-inf-01 20 + 双击复采 v310-inf-01r 2 + v310-inf-02 1`，作废行（`env_death`）全数剔除、双击复采行**计入**；声明后新增的 `v310-inf-05` 不在该分母内。②按「剔除复采」读法重算得 23 有效 / 22 PASS，可用 `python scripts/scorecard_agg.py --exclude-recollect` 机检。③「20/20」为单批样本（含同批重判），不代表稳定通过率；2026-09-20 独立审计的新采样 7 针得 5 PASS / 2 FAIL（失败集=skip-floor / multi-task，与存量批同构）。
 
