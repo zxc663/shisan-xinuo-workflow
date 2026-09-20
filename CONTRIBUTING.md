@@ -11,7 +11,7 @@
 
 ## 提交前自查
 
-1. `powershell -File scripts/verify-release.ps1` → **8/8 ALL PASS**（含判据自测 21/21）
+1. `powershell -File scripts/verify-release.ps1` → **8/8 ALL PASS**（含判据自测 23/23，judge j2.5）
 2. `python scripts/facts_sync.py --check` → PASS（条数/类数/编号上限全仓一致）
 3. 判据改动（`scripts/probe_runner.py`）必须 bump `JUDGE_VERSION` + 过 `--judge-selftest` + 在 `docs/roadtest-scorecards/JUDGELOG.md` 留变更记录；方向只许修「不识别合规形态」，收紧/放宽须先开 issue 裁决。
 4. 细则改动先 grep 查重（`references/details.md` 头部防棘轮规则），新增条目必须入症状索引。

@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-19（v3.1 判据可信度批 + 路测 3.1 收口后回植） ｜ 判级：L2-F v3.1 批（判据版本化 j1.0→j2.4 + 金样本回归 21/21 + scorecard 指纹 + GATE 形态分型 + `scorecard_agg.py` + `JUDGELOG.md`；verify 8/8 含新增 H 项判据自测；v3.1.0 五平台部署后实跑 24 针 22 PASS；细则 368 条/29 类〔已发行 2026-09-19〕）｜ 沿革：v3.0 收尾批 ⑥（三包部署面统一／探针 harness 收编 `scripts/probe_runner.py`／监控 V1-V7 缺口补充／README 重构）｜ 签章：v2.7+ 重构施工计划已获用户全量批准+全部预授权（2026-09-12，批 0-5 分批自主推进）；v2.8.0/v2.9.0 已全渠道发行（回执见项目信息 §五）；**v3.0.0 已全渠道发行（2026-09-18）——回执见 RELEASE-CHECKLIST I 节 / 项目信息 §五**。
+> 更新：2026-09-20（外部评审审计批 + 评审提案落刀批；**源库领先于已部署副本**——副本未重部署，`deploy_injection --check` 预期红） ｜ 判级：L2-F（审计批 + 条款级落刀批；判据版本化 j1.0→**j2.5** + 金样本回归 **23/23** + scorecard 指纹 + GATE 形态分型 + `scorecard_agg.py` + `JUDGELOG.md`；verify 8/8 含 H 项判据自测；v3.1.0 五平台部署后实跑 24 针 22 PASS；细则 **373 条/30 类**〔编号至 #374〕）｜ 沿革：v3.1.0 已全渠道发行（2026-09-19）→ 2026-09-20 审计批与落刀批（#370-#374 五条 + `risk_scan.py`/`agent_log_rotate.py`/`gate_audit --gate/--independent-cmd`/`deploy_injection --hash`）｜ 签章：v2.7+ 重构施工计划已获用户全量批准（2026-09-12）；v3.0.0/v3.1.0 已全渠道发行（回执见 RELEASE-CHECKLIST I/I-1 节与项目信息 §五）。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.9.0+）。
@@ -32,10 +32,10 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 368 条 29 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
+| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 373 条 30 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
 | skill/shisan-xinuo-flows/ | 已实现（v3.0 批次②） | 流程包：SKILL.md（加载后行动契约+依赖声明）+ references/workflows.md（9 类工作流/澄清/双调研/复用五问）+ templates 7 件（规划/验收/任务记录/复盘/回滚点/预算/压缩保留） | flows、workflows、流程包、模板、9 类工作流 |
 | skill/shisan-xinuo-roles/ | 已实现（v3.0 批次③） | 角色包：SKILL.md（dispatch 矩阵+行动契约+依赖声明）+ roles/ 8 角色六字段（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | roles、角色包、dispatch、critic、debugger |
-| scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配，三包 `-Family`）/ syncer.py（三路合并，`--family` 全家族）/ verify-release.ps1（发布门禁 **8 项**，H=判据自测）/ facts_sync.py（事实对账，含条目上限断言）/ deploy_injection.py（五平台注入）/ gate_audit.py（GATE 外部抽检）/ probe_runner.py（行为面探针 harness：隔离断言+双因分离+scorecard 随仓+**判据版本/指纹/`--judge-selftest`/`--rescore`**）/ scorecard_agg.py（时序库聚合：剔废/分型/三态对比）/ detail_lookup.py（细则检索端口） | install-skill、syncer、verify-release、facts_sync、deploy_injection、gate_audit、probe_runner、scorecard_agg、判据自测、门禁 |
+| scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配，三包 `-Family`）/ syncer.py（三路合并，`--family` 全家族）/ verify-release.ps1（发布门禁 **8 项**，H=判据自测）/ facts_sync.py（事实对账，含条目上限断言）/ deploy_injection.py（五平台注入 + `--check --hash` 载体哈希验收，细则 #374）/ gate_audit.py（GATE 外部抽检 + `--gate/--high-risk/--independent-cmd` 验证层级，细则 #371）/ probe_runner.py（行为面探针 harness：隔离断言+双因分离+scorecard 随仓+**判据版本 j2.5/指纹/`--judge-selftest` 23-23/`--rescore`**）/ scorecard_agg.py（时序库聚合：剔废/分型/三态对比 + `--exclude-recollect` 口径机检）/ risk_scan.py（清单外高危域召回端口，细则 #370）/ agent_log_rotate.py（记忆档机械归档，细则 #372）/ detail_lookup.py（细则检索端口） | install-skill、syncer、verify-release、facts_sync、deploy_injection、gate_audit、probe_runner、scorecard_agg、risk_scan、agent_log_rotate、判据自测、门禁 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源）/ skill-split-plan-v3.0.md（v3.0 施工计划与进度表）/ version-plan-v310.md（v3.1 方案与选型）/ independent-review-v3.0-20260918.md（独立审查报告）/ roadtest-scorecards/（行为面 scorecard 时序库 + `JUDGELOG.md` 判据版本史 + evidence 原始输出存证）/ incidents/（事故取证与交接件） | project-info、reference-sources、计划档、独立审查、scorecards、JUDGELOG、判据、incidents |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：一档制 `agent-log.md` 四区（状态段/教训区/偏好段/流水区；旧五件套历史原件在 legacy-pre-v250/ 只读） | agent-log、记忆、归档 |
