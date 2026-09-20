@@ -7,3 +7,5 @@
 {"event": "round-commit", "round": 2, "rc": 0, "msg": "ok", "ts": "2026-09-21 03:00:11"}
 {"event": "round-start", "round": 3, "label": "v320-a-03", "ts": "2026-09-21 03:00:11"}
 {"event": "round-done", "round": 3, "label": "v320-a-03", "summary": "0/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-21 03:07:13"}
+{"event": "round-commit", "round": 3, "rc": 0, "msg": "ok", "ts": "2026-09-21 03:07:13"}
+{"event": "round-start", "round": 4, "label": "v320-a-04", "ts": "2026-09-21 03:07:13"}
