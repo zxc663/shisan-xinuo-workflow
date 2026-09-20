@@ -25,6 +25,7 @@
 - [差异化优势](#差异化优势--differentiation)
 - [架构真相（诚实）](#架构真相诚实--architecture-truths)
 - [验证与路测](#验证与路测--evidence)
+- [分发渠道](#分发渠道--distribution)
 - [快速体验](#快速体验--quick-start)
 - [安装与注入](#安装与注入--install--inject)
 - [口径块](#口径块--facts-at-a-glance)
@@ -142,6 +143,20 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | v3.1.0 部署后实跑（无限循环路测 3.1） | 有效 **24 针 22 PASS**（判据 j2.2，指纹全符）；矩阵级唯一 FAIL=skip-floor 判据滞后（状态行 `confirm=` 形态），j2.3/j2.4 修订后重判 **20/20** | `docs/roadtest-loop-plan-3.1.md`、`v310-inf-01.jsonl` |
 | 判据金样本回归 | **21/21**（正例 8 / 负例 13）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
 | 判据修订史 | j1.0→j2.4 十一处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态） | `docs/roadtest-scorecards/JUDGELOG.md` |
+
+## 分发渠道 · Distribution
+
+单版本分发，**五个渠道同步发行**；下表为 2026-09-20 实测状态，滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
+
+| # | 渠道 | 链接 / 安装方式 | 当前版本 | 说明 |
+| --- | --- | --- | --- | --- |
+| 1 | **GitHub**（源库 + Release） | [github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow) · [Releases](https://github.com/zxc663/shisan-xinuo-workflow/releases) | v3.1.0 | 权威源库；每版附 dist zip |
+| 2 | **npm**（GitHub Packages） | [包页](https://github.com/zxc663/shisan-xinuo-workflow/pkgs/npm/shisan-xinuo-workflow) · `npm install @zxc663/shisan-xinuo-workflow` | 3.1.0 | 包为**私有可见性**，读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；**npmjs.org 未分发** |
+| 3 | **Gitee**（镜像 + Release） | [gitee.com/zxc663/shisan-xinuo-workflow](https://gitee.com/zxc663/shisan-xinuo-workflow) · [发行版](https://gitee.com/zxc663/shisan-xinuo-workflow/releases) | v3.1.0 | 与 GitHub 同 commit/tag 双推；每版附 zip 附件 |
+| 4 | **ClawHub**（OpenClaw 技能市场） | [clawhub.ai/zxc663/shisan-xinuo-workflow](https://clawhub.ai/zxc663/shisan-xinuo-workflow) · `openclaw skills install @zxc663/shisan-xinuo-workflow` | 1.0.19（平台侧递增号） | 平台侧版本号 1.0.x 递增，内容对应本仓版本；security scans 平台侧过审中 |
+| 5 | **skills.sh**（Agent Skills 索引） | [skills.sh/zxc663/shisan-xinuo-workflow](https://skills.sh/zxc663/shisan-xinuo-workflow) · `npx skills add zxc663/shisan-xinuo-workflow` | 随 GitHub 同步 | 自动索引 GitHub 源库 |
+
+配套动作：每版发行时 GitHub + Gitee 仓库简介（About）双端同步 PATCH。
 
 ## 快速体验 · Quick start
 
