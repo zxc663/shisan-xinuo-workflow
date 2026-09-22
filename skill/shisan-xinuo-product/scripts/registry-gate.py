@@ -7,7 +7,7 @@
 
 基线模式（存量项目接入）：首跑 `--write-baseline` 记录当时文件清单（存量豁免）；
 此后每次对比基线，只拦「基线外新增且无标记」的文件——新组件必须归因，存量不追溯。
-用法：python registry-gate.py --path <组件目录> [--include components] [--write-baseline] [--baseline <file>]
+用法：python registry-gate.py --path <组件目录> [--scope components] [--write-baseline] [--baseline <file>]
       python registry-gate.py --selftest
 """
 from __future__ import annotations
