@@ -4,7 +4,7 @@ description: "产品工程包（联通层/结构层核心）：把「功能需�
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 0.1.0
+  version: 0.2.0
   tags: [product-engineering, interaction-design, statechart, quality-gates, spec-trace, design-contract]
   author: zxc663
   homepage: https://github.com/zxc663/shisan-xinuo-workflow

@@ -4,7 +4,7 @@ description: "纪律元工作流（核心）：把任何工程任务强制按「
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.2.0
+  version: 3.3.0
   tags:
     - agent-skill
     - workflow-governance
@@ -124,9 +124,9 @@ metadata:
 
 ## 3. 平台检测与注入（首次部署才做）
 
-- **安装名前缀自检**（每会话一次）：能确定安装目录名且无 `agent-` 前缀 → 一行提示可一键带前缀重装（`scripts/install-skill.ps1`）；目录名未知 → 不猜不阻塞；用户已明确不改 → agent-log 记「保持无前缀」后静默。
+- **安装名前缀自检**（每会话一次）：能确定安装目录名且无 `agent-` 前缀 → 一行提示可一键带前缀重装（家族源库根 `scripts/install-skill.ps1`）；目录名未知 → 不猜不阻塞；用户已明确不改 → agent-log 记「保持无前缀」后静默。
 - 检测平台 → **项目级注入点**定位 → 注入模式二选一（按需=只写应用层；强制=三层写入并先提醒授权）——全表见 `references/platform-adaptation.md`（注入点表/降级链/结构化提问协议）。写前备份合并不覆盖；写入后回读注入副本核对三级一致+新会话触达验收；**验收看平台解析到的 Base directory，不是文件版本号**（`#239`）。**边界：绝不预载 references。**
-- **自更新**：`python scripts/syncer.py`（三路合并；备份落 `skill-backups/`=扫描路径外；`user-notes/`、`memory/` 永不碰；只许手改 `user-notes/`）。
+- **自更新**：`python "<技能目录>/scripts/syncer.py"`（随包分发副本；三路合并；备份落 `skill-backups/`=扫描路径外；`user-notes/`、`memory/` 永不碰；只许手改 `user-notes/`）。
 
 ## 4. 必问协议与停型门禁
 

@@ -1,6 +1,8 @@
-# CHANGELOG · 版本摘要（v1.9 → v3.2.0）
+# CHANGELOG · 版本摘要（v1.9 → v3.3.0）
 
-> 简史制（每版关键意图一行；完整逻辑见 git log 与 memory/task-log）。时间线 2026-08-26 → 2026-09-20（v3.2.0）。
+> 简史制（每版关键意图一行；完整逻辑见 git log 与 memory/task-log）。时间线 2026-08-26 → 2026-09-23（v3.3.0）。
+
+- **v3.3.0**（2026-09-23 收尾批）：①**第四包判据补齐**——statechart-gate 扩为 **C1-C7**（新增 C6 引用完整性／C7 契约 recovery 行双向对账／结构化错误态识别），「缺失可检出」获**反向注入实证**（四变异全拦·对照组双态全绿，证据=product-engineering-skill 仓 `docs/reverse-injection/EVIDENCE.md`，可重跑 verify.py）；候选 10 转正、候选 12/13 落地、判定表 K 域四条（v0.6·38 条）、层级栈 L0-L10+层级门（修正三）、contract-schema 钉死 recovery 字段名。②**脚本随包分发**：`risk_scan/agent_log_rotate/gate_audit/syncer` 四件入 `skill/shisan-xinuo-workflow/scripts/`（权威=根 `scripts/`，两处同步纪律入 RELEASE-CHECKLIST）。③**注入文本脚本路径修正**：裸 `scripts/…` 引用改 `<技能目录>/scripts/…`（安装态即可解析；install-skill/deploy_injection 标注「家族源库根」）。④**安装面收敛**：`.zcode` 侧重复家族包处置（备份 `skill-backups/zcode-side-family-skills-20260923.tar.gz`），`.agents` 为唯一安装根。⑤**副本内容漂移修复**：workflow SKILL.md product 路由行/加载表行 + skill-usage §8 补齐（治「版本串一致≠内容一致」假绿）。product 包版本 0.1.0→**0.2.0**。
 
 - **Unreleased**（产品工程包 v0.2 迭代批·**未发行**）：第四包 `shisan-xinuo-product` 落地+两轮迭代——①v0.1.0 骨架（SKILL.md 74 行七步跑道/双底双顶含第四底/强制 9 项+候选 10/规模分档）+references 六件+门禁四脚本（registry/statechart/spec-trace/usage-probe，各带 --selftest 两态验证）②判定表扩至 23 条（G 感知过渡 7/G 结构 4/H 节奏 2，全带出处+信心级）③anti-excuses #10 探针借口转正④registry-gate 基线模式（真实项目实测暴露存量全拦→存量豁免只拦新增，财务项目闭环）⑤description 触发词密集化（口语 11 类+Use when 结构）。条件钩子（skill-usage §8+§10 路由）同批在库。三副本（源库/.agents/.zcode）内容一致已自检。
 
