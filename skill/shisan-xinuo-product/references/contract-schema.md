@@ -10,12 +10,12 @@
 | 字段 | 类型 | 说明 | 判定 |
 |---|---|---|---|
 | feature | string | 功能句（谁/什么场景/完成什么） | 非空 |
-| scope | L0-L3 | §7 档位（由 judgement-table §风险档位判定） | 枚举 |
+| scope | 档0-档3 | §7 档位（由 judgement-table §风险档位判定） | 枚举 |
 | promise | string[] | 承诺清单（每个交互元素一句「点了会发生什么」） | 非空 |
 | six_questions | object | ①input ②timing ③success ④failure{prevent,recover,exit} ⑤undo{window,cost} ⑥persistence | **无空格**（缺项=交互债） |
 | states / transitions / initial | — | 同 statechart（≥3 态；单态小件豁免） | statechart-gate |
-| permissions | string[] | 谁可触发每个转换（有权限语义时必填） | L3 必填 |
-| recovery | object[] | 每个错误态的出路行（动作+落点） | L3 必填；**出路目标须存在**（禁死页/死函数） |
+| permissions | string[] | 谁可触发每个转换（有权限语义时必填） | 档3 必填 |
+| recovery | object[] | 每个错误态的出路行（动作+落点） | 档3 必填；**出路目标须存在**（禁死页/死函数） |
 | soft_ref | path | 指向软层（意图/权衡/裁决→decision-ledger 条目） | 存在性 |
 
 ## 2. Gate Contract（门禁契约 · 硬层）
@@ -25,7 +25,7 @@
 | 字段 | 说明 |
 |---|---|
 | gate_id | 门禁名（registry / statechart / spec-trace / inline-style / dead-binding / a11y…） |
-| scope | 触发档位（L0-L3，见 judgement-table §风险档位） |
+| scope | 触发档位（档0-档3，见 judgement-table §风险档位） |
 | check | 判定内容一句（必须机器可判定） |
 | input | 输入形态（路径 / 文件 / JSON） |
 | output | pass/block + 退出码（0/1）——**接受谈判的判据不是门禁** |
@@ -52,7 +52,8 @@ Product Contracts 全链 = **Intent → Scope → Structure → Interaction → 
 
 ## 5. 使用时机
 
-- **L1**：口答，不落文件。
-- **L2**：Interaction Contract 落 JSON（statechart 源）+ Gate/Evidence 走通。
-- **L3**：三件全落 + recovery 行 + runtime evidence + regression。
+- **任何档位开工前先过层级门**（`references/layer-stack.md`）：定位层→检上游→放行/回补。
+- **档1**：口答，不落文件。
+- **档2**：Interaction Contract 落 JSON（statechart 源）+ Gate/Evidence 走通。
+- **档3**：三件全落 + recovery 行 + runtime evidence + regression。
 - 契约与实现的漂移=缺陷（写了没按/按了没写都是**假联通**）——由 spec-trace 双向门禁拦截。
