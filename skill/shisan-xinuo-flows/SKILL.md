@@ -4,7 +4,7 @@ description: "十三希诺工作流·流程包：9 类任务工作流分册（�
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.2.0
+  version: 3.3.0
   tags:
     - agent-skill
     - workflow-recipes
