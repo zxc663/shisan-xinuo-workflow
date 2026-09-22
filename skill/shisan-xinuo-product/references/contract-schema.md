@@ -15,7 +15,8 @@
 | six_questions | object | ①input ②timing ③success ④failure{prevent,recover,exit} ⑤undo{window,cost} ⑥persistence | **无空格**（缺项=交互债） |
 | states / transitions / initial | — | 同 statechart（≥3 态；单态小件豁免） | statechart-gate |
 | permissions | string[] | 谁可触发每个转换（有权限语义时必填） | 档3 必填 |
-| recovery | object[] | 每个错误态的出路行（动作+落点） | 档3 必填；**出路目标须存在**（禁死页/死函数） |
+| recovery | object[] | 每个错误态的出路行，字段=`{state, action, target, note?}`（拼写即契约，门禁按此读） | 档3 必填；**C7 正向对账**：每行必须命中 statechart 对应转换（缺边=承诺落空，exit 1） |
+| non_error_failures | object[] | 非错误态命名的失败出路白名单（同字段；如 `loading --LOAD_FAIL--> empty`） | 可选；**C7 反向**豁免登记——显式登记而非沉默豁免 |
 | soft_ref | path | 指向软层（意图/权衡/裁决→decision-ledger 条目） | 存在性 |
 
 ## 2. Gate Contract（门禁契约 · 硬层）
@@ -53,6 +54,7 @@ Product Contracts 全链 = **Intent → Scope → Structure → Interaction → 
 ## 5. 使用时机
 
 - **任何档位开工前先过层级门**（`references/layer-stack.md`）：定位层→检上游→放行/回补。
+- **有 recovery 行的契约**：跑 `statechart-gate.py --file <sc.json> --contract <contract.json>` 启用 C7 双向对账（缺边=承诺落空／多边=未登记发明，双向 exit 1；实证=`docs/reverse-injection/EVIDENCE.md`）。
 - **档1**：口答，不落文件。
 - **档2**：Interaction Contract 落 JSON（statechart 源）+ Gate/Evidence 走通。
 - **档3**：三件全落 + recovery 行 + runtime evidence + regression。
