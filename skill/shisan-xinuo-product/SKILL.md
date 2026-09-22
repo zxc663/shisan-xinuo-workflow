@@ -47,7 +47,7 @@ metadata:
 ## §4 强制清单（法律级，exit 1）
 
 可机器判定+在决策/交付点拦截+成本检验通过，共九项+候选一项：
-1 六问无空格｜2 六态缺态不开工｜3 spec-trace 双向追溯｜4 查表归因存在（registry-gate）｜5 内联样式/硬编码零容忍（对齐业界 lint 规则）｜6 dead-binding 逻辑链（死代码/空 catch）｜7 取证存在性（无真渲染证据不得声称已验证）｜8 账本写回存在性｜9 可达性静态底线（axe 子集）。**候选 10 → 已转正**：statechart-gate（C1-C7；验收=四变异反向注入实证 `docs/reverse-injection/EVIDENCE.md`，2026-09-23）；**候选 12 → 已实现（C7 双向对账）**：契约 recovery 行 ↔ statechart 转换（缺边=承诺落空／多边=未登记发明；验收=变体 A「抽一条恢复转换」转 exit 1，2026-09-23 实测）；**候选 13 → 已实现（C6 引用完整性）**：每条转换 target ∈ states（验收=变体 C「删态留悬空入边」转 exit 1，2026-09-23 实测）；**新增已实现：结构化错误态识别**（`"type":"error"` ∪ 名启发式 ∪ 契约 recovery 提及——修 `permission_denied` 类命名逃逸；验收=变体 D）。候选 11：产品对象定义存在性（能力清单+主功能标记可数；转正待实测证据）；候选 14：**层级声明与上游引用存在性**（工件声明所处层 L0-L10 + 上游层答案引用存在且非空；为候选 11 的层级化推广；验收用例=只写 L7 statechart 而 L1-L4 引用缺失的契约应 exit 1；转正待实测证据）。
+1 六问无空格｜2 六态缺态不开工｜3 spec-trace 双向追溯｜4 查表归因存在（registry-gate）｜5 内联样式/硬编码零容忍（对齐业界 lint 规则）｜6 dead-binding 逻辑链（死代码/空 catch）｜7 取证存在性（无真渲染证据不得声称已验证）｜8 账本写回存在性｜9 可达性静态底线（axe 子集）。**候选 10 → 已转正**：statechart-gate（C1-C7；验收=四变异反向注入实证 `docs/reverse-injection/EVIDENCE.md`，2026-09-23）；**候选 12 → 已实现（C7 双向对账）**：契约 recovery 行 ↔ statechart 转换（缺边=承诺落空／多边=未登记发明；验收=变体 A「抽一条恢复转换」转 exit 1，2026-09-23 实测）；**候选 13 → 已实现（C6 引用完整性）**：每条转换 target ∈ states（验收=变体 C「删态留悬空入边」转 exit 1，2026-09-23 实测）；**新增已实现：结构化错误态识别**（`"type":"error"` ∪ 名启发式 ∪ 契约 recovery 提及——修 `permission_denied` 类命名逃逸；验收=变体 D）。候选 11 → **已实现（product-object-gate P1/P2/P4）**：定义存在性＋主功能唯一性＋可运营性；候选 14 → **已实现（product-object-gate P3）**：层级声明与上游引用存在性（L1-L4 缺层/file 悬空→exit 1；schema=product-object.md §7）——两者转正待真实项目实测证据（selftest 两态＋试验仓语料转写已过）。
 **豁免梯度**：豁免按 §7 档位声明（档0 小改豁免 1-3/10），豁免须在 GATE `exempt` 字段声明——跳过+声明合法，静默违规照罚。
 
 ## §5 反借口表（v1 九条，全文 `references/anti-excuses.md`）
@@ -64,7 +64,7 @@ metadata:
 - `references/layer-stack.md`：产品层级栈 L0-L10 + **层级门**（三段式：定位→检上游→放行/回补）+ 触发拦截表（跑道步骤 0a 细则；裸「L+数字」=产品层级）。
 - `references/product-object.md`：产品对象定义（上游六问 + 页面级完整性八组 + 可运营性清单 + 主次角色表；跑道步骤 0b 细则）。
 - `references/registry.md`：组件注册表（**纯检查者**：查「查没查、归因没归因」，不定义组件）。
-- `scripts/registry-gate.py` `scripts/statechart-gate.py` `scripts/spec-trace-gate.py`（联通行三段/证据真值检查）`scripts/usage-probe.py`（使用率监控——零命中即衰减警报）：门禁均带 `--selftest`。
+- `scripts/registry-gate.py` `scripts/statechart-gate.py` `scripts/spec-trace-gate.py`（联通行三段/证据真值检查）`scripts/product-object-gate.py`（产品对象 P1-P4：定义存在性/主功能唯一/层级声明+上游引用/可运营性）`scripts/usage-probe.py`（使用率监控——零命中即衰减警报）：门禁均带 `--selftest`。
 
 ## §7 规模分档（风险自适应四档，2026-09-23 修正；**命名=档N，防与层栈 L+N 混淆**）
 

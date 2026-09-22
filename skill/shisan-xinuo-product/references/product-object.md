@@ -54,6 +54,20 @@
 - **步骤 6**（实现）：**孤立能力检查**（判定表 0b）——页面需要 X 时先查产品状态模型/组件/后台能力，复用优先，必要时扩展并回写产品知识；为局部页面新造孤立能力=最高权重债务。
 - **判定表**：J 域四条（职责句/主功能唯一/页面级闭环/假能力）为其裁决级形态。
 
-## 6 出处
+## 6 机器可查形态（product-object-gate.py；候选 11/14 已实现）
+
+跑道步骤 0b 的答案落成 JSON（`docs/contracts/<page>.object.json`），门禁逐项判：
+
+| 字段 | 说明 | 判据 |
+|---|---|---|
+| purpose / responsibility | 六问①② | 非空；职责句禁「展示/显示」开头（J-29） |
+| capabilities[] | 六问③：{name, role}，role∈五角色 | 非空；每条两键齐全 |
+| main_function | 六问④ | **role=核心任务 须恰好一个且与 main_function 一致**（主功能数≠1→exit 1） |
+| layers | 0a 层级门：{active, upstream{L1-L4}} | L1-L4 每层须 `file:<path>`／`brief:`／`adjudicated:` 三选一；file 引用悬空→逐层 exit 1 |
+| operability[] | 六问⑥：{item, answer} | 非空；无管理路径须显式裁决在案（假能力判定 J-32） |
+
+用法：`python product-object-gate.py --file docs/contracts/<page>.object.json`（P1-P4 分列报出）。**这是上游 L1-L4 的第一批机器判据**——「主功能数≠1」「上游引用悬空」「职责句错位」从此可 exit 1（2026-09-23 实现；selftest 两态＋试验仓语料转写验证）。
+
+## 7 出处
 
 用户定稿 2026-09-23（四层分析 + 用户原话「这个页面到底有什么功能？什么功能最重要？……后台能不能管理」）；边界句=用户原话「创新属于产品，创新不是工程的必要任务」。信心级：用户原话。
