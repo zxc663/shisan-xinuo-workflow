@@ -4,7 +4,7 @@ description: "把「做一个XX页面/工具/应用」类任务钉成可判定�
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 0.2.2
+  version: 0.2.3
   tags: [product-engineering, interaction-design, statechart, quality-gates, spec-trace, design-contract]
   author: zxc663
   homepage: https://github.com/zxc663/shisan-xinuo-workflow
@@ -50,7 +50,7 @@ metadata:
 1 六问无空格｜2 六态缺态不开工｜3 spec-trace 双向追溯｜4 查表归因存在（registry-gate）｜5 内联样式/硬编码零容忍（对齐业界 lint 规则）｜6 dead-binding 逻辑链（死代码/空 catch）｜7 取证存在性（无真渲染证据不得声称已验证）｜8 账本写回存在性｜9 可达性静态底线（axe 子集）。**候选 10 → 已转正**：statechart-gate（C1-C7；验收=四变异反向注入实证 `docs/reverse-injection/EVIDENCE.md`，2026-09-23）；**候选 12 → 已实现（C7 双向对账）**：契约 recovery 行 ↔ statechart 转换（缺边=承诺落空／多边=未登记发明；验收=变体 A「抽一条恢复转换」转 exit 1，2026-09-23 实测）；**候选 13 → 已实现（C6 引用完整性）**：每条转换 target ∈ states（验收=变体 C「删态留悬空入边」转 exit 1，2026-09-23 实测）；**新增已实现：结构化错误态识别**（`"type":"error"` ∪ 名启发式 ∪ 契约 recovery 提及——修 `permission_denied` 类命名逃逸；验收=变体 D）。候选 11 → **已实现并转正（product-object-gate P1/P2/P4）**：定义存在性＋主功能唯一性＋可运营性；候选 14 → **已实现并转正（product-object-gate P3）**：层级声明与上游引用存在性（L1-L4 缺层/file 悬空→exit 1；schema=product-object.md §7）。**转正证据链**：selftest 两态＋试验仓语料转写（正 rc=0/负 rc=1）＋真实项目首用——甲仓（修正二前产物）忠实转写即被检出 10 项真实上游缺口（八能力无主次/可运营性缺失）。
 **豁免梯度**：豁免按 §7 档位声明（档0 小改豁免 1-3/10），豁免须在 GATE `exempt` 字段声明——跳过+声明合法，静默违规照罚。
 
-## §5 反借口表（v1 九条，全文 `references/anti-excuses.md`）
+## §5 反借口表（v1.2 十二条，全文 `references/anti-excuses.md`；#12 通道归因隔离实验=2026-09-24 真会话判例入库）
 
 「已经实现了」未经运行验证不算｜「没查到」零结果≠有结果｜「应该有这个库」不得假设依赖｜「默认这样也可以」选项空着=没做决定｜「加动画为了好看」先过动画四问｜「体验应该没问题」须截图+DOM 佐证｜「很简单/显然」危险词自检｜「为简化所以没写」散文比代码长=走私复杂度｜「适度使用」模型无视适度，一切规则二值化。
 
