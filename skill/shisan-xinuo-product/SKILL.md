@@ -64,7 +64,7 @@ metadata:
 - `references/layer-stack.md`：产品层级栈 L0-L10 + **层级门**（三段式：定位→检上游→放行/回补）+ 触发拦截表（跑道步骤 0a 细则；裸「L+数字」=产品层级）。
 - `references/product-object.md`：产品对象定义（上游六问 + 页面级完整性八组 + 可运营性清单 + 主次角色表；跑道步骤 0b 细则）。
 - `references/registry.md`：组件注册表（**纯检查者**：查「查没查、归因没归因」，不定义组件）。
-- `scripts/registry-gate.py` `scripts/statechart-gate.py` `scripts/spec-trace-gate.py`（联通行三段/证据真值检查）`scripts/product-object-gate.py`（产品对象 P1-P4：定义存在性/主功能唯一/层级声明+上游引用/可运营性）`scripts/usage-probe.py`（使用率监控——零命中即衰减警报）`scripts/l0-l5-gate.py`（2026-09-24 v0.2.1 新增：L0 目标陈述合格线+L5 结构底线机器子集——单值性/度量口径/KR 时间窗/导航三件套/前门可达/死端页；warning 级=C4/C6/C13/L5-C1/C6/C11 语义裁决项）：门禁均带 `--selftest`。
+- `scripts/registry-gate.py` `scripts/statechart-gate.py` `scripts/spec-trace-gate.py`（联通行三段/证据真值检查）`scripts/product-object-gate.py`（产品对象 P1-P4：定义存在性/主功能唯一/层级声明+上游引用/可运营性）`scripts/usage-probe.py`（使用率监控——零命中即衰减警报）`scripts/l0-l5-gate.py`（2026-09-24 v0.2.1 新增：L0 目标陈述合格线+L5 结构底线机器子集——单值性/度量口径/KR 时间窗/导航三件套/前门可达/死端页；warning 级=C4/C6/C13/L5-C1/C6/C11 语义裁决项）：门禁均带 `--selftest`。另有 `scripts/spec-trace-extract.py`（队列⑤ 2026-09-24：绑定清单自动提取器——从组件目录/后端声明生成 comps/backs 两清单喂 spec-trace-gate；bindings 绑定本身=跑道产物不代生产）。
 
 ## §7 规模分档（风险自适应四档，2026-09-23 修正；**命名=档N，防与层栈 L+N 混淆**）
 
