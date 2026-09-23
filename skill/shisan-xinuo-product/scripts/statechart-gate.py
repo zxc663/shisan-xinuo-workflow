@@ -192,14 +192,17 @@ def selftest() -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--file")
+    ap.add_argument("statechart", nargs="?", help="statechart JSON（位置参数，兼容裸路径调用）")
+    ap.add_argument("--file", dest="file_opt")
     ap.add_argument("--contract", help="契约 JSON（含 recovery / non_error_failures），启用 C7 双向对账")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    # F6（2026-09-24）：NR6/NR7 两个真会话首调均踩「位置路径不收」——补位置参数兼容
+    a.file = a.file_opt or a.statechart
     if not a.file:
-        print("FAIL: 需要 --file 或 --selftest")
+        print("FAIL: 需要 statechart 路径（位置参数或 --file）或 --selftest")
         return 1
     sc = json.loads(Path(a.file).read_text(encoding="utf-8"))
     contract = json.loads(Path(a.contract).read_text(encoding="utf-8")) if a.contract else None
