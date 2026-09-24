@@ -4,7 +4,7 @@ description: "把「做一个XX页面/工具/应用」类任务钉成可判定�
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 0.2.5
+  version: 0.2.6
   tags: [product-engineering, interaction-design, statechart, quality-gates, spec-trace, design-contract]
   author: zxc663
   homepage: https://github.com/zxc663/shisan-xinuo-workflow
