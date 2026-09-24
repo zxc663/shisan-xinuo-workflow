@@ -7,7 +7,8 @@
 
 检查（组件文件，非 <style> 块）：
   R1 内联样式：style=" / :style=" / style={{
-  R2 硬编码色：十六进制色 #fff…（3-8 位）与 rgb(/rgba( 字面量（css 文件与 <style> 块合法，不扫）
+  R2 硬编码色：十六进制色 #fff…（3-8 位）与 rgb(/rgba( 字面量（css 文件与 <style> 块合法，不扫；
+    <meta> 行的 content 色值=元数据豁免——2026-09-25 F10 补）
   R3 console.*：console.log/debug/info/warn/error（交付五查：错误须入日志模块，零容忍）
   R4 空 catch：catch (…) { } 无任何语句（吞错误=dead-binding 家族）
 
@@ -51,10 +52,16 @@ def scan_file(p: Path, rules: dict[str, re.Pattern]) -> list[str]:
         raw = p.read_text(encoding="utf-8", errors="ignore")
     except OSError:
         return []
+    # R2 的 css 豁免按 docstring 落地：色值归属 css 文件/<style> 块（F10，2026-09-25 实测补——
+    # 此前仅 <style> 块被 strip，.css 文件本体显式传入 --ext 时色值被误报为组件区硬编码）
+    active = {k: v for k, v in rules.items() if not (p.suffix == ".css" and k == "R2")}
     text = strip_style_blocks(raw)
     out: list[str] = []
     for i, line in enumerate(text.splitlines(), 1):
-        for rid, rx in rules.items():
+        for rid, rx in active.items():
+            # R2 的 meta 豁免：theme-color 等 content 色值是页面元数据非组件样式（F10 族，2026-09-25）
+            if rid == "R2" and line.lstrip().startswith("<meta"):
+                continue
             if rx.search(line):
                 out.append(f"{p.as_posix()}:{i} [{rid}] {RULE_NAMES[rid]}：{line.strip()[:80]}")
     return out
@@ -86,8 +93,15 @@ def selftest() -> int:
         ok2 = scan_file(good, RULES) == []
         text_s = strip_style_blocks(styleblock.read_text(encoding="utf-8"))
         ok3 = "#ff0000" not in text_s and scan_file(styleblock, RULES) == []
-        print(f"selftest: 违例三连(R1/R2/R4)={ok1} 干净文件放行={ok2} style 块色值合法={ok3}")
-        return 0 if ok1 and ok2 and ok3 else 1
+        cssfile = t / "tokens.css"
+        cssfile.write_text(":root { --accent: #4a7297; }", encoding="utf-8")
+        ok4 = scan_file(cssfile, RULES) == []  # F10 回归：css 文件本体色值=R2 豁免
+        metafile = t / "meta.html"
+        metafile.write_text('<html lang="zh-CN">\n<head>\n<meta name="theme-color" content="#eef1f5">\n</head>\n</html>', encoding="utf-8")
+        ok5 = scan_file(metafile, RULES) == []  # F10 回归：meta 独立行 content 色值=元数据豁免
+        print(f"selftest: 违例三连(R1/R2/R4)={ok1} 干净文件放行={ok2} style 块色值合法={ok3} "
+              f"css 文件色值豁免={ok4} meta 色值豁免={ok5}")
+        return 0 if ok1 and ok2 and ok3 and ok4 and ok5 else 1
 
 
 def main() -> int:
