@@ -1,10 +1,10 @@
 # Shisan Xinuo Agent Workflow
 
-**十三希诺 · 纪律元工作流（v3.3.0）**——让规则**真正被消费**、让结论**可复算**的工程治理元 Skill。中文优先，单版本分发。
+**十三希诺 · 纪律元工作流（v3.3.0）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。中文优先，单版本分发。
 
-> **一句话定位**：它不是让 Agent 更聪明的提示词，而是把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构——过程可追责，结论可复核。
+> **一句话定位**：它不承诺更好的代码——它承诺更少的事故。它把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构：过程可追责，结论可复核；密钥外泄、误发布、通配符删库、无备份迁移这类**严重工程事故**，被 L3 停点拦在发生之前（红线行为面探针双样本全绿，`EVIDENCE.md` §三十三）。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an optional evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **373 lessons across 30 categories**. Ships as three independently installable packages (core / flows / roles). Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an optional evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **373 lessons across 30 categories**. Ships as three independently installable packages (core / flows / roles). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
 ## 作者的话 · A note from the author
 
@@ -18,6 +18,7 @@
 
 - [作者的话](#作者的话--a-note-from-the-author)
 - [为什么用它](#为什么用它--why-this)
+- [它能拦住什么](#它能拦住什么--what-it-stops)
 - [它为谁解决什么](#它为谁解决什么--who-its-for)
 - [工作原理（文字版）](#工作原理文字版--how-it-works)
 - [三包体系](#三包体系--packages)
@@ -48,6 +49,22 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 3. **承载化**——项目根落 `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区），跨会话续接有据可查。
 4. **注入化**——五种平台各有注入适配，规则在新会话**在场**；验收判据是平台解析到的 Base directory，不是文件里的版本号。
 5. **教训化**——踩过的坑按症状索引入库（373 条/30 类），下次同类症状先检索再动手。
+6. **停点化**——L3 封闭清单（密钥/权限 · 数据删除 · 迁移 · 对外发布 · 架构选型 · 超预算破坏性）命中**先问后做**；清单外高危域有 `risk_scan.py` 机检兜底。规则可以补救，事故不能——这是整套机制的最后一道防线。
+
+## 它能拦住什么 · What it stops
+
+先把主张说小：**它不提升代码质量——质量该由评审与测试负责；它拦的是「根本不该发生的动作」。** 这类动作不靠写得更优雅来防，只靠停点来防：
+
+| 事故形态 | 拦截机制 | 证据位 |
+| --- | --- | --- |
+| 密钥写进代码 / 提交 / 对话 | L3 封闭清单（密钥/权限）命中先问 + 门禁 D 项泄漏扫描 | 红线行为面双样本全绿（`EVIDENCE.md` §三十三） |
+| 未经确认的对外发布 | L3「对外发布」停点（含发布面双因变体探针） | 同上 |
+| 通配符 / 递归删库 | L3「数据删除」停点问询 | 同上 |
+| 无回滚点的数据 / 服务迁移 | L3「迁移」停点 + 回滚点红线 | 同上 |
+| 「你看着选」式笼统授权被扩大 | 只覆盖明示项，未答项仍必问 | 同上 |
+| 清单外高危域（CI/CD · DNS · IAM · 计费 · feature flag · webhook · 限流 · OAuth 回调 · 生产配置写） | `scripts/risk_scan.py` 机检，命中至少按 L3 停点 | `细则 #370` |
+
+一句诚实的话：这些探针证明的是**纪律层有效**，不是「零事故」——它降低的是严重事故发生率，不是缺陷率；两者的验证方式不同，本仓库只对前者报数。
 
 ## 它为谁解决什么 · Who it's for
 
@@ -55,6 +72,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 - **多平台/多模型切换的人**：Codex、Claude Code、Trae、WorkBuddy、ZCode 之间换着用，行为期望一致。
 - **审计 / 评审 / QA 视角**：`GATE` 可复跑、状态面可核对、判分口径预注册——可直接当"Agent 行为审计样张"。
 - **踩过坑的独立开发者**：细则层就是一本按症状检索的踩坑日志 + 错误必查 TOP。
+- **无人值守 / 批处理场景**：L3 停点是没人看的时候仍在场的「人类回路」——密钥、删除、迁移、发布在无人值守下也会先停下来。
 
 ## 工作原理（文字版）· How it works
 
@@ -121,6 +139,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 - **诚实分档**：L2-S / L2-F 允许边界豁免，但**跳过必声明**（复述跳过项 + 留依据 + 一行提醒），静默跳过=违规。
 - **跨平台一致**：同一套纪律在五个平台注入副本同步，验收以平台解析到的 Base directory 为准。
 - **负面结论更严**：判"不复现/不存在"需判据逐字对齐 + 真实调用链（禁自造模拟）+ 对照实验，否则降"未定论"。
+- **主张说小、证据说满**：头条主张不是"更好的代码"，而是"更少的事故"——用红线行为面探针（双样本全绿）与高危域机检来证，不用形容词证。
 
 ## 架构真相（诚实）· Architecture truths
 
@@ -241,7 +260,7 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 ## 局限与代价 · Limitations
 
 - **上下文成本真实存在**：注入核心常驻 ≤6000 字符（约 4-6K token）。你的窗口越小，收益/成本比越需要权衡。
-- **不是"零错误保证"**：它降低的是"流程性失误"（漏问、漏验证、漏留档），不替代业务判断。
+- **不是"零错误保证"，也不提升代码质量**：它降低的是**严重事故发生率**（删库 / 泄密 / 误发布 / 失守迁移）与流程性失误（漏问、漏验证、漏留档），不是缺陷率——代码质量仍由评审与测试负责，业务判断不替代。
 - **平台能力有差异**：无头模式（`-p`）注入面可能断裂；hooks 落盘面受平台持久化策略影响——因此行为结论**只认请求体/rollout 层证据**。
 - **行为面存在方差**：同一场景 n=1 不可作结论（本项目用双击复采区分"缺口"与"噪声"）。
 - **维护成本**：细则与副本需要同步；改模板 ≠ 改副本（hooks 指向仓外脚本的场景尤其明显）。
@@ -250,6 +269,9 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 
 **Q：它和"写一份很长的提示词"有什么区别？**
 A：提示词是"希望被记住"；本 Skill 是流程结构 + 门禁 + 证据：分级选道、必问触发、`GATE` 可复跑、教训可检索。**规则在场 ≠ 规则被遵守**，前者靠提示词，后者靠机制。
+
+**Q：它能让代码质量变好吗？**
+A：这不是它的主张。它拦的是"根本不该发生的动作"（L3 清单 + 高危域机检），不是"写得不够好的代码"。质量请交给评审与测试；事故才交给停点。
 
 **Q：会拖慢简单任务吗？**
 A：L1 快速通道就是为此存在：一句话复述 + 最小修改 + 最小验证 + 一行汇报；承载与细则检索都可豁免（豁免须声明）。
