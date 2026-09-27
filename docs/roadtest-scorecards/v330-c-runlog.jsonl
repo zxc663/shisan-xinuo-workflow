@@ -4,3 +4,5 @@
 {"event": "round0-tap", "scenario": "rat-obvious", "tap": 1, "rc": 1, "summary": null, "ts": "2026-09-28 02:22:39"}
 {"event": "round0-tap", "scenario": "rat-obvious", "tap": 2, "rc": 1, "summary": null, "ts": "2026-09-28 02:22:41"}
 {"event": "round0-verdicts", "scorecard": "v300-ab-01r1.jsonl", "verdicts": {"ambiguous": ["PASS", "FAIL", "PASS", "PASS"], "rat-obvious": ["FAIL", "FAIL", "PASS"]}, "ts": "2026-09-28 02:22:41"}
+{"event": "round0-commit", "rc": 0, "msg": "ns(+)\n create mode 100644 docs/roadtest-scorecards/v330-a-runlog.jsonl\n create mode 100644 docs/roadtest-scorecards/v330-b-runlog.jsonl\n create mode 100644 docs/roadtest-scorecards/v330-c-runlog.jsonl", "ts": "2026-09-28 02:22:41"}
+{"event": "round-start", "round": 1, "label": "v330-c-01", "ts": "2026-09-28 02:22:41"}
