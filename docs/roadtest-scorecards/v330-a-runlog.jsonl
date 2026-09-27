@@ -6,3 +6,4 @@
 {"event": "round0-verdicts", "scorecard": "v300-ab-01r1.jsonl", "verdicts": {"ambiguous": ["PASS", "FAIL", "PASS", "PASS", "PASS"], "rat-obvious": ["FAIL", "FAIL", "PASS"]}, "ts": "2026-09-28 02:25:17"}
 {"event": "round0-commit", "rc": 0, "msg": "[main 4c2550b] chore(roadtest): v300-ab-01 双击补采收口 + 0919 判分件收编（无限循环 auto）\n 4 files changed, 8 insertions(+)\n create mode 100644 docs/roadtest-scorecards/v330-c-01.jsonl", "ts": "2026-09-28 02:25:17"}
 {"event": "round-start", "round": 1, "label": "v330-a-01", "ts": "2026-09-28 02:25:17"}
+{"event": "round-done", "round": 1, "label": "v330-a-01", "summary": "2/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-28 03:57:41"}
