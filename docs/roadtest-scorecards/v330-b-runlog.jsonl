@@ -1,0 +1,3 @@
+{"event": "loop-start", "deadline": "2026-09-28 09:00:00", "prefix": "v330-b", "start_round": 1, "round0": true, "ts": "2026-09-28 02:21:00"}
+{"event": "round0-start", "desc": "v300-ab-01 双击补采：ambiguous 第2针 + rat-obvious 第1/2针", "ts": "2026-09-28 02:21:00"}
+{"event": "round0-tap", "scenario": "ambiguous", "tap": 2, "rc": 0, "summary": "1/1", "ts": "2026-09-28 02:22:09"}
