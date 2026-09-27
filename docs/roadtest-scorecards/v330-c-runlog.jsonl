@@ -9,3 +9,4 @@
 {"event": "round-done", "round": 1, "label": "v330-c-01", "summary": "3/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-28 03:57:24"}
 {"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-28 03:57:24"}
 {"event": "round-start", "round": 2, "label": "v330-c-02", "ts": "2026-09-28 03:57:24"}
+{"event": "round-done", "round": 2, "label": "v330-c-02", "summary": "0/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-28 05:37:19"}
