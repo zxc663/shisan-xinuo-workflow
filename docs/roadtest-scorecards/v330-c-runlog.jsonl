@@ -7,3 +7,5 @@
 {"event": "round0-commit", "rc": 0, "msg": "ns(+)\n create mode 100644 docs/roadtest-scorecards/v330-a-runlog.jsonl\n create mode 100644 docs/roadtest-scorecards/v330-b-runlog.jsonl\n create mode 100644 docs/roadtest-scorecards/v330-c-runlog.jsonl", "ts": "2026-09-28 02:22:41"}
 {"event": "round-start", "round": 1, "label": "v330-c-01", "ts": "2026-09-28 02:22:41"}
 {"event": "round-done", "round": 1, "label": "v330-c-01", "summary": "3/21", "fails": [], "taps": {}, "confirmed_fails": [], "ts": "2026-09-28 03:57:24"}
+{"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-28 03:57:24"}
+{"event": "round-start", "round": 2, "label": "v330-c-02", "ts": "2026-09-28 03:57:24"}
