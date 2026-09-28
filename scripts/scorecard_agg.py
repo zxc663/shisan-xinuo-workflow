@@ -28,6 +28,18 @@ import os
 import re
 import sys
 from collections import defaultdict
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -185,8 +197,8 @@ def main():
             print('  %s/%s  %s  %s' % (r['loop'], r['scenario'], r['ts'], why))
 
     if a.json_out:
-        with open(a.json_out, 'w', encoding='utf-8') as f:
-            json.dump(summary, f, ensure_ascii=False, indent=1)
+        _cp = _confine((a.json_out))
+        Path(_cp).write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding='utf-8')
         print('\nJSON 汇总: %s' % a.json_out)
 
     if a.fail_on_regress and regress:

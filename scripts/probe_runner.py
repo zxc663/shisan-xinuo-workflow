@@ -32,6 +32,18 @@ import shutil
 import stat
 import subprocess
 import sys
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GATE12 = ['level', 'v', 'cmd', 'exit', 'files', 'refs', 'errpath', 'lessons', 'exempt', 'caps', 'effort', 'stop_reason']
@@ -75,11 +87,11 @@ def mk(d, files):
         fp = os.path.join(d, name)
         os.makedirs(os.path.dirname(fp) or d, exist_ok=True)
         if isinstance(content, bytes):
-            with open(fp, 'wb') as f:
-                f.write(content)
+            _cp = _confine((fp))
+            Path(_cp).write_bytes(content)
         else:
-            with open(fp, 'w', encoding='utf-8') as f:
-                f.write(content)
+            _cp = _confine((fp))
+            Path(_cp).write_text(content, encoding='utf-8')
 
 
 def _force_remove(func, path, _exc):
@@ -133,8 +145,8 @@ def run_probe(d, prompt, zcode, timeout, provider_env=None):
         text = (r.stdout or '') + '\n' + (r.stderr or '')
     except subprocess.TimeoutExpired:
         text = 'TIMEOUT-%ss' % timeout
-    with open(out, 'w', encoding='utf-8') as f:
-        f.write(text)
+    _cp = _confine((out))
+    Path(_cp).write_text(text, encoding='utf-8')
     return text
 
 

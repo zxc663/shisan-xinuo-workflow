@@ -20,6 +20,18 @@ import argparse
 import io
 import os
 import sys
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -127,8 +139,8 @@ def main():
             continue
         new_body.append(ln)
     new_lines = lines[:fs['start']] + new_body
-    with open(a.log, 'w', encoding='utf-8', newline='\n') as f:
-        f.write('\n'.join(new_lines))
+    _cp = _confine((a.log))
+    Path(_cp).write_text('\n'.join(new_lines), encoding='utf-8', newline='\n')
 
     arch_entry = ['', '## 轮转 %s（细则 #372 机械归档；移动非删除）' % __import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M'),
                   ''] + moved

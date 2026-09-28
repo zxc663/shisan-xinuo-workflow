@@ -14,6 +14,18 @@
   - 前置门/五问/步1出口产物/GATE 12 字段（caps/effort/stop_reason）/Skill 加载（toolCalls input.skill）
 """
 import json, os, re, sys, io, argparse
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 FIELDS9 = ['level=', 'v=', 'cmd=', 'exit=', 'files=', 'refs=', 'errpath=', 'lessons=', 'exempt=']
@@ -127,7 +139,8 @@ def main():
     }
     ex = os.path.join(a.root, 'extracts')
     os.makedirs(ex, exist_ok=True)
-    json.dump(out, open(os.path.join(ex, f'{a.tag}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    _cp = _confine((os.path.join(ex, f'{a.tag}.json'), ex), ex)
+    Path(_cp).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f"[{a.tag}] reqs={out['requests']} NQ5={out['nq5']} anchor_v={out['anchor_versions']} hooks={out['hooks_pack']} skill_loaded={out['skill_loaded']}")
     print(f"  restate={out['first_restate']} status={out['status_line']} frontgate={out['frontgate']} five_q={out['five_q']} step1={out['step1_output']}")
     print(f"  CoT={out['cot']}  GATE={out['gate_present']}({out['gate_fields']}/9)")
