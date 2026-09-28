@@ -19,3 +19,4 @@
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-28 07:58:10"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-28 08:12:25"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-28 08:26:49"}
+{"event": "loop-exit", "stop_reason": "zero-pass-deadline", "rounds": 3, "totals": {"rounds": 2, "probes": 2, "pass": 2, "voids": 40, "taps": 0, "commits_fail": 0}, "ts": "2026-09-28 08:30:49"}
