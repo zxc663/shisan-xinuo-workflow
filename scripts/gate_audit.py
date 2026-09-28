@@ -76,7 +76,7 @@ def main():
             (oks if recent else probs).append(f'{f}: 存在{" + 近期 mtime" if recent else "，无 git 环境且 mtime 偏旧——未定论"}')
     if a.cmd:
         try:
-            r = subprocess.run(a.cmd, shell=True, cwd=root, capture_output=True,
+            r = subprocess.run(['cmd', '/c', a.cmd], cwd=root, capture_output=True,
                                text=True, encoding='utf-8', errors='replace', timeout=600)
             (oks if r.returncode == 0 else probs).append(f'cmd exit={r.returncode}: {a.cmd}')
         except subprocess.TimeoutExpired:
@@ -85,7 +85,7 @@ def main():
         if not a.cmd:
             probs.append('independent-cmd 需要同时给 --cmd（执行路径证据），否则不构成「独立 + 执行」双证据')
         try:
-            r2 = subprocess.run(a.independent_cmd, shell=True, cwd=root, capture_output=True,
+            r2 = subprocess.run(['cmd', '/c', a.independent_cmd], cwd=root, capture_output=True,
                                 text=True, encoding='utf-8', errors='replace', timeout=600)
             (oks if r2.returncode == 0 else probs).append(
                 f'independent cmd exit={r2.returncode}: {a.independent_cmd}')

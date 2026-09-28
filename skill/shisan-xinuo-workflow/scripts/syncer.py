@@ -21,6 +21,18 @@ v2.0 修复（实测驱动）：
 """
 import argparse, os, re, shutil, sys, time
 from datetime import datetime
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 # 永不碰的顶层子目录（副本侧）；巡检/覆盖时一律跳过
 KEEP_DIRS = {"user-notes", "memory"}
@@ -205,7 +217,8 @@ def main():
         changed.append(f"~ 记忆层@{os.path.abspath(a.memory_target)}（锚点块合并{clean_tag}" + ("，dry" if a.dry else f"，备份 {os.path.basename(mem_bak)}") + "）")
         mem_note = f"\n## 记忆层（hard-inject 第 3 层）\n- {os.path.abspath(a.memory_target)} ← templates/memory-anchor.md\n- 在场提示首行：工作流 Skill 现已在场{clean_tag}"
         if not a.dry:
-            open(a.memory_target, "w", encoding="utf-8").write(mem_new)
+            _cp = _confine((a.memory_target))
+            Path(_cp).write_text(mem_new, encoding="utf-8")
             print(f"[记忆] 已合并锚点块 → {a.memory_target}（备份 {mem_bak}{clean_tag}）")
         else:
             print(f"[记忆] (dry) 将合并锚点块 → {a.memory_target}{clean_tag}")
@@ -217,15 +230,18 @@ def main():
     out = "\n".join(lines)
     if not a.dry:
         syncfile = os.path.join(log_dir(a.dest), f"sync-log-{fmt}.md")
-        open(syncfile, "w", encoding="utf-8").write(out)
+        _cp = _confine((syncfile))
+        Path(_cp).write_text(out, encoding="utf-8")
         # 源库侧：仓库根 = <src> 上两级；副本侧：DEST/memory (skill 自身落盘区)
         repo = os.path.abspath(os.path.join(a.src, "..", ".."))
         srclog = os.path.join(repo, "memory", "task-log")
         os.makedirs(srclog, exist_ok=True)
-        open(os.path.join(srclog, f"skill-update-{fmt}.md"), "w", encoding="utf-8").write(out.replace("# sync-skill ", "# skill 更新 · "))
+        _cp = _confine((os.path.join(srclog, f"skill-update-{fmt}.md")))
+        Path(_cp).write_text(out.replace("# sync-skill ", "# skill 更新 · "), encoding="utf-8")
         destmem = os.path.join(a.dest, "memory", "task-log")
         os.makedirs(destmem, exist_ok=True)
-        open(os.path.join(destmem, f"skill-update-{fmt}.md"), "w", encoding="utf-8").write(out.replace("# sync-skill ", "# skill 更新(副本) · "))
+        _cp = _confine((os.path.join(destmem, f"skill-update-{fmt}.md")))
+        Path(_cp).write_text(out.replace("# sync-skill ", "# skill 更新(副本) · "), encoding="utf-8")
     print(out)
     print(f"\n[done] exit=0  (dry={is_dry})")
     print(f"[验收] 平台解析到的 Base directory 应指向：{os.path.abspath(a.dest)}")

@@ -16,6 +16,18 @@
   python facts_sync.py --fix     # 校正：把偏差承载点改写为单源值（读回断言）
 """
 import io, json, re, sys, os
+from pathlib import Path
+
+def _confine(p, *extra):
+    "路径穿越守卫：写目标 resolve 后必须落在允许根内（cwd/home/temp/脚本目录+额外根）。"
+    import tempfile
+    from pathlib import Path
+    rp = Path(p).resolve()
+    roots = [Path.cwd(), Path.home(), Path(tempfile.gettempdir()), Path(__file__).resolve().parent]
+    roots += [Path(x) for x in extra]
+    if not any(rp.is_relative_to(r.resolve()) for r in roots):
+        raise SystemExit('E: path escape -> %s' % rp)
+    return str(rp)
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -121,7 +133,7 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
     return t
 
 
-def check(fix=False):
+def verify_carriers(fix=False):
     problems = []
     fix_holder = {'fix': fix, 'changed': False}
     for rel, patterns in CARRIERS:
@@ -130,7 +142,8 @@ def check(fix=False):
         for pat in patterns:
             t = _check_pattern(t, pat, rel, problems, fix_holder)
         if fix_holder['changed']:
-            open(p, 'w', encoding='utf-8', newline='').write(t)
+            _cp = _confine(p)
+            Path(_cp).write_text(t, encoding='utf-8', newline='')
             fix_holder['changed'] = False
             if rel.endswith('.json'):
                 json.loads(open(p, encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
@@ -150,7 +163,8 @@ def check(fix=False):
         problems.append(f'{rel}: 条目范围 1.–{m.group("n")}. ≠ 单源 1.–{MAX_ENTRY}.')
         if fix:
             t = t.replace(f'1.–{m.group("n")}.', f'1.–{MAX_ENTRY}.', 1)
-            open(os.path.join(ROOT, rel), 'w', encoding='utf-8', newline='').write(t)
+            _cp = _confine((os.path.join(ROOT, rel)))
+            Path(_cp).write_text(t, encoding='utf-8', newline='')
     problems += section_range_problems()
     fix_tag = 'fix' if fix else 'check'
     print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES}｜模式={fix_tag}')
@@ -163,9 +177,13 @@ def check(fix=False):
     return 0
 
 
-if __name__ == '__main__':
+def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else '--check'
     if mode not in ('--check', '--fix'):
         print('用法: python facts_sync.py [--check|--fix]')
-        sys.exit(2)
-    sys.exit(check(fix=(mode == '--fix')))
+        return 2
+    return verify_carriers(fix=(mode == '--fix'))
+
+
+if __name__ == '__main__':
+    sys.exit(main())
