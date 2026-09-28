@@ -8,17 +8,27 @@
   python scripts/detail_lookup.py --index                # 打印症状索引全表
   加 --full 输出条目全文（默认摘要 160 字）
 设计: 只用标准库；输出紧凑（token 友好）；命中行可直接贴进任务记录作 errpath 证据。
+语义层: references/detail-expansions.json 查询扩写（同义/英文/口语 → 词面锚），
+  仅在原始词零召回时触发扩写重试（不污染良性查询）；2-gram 回退带垃圾护栏
+  （全库共振 >20 条或首位覆盖率不足 → 诚实报 0，防假阳性——外部审计 E6 修复）。
 """
-import io, re, sys, os
+import io, re, sys, os, json, socket
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+if getattr(sys.stdout, 'encoding', '').lower().replace('-', '') != 'utf8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')  # 已是 utf-8 不重包（防二次包装关 buffer）
 _SELF = Path(__file__).resolve()
 _CANDIDATES = [
     _SELF.parent.parent / 'references' / 'details.md',                                      # 技能副本布局（scripts/ 与 references/ 同级）
     _SELF.parent.parent / 'skill' / 'shisan-xinuo-workflow' / 'references' / 'details.md',  # 源库布局（仓库根 scripts/）
 ]
 DETAILS = next((c for c in _CANDIDATES if c.is_file()), _CANDIDATES[0])
+EXPANSIONS = DETAILS.parent / 'detail-expansions.json'
+
+# 垃圾/过泛护栏阈值：真症状不会全库共振
+GENERIC_LIMIT = 100    # 单词命中条目数 ≥ 该值=过泛查询（如单字虚词）
+GRAM_MAX_MATCHES = 20  # 2-gram 回退：命中条目数超过=垃圾共振，诚实报 0
+GRAM_MIN_COVER = 3     # 首位条目 gram 命中数 × 该值须 ≥ 查询 grams 总数
 
 # TOP 条目修复命令模板（命中即附处置动作行；权威源 = injection-core 错误段）
 FIX_TEMPLATES = {
@@ -50,6 +60,87 @@ def parse():
         block = t[pos:end].strip()
         entries[num] = block
     return t, domains, entries
+
+
+def load_expansions():
+    try:
+        return json.loads(EXPANSIONS.read_text(encoding='utf-8')).get('rules', [])
+    except Exception:
+        return []
+
+
+def expand(args, rules):
+    """零召回扩写：查询串含任一 if 词 → 收集 then 词面锚（不改原始词）。"""
+    text = ' '.join(args).lower()
+    added = []
+    for r in rules:
+        for term in r.get('if', []):
+            if term.lower() in text:
+                for kw in r.get('then', []):
+                    if kw not in args and kw not in added:
+                        added.append(kw)
+                break
+    return added
+
+
+def _dechunk(payload):
+    out = b''
+    while payload:
+        line, _, rest = payload.partition(b'\r\n')
+        try:
+            sz = int(line.strip() or b'0', 16)
+        except ValueError:
+            return payload
+        if sz == 0:
+            break
+        out += rest[:sz]
+        payload = rest[sz+2:]
+    return out
+
+
+def _semantic_boost(query, entries, top=5, floor=0.55):
+    """嵌入语义兜底：仅当本地缓存（detail-embeddings.cache.json）与 Ollama(127.0.0.1:11434) 均可用时生效。
+    返回 [(cos, num, text)]；归一化余弦绝对阈值 floor——垃圾/无关查询天然低于阈值→诚实 0。"""
+    import base64, struct, math
+    cache_p = DETAILS.parent / 'detail-embeddings.cache.json'
+    if not cache_p.is_file():
+        return []
+    cache = json.loads(cache_p.read_text(encoding='utf-8'))
+    if not cache.get('entries'):
+        return []
+    body = json.dumps({'model': cache.get('model', 'bge-m3'), 'prompt': query[:700]}).encode('utf-8')
+    s = socket.create_connection(('127.0.0.1', 11434), timeout=20)
+    req = (b'POST /api/embeddings HTTP/1.1\r\nHost: 127.0.0.1:11434\r\n'
+           b'Content-Type: application/json\r\nContent-Length: ' + str(len(body)).encode('ascii') +
+           b'\r\nConnection: close\r\n\r\n' + body)
+    s.sendall(req)
+    buf = b''
+    while True:
+        c = s.recv(65536)
+        if not c:
+            break
+        buf += c
+    s.close()
+    head, _, payload = buf.partition(b'\r\n\r\n')
+    if b'Transfer-Encoding: chunked' in head:
+        payload = _dechunk(payload)
+    qv = json.loads(payload.decode('utf-8')).get('embedding')
+    if not qv:
+        return []
+    scored = []
+    qn = math.sqrt(sum(a * a for a in qv)) or 1.0
+    for num_s, b64 in cache['entries'].items():
+        num = int(num_s)
+        if num not in entries:
+            continue
+        arr = base64.b64decode(b64)
+        vec = struct.unpack('<%df' % (len(arr) // 4), arr)
+        vn = math.sqrt(sum(a * a for a in vec)) or 1.0
+        cos = sum(a * b for a, b in zip(qv, vec)) / (qn * vn)
+        if cos >= floor:
+            scored.append((cos, num, entries[num]))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return scored[:top]
 
 
 def main():
@@ -87,6 +178,14 @@ def main():
         for i in ids:
             id2domains.setdefault(i, []).append(name)
 
+    def match(terms_exact, terms_parts):
+        out = []
+        for num, text in entries.items():
+            hits = sum(text.count(k) for k in terms_exact) * 3 + sum(text.count(k) for k in terms_parts)
+            if hits:
+                out.append((hits, num, text))
+        return out
+
     def emit(scored, mode):
         scored.sort(key=lambda x: (-x[0], x[1]))
         head = f'{len(scored)} 命中（{mode}；errpath 证据格式: detail_lookup "{" ".join(args)}" → #{scored[0][1]}）'
@@ -99,28 +198,48 @@ def main():
                 print(f'修复模板: {FIX_TEMPLATES[num]}')
 
     scored = []
-    for num, text in entries.items():
-        hits = sum(text.count(k) for k in exact) * 3 + sum(text.count(k) for k in parts)
-        if hits:
-            scored.append((hits, num, text))
+    added = expand(args, load_expansions())
+    terms_exact = exact + added
+    scored = match(terms_exact, parts)
     if scored:
-        mode = '按相关度排序' + (f'；分词: {" ".join(parts)}' if parts else '')
+        distinct = set(terms_exact) | set(parts)
+        if len(distinct) == 1 and len(scored) >= GENERIC_LIMIT:
+            print(f'0 命中（单词命中 {len(scored)} 条≥{GENERIC_LIMIT}=过泛查询全库共振；换具体症状关键词，可试 --index）')
+            return
+        mode = '按相关度排序' + (f'；扩词: {" ".join(added)}' if added else '') + (f'；分词: {" ".join(parts)}' if parts else '')
         emit(scored, mode)
         return
-    # 2-gram 回退：无空格中文长句整串零召回时，按相邻二字片段命中数兜底（≥2 片段命中同一条目才出）
+
+    # 2-gram 回退：无空格中文长句整串零召回时，按相邻二字片段命中数兜底（≥2 片段命中同一条目才出），
+    # 带垃圾护栏：全库共振（>条目上限）或首位覆盖率不足 → 判垃圾诚实报 0（防假阳性，E6 修复）
     grams = set()
     for a in args:
         s = re.sub(r'\s+', '', a)
         if len(s) > 3:
             grams |= {s[i:i + 2] for i in range(len(s) - 1)}
     if grams:
+        cand = []
         for num, text in entries.items():
             g = sum(1 for gr in grams if gr in text)
             if g >= 2:
-                scored.append((g, num, text))
-        if scored:
-            emit(scored, '2-gram 回退')
+                cand.append((g, num, text))
+        if cand and len(cand) > GRAM_MAX_MATCHES:
+            cand = []  # 全库共振判垃圾——落语义兜底层做最后一道诚实尝试
+        if cand:
+            cand.sort(key=lambda x: (-x[0], x[1]))
+            if cand[0][0] * GRAM_MIN_COVER < len(grams):
+                cand = []  # 首位覆盖率不足——落语义兜底层做最后一道诚实尝试
+            else:
+                emit(cand, '2-gram 回退')
+                return
+    # 语义兜底层（Q5 可选增强）：本地 Ollama 嵌入（socket 直连本机回环）；缓存与模型均不可用则静默跳过，行为不变
+    try:
+        sem = _semantic_boost(' '.join(args), entries)
+        if sem:
+            emit(sem, '语义召回（嵌入兜底）')
             return
+    except Exception:
+        pass
     print(f'0 命中（关键词: {" ".join(args)}；可试 --index 换域或换关键词）')
 
 

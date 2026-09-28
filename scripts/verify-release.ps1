@@ -153,7 +153,7 @@ if (-not $SkipLeak) {
             # 2) 令牌原文
             foreach ($tp in $tokenPats) { if ($text -match $tp) { $leakHits += "$rel :: 疑似令牌明文(已掩码)" ; break } }
             # 3) 发布物内出现个人版路径（README 版本说明豁免；排除账目四文件豁免——.gitignore/AGENTS/project-info/项目信息 对 gitignore 目录的功能性记载非泄漏，单一表述源裁决留 2.9）
-            $exemptPersonal = @('.gitignore', 'AGENTS.md', 'docs/project-info.md', '项目信息.md')
+            $exemptPersonal = @('.gitignore', '.zcodeignore', 'AGENTS.md', 'docs/project-info.md', '项目信息.md')
             if (($exemptPersonal -notcontains $rel) -and ($rel -notlike "README.md") -and ($text -match 'versions[\/]personal-zh')) {
                 $leakHits += "$rel :: 发布物内引用个人版路径"
             }
