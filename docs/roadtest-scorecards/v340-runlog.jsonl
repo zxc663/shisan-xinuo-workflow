@@ -22,3 +22,4 @@
 {"event": "round-no-summary", "round": 5, "rc": 1, "streak": 3, "tail": "rint: {\"carrier_zcode\": \"ebae899f598b\", \"hooks_carrier\": \"9978168b12c2\", \"hooks_top\": \"35f6230927e2\", \"skill_md\": \"6e90a941592b\", \"core_md\": \"5dfd23a5e5eb\", \"platform\": \"0.16.9\", \"judge\": \"j2.5\"}\nliveness(l1-rename): FAIL | gate=none(0/12)\nCIRCUIT-BREAK v340-05: 探活针 env-death（provider-error），矩阵不出。\n\n", "ts": "2026-09-30 05:24:39"}
 {"event": "backoff-enter", "reason": "env-streak", "ts": "2026-09-30 05:24:39"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 05:39:27"}
+{"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 05:53:50"}
