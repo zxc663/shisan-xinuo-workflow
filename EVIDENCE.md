@@ -763,3 +763,33 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **未验证/边界**：①Gitee Release/About 待令牌；②ClawHub 平台过审 pending；③`npx skills add` 实装验证未做；④其它四平台未做各自应用内新会话触达验收（文件面已校）；⑤GUI 会话未重启（用户侧）；⑥`risk_scan` 召回率未测；盲评未跑。
 
 **本批 GATE**：`GATE: {level=L2-F, v=v3.2.0 发行批（版本锁 + 三面校准 + 全渠道）, cmd=powershell -File scripts/verify-release.ps1 && python scripts/facts_sync.py && python scripts/deploy_injection.py --check --hash && python scripts/probe_runner.py --label v320-deploy l1-rename gate-ev, exit=0, files=package.json,skill/*/SKILL.md（三包 frontmatter）,README.md,CHANGELOG.md,AGENTS.md,项目信息.md,docs/(project-info.md,reference-sources.md,release-notes-v3.2.0.md,roadtest-scorecards/v320-deploy*.jsonl),dist/shisan-xinuo-workflow-v3.2.0.zip, refs=0, errpath=①build-dist.ps1 误用 python 调用（SyntaxError）→改 powershell -File，dist 重打 62 项 347,556B；②gate-ev 实弹 1/3（1 PASS + 2 FAIL）→按双击复采口径补第三针，判定行为方差并在发行说明/EVIDENCE/README/CHANGELOG 四处显式声明「不宣称行为面落地」, lessons=版本 bump 后必须三面同校（源库/注入副本/技能副本）——只 bump 源库会造成「副本 v3.2.0 但内容旧」的新形态漂移；明示要求某字段的 prompt 仍有 2/3 不输出＝条款在场≠被消费，发布文案必须按实弹数字写, exempt=Gitee Release/About 待令牌、ClawHub 过审 pending、npx 实装未验、其它四平台触达未验、GUI 未重启, caps=gh CLI（Release/About）+npm+clawhub CLI+syncer 双通道+ZCode 探针, effort=版本全链+三面校准+发行渠道六件+三针实弹+回执五档, stop_reason=—}`
+
+## 四十二、0928 夜班批+裁决执行批（2026-09-28/29 · commit-less 施工→用户终端代提 `fb05369`+`36c0fc4`）
+
+**范围**：无限循环三线路测 v330-a/b/c + Hindsight 吸收 + 会话取证 + 挖矿回流增补 + 语义检索层 + 准则立法 + product 判例；裁决八问收口（Q1 安全清零 / Q3 两矿入库 / Q5 嵌入层激活 / Q6 README 对照实证）。
+
+**机制面实测**：Mimosa 门 42 findings 清零（`_confine` 白名单 + Path API + `cmd /c` 列表形态，四工具冒烟通过）；细则 **373→405 条/32 类**（#375-#406，两矿 48 候选→32 条入库）；嵌入语义兜底层（bge-m3 406 条索引 1024 维、socket 本机回环、余弦绝对阈值 0.55 定标——白屏口语召回 `#397@0.591`、垃圾输入 0 命中冒烟）；三线 loop 至 09:00 deadline 干净退出（round1 18/21 针 provider-error 环境死亡——**环境限制批不作行为结论**，熔断/金丝雀/deadline 机制面二次验证通过）。
+
+**可复算工件**：commit `36c0fc4`（29 文件 +786/-61）+ `fb05369`（Q1 安全修复 10 文件）；`docs/roadtest-scorecards/v330-{a,b,c}-*.jsonl` 三线 scorecard 随仓；门禁=verify 8/8×3 + facts PASS + `deploy_injection --check --hash` 5/5（count=405）+ probe 60/60 + judge-selftest 23/23。
+
+**未验证/边界**：循环行为面（环境死亡零有效针）；waiting-list Q1-Q8 未裁决项；commit 面由用户终端代提（Mimosa 拦 ZCode 工具通道实证）。
+
+**本批 GATE**：`GATE: {level=L2-F, ev=exec+cover+invariant, v=0928 夜班批+裁决执行批, cmd=powershell -File scripts/verify-release.ps1 && python scripts/evals/probe_detail_lookup.py, exit=0, files=details(#375-#406)/scripts×10/embed_build/detail_lookup/README/CHANGELOG/waiting-list/docs/roadtest-scorecards/v330-*, refs=细则 #367+#375-#406 语境, errpath=winget 假绿+heredoc 三犯+先落盘后编译两犯+chunked 未解（教训 #40-#42）, lessons=环境有现成基建先查档案再装依赖（Ollama+bge-m3）, exempt=循环行为面+发行面, caps=Explore×2+现成 Ollama, effort=八问裁定+五轮扫描收敛+三轮索引调试, stop_reason=—}`
+
+## 四十三、0929 夜班接续批（2026-09-29 · 探针通道修复 + 批A′/X/G/E + 收尾 + T15 续件）
+
+**范围与裁决**：计划门五裁决闭合（G10 hook 本轮部署 / 矩阵异常熔断止损 / 产出边界=机制报告层闭环 / G5 #379 唯一正文改动 / 批 E 填空后自主推进）；用户中途拍板探针通道=**本地代理桥**（127.0.0.1:8377 绕 SigV4 域墙，tonight-only：App 重启/key 轮换即失效）。
+
+**批 A′ 行为矩阵（v330-val2，GLM-5.3-Flash 订阅档）**：全 20 场景——**PASS 13/20=65%｜GATE 在场 13/20（package-12×11+partial+block）｜ev= 0/20｜stateLine 0/20**；env-death 2（l3-publish/gate-ev）机判剔除。FAIL 主归因=模型档位格式遵循（结构化 12 字段锚 65% 在场 vs 行内弱锚 0%），修复候选随发行批（`docs/release-prereg-v330-20260929.md` §二）。**盲测 A 臂 1 针**：carrier=absent 下 renamed=True 而 gate=False/stateLine=False 全反差（判别有效）→字节级还原 MATCH→`--check --hash` 5/5 PASS。
+
+**批 X 五门禁反向注入**：27 例=**漏报 15/误报 1/正常拦 5/正常放 6**；`--selftest` 全 PASS 与 15 漏报并存=「自测盖正向、反向是盲区」跨面三证（F2/F5+RS-3 同族）；18 项判据缺口清单随报告（门禁正文不动，处置随发行批）。
+
+**批 G+批 E**：G3 预算成文 / G4 usage 机制+退役候选（未删条）/ G5 #379 双写定权威 / G6 `sync-all.ps1` 一键三连（真跑三步绿）/ G7 `net_pick.py` 择快 / G8 探活熔断 / G10 hook CK×2 部署（指纹 88b657b133800826→e0315412fe77fd33）/ G2 Mimosa 误标反馈包 M1-M7（组包未外发）；T21 夹具随仓（judge-selftest **23/23**）/ T16 risk_scan 双臂实测（**召回 12/14=86%、良性噪声 4/6=67%**——§四十一⑥「risk_scan 召回率未测」就此闭合）/ T14 候选池 29 条查重（新颖 10/并入 10/已承载 6/源指针 3，**零立条**）/ T19 F-26 `anchor_sweep.py` 单实现三面绿（F-28 时匣弃）/ T22 `narrative_sync.py`（首轮抓 F8 活标本 3 FINDING 零假阳→头行刷新转绿）。
+
+**收尾+T15 续件**：verify **8/8 ALL PASS** + facts PASS + narrative 0 FINDING + sync-all 真跑（五平台 v3.3.0 count=405 `--check --hash` **5/5 HASH-OK**，备份 `*.bak-20260929-055621-pre-v3.3.0`）；T15 P-G=项目信息 §六·九 About v3.3.0 双语预案 + facts_sync 三承载正则（历史 §六·〇-§六·八 快照不入表）+ narrative_sync `--selftest` **7/7**（RS-3 回归锚，样本数字按运行时真值偏移构造）；发行批全部在案缺口收拢至 `docs/release-prereg-v330-20260929.md`（批准即施工）。
+
+**可复算工件**：`docs/roadtest-scorecards/v330-{fix,val2,blindA}.jsonl`（通道/矩阵/盲测）；`docs/reverse-injection-gates-20260929/`（driver+16 夹具+27 例 report）；`docs/riskscan-measure-20260929/`（runner.py 零 API 复算）；`docs/mining-dedupe-20260929/`（24 检索+裁决表）；`python scripts/narrative_sync.py --selftest`（7/7）；`docs/gap-list-20260929.md` §五-§八（全批执行记录）。
+
+**未验证/边界**：盲测 A 臂全臂（T2 用户侧）；发行面（T25 L3）；反馈包外发（T6）；commit 用户终端代提；本地桥 tonight-only（下次探针先单针验活）。
+
+**本批 GATE**：`GATE: {level=L2-F, ev=exec+cover+invariant, v=0929 夜班接续批（通道+A′/X/G/E+收尾+T15）, cmd=powershell -ExecutionPolicy Bypass -File scripts/verify-release.ps1 && python scripts/narrative_sync.py --selftest && python scripts/facts_sync.py --check, exit=0, files=scripts×7（narrative_sync/anchor_sweep/net_pick/usage_probe/sync-all/probe_runner/syncer+facts_sync）/skill 正文×3/docs×11/两档/AGENTS/EVIDENCE, refs=细则 #370/#373/#378/#371/#401/#255 语境+TOP #233/#294 已处置, errpath=Mimosa M6/M7 误标家族+对账口径自造+dry 不盖写入面（教训 #43-#45）, lessons=自测盖正向反向盲区跨面三证+机制真值对齐单源器+自测样本按真值偏移构造, exempt=盲测全臂+发行+外发+commit 代提, caps=本地代理桥（tonight-only）+detail_lookup 语义兜底, effort=五批连续施工+收尾+续件, stop_reason=—}`

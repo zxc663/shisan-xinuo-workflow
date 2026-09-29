@@ -143,6 +143,21 @@ def _semantic_boost(query, entries, top=5, floor=0.55):
     return scored[:top]
 
 
+def log_usage(query_args, ids):
+    """G4 usage-probe（2026-09-29）：每次检索落一行 JSONL（命中 ids 或空=零命中），
+    供退役候选机器判据（零命中 N 批→降级候选，只列候选不删条）。静默失败不碍检索主路。"""
+    try:
+        import datetime, json
+        from pathlib import Path
+        p = Path.home() / '.zcode' / 'cli' / 'detail-lookup-usage.jsonl'
+        rec = {'ts': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+               'q': ' '.join(query_args), 'ids': [int(i) for i in ids[:12]]}
+        with open(p, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + '\n')
+    except Exception:
+        pass
+
+
 def main():
     args = [a for a in sys.argv[1:]]
     full = '--full' in args
@@ -188,6 +203,7 @@ def main():
 
     def emit(scored, mode):
         scored.sort(key=lambda x: (-x[0], x[1]))
+        log_usage(args, [str(num) for _, num, _ in scored[:12]])
         head = f'{len(scored)} 命中（{mode}；errpath 证据格式: detail_lookup "{" ".join(args)}" → #{scored[0][1]}）'
         print(head)
         for hits, num, text in scored[:12]:
@@ -204,6 +220,7 @@ def main():
     if scored:
         distinct = set(terms_exact) | set(parts)
         if len(distinct) == 1 and len(scored) >= GENERIC_LIMIT:
+            log_usage(args, [])
             print(f'0 命中（单词命中 {len(scored)} 条≥{GENERIC_LIMIT}=过泛查询全库共振；换具体症状关键词，可试 --index）')
             return
         mode = '按相关度排序' + (f'；扩词: {" ".join(added)}' if added else '') + (f'；分词: {" ".join(parts)}' if parts else '')
@@ -240,6 +257,7 @@ def main():
             return
     except Exception:
         pass
+    log_usage(args, [])
     print(f'0 命中（关键词: {" ".join(args)}；可试 --index 换域或换关键词）')
 
 

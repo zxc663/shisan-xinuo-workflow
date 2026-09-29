@@ -226,26 +226,23 @@ if ($MemoryFile) {
                     Copy-Item -Path $MemoryFile -Destination "$MemoryFile.bak-$ts" -Force
                     $prev = Get-Content -Raw -Encoding UTF8 $MemoryFile
                     Write-Host "[记忆] 备份既有记忆文件 → $MemoryFile.bak-$ts"
-                    # 旧锚清扫（F-26，判据对齐 syncer P0 修复版）：「在场提示」锚点块（标题行起 → 任意层级标题即停）整体移除，
-                    # 治「每次追加新锚、旧版本锚永久残留」；删除留痕输出，完整内容见备份
-                    $kept = New-Object System.Collections.Generic.List[string]
-                    $removed = New-Object System.Collections.Generic.List[string]
-                    $inAnchor = $false
-                    foreach ($ln in ($prev -split "(?<=`n)")) {
-                        if ($ln -match '^#{2,4} 在场提示 · 工作流 Skill 现已在场') {
-                            $inAnchor = $true
-                            $vhit = [regex]::Match($ln, 'v\d+\.\d+\.\d+')
-                            $cleanedVersions += $(if ($vhit.Success) { $vhit.Value } else { '?' })
-                            continue
-                        }
-                        if ($inAnchor -and $ln -match '^#{1,6}(\s|$)') { $inAnchor = $false }
-                        if ($inAnchor) { $removed.Add($ln) } else { $kept.Add($ln) }
+                    # 旧锚清扫（F-26 单实现）：判据单源=scripts\anchor_sweep.py（syncer.py 同调此实现，禁再手抄第二份）；
+                    # 跨 shell 走文件介质（#401：中文正文禁管道/stdin 传递）
+                    $anchorScript = Join-Path $root "scripts\anchor_sweep.py"
+                    $tmpIn = Join-Path $env:TEMP "anchor-prev-$ts.md"
+                    $tmpOut = Join-Path $env:TEMP "anchor-clean-$ts.md"
+                    $tmpJson = Join-Path $env:TEMP "anchor-stats-$ts.json"
+                    [System.IO.File]::WriteAllText($tmpIn, $prev)
+                    python $anchorScript --sweep $tmpIn --out $tmpOut --json $tmpJson
+                    if ($LASTEXITCODE -ne 0) { Write-Error "anchor_sweep 清扫失败（exit=$LASTEXITCODE）"; exit 1 }
+                    $prev = [System.IO.File]::ReadAllText($tmpOut)
+                    $swStats = [System.IO.File]::ReadAllText($tmpJson) | ConvertFrom-Json
+                    $cleanedVersions = @($swStats.versions)
+                    if ($swStats.removed -gt 0) {
+                        Write-Host "[记忆清扫留痕] 本块将删除 $($swStats.removed) 行（预览前 5 行，完整内容见备份）："
+                        $swStats.preview | ForEach-Object { Write-Host "  - $_" }
                     }
-                    if ($removed.Count -gt 0) {
-                        Write-Host "[记忆清扫留痕] 本块将删除 $($removed.Count) 行（预览前 5 行，完整内容见备份）："
-                        $removed | Select-Object -First 5 | ForEach-Object { Write-Host "  - $($_.TrimEnd().Substring(0, [Math]::Min(80, $_.TrimEnd().Length)))" }
-                    }
-                    $prev = ($kept -join "")
+                    Remove-Item $tmpIn, $tmpOut, $tmpJson -ErrorAction SilentlyContinue
                 }
                 $sep = if ($prev.Trim().Length -gt 0) { "`n`n---`n" } else { "" }
                 Set-Content -Path $MemoryFile -Value ($prev.TrimEnd() + $sep + $anchorBody) -Encoding UTF8
