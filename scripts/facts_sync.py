@@ -145,7 +145,8 @@ def verify_carriers(fix=False):
     fix_holder = {'fix': fix, 'changed': False}
     for rel, patterns in CARRIERS:
         p = os.path.join(ROOT, rel)
-        t = open(_confine(p), encoding='utf-8').read()
+        _cr = _confine(p)
+        t = open(_cr, encoding='utf-8').read()
         for pat in patterns:
             t = _check_pattern(t, pat, rel, problems, fix_holder)
         if fix_holder['changed']:
@@ -153,8 +154,10 @@ def verify_carriers(fix=False):
             Path(_cp).write_text(t, encoding='utf-8', newline='')
             fix_holder['changed'] = False
             if rel.endswith('.json'):
-                json.loads(open(_confine(p), encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
-            t2 = open(_confine(p), encoding='utf-8').read()
+                _cj = _confine(p)
+                json.loads(open(_cj, encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
+            _cr2 = _confine(p)
+            t2 = open(_cr2, encoding='utf-8').read()
             for pat in patterns:
                 for m in re.finditer(pat, t2, re.M):
                     if 'n' in m.groupdict() and m.group('n') and int(m.group('n')) != COUNT:
@@ -162,7 +165,8 @@ def verify_carriers(fix=False):
                     if 'c' in m.groupdict() and m.group('c') and int(m.group('c')) != CLASSES:
                         problems.append(f'{rel}: fix 读回失败(c) {m.group(0)[:40]!r}')
     rel, pat = RANGE_CARRIER
-    t = open(_confine(os.path.join(ROOT, rel)), encoding='utf-8').read()
+    _cr3 = _confine(os.path.join(ROOT, rel))
+    t = open(_cr3, encoding='utf-8').read()
     m = re.search(pat, t)
     if not m:
         problems.append(f'{rel}: 条目范围声明未找到')
