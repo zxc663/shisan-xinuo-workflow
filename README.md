@@ -2,6 +2,8 @@
 
 **十三希诺 · 纪律元工作流（v3.3.1）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。
 
+> **本质一句话**：把「工程纪律」从**提示词**升级成**机制**——提示词只是载体（规则怎么送到模型面前），本体是四件套：**流程结构**（三级跑道 + 出口产物）+ **可跑门禁**（发行 8 项 / 产品工程 8 台）+ **可复算证据**（`GATE` 三挂靠 / 判据版本化 / 事实与叙述对账）+ **停点与记忆**（L3 封闭清单 / `risk_scan` / 405 条细则 / agent-log）。
+
 > **一句话定位**：它不承诺更好的代码——它承诺更少的事故。它把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构：过程可追责，结论可复核；密钥外泄、误发布、通配符删库、无备份迁移这类**严重工程事故**，被 L3 停点拦在发生之前（红线行为面探针双样本全绿，`EVIDENCE.md` §三十三）。
 
 > **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **405 lessons across 32 categories**. Ships as four independently installable packages (core / flows / roles / product). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
@@ -37,6 +39,8 @@
 - [贡献者与许可](#贡献者与许可--license)
 
 ## 为什么用它 · Why this
+
+它有两种看法，答案不同：**当载体看**，它是一份可注入的 Skill——SKILL.md 是正文、references 按需加载、templates 可复制，靠五平台注入把规则送到模型面前；**当本体看**，它是一套把纪律变成机制的治理层——**规则要被消费**（触达端口）、**结论要可复算**（门禁与证据）、**高危要先停**（L3 停点）、**经验要复利**（细则库与账本）。载体决定「能不能到场」，本体决定「到场之后有没有用」——本项目全部重心在本体。
 
 Agent 的常见失败不是「不会写代码」，而是**规则在场却不被执行**：约束写在提示词里，任务一开始就被遗忘；该问的没问、该留的回滚点没留、该复跑的验证没跑；错误处理靠猜、结论靠感觉。
 
