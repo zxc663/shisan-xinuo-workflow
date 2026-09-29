@@ -1,6 +1,36 @@
-# 发行执行清单（**v3.3.0 · 本批（执行态 2026-09-29）**；v3.2.0 回执见 L 节；v3.1.0 见 I-1/J 节；v3.0.0 见 I-2/F 节；v2.9.0 及更早在 git 历史）
+# 发行执行清单（**v3.3.1 · 本批（准备态 2026-09-29，命令清单见 M 节）**；v3.3.0 回执见 A/B 节；v3.2.0 回执见 L 节；v3.1.0 见 I-1/J 节；v3.0.0 见 I-2/F 节；v2.9.0 及更早在 git 历史）
 
 > **版本沿革**：v3.2.0 已全渠道发行（2026-09-20/21，回执=EVIDENCE §四十一+L 节）。**v3.3.0 = 0928 裁决批（fb05369）+0928 夜班批（36c0fc4）+0929 夜班批（7ee0372）**：细则 **373→405 条/30→32 类**（#375-#406）+语义检索三层（60 族扩写+E6 修复+嵌入兜底 0.55 定标）+Mimosa 42 findings 清零+narrative_sync/anchor_sweep/sync-all/net_pick/usage_probe 五新工具+发行预注册。判据 j2.5 维持（金样本 23/23）。
+
+## M. v3.3.1 本批（**准备态 2026-09-29** · 双仓门面重构 + 净化瘦身 + 产品工程包联动发行）
+
+> 本批拍板（用户四轮问询）：净化范围=门面+交付物全跑 / 「唯一X」=分类处理 / README=分层瘦身 / product=设计源+获取入口、联动发行 / 直接发行批 / 版本 v3.3.1（与产品仓 v0.2.6）/ 史料不动+清残留 / 验收=静态门禁级。
+
+- [x] 净化落盘：门面层「唯一中文版 / 单版本分发 / 标本合集 / 完整口径基准」grep 归零（README · package.json · CONTRIBUTING · AGENTS.md）；机制式「单一源」语义保留
+- [x] 母仓 README 分层瘦身：314→**264 行**（字符 21,923→15,988，−27%）；**作者的话零字节 diff PASS**
+- [x] 四包口径：README 四包体系 + product 行（联动发行 v0.2.6 + 设计源链接）；package.json four packages；`install-skill -Family` 四包；docs/project-info 四包
+- [x] 口径对账：facts_sync 重锚（README×5 + AGENTS 死锚修复）→ **FACTS PASS**；narrative_sync → 0 FINDING；verify **8/8**
+- [x] 产品仓 `product-engineering-skill`（本机克隆）README 重构 + AGENTS 口径校对（待 push/tag）
+- [x] 残留清理：`README.md.bak-readme-vis`（58KB，旧版 README 备份）移出仓库至仓库外备份区 `skill-backups/`（移动非删除）
+- [x] dist `shisan-xinuo-workflow-v3.3.1.zip`：**93 项 / 2,124,077B / Set-diff 93=93**
+- [x] 产品 zip `shisan-xinuo-product-v0.2.6.zip`：**19 项 / 68,568B**（前缀 `shisan-xinuo-product/`；8 台门禁 `--selftest` 8/8）
+- [x] 五平台注入重部署（备份 `*.bak-20260929-124656-pre-v3.3.1`）→ `--check --hash` **5/5 HASH-OK**（`core-sha256=5c633946a69d`、count=405）
+- [ ] 用户终端 commit/push 两仓 + tag `v3.3.1` / `v0.2.6`
+- [ ] 五渠道 + 产品仓 Release + 30 分钟观测 + 回执回填
+- [x] 事故留痕：产品仓 `memory/agent-log.md` 未提交增量被误覆盖 → `git restore` 回 HEAD 552 行 + 新增「事故记录+有据重建段」（重建段非原件；兜底=卷影副本）；教训入母仓 agent-log（跨仓编辑一律绝对路径+写前备份）
+
+### M-1. 发行命令清单（**待用户确认后执行** · L3 停点）
+
+| # | 渠道 | 命令要点 | 执行方 | 状态 |
+|---|---|---|---|---|
+| 1 | push GitHub（主仓） | `git push origin main` + `git tag v3.3.1` + `git push origin v3.3.1` | 用户终端 | ⏳ |
+| 2 | GitHub Release | `gh release create v3.3.1 dist/shisan-xinuo-workflow-v3.3.1.zip --notes-file docs/release-notes-v3.3.1.md` | 会话 | ⏳ |
+| 3 | Gitee | `git push gitee main` + tag；Release 走 curl（token=凭据管理器供给；attach_files 专端点，target_commitish 必填先例） | 用户终端+会话 | ⏳ |
+| 4 | npm | `$env:GITHUB_TOKEN=<PAT>; npm publish`（GitHub Packages） | 会话 | ⏳ |
+| 5 | ClawHub | 1.0.x 递增提交（Update submitted；先复查 scans） | 会话 | ⏳ |
+| 6 | About 双端 | 项目信息 §六·九 PATCH（校算 len ≤350） | 会话 | ⏳ |
+| 7 | 产品仓 | `git commit/push` + tag `v0.2.6` + `gh release create v0.2.6 … --repo zxc663/product-engineering-skill` | 用户终端+会话 | ⏳ |
+| 8 | 观测+回执 | 30 分钟观测 → M 节勾选 + EVIDENCE 增量 + 项目信息 §五 + 两仓 agent-log | 会话 | ⏳ |
 
 ## A. 本仓已备（v3.3.0；[ ] = 终局门禁复跑后确认回填）
 

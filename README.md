@@ -1,10 +1,10 @@
 # Shisan Xinuo Agent Workflow
 
-**十三希诺 · 纪律元工作流（v3.3.0）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。中文优先，单版本分发。
+**十三希诺 · 纪律元工作流（v3.3.1）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。
 
 > **一句话定位**：它不承诺更好的代码——它承诺更少的事故。它把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构：过程可追责，结论可复核；密钥外泄、误发布、通配符删库、无备份迁移这类**严重工程事故**，被 L3 停点拦在发生之前（红线行为面探针双样本全绿，`EVIDENCE.md` §三十三）。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an optional evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **405 lessons across 32 categories**. Ships as three independently installable packages (core / flows / roles). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **405 lessons across 32 categories**. Ships as four independently installable packages (core / flows / roles / product). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
 ## 作者的话 · A note from the author
 
@@ -20,29 +20,27 @@
 - [为什么用它](#为什么用它--why-this)
 - [它能拦住什么](#它能拦住什么--what-it-stops)
 - [它为谁解决什么](#它为谁解决什么--who-its-for)
-- [工作原理（文字版）](#工作原理文字版--how-it-works)
-- [三包体系](#三包体系--packages)
+- [四包体系](#四包体系--packages)
 - [功能全景](#功能全景--feature-map)
 - [差异化优势](#差异化优势--differentiation)
-- [架构真相（诚实）](#架构真相诚实--architecture-truths)
+- [架构真相](#架构真相--architecture-truths)
 - [验证与路测](#验证与路测--evidence)
 - [分发渠道](#分发渠道--distribution)
 - [快速体验](#快速体验--quick-start)
 - [安装与注入](#安装与注入--install--inject)
 - [口径块](#口径块--facts-at-a-glance)
 - [仓库结构](#仓库结构--repository-layout)
-- [版本说明](#版本说明--editions)
 - [局限与代价](#局限与代价--limitations)
 - [常见问题](#常见问题--faq)
 - [来源与依据](#来源与依据--sources)
 - [版本历史](#版本历史--changelog)
-- [许可](#贡献者与许可--license)
+- [贡献者与许可](#贡献者与许可--license)
 
 ## 为什么用它 · Why this
 
 Agent 的常见失败不是「不会写代码」，而是**规则在场却不被执行**：约束写在提示词里，任务一开始就被遗忘；该问的没问、该留的回滚点没留、该复跑的验证没跑；错误处理靠猜、结论靠感觉。
 
-本 Skill 把"纪律"做成**可执行的流程结构**，而不是一段希望被记住的说明：
+本 Skill 把「纪律」做成**可执行的流程结构**：任务先过场景判定与开工四步（复述+状态行 → 承载检查 → 记忆对齐 → 前置门+能力检索+判级选道），再走三级跑道，收尾产出一行可复跑 `GATE`：
 
 1. **跑道化**——任务先分级选道，L1 直做、L2-S 短工作流、L2-F 完整 9 步；分级不靠气氛靠判据。
 2. **门禁化**——每个任务块收尾产出可复跑的 `GATE` 行（含真实命令与退出码），验证变成**证据**而非声明。
@@ -50,6 +48,8 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 4. **注入化**——五种平台各有注入适配，规则在新会话**在场**；验收判据是平台解析到的 Base directory，不是文件里的版本号。
 5. **教训化**——踩过的坑按症状索引入库（405 条/32 类），下次同类症状先检索再动手。
 6. **停点化**——L3 封闭清单（密钥/权限 · 数据删除 · 迁移 · 对外发布 · 架构选型 · 超预算破坏性）命中**先问后做**；清单外高危域有 `risk_scan.py` 机检兜底。规则可以补救，事故不能——这是整套机制的最后一道防线。
+
+三条常驻机制：**Token 精算机**（省的是仪式不是实质：检索按档位、命中即停、超预算写 `stop_reason` 止损）；**状态锚定**（状态段首行 `STATE: task_id|level|route|confirm|gates_passed|last_errpath`，三触发重读）；**判据可信度**（判据版本化 + 金样本回归 + 指纹，版本史见 `docs/roadtest-scorecards/JUDGELOG.md`）。
 
 ## 它能拦住什么 · What it stops
 
@@ -64,9 +64,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 「你看着选」式笼统授权被扩大 | 只覆盖明示项，未答项仍必问 | 同上 |
 | 清单外高危域（CI/CD · DNS · IAM · 计费 · feature flag · webhook · 限流 · OAuth 回调 · 生产配置写） | `scripts/risk_scan.py` 机检，命中至少按 L3 停点 | `细则 #370` |
 
-一句诚实的话：这些探针证明的是**纪律层有效**，不是「零事故」——它降低的是严重事故发生率，不是缺陷率；两者的验证方式不同，本仓库只对前者报数。
-
-**真仓对照实证（工具箱对照实验，同任务甲/乙双仓）**：同一 UI 工具箱任务，使用本 Skill 的甲仓在复查轮抓到并修复了「meta 工具清单漏登新增工具」，未使用的乙仓同缺陷留在 HEAD；甲仓沉淀 63 项测试+四道机器门禁+规格/账本文档链，乙仓零测试、零说明文档、错误过程不可追溯。公平性注记：单任务小样本对照，乙仓并非全面更差（其中一个缺陷属甲实现偶然引入、乙未复现）——这组证据说明的是**纪律层改变了错误被发现的时机与知识是否沉淀**，不构成「不用必然更差」的结论。
+**真仓对照实证**（工具箱对照实验，同任务甲/乙双仓）：使用本 Skill 的甲仓在复查轮抓到并修复「meta 工具清单漏登新增工具」，未使用的乙仓同缺陷留在 HEAD；甲仓沉淀 63 项测试 + 四道机器门禁 + 规格/账本文档链，乙仓零测试、零说明文档。公平性注记：单任务小样本对照，乙仓并非全面更差，这组证据说明的是**纪律层改变了错误被发现的时机与知识是否沉淀**。
 
 ## 它为谁解决什么 · Who it's for
 
@@ -76,62 +74,34 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 - **踩过坑的独立开发者**：细则层就是一本按症状检索的踩坑日志 + 错误必查 TOP。
 - **无人值守 / 批处理场景**：L3 停点是没人看的时候仍在场的「人类回路」——密钥、删除、迁移、发布在无人值守下也会先停下来。
 
-## 工作原理（文字版）· How it works
+## 四包体系 · Packages
 
-一句话：**场景判定 → 开工四步 → 三级跑道 → 必问与红线 → 执行与验证 → 留档与自更新**。
-
-1. **场景判定**：有项目特征（`git`/多文件/既有 `memory` 或 `docs`）= 持续项目；无特征且非工程任务 = 单发（纪律照走、承载豁免）。
-2. **开工四步**（每步有出口产物）：①复述理解 + 一行状态行 → ②承载检查（定承载根、建/补 `memory/agent-log.md`、项目级规则文件）→ ③记忆对齐（只读状态段一屏 + 按症状检索）→ ④前置门 + 能力检索 + 判级选道。
-3. **三级跑道**：
-   - **L1 快速通道**：改名/文案/格式等可逆小改——一句话复述 → 最小修改 → 最小验证 → 一行汇报。
-   - **L2-S 短工作流**：新功能/多文件——对接真相清单 → 复述 → ≤3 文件改动 + 验收 + 回滚基线 → 执行与最小验证 → `GATE`。
-   - **L2-F 完整 9 步**：接收 → 调研真实资源（含对接真相表）→ 双调研 → 复述 → 必问 → 五问审查 + 判级 + 回滚点 → 规划与验收 → 执行 → 自查归档。
-4. **L3 封闭清单**（仅 6 项，不得自行扩展）：密钥/权限 · 数据删除 · 数据或服务迁移 · 对外发布 · 架构选型 · 超预算破坏性操作。命中即**先问后用**。
-5. **必问协议**：关键决策（方向/歧义/风险/破坏性/架构/范围扩大/方案分歧）必问；新建项目与地基决策前先过场景清单；「你看着选」只覆盖明示项。
-6. **执行与验证**：最小闭环 = 理解 → 最小修改 → 最小验证 → 交付；「没跑过 = 未完成」。改动验证需覆盖 ≥2 种负载形状。
-7. **留档与自更新**：`GATE` 行 + `agent-log` 流水/教训/偏好 + 项目文档同批更新；`scripts/syncer.py` 做三路合并同步到各平台副本。
-
-**Token 精算机（v3.0 机制）**：省的是仪式不是实质——检索按档位（L1 零检索 / L2-S ≤1 次 / L2-F 双预算）、命中即停；结论外部化沉淀（真相表/`caps`/confirm 下次直读）；调研超 2 轮无定论或预算耗尽 → 写 `stop_reason` 止损上报，而非无声燃烧。
-
-**状态锚定（v3.0 机制）**：状态段首行 `STATE: task_id|level|route|confirm|gates_passed|last_errpath` 单行结构化；跨天首轮、子任务派发前、判级选道前三触发重读；复述不出 `level/confirm` 即视为状态失效。
-
-**判据可信度（v3.1 机制）**：判据与结论都是工件，不是自述——①判据改动**只许**修「不识别合规形态」方向，且必须 bump 判据版本 + 过金样本回归（正例必放行、负对照必拒）+ 版本史留档；②每条路测结论带**指纹**（被测副本哈希 / 平台版本 / 判据版本 / 夹具哈希），无指纹的通过率不构成跨批次结论；③环境失败行按**证据**剔除（provider 报错栈 / 空输出），不得与行为失败混计；④`GATE` 合规率按**形态分型**统计（包级 12 字段 / 子块简式 / 杂键），不以单一字段数判合规。落地件：`scripts/probe_runner.py`（`--judge-selftest` / `--rescore`）、`scripts/scorecard_agg.py`、`docs/roadtest-scorecards/JUDGELOG.md`。
-
-## 三包体系 · Packages
-
-三个包可独立安装、组合使用，共同构成一套完整纪律体系：
+四包独立可装、组合使用，共同构成一套完整纪律体系；`pwsh scripts/install-skill.ps1 -Family` 一次装齐（核心 + 流程 + 角色 + 产品工程）：
 
 | 包 | 定位 | 内容 |
 | --- | --- | --- |
 | `shisan-xinuo-workflow` | **核心**（纪律元工作流） | 三级跑道 / 判级速查 / 必问与红线 / `GATE` 12 字段 / 状态锚定 / 承载与留档 / 部署与自更新 / `references/`（注入核心、细则库、平台适配、规则清单）+ `templates/`（含 hooks 模板） |
 | `shisan-xinuo-flows` | **流程包** | 9 类任务工作流分册（新功能 / Bug 修复 / 重构 / 数据迁移 / 发布 / 前端设计 / 运维 / 文档 / 探索调研）+ 澄清流程 + 双调研与复用五问 + 模板 7 件 |
 | `shisan-xinuo-roles` | **角色包** | 8 个审查/执行角色（critic / risk-reviewer / security-auditor / debugger / contract / test / frontend / perf），每角色六字段解剖 + dispatch 矩阵 + 行动契约 |
+| `shisan-xinuo-product` | **产品工程包**（独立版本线 v0.2.6，本批联动发行；设计源与全部实证在 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill)） | 层级门（L0-L10）/ 产品对象六问 / 联通层契约（statechart）/ 双底双顶 / 判定表 / 8 台可重跑门禁（组件归因 / 态机 C1-C7 / 双向追溯 / 产品对象 P1-P4 / L0-L5 / 前端 lint / 可达性 / 使用率） |
+
+产品工程包解决的是另一类失败——**「产品该有的都得有」缺了没人报**：缺失是不可观测的偏差，测试全绿不代表该有的都在。它把「缺失逻辑」翻译成机器能检查的门禁（「缺失可检出」反向注入四变异实证，可重跑见设计源仓 `docs/reverse-injection/`）。
 
 ## 功能全景 · Feature map
 
 | 能力 | 说明 | 载体 |
 | --- | --- | --- |
-| 三级跑道 | L1/L2-S/L2-F 分级与选道三问 | 核心 `SKILL.md` §2 |
-| 判级速查 | L3 封闭清单 6 项 + 三层分界（判级≠理解确认） | 注入核心 + 核心 §2.2 |
-| 开工四步 | 复述 → 承载 → 记忆对齐 → 能力检索与选道 | 注入核心 |
-| 状态行 | `Context: state=… L=… confirm=…`，每轮首产物可校验 | 注入核心 |
-| `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变） | 核心 §9 + `scripts/gate_audit.py` |
-| `GATE` 验证层级 | `ev=`（exec 执行 / cover 覆盖 / invariant 不变量 / indep 独立路径）——L2-F 与高风险任务至少一项非 exec；12 字段定版不变 | `细则 #371` + `scripts/gate_audit.py --gate … --high-risk` |
-| 清单外高危域机检 | `scripts/risk_scan.py` 扫 CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写——命中即至少按 L3 停点问询（清单语义不变） | `细则 #370` |
-| 记忆档双指标 | 行数与体积先到者上限 + 机械归档（移动非删除）；活头部时间戳校验 | `细则 #372` + `scripts/agent_log_rotate.py` |
-| 副本哈希验收 | `deploy_injection --check --hash`：源库载体哈希 vs 各注入副本哈希（版本串一致 ≠ 内容一致） | `细则 #374` |
+| 跑道与判级 | 三级跑道（L1/L2-S/L2-F）+ 选道三问 + L3 封闭清单 6 项 + 三层分界（判级≠理解确认） | 核心 `SKILL.md` §2 + 注入核心 |
+| 开工四步与状态行 | 复述 → 承载 → 记忆对齐 → 能力检索与选道；每轮首产物可 grep 校验 `Context: state=… L=… confirm=…` | 注入核心 |
+| `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变）；`ev=` 验证层级 | 核心 §6 + `scripts/gate_audit.py` |
+| 清单外高危域机检 | `risk_scan.py` 扫 CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写——命中即至少按 L3 停点问询 | `细则 #370` |
 | 细则库 | 405 条 / 32 类，症状索引检索键 100% 覆盖 | `references/details.md` |
 | 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
-| 项目承载 | `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区）+ 项目级规则文件 | 模板 + 核心 §5 |
-| 平台注入 | 五平台注入点表、按需/强制两种模式、备份合并不覆盖 | `references/platform-adaptation.md` + `scripts/deploy_injection.py` |
-| hooks 加固 | SessionStart/Stop 常驻提醒（可选加固面，非运行时必需） | `templates/hooks/` |
-| 委托纪律包 | 子代理不继承注入——委托必须内联最小纪律包 | 核心 §6 + 角色包 |
-| 行为面 harness | 20 场景探针矩阵（19 + 发布面双因变体），隔离断言 + scorecard 随仓归档 | `scripts/probe_runner.py` |
-| 判据自证 | 判据版本化 + 金样本回归（`--judge-selftest`）+ 同批输出两版判据离线重判（`--rescore`）+ 判据版本史 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/JUDGELOG.md` |
-| 时序库聚合 | 作废行机器签名剔除 + GATE 形态分型 + 改善/持平/退化三态对比 | `scripts/scorecard_agg.py` |
+| 项目承载 | `memory/agent-log.md` 一档制（四区）+ 双指标上限 + 机械归档 | 模板 + 核心 §8 |
+| 平台注入与自更新 | 五平台注入点表、备份合并不覆盖、副本内容哈希验收；三路合并同步多平台副本；SessionStart/PostToolUseFailure hooks 加固（可选面） | `references/platform-adaptation.md` + `scripts/deploy_injection.py`、`scripts/syncer.py`、`templates/hooks/` |
+| 行为面 harness | 探针矩阵 + scorecard 随仓 + 判据版本化/金样本自证/同批重判 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/` |
 | 门禁 | **8 项**发行门禁（含 H 判据自测）+ 事实对账单源断言（含条目上限） | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
-| 自更新 | 三路合并同步多平台副本，备份落平台扫描路径外 | `scripts/syncer.py` |
-| 自检彩蛋 | 会话内输入 `zxc663` → 注入方式 / 已应用轮数 / 源库 vs 副本版本 | 核心 §11 |
+| 产品工程门禁 | 8 台可重跑门禁，各带 `--selftest` 两态自测 | `skill/shisan-xinuo-product/scripts/` |
 
 ## 差异化优势 · Differentiation
 
@@ -143,60 +113,45 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 - **负面结论更严**：判"不复现/不存在"需判据逐字对齐 + 真实调用链（禁自造模拟）+ 对照实验，否则降"未定论"。
 - **主张说小、证据说满**：头条主张不是"更好的代码"，而是"更少的事故"——用红线行为面探针（双样本全绿）与高危域机检来证，不用形容词证。
 
-## 架构真相（诚实）· Architecture truths
+## 架构真相 · Architecture truths
 
-- 本仓库 = **源库 + 标本库**：既是 Skill 分发源，也是"用本 Skill 开发本 Skill"的实证场（细则库中相当一部分条目来自本项目自身的踩坑）。
+- 本仓库 = **源库 + 实证场**：既是 Skill 分发源，也是「用本工作流开发自身」的实证场——细则库中相当一部分条目来自本项目自身的踩坑。
 - **三层注入**：记忆层（平台记忆/项目记忆文件）· 规则层（`AGENTS.md` / `CLAUDE.md` / 平台规则文件）· 配置层（hooks / provider / model）。项目级规则文件按平台注入点表定名，**先备份、合并不覆盖**。
 - **验收判据**是平台解析到的 Base directory 与注入副本内容，不是文件头里的版本号。
 - **注入版本 = 会话创建时的快照**：升级副本后必须**重开新会话**才生效。
-- 单版本策略：Skill 本体仅中文，README 中文优先 + 英文摘要，不做多语种平行维护。
+- **版本口径**：版本号以 `package.json` 为准，三个同线包 `SKILL.md` 的 `name/version` 与之一致（门禁断言）；产品工程包独立版本线（v0.2.6）。
 
 ## 验证与路测 · Evidence
 
-本仓库所有验证数字都来自可复跑工件（原始输出 + scorecard JSONL），完整证据链在 [`EVIDENCE.md`](EVIDENCE.md)。
-
 | 维度 | 结果 | 证据位 |
 | --- | --- | --- |
-| 行为面基线（v2.9.0 旧副本） | 52 探针 **51 PASS = 98.1%**（11 场景 × n；唯一 FAIL 为 L 类灰色带 n=2 方差） | 夜班监控报告 + scorecards |
-| v3.0 场景矩阵 | 19 场景 **18/19 PASS**；8 项新机制 7/8 首跑绿；`gate_fields=12` 全量生效 | `docs/roadtest-scorecards/` |
-| 双击复采 | skip-floor 复采 ×2 双 PASS → 首跑 FAIL 判为单例方差（留观察不立条） | 同上 |
-| v3.0.0 注入副本冒烟 | **2/2 PASS · GATE 12/12**（真实 headless 探针） | `docs/roadtest-scorecards/smoke.jsonl` |
 | 红线行为面 | 密钥（含 covert 变体）/ 发布 / 删除 / 迁移 / 笼统授权 全绿（双样本） | `EVIDENCE.md` §三十三 |
-| 独立审查 | 由另一模型无头新会话只读审查（口径一致性/字段/引用/包路径），P0×1 当日修复，P1/P2/P3 分诊并回填 | [`docs/independent-review-v3.0-20260918.md`](docs/independent-review-v3.0-20260918.md) |
-| 无头 vs 交互面对照 | 同一平台：无头 `-p` 面注入 0/13 断裂；交互面注入 111/112 在场——**注入面效力只能由真会话验证** | `EVIDENCE.md` §二十六 |
-| v3.1 全矩阵（无头 glm-5.3-flash） | 20 场景 **20/20 PASS**（判据 j2.4；**单批存量样本，含同批重判，非稳定率**）；同批输出重判 j1.0 18/20 → j2.2 20/20 | `docs/roadtest-scorecards/v310-j2-0919.jsonl` |
-| v3.1.0 部署后实跑（无限循环路测 3.1） | 有效 **24 针 22 PASS**（判据 j2.2，指纹全符）；矩阵级唯一 FAIL=skip-floor 判据滞后（状态行 `confirm=` 形态），j2.3/j2.4 修订后重判 **20/20** | `docs/roadtest-loop-plan-3.1.md`、`v310-inf-01.jsonl` |
-| 判据金样本回归 | **23/23**（正例 9 / 负例 14）——含「改了但无验证痕迹必 FAIL」「合规答案提及环境错误词不算会话死亡」「状态行 `confirm=` 属显式澄清申报」「高风险块只填执行证据必 FAIL（`ev=`）」等正负对照 | `python scripts/probe_runner.py --judge-selftest` |
-| 判据修订史 | j1.0→j2.5 十二处变更逐条附依据（项目终态三候选 + 设计原文对账 + 两处裁决 + 状态行形态 + 验证层级） | `docs/roadtest-scorecards/JUDGELOG.md` |
-| 外部评审审计（2026-09-20） | 双轨审计（独立五维 + 与外部评审逐条对账）；**8/8 门禁 / FACTS / 判据自测 21/21 / 新采样 7 针 5 PASS** 实测在档；独立发现 8 项（P2×6 / P3×2），条款级 6 项改动作提案待批 | [`docs/audit-external-review-20260920.md`](docs/audit-external-review-20260920.md) |
-| 评审提案落刀批（2026-09-20，**已随 v3.2.0 发行**） | 6 项条款级提案落地：新增 `细则 #370`-`#374`（清单外高危域枚举 / `GATE ev=` 验证层级 / 记忆档双指标+机械归档 / 机器事实优先+工件随仓 / 副本内容哈希）＋ `risk_scan.py`＋`agent_log_rotate.py`＋`gate_audit --gate/--independent-cmd`＋`deploy_injection --hash`＋判据 j2.5（金样本 **23/23**）；实测 373 条/30 类 · verify 8/8 | `EVIDENCE.md` §三十九 |
-| 落刀批部署验收（2026-09-20） | 五平台注入 **`--check` 5/5**（v3.1.0/count=373）+ **`--check --hash` 5/5 `HASH-OK`**（源库与五副本同 `sha256:2a64ca815ad4`）；技能副本三包 + WorkBuddy 双通道同步 exit 0；新会话实弹 **2/2 PASS**（指纹 `carrier_zcode=8a74176e730a`/`core_md=c06cdb347545`/`judge=j2.5`，`gate-ev` 输出 `ev_non_exec=True` 且判为 `package-12(13/12)`） | `EVIDENCE.md` §四十 |
-| v3.2.0 三面校准（2026-09-20） | 源库 3.2.0 · 五平台注入 **`--check` 5/5（v3.2.0/count=373）** + **`--hash` 5/5 `HASH-OK`** · 六处技能副本 **6/6 = 3.2.0**；新会话实弹 `l1-rename` **1/1 PASS**、`gate-ev` **1/3 PASS**（三针指纹一致 `core_md=c06cdb347545`/`judge=j2.5`——**`ev=` 实弹未稳定，本版已知缺口，不宣称行为面落地**） | `EVIDENCE.md` §四十一、`docs/release-notes-v3.2.0.md` §七 |
-| v3.3.0 三面校准+行为面基线（2026-09-29） | 源库 3.3.0 · 五平台注入 `--check --hash` **5/5 `HASH-OK`**（`sha256:669d122cddaa`）· 六处技能副本 **6/6 = 3.3.0**；批 A′ 无头矩阵 20 场景 **13/20 PASS**（gate 65%、`ev=` 0/20、stateLine 0/20——**Flash 档首条行为基线，诚实口径不宣称行为面落地**）；盲测三载体矩阵实锤 **hooks 载体=无头行为面单点承载**（B 臂全塌 0/12，注入静态面不达无头会话）；五门禁反向注入 27 例漏报 15（正向自测盲区，缺口入预注册随下版） | `EVIDENCE.md` §四十三/§四十四、`docs/gap-list-20260929.md` §六 |
+| 判据自证 | 判据版本化 j1.0→j2.5 + 金样本回归 **23/23** + 同批输出离线重判 + 环境失败行证据签名 | `python scripts/probe_runner.py --judge-selftest`、`JUDGELOG.md` |
+| v3.1 全矩阵 + 三面校准 | 20 场景 **20/20 PASS**（单批样本）；部署后实跑 **24 针 22 PASS**；v3.2.0/v3.3.0 源库 · 五平台注入 `--check --hash` 5/5 · 六处副本一致 | `docs/roadtest-scorecards/`、`EVIDENCE.md` §四十一/§四十三 |
+| 外部独立审查/审计 | 另一模型无头只读审查（P0 当日修复）；双轨审计 + 6 项条款级提案落地 | `docs/independent-review-v3.0-20260918.md`、`docs/audit-external-review-20260920.md` |
+| 已知缺口（诚实） | v3.3.0 批 A′ Flash 档无头矩阵 13/20（`ev=`/stateLine 未稳定）；五门禁反向注入 27 例漏报 15 | `EVIDENCE.md` §四十三、`docs/gap-list-20260929.md` |
 
-> **口径脚注（可复算入口）**：①「24 针」范围 = `precheck 1 + v310-inf-01 20 + 双击复采 v310-inf-01r 2 + v310-inf-02 1`，作废行（`env_death`）全数剔除、双击复采行**计入**；声明后新增的 `v310-inf-05` 不在该分母内。②按「剔除复采」读法重算得 23 有效 / 22 PASS，可用 `python scripts/scorecard_agg.py --exclude-recollect` 机检。③「20/20」为单批样本（含同批重判），不代表稳定通过率；2026-09-20 独立审计的新采样 7 针得 5 PASS / 2 FAIL（失败集=skip-floor / multi-task，与存量批同构）。
+> **口径脚注（可复算入口）**：①「24 针」范围 = `precheck 1 + v310-inf-01 20 + 双击复采 v310-inf-01r 2 + v310-inf-02 1`，作废行（`env_death`）全数剔除、双击复采行**计入**。②按「剔除复采」读法可用 `python scripts/scorecard_agg.py --exclude-recollect` 机检。③「20/20」为单批样本（含同批重判），不代表稳定通过率；2026-09-20 独立审计的新采样 7 针得 5 PASS / 2 FAIL（失败集=skip-floor / multi-task）。完整证据链见 [`EVIDENCE.md`](EVIDENCE.md) 与 `docs/roadtest-scorecards/`。
 
 ## 分发渠道 · Distribution
 
-单版本分发，**五个渠道同步发行**；下表为 **v3.3.0** 渠道实测状态（2026-09-29），滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
+单一批次同步发行五渠道；下表为本批 **v3.3.1** 条目，发行回执见 [`RELEASE-CHECKLIST.md`](RELEASE-CHECKLIST.md)，滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
 
-| # | 渠道 | 链接 / 安装方式 | 当前版本 | 说明 |
+| # | 渠道 | 链接 / 安装方式 | 本批版本 | 说明 |
 | --- | --- | --- | --- | --- |
-| 1 | **GitHub**（源库 + Release） | [github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow) · [Releases](https://github.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.0 | 权威源库；每版附 dist zip |
-| 2 | **npm**（GitHub Packages） | [包页](https://github.com/zxc663/shisan-xinuo-workflow/pkgs/npm/shisan-xinuo-workflow) · `npm install @zxc663/shisan-xinuo-workflow` | 3.3.0 | 包为**私有可见性**，读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；**npmjs.org 未分发** |
-| 3 | **Gitee**（镜像 + Release） | [gitee.com/zxc663/shisan-xinuo-workflow](https://gitee.com/zxc663/shisan-xinuo-workflow) · [发行版](https://gitee.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.0 | 与 GitHub 同 commit/tag 双推；v3.3.0 push+tag+Release+zip 附件 ✅（32 位令牌已入凭据管理器非交互供给）；每版附 zip 附件 |
-| 4 | **ClawHub**（OpenClaw 技能市场） | [clawhub.ai/zxc663/shisan-xinuo-workflow](https://clawhub.ai/zxc663/shisan-xinuo-workflow) · `openclaw skills install @zxc663/shisan-xinuo-workflow` | 1.0.21（平台侧递增号） | 平台侧版本号 1.0.x 递增，内容对应本仓版本（1.0.21 = 本仓 v3.3.0）；security scans 平台侧过审中 |
+| 1 | **GitHub**（源库 + Release） | [github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow) · [Releases](https://github.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.1 | 权威源库；每版附 dist zip |
+| 2 | **npm**（GitHub Packages） | [包页](https://github.com/zxc663/shisan-xinuo-workflow/pkgs/npm/shisan-xinuo-workflow) · `npm install @zxc663/shisan-xinuo-workflow` | 3.3.1 | 包为**私有可见性**，读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；**npmjs.org 未分发** |
+| 3 | **Gitee**（镜像 + Release） | [gitee.com/zxc663/shisan-xinuo-workflow](https://gitee.com/zxc663/shisan-xinuo-workflow) · [发行版](https://gitee.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.1 | 与 GitHub 同 commit/tag 双推；每版附 zip 附件 |
+| 4 | **ClawHub**（OpenClaw 技能市场） | [clawhub.ai/zxc663/shisan-xinuo-workflow](https://clawhub.ai/zxc663/shisan-xinuo-workflow) · `openclaw skills install @zxc663/shisan-xinuo-workflow` | 平台侧递增号 | 平台侧版本号 1.0.x 递增，内容对应本仓版本；security scans 平台侧异步 |
 | 5 | **skills.sh**（Agent Skills 索引） | [skills.sh/zxc663/shisan-xinuo-workflow](https://skills.sh/zxc663/shisan-xinuo-workflow) · `npx skills add zxc663/shisan-xinuo-workflow` | 随 GitHub 同步 | 自动索引 GitHub 源库 |
 
-配套动作：每版发行时 GitHub + Gitee 仓库简介（About）双端同步 PATCH。
-
-**v3.3.0 渠道实测（2026-09-29）**：GitHub Release `id=398771797`（2026-09-29T02:17Z 发布，asset `…v3.3.0.zip` 2,125,915B）· npm `@zxc663/shisan-xinuo-workflow@3.3.0`（74 文件，shasum `c4a98933456e2f02bf88d3a2bede2e16a33c52da`）· Gitee push+tag `v3.3.0` ✅ + Release `id=1173411`（附件 id=3288018，curl+凭据管理器非交互供给）· ClawHub `1.0.21`（pending security scans）· About 双端 len=179（GitHub GET 读回验证；Gitee 连带修复 v3.1 期陈旧 description）· skills.sh 随 push 自动索引。**三面校准**：源库 3.3.0 · 五平台注入 `--check` 5/5 + `--hash` 5/5 `HASH-OK`（`sha256:669d122cddaa`）· 六处技能副本 6/6=3.3.0；**v3.2.0 渠道行（2026-09-20/21）为上一发行态当日记录，当前校准以本行为准**。
+配套动作：每版发行时 GitHub + Gitee 仓库简介（About）双端同步 PATCH。产品工程包随 `skill/` 全树进入 dist zip 与 npm 包；其独立仓 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill) 同步发行 v0.2.6（README 重构 + 口径修复 + 累积机制补发）。
 
 ## 快速体验 · Quick start
 
-1. **装核心包**（任选其一）：
+1. **装包**（任选其一）：
    - skills 市场：`npx skills add zxc663/shisan-xinuo-workflow`
-   - 仓库直装：`git clone <repo>` → `pwsh scripts/install-skill.ps1`
+   - 仓库直装：`git clone <repo>` → `pwsh scripts/install-skill.ps1 -Family`（四包一次装齐）
    - npm（GitHub Packages）：`@zxc663/shisan-xinuo-workflow`——读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；npmjs.org 未分发
 2. **重开一个新会话**（注入版本=会话创建时快照），输入 `zxc663` 自检：应回答「注入方式 / 已应用轮数 / 源库 vs 副本版本 / Base directory」。
 3. **给它一个真实任务**：观察三个标志物——①每轮首产物是复述 + 状态行；②关键决策会先问（而不是先做）；③任务块末尾有 `GATE:` 单行与可复跑命令。
@@ -207,11 +162,12 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 ```powershell
 # 1) 技能副本安装（默认识别平台技能目录；可选 -Link / -HardInject）
 pwsh scripts/install-skill.ps1
-pwsh scripts/install-skill.ps1 -Family            # 三包一起装
+pwsh scripts/install-skill.ps1 -Family            # 四包一起装（核心+流程+角色+产品工程）
 
 # 2) 平台注入（记忆层/规则层/配置层；先备份、合并不覆盖）
 python scripts/deploy_injection.py --only codex,claude,trae,workbuddy,zcode
 python scripts/deploy_injection.py --check --only zcode        # 注入副本验收
+python scripts/deploy_injection.py --check --hash              # 副本内容哈希验收（版本串一致≠内容一致）
 
 # 3) 上游更新同步（体检→备份→迁移→覆盖→双落盘）
 python scripts/syncer.py
@@ -230,14 +186,15 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 
 | 项 | 值 |
 | --- | --- |
-| 版本 | **v3.3.0**（已发行 2026-09-29，五渠道全落+About 双端；上一版 v3.2.0 2026-09-20） |
-| 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
+| 版本 | **v3.3.1**（本批发行 2026-09-29；上一版 v3.3.0 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST） |
+| 交付形态 | **四包**：核心 `shisan-xinuo-workflow` + 流程包 + 角色包 + 产品工程包（独立版本线 v0.2.6） |
 | 细则库 | **405 条 / 32 类**（编号至 `#406`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4，**单批样本**）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹）；**2026-09-20 独立审计新采样 7 针 5 PASS**（失败集 skip-floor / multi-task，与存量批同构）；**判据金样本回归 23/23**（正例 9 / 负例 14，判据 j2.5）；**v3.3.0 批 A′ Flash 档无头矩阵 13/20**（`ev=` 0/20、stateLine 0/20，首条 Flash 档基线——模型档位归因，见 gap-list §六）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**；口径构成见「验证与路测」表下脚注 |
-| 判据可信度 | 判据版本化（j1.0→j2.5）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名** + GATE 形态分型（包级 12 / 子块简式 / 杂键；`ev=` 为可选扩展字段，不计杂键） |
-| 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（单批样本）；部署后实跑 **24 针 22 PASS**；判据金样本 **23/23**（j2.5）；v3.3.0 Flash 档基线 13/20（模型档位归因，诚实口径） |
+| 判据可信度 | 判据版本化（j1.0→j2.5）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名** + GATE 形态分型 |
+| 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
+| 产品工程门禁 | 8 台（registry / statechart C1-C7 / spec-trace / product-object P1-P4 / l0-l5 / frontend-lint / a11y / usage-probe），均带 `--selftest` |
 
 ## 仓库结构 · Repository layout
 
@@ -246,7 +203,8 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 ├── skill/
 │   ├── shisan-xinuo-workflow/    # 核心包：SKILL.md + references/ + templates/
 │   ├── shisan-xinuo-flows/       # 流程包：9 类工作流分册 + 模板
-│   └── shisan-xinuo-roles/       # 角色包：8 角色 + dispatch 矩阵
+│   ├── shisan-xinuo-roles/       # 角色包：8 角色 + dispatch 矩阵
+│   └── shisan-xinuo-product/     # 产品工程包：判据 + 8 台门禁（设计源与实证在独立仓）
 ├── scripts/                      # 工具面：部署/同步/门禁/事实对账/审计/探针
 ├── docs/                         # 项目导航 + 计划 + 独立审查/审计报告 + 路测 scorecards
 ├── memory/                       # 单项目承载（本地档案，随 .gitignore 不入仓）
@@ -255,17 +213,11 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 └── package.json · LICENSE
 ```
 
-## 版本说明 · Editions
-
-- **单版本（中文）**：Skill 本体只有中文一套，不维护多语种平行版本；README 中文优先 + 英文摘要。
-- 版本号以 `package.json` 为准，三包 `SKILL.md` 的 `name/version` 与之一致（门禁断言）。
-
 ## 局限与代价 · Limitations
 
 - **上下文成本真实存在**：注入核心常驻 ≤6000 字符（约 4-6K token）。你的窗口越小，收益/成本比越需要权衡。
 - **不是"零错误保证"，也不提升代码质量**：它降低的是**严重事故发生率**（删库 / 泄密 / 误发布 / 失守迁移）与流程性失误（漏问、漏验证、漏留档），不是缺陷率——代码质量仍由评审与测试负责，业务判断不替代。
-- **平台能力有差异**：无头模式（`-p`）注入面可能断裂；hooks 落盘面受平台持久化策略影响——因此行为结论**只认请求体/rollout 层证据**。
-- **行为面存在方差**：同一场景 n=1 不可作结论（本项目用双击复采区分"缺口"与"噪声"）。
+- **平台能力有差异、行为面存在方差**：无头模式（`-p`）注入面可能断裂；hooks 落盘面受平台持久化策略影响——行为结论**只认请求体/rollout 层证据**，同一场景 n=1 不可作结论（本项目用双击复采区分"缺口"与"噪声"）。
 - **维护成本**：细则与副本需要同步；改模板 ≠ 改副本（hooks 指向仓外脚本的场景尤其明显）。
 
 ## 常见问题 · FAQ
@@ -282,8 +234,8 @@ A：L1 快速通道就是为此存在：一句话复述 + 最小修改 + 最小�
 **Q：升级后为什么行为没变？**
 A：注入版本=会话创建时快照。升级副本后要**重开新会话**；`zxc663` 自检可确认副本版本与 Base directory。
 
-**Q：能不能只装流程包/角色包？**
-A：可以独立安装，但它们默认假定核心包的纪律面在场（`GATE`/状态行/判级），建议核心 + 目标包组合。
+**Q：能不能只装流程包/角色包/产品工程包？**
+A：可以独立安装，但它们默认假定核心包的纪律面在场（`GATE`/状态行/判级），建议核心 + 目标包组合；`-Family` 一次装齐四包。
 
 **Q：`GATE` 行会不会变成"应试作文"？**
 A：设计上就是防这个：`GATE` 三挂靠（命令原文/退出码真值/文件真变）可被 `scripts/gate_audit.py` 外部抽检；自报与探针不符会被判**虚假 GATE** 并降级。`caps/effort` 这类自报字段要求配可核对痕迹。
@@ -299,12 +251,10 @@ A：默认不联网、不外发；密钥类信息**绝不写入**代码/文档/�
 
 ## 版本历史 · Changelog
 
-- **v3.3.0**（2026-09-29，**已发行**）：**挖矿回流 + 语义检索三层 + 机制补全**——①细则 373→**405 条 / 32 类**（编号至 `#406`）：§31 全机挖矿回流（7 路子代理 27 仓 ~91 候选→16 条）+ §32 富矿二批（48 候选→16 条）+ Hindsight 精炼协议 +「不确定先问」四落点 + product 判例回流 9 条，查重工随仓。②语义检索三层：扩写表 60 族 + E6 假阳性修复 + 金样本 60/60 + **嵌入语义兜底层**（bge-m3 406 条索引，余弦 0.55 定标）。③机制八件：`narrative_sync` 叙述对账 / `anchor_sweep` / `sync-all` 一键三连 / `net_pick` / `usage_probe` / 退役候选清单 / `#379` 叙述权威声明 / Mimosa 误标反馈包（M1-M10，已外发 [zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)）。④行为面：批 A′ Flash 档无头矩阵 20 场景 13/20 PASS（诚实口径）+ 盲测三载体矩阵（hooks 载体=无头行为面单点）+ 五门禁反向注入 27 例漏报 15。⑤Mimosa 42 findings 清零（38 处 `_confine` + gate_audit 列表形态）。发行渠道：GitHub Release `id=398771797` ✅ · npm 3.3.0 ✅ · Gitee Release `id=1173411` ✅ · ClawHub 1.0.21（pending scans）· About 双端 len=179 ✅。
-- **v3.2.0**（2026-09-20，**已发行**）：**外部评审审计 + 条款级落刀批**——①审计（双轨：独立五维 + 与外部评审逐条对账 17 项；报告 `docs/audit-external-review-20260920.md`）②六项条款级提案落地：`细则 #370` 清单外高危域执行层枚举（L3 清单语义不变）/ `#371` `GATE ev=` 验证层级（exec/cover/invariant/indep，L2-F 与高风险至少一项非 exec；12 字段定版不变）/ `#372` 记忆档双指标上限（行数 × 体积先到者）+ 机械归档 / `#373` 机器事实优先于 LLM 判据 + 公开数字须随仓可复算 / `#374` 注入副本内容哈希验收 ③四个机检端口：`risk_scan.py`、`agent_log_rotate.py`、`gate_audit --gate/--high-risk/--independent-cmd`、`deploy_injection --check --hash` ④判据 **j2.5**（新场景 `gate-ev` + 正负金样本，**23/23**）⑤`#266` 「≥2 种负载形状」澄清为**下限** + 盲评实验设计档。细则 368→**373 条 / 29→30 类**（编号至 `#374`）。发行渠道：GitHub Release ✅ · npm 3.2.0 ✅ · ClawHub 1.0.20（pending scans）· Gitee push+tag ✅（**Release/About 待令牌，部分完成**）。
-- **v3.1.0**（2026-09-19，**已发行**）：**判据可信度批**——判据版本化 j1.0→j2.4 + 金样本回归 21/21 + scorecard 指纹 + GATE 形态分型 + 环境死亡行证据签名 + 新增时序库聚合器与判据版本史；判据修订三处（回植「拒改取证」「可逆化+声明」两条合规路径、cap-web 检索痕迹对齐设计原文）、两处裁决（multi-task 维持 FAIL、`verify_trace`/`effort` 去自满足）与状态行 `confirm=` 形态补口（第三例判据滞后）；`verify-release` 增至 8 项（H 判据自测），细则 366→**368 条 / 29 类**（#368 判据即代码 + #369 L3 无人值守双合规路径）。无头全矩阵 **20/20**；v3.1.0 部署后无限循环实跑 **24 针 22 PASS**。
-- **v3.0.0**（2026-09-18，**已全渠道发行**）：三包体系（核心/流程/角色）+ 细则治理（366 条/28 类，检索键 100% 覆盖）+ Token 精算机 + 反作弊与状态锚定 + `GATE` 12 字段 + 探针 harness 收编进仓 + 利用率处置批 + 五平台注入重部署。
-- **v2.9.0**（2026-09-15/16）：独立审查修正批（P1×11 + P2×16 机制级）+ 安全基线 + 分级自审。
-- **v2.6.0 – v2.8.0**：开工四步收敛、留档一档制、每轮复述强制、压缩接续与重载在用 Skills、系统级可逆配置判级。
+- **v3.3.1**（2026-09-29，**本批**）：**双仓门面重构 + 净化瘦身 + 产品仓联动发行**——①README 分层瘦身（314→约 200 行）：宣发式元话术净化、四包口径对齐、facts 承载点重锚；②产品工程包升格为正式列名第四包并同步发行 v0.2.6（设计源仓 README 重构 + Release + zip）；③`install-skill.ps1 -Family` 纳入产品包（四包齐装）；④口径校对：AGENTS.md 基线行/scripts/README 门禁项数/facts_sync 死锚修复。细则 405 条/32 类、判据 j2.5、门禁 8 项不变。
+- **v3.3.0**（2026-09-29，**已发行**）：细则 373→**405 条 / 32 类** + 语义检索三层 + 机制八件（`narrative_sync` / `anchor_sweep` / `sync-all` / `net_pick` / `usage_probe` / 退役候选 / `#379` 权威声明 / Mimosa 反馈包）+ 行为面诚实口径（批 A′ 13/20 + 反向注入漏报 15 入预注册）。
+- **v3.2.0**（2026-09-20，**已发行**）：外部评审审计 + 条款级落刀批——`细则 #370`-`#374`（清单外高危域 / `GATE ev=` / 记忆档双指标 / 机器事实优先 / 副本内容哈希）+ 四个机检端口 + 判据 j2.5（金样本 23/23）。细则 368→373 条。
+- **v3.1.0 / v3.0.0 / v2.9.0**（2026-09-15~19，**均已发行**）：判据可信度批（j1.0→j2.4 + scorecard 指纹）/ 三包体系与 `GATE` 12 字段 / 独立审查修正批与安全基线。
 - 完整沿革见 [`CHANGELOG.md`](CHANGELOG.md) 与 `git log`；发行回执见 [`RELEASE-CHECKLIST.md`](RELEASE-CHECKLIST.md)。
 
 ## 贡献者与许可 · License

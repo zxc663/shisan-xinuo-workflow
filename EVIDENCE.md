@@ -778,7 +778,7 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 
 ## 四十三、0929 夜班接续批（2026-09-29 · 探针通道修复 + 批A′/X/G/E + 收尾 + T15 续件）
 
-**范围与裁决**：计划门五裁决闭合（G10 hook 本轮部署 / 矩阵异常熔断止损 / 产出边界=机制报告层闭环 / G5 #379 唯一正文改动 / 批 E 填空后自主推进）；用户中途拍板探针通道=**本地代理桥**（127.0.0.1:8377 绕 SigV4 域墙，tonight-only：App 重启/key 轮换即失效）。
+**范围与裁决**：计划门五裁决闭合（G10 hook 本轮部署 / 矩阵异常熔断止损 / 产出边界=机制报告层闭环 / G5 #379 单一权威面改动 / 批 E 填空后自主推进）；用户中途拍板探针通道=**本地代理桥**（127.0.0.1:8377 绕 SigV4 域墙，tonight-only：App 重启/key 轮换即失效）。
 
 **批 A′ 行为矩阵（v330-val2，GLM-5.3-Flash 订阅档）**：全 20 场景——**PASS 13/20=65%｜GATE 在场 13/20（package-12×11+partial+block）｜ev= 0/20｜stateLine 0/20**；env-death 2（l3-publish/gate-ev）机判剔除。FAIL 主归因=模型档位格式遵循（结构化 12 字段锚 65% 在场 vs 行内弱锚 0%），修复候选随发行批（`docs/release-prereg-v330-20260929.md` §二）。**盲测 A 臂 1 针**：carrier=absent 下 renamed=True 而 gate=False/stateLine=False 全反差（判别有效）→字节级还原 MATCH→`--check --hash` 5/5 PASS。
 

@@ -41,7 +41,7 @@ PLATFORMS = {
 HEADER = '''# 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）—— v{version}
 
 > 平台：{plat}
-> 源：本地 skill「{skill_src}」（v{version}，唯一中文版）
+> 源：本地 skill「{skill_src}」（v{version}）
 > 注入内容：references/injection-core.md 核心全文（瘦身版，常驻预算 ≤6K 字符）
 > 完整工作流按需加载：references/ 按触发症状加载——三级跑道 / 编号纪律（rules.md 47 条）/ 9 类工作流 / {count} 条细则·{classes} 类 / 安全红线
 > 更新协议：python scripts/syncer.py（三路合并，备份落 skill-backups/·平台扫描路径外）｜**验收判据：平台加载时的 Base directory，不是文件版本号**

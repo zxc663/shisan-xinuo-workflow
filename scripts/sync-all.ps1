@@ -1,6 +1,6 @@
 # sync-all.ps1 · 收尾一键三连（G6/T10，2026-09-29）
 # 把手动三步包成一个 fail-fast 序列（gap-list G6 副本同步靠人肉）：
-#   1. syncer --family      六处技能副本同步（核心+flows+roles）
+#   1. syncer --family      技能副本同步（家族全包：核心+flows+roles+product）
 #   2. deploy_injection     五平台注入重部署
 #   3. deploy_injection --check --hash   注入验收（细则 #374 哈希面）
 # 用法：
