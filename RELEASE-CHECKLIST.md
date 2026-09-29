@@ -1,34 +1,33 @@
-# 发行执行清单（**v3.1.0 · 本批（准备态）**；v3.0.0 发行回执见 I 节；v2.9.0 及更早批次回执要点见各节沿革行，全文在 git 历史）
+# 发行执行清单（**v3.3.0 · 本批（执行态 2026-09-29）**；v3.2.0 回执见 L 节；v3.1.0 见 I-1/J 节；v3.0.0 见 I-2/F 节；v2.9.0 及更早在 git 历史）
 
-> 本 Agent 无发行 MCP：外部发布动作经用户批准后，由本会话按既定令牌供给机制逐渠道执行（L3 红线已满足：命令清单先行、经用户批准）。
-> **版本沿革**：v2.8.0 已全渠道发行（2026-09-15：GitHub Release id=388839566 / npm 2.8.0 / Gitee Release id=1144623 / About 双端 len=265 / ClawHub 1.0.16 pending；回执全文见 git 历史与本清单 v2.8.0 版）。**v2.9.0 = 2.9 修正批+续批**（独立审查 P1×11+P2×16 机制级 23 项+v11 新增四项裁决+G 清单四点调研立条 #333-#335+G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345+思考链 hooks 行；细则终态 **344 条/25 类**——343/24 为转正批时点值，345 为条目上限；facts_sync 断言升级：类数=分节数+节头范围；docs/design-specs/g-items-research-290.md 调研档）。
+> **版本沿革**：v3.2.0 已全渠道发行（2026-09-20/21，回执=EVIDENCE §四十一+L 节）。**v3.3.0 = 0928 裁决批（fb05369）+0928 夜班批（36c0fc4）+0929 夜班批（7ee0372）**：细则 **373→405 条/30→32 类**（#375-#406）+语义检索三层（60 族扩写+E6 修复+嵌入兜底 0.55 定标）+Mimosa 42 findings 清零+narrative_sync/anchor_sweep/sync-all/net_pick/usage_probe 五新工具+发行预注册。判据 j2.5 维持（金样本 23/23）。
 
-## A. 本仓已备（2.9 批施工产出；[ ] = 终局门禁复跑后确认回填）
+## A. 本仓已备（v3.3.0；[ ] = 终局门禁复跑后确认回填）
 
-- [x] 版本锁 2.9.0（package.json / SKILL frontmatter / README 徽章与版本历史 / docs/project-info / reference-sources / AGENTS；项目信息 §六·四 About 口径待发行批校算）——verify C 项 PASS（2.9.0=2.9.0）
-- [x] 内容 v2.9.0 全量（含 G 直写批 #336-#344+#295 双击转正+推荐序施工批 #345，细则 344）：审查 P1×11+P2×16 机制级（F-02 类数单源化/F-03 facts_sync 承载点补齐/F-04 verify A 双口径/F-06 #272 文件名/F-10 #328 判级权威锚定/F-12 #329 适用前提/F-13 #330 名词通用化/F-14 #332 适用范围+SKILL §2.0 前置门/F-17 ANCHOR 单一文件化/F-18 #327-#331 回指/F-19/F-23/F-24 索引三修/F-20 hooks 交付面四子项/F-21 --check 取 package.json/F-22 覆盖边界/F-26 install-skill 清扫/F-27 作者标识判据/F-28 路径对齐/F-29 裸 # 两豁免/F-30-1/2/3）+ v11 四项（注入快照探针提示/#327 裁决定版/#312 增量豁免/#326 适用性）+ G 清单四条（#333-#335+security §1.7）
-- [x] 承载点口径（活跃 **344 条/25 类** 全仓一致；facts_sync G 项 PASS：单源 344/上限 345/类数 25/节头范围断言——推荐序施工批终态，2026-09-16 复验）
-- [x] verify-release 终局复跑 7/7 ALL PASS（A 项双口径打印：PS/UTF-16 + Python/code-point 双 ≤6000；2026-09-16 复跑绿）
-- [x] dist/shisan-xinuo-workflow-v2.9.0.zip 终版重打（**已于 2026-09-16 13:5x 推荐序施工批再重打**——Set-diff 双检 49=49、291,937B；python 五点实测：**#345 走查收敛判据在包＋#295 转正条在包＋#269 新 TOP 无旧 #270 残留＋PA 平台能力矩阵＋hooks 思考链行**；scripts/evals 不随 zip；**发行批复核五点半实测通过（2026-09-16 本批）**）
-- [x] 五副本重部署 v2.9.0（备份 `.bak-20260916-pre-v2.9.0`）→ 严格 5/5 PASS count=344（2026-09-16 推荐序施工批后再部署复验，本发行批机证复现）；deploy 写入后自动输出探针+重启提示（v11①）
-- [x] syncer 双副本 exit=0（.agents 主+.workbuddy --dest/--memory-target）；**重启 ZCode 应用+新会话探针待用户执行**（发行批前置）
-- [x] 提交 main（本地 commit 098dd0b 推荐序施工批+本批回填）；**push 单独批准**
-- [x] 口径修正批（2026-09-16 审查批 f75eb95+本批）：独立审查报告 docs/audit-v290-review-20260916.md——A 族口径 9 处+同族 5 处+B 族正文历史残留 3 处全修+facts_sync CARRIERS 补 AGENTS.md/reference-sources 第二形态+CHANGELOG 补段；facts_sync/verify 复跑绿。**豁免面义务：本清单=时点快照，每批次开工强制重写（防过期口径指挥发行）**
-- [x] 自主循环批（2026-09-16 05:5x-07:2x，用户令「无头路测补缺口循环至 08:50」）：①审查/对比/触达审计三报告（docs/audit-v290-review、docs/comparison-v290-analysis、docs/audit-cot-touch）②**TOP 错号修复**（「响应体只消费一次」#270→细则 #269，7 活体承载点+索引移域，探针首跑揪出）③**scripts/evals 随仓**（判分器+24 用例探针 24/24——npm 卖点首获可复跑件；仓库工具层不进 dist）④五副本重部署（.bak-20260916-pre-v2.9.0）+syncer 双副本+已部署 hooks（roadtest-v260）补丁 ⑤无头路测 v12-v17 共 10 会话（EVIDENCE §三十二）⑥About §六·五 草案预置（251 字）⑦**发行批新增注意：dist 重打时 tools 须含 scripts/evals 吗——不含（evals=仓库工具层，随 GitHub 仓分发不随 zip）；injection-core 已改（#269），重打前确认 zip 内 details/injection-core 为本 HEAD 版**
+- [x] 版本锁 3.3.0（package.json/三包 frontmatter/README/AGENTS 基线/docs/project-info/项目信息 §六·九 About 预案）——verify C 项 PASS（3.3.0=3.3.0）
+- [x] 内容 v3.3.0 全量（细则 **405 条/32 类**，编号至 #406）：#375-#390 裁决批 16 条+#391-#406 挖矿两批 16 条（查重工件 mining-dedupe 随仓）+#379 叙述权威声明；语义检索三层（detail_lookup 60 族+E6 修复+嵌入兜底 0.55 定标）
+- [x] 门禁全绿：verify-release **8/8 ALL PASS** + facts **FACTS PASS**（405/406/32）+ narrative_sync **0 FINDING**+`--selftest` **7/7** + judge **23/23**（driver.py 盘符路径→Path.home() 修复后 D 项恢复）
+- [x] dist/shisan-xinuo-workflow-v3.3.0.zip 终版重打（**2026-09-29 09:4x**：Set-diff 92=92、2,125,915B/92 项；包内 details=源库字节一致 `e9c346aeef3c`、条数口径 405 ✓）
+- [x] 五平台注入副本 v3.3.0（sync-all 真跑，备份 `*.bak-20260929-055621-pre-v3.3.0`）→ `--check --hash` **5/5 HASH-OK**（`sha256:669d122cddaa`）；六处技能副本 3.3.0
+- [x] 安全：Mimosa deep 42 findings 清零（fb05369）+发行前置 normal 复扫 **0 finding**（封印 scan-2026-09-29T02-00-40）；facts_sync 读路径补 `_confine` 纵深（M9 误标处置连带加固）
+- [x] commit main=`7ee0372`（0929 夜班批 61 文件/2307 插入，用户终端代提+amend）；**push/tag 走用户终端**（Mimosa M9：facts_sync 函数级 path-traversal 误标，封印刷新与形态同构均不消解→沿 0928 commit 钩子同入口先例改道）
+- [x] 发行物料：release-notes-v3.3.0.md（§七诚实口径：不宣称行为面落地）+发行预注册 docs/release-prereg-v330-20260929.md
+- [x] About §六·九 PATCH：双端完成，回执 **len=179**（GitHub PATCH 200+GET 读回 179 验证；Gitee PATCH 200，连带修复 Gitee 端 v3.1 期陈旧 description）
 
-## B. 全渠道发行命令清单（v2.9.0 · 待用户批准后执行 ⏳）
+## B. 全渠道发行命令清单（v3.3.0 · **已执行 2026-09-29，五渠道全落**）
 
-> 令牌供给：GitHub PAT 从机密文档（路径不写出）正则提取注入 env（`ghp_`），命令串与输出全程不含明文，用毕即清；**提取→注入→执行必须同一命令内完成**。GitHub 全部走代理 `http://127.0.0.1:33210`。
+> 分工：git push 类全走用户终端（Mimosa M9 误标先例改道，0928 裁定）；API 类（gh/npm/About/ClawHub）由会话执行（用户「全批准」授权，L3 已满足：预注册档先行+用户批准）。
 
 | # | 渠道 | 命令要点 | 状态 |
 |---|---|---|---|
-| 1 | push | `git push origin main` + `git tag v2.9.0 <commit> && git push origin v2.9.0`（走代理） | ✅ 2026-09-16（commit c947280） |
-| 2 | GitHub Release | 创建 Release v2.9.0（要点取 CHANGELOG 行）+ 上传 dist zip（`uploads.github.com` + `-L`） | ✅ id=389686193（zip asset id=567360240, 291,937B） |
-| 3 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（`.npmrc` 变量引用法）——description 已校 344/25 类口径 | ✅ @zxc663/shisan-xinuo-workflow@2.9.0（38 文件） |
-| 4 | ClawHub | 提交 v2.9.0 更新（1.0.x 递增；先复查 1.0.14/1.0.15/1.0.16 scans） | ✅ 1.0.17 已提交（pending-publication，scans 复查待办） |
-| 5 | About | 双端 PATCH（项目信息 §六·四 压缩版，发行时校算 ≤350） | ✅ GitHub+Gitee len=251（六·五 344/25 口径） |
-| 6 | Gitee | push/tag v2.9.0 + Release + About（32-hex 令牌） | ✅ push+tag+Release id=1147118（zip 附件 id=3209813）+About len=251 |
-| 7 | PAT 轮换 | 发行完成即 GitHub classic PAT 轮换（用户侧） | ⏳ 用户侧 |
+| 1 | push GitHub | `git push origin main` + `git tag v3.3.0` + `git push origin v3.3.0` | ✅ 用户终端（main=7ee0372+tag 同端落地） |
+| 2 | GitHub Release | `gh release create v3.3.0 dist/shisan-xinuo-workflow-v3.3.0.zip`（要点取 release-notes） | ✅ tag v3.3.0 + zip 资产（notes=release-notes-v3.3.0） |
+| 3 | Gitee 补推（T23） | `git push gitee main` + `git push gitee v3.3.0`（落后 100+ 一次清偿） | ✅ 用户终端（52b0fab..7ee0372 + tag；T23 清偿） |
+| 4 | Gitee Release | 创建 v3.3.0 + zip 附件（attach_files 专端点） | ✅ id=1173411 + asset id=3288018（2,125,915B 与本地一致；target_commitish=main 必填先例） |
+| 5 | npm | `$env:GITHUB_TOKEN=<令牌>; npm publish`（env 变量法；description=405/32 口径） | ✅ @zxc663/shisan-xinuo-workflow@3.3.0（74 files，shasum c4a9893） |
+| 6 | ClawHub | v3.3.0 提交（1.0.x 递增；先复查 scans） | ✅ 1.0.21 提交（Update submitted；pending security scans 平台侧） |
+| 7 | About 双端 | 项目信息 §六·九 PATCH（校算 len ≤350） | ✅ 双端 len=179（A 节回执） |
+| 8 | PAT 轮换（T24） | 发行完成即轮换（用户侧；在案泄露 PAT 清单见 memory） | ⏳ 用户侧（唯一余件） |
 
 ## C. 复用要点（v2.6.0-v2.8.0 实证沿用）
 
