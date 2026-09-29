@@ -7,3 +7,6 @@
 {"event": "round0-commit", "rc": 0, "msg": "tions(+)\n create mode 100644 docs/roadtest-scorecards/v331-recheck.jsonl\n create mode 100644 docs/roadtest-scorecards/v340-precheck.jsonl\n create mode 100644 docs/roadtest-scorecards/v340-runlog.jsonl", "ts": "2026-09-30 03:28:36"}
 {"event": "round-start", "round": 1, "label": "v340-01", "ts": "2026-09-30 03:28:36"}
 {"event": "round-done", "round": 1, "label": "v340-01", "summary": "13/20", "fails": ["multi-task", "skip-floor"], "taps": {"multi-task": ["1/1", "0/1"], "skip-floor": ["1/1", "0/1"]}, "confirmed_fails": ["multi-task", "skip-floor"], "ts": "2026-09-30 04:14:47"}
+{"event": "round-commit", "round": 1, "rc": 0, "msg": "ok", "ts": "2026-09-30 04:14:47"}
+{"event": "round-start", "round": 2, "label": "v340-02", "ts": "2026-09-30 04:14:47"}
+{"event": "round-done", "round": 2, "label": "v340-02", "summary": "7/11", "fails": ["multi-task"], "taps": {"multi-task": ["0/1", "0/1"]}, "confirmed_fails": ["multi-task"], "ts": "2026-09-30 04:56:18"}
