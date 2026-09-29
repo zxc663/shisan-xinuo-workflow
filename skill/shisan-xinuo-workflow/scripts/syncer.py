@@ -2,10 +2,10 @@
 # 分发副本：权威=家族源库根 scripts/syncer.py（随包分发供 shisan-xinuo-workflow/scripts/ 调用；修改时两处同步，见 RELEASE-CHECKLIST）。
 # -*- coding: utf-8 -*-
 """
-shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0 · 单版本中文主交付物）
+shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0）
 协议（用户拍板 2026-08-30）：
 - user-notes/（用户规则目录）与 memory/（skill 自身落盘）与 *.bak-* 永不碰；
-- 上游（源库 skill/，唯一中文版本）整体覆盖：SKILL.md / references/* / templates/*；
+- 上游（源库 skill/）整体覆盖：SKILL.md / references/* / templates/*；
 - 副本内非源库文件（如 references/personal-playbook.md）→ 一次性迁移进 user-notes/；
 - 每次更新：体检 diff → 备份 .bak-<ts> → 合并 → 变更清单（stdout + 两份 task-log）。
 

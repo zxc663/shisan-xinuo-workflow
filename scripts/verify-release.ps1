@@ -164,6 +164,11 @@ if (-not $SkipLeak) {
 # ---------- E. 正文净化（常驻面/模板面过程注记 = 0；正文 vs 史料规范，v2.1.1 起；references 面史料豁免——details 来源字段/节首注记为双击晋升准入证据） ----------
 $probsE = @()
 $cleanFiles = @($main, $core)
+# v3.3.1：家族四包 SKILL.md 全量纳入（此前仅核心包——product 包正文实测 6 处过程注记漂移，本批净化并收口）
+$famRoot = Join-Path $Root "skill"
+if (Test-Path $famRoot) {
+    $cleanFiles += Get-ChildItem $famRoot -Directory -ErrorAction SilentlyContinue | ForEach-Object { Join-Path $_.FullName "SKILL.md" } | Where-Object { Test-Path $_ }
+}
 $refDir = Join-Path $skDir "references"
 if (Test-Path $refDir) {
     $cleanFiles += Get-ChildItem $refDir -File -Filter *.md | Where-Object { $_.Name -ne 'details.md' } | ForEach-Object { $_.FullName }

@@ -1,5 +1,5 @@
 # 项目级 Agent 规则 · shisan-xinuo-workflow（本仓库）
-> 本仓库 = 十三希诺 Agent 工作流 Skill 的源库与标本合库。**本文件是项目级注入**（每会话自动进入），与平台全局硬注入（injection-core，负责通用纪律）互补：项目级管「本仓库特有信息 + 项目承载 + 维护纪律」。内容精简，细节按需读 docs/project-info.md（导航）。
+> 本仓库 = 十三希诺 Agent 工作流 Skill 的源库（开发库）。**本文件是项目级注入**（每会话自动进入），与平台全局硬注入（injection-core，负责通用纪律）互补：项目级管「本仓库特有信息 + 项目承载 + 维护纪律」。内容精简，细节按需读 docs/project-info.md（导航）。
 
 ## 工作流在场（本仓库会话）
 - 开工序列四步（与全局硬注入一致，SKILL §2.0，v2.6.0 简化）：①复述理解（无条件先行）②承载检查（扫描+形态判定+定承载根+建/补一气呵成，memory/agent-log.md 已建则增量补缺）③记忆对齐（读 agent-log 状态段一屏 + 按症状检索，平台原生记忆在场不重复预读）④判级速查+三问选道；命 L3（密钥/删除/迁移/发布/架构/超预算）先问。
@@ -18,10 +18,10 @@
 ## 项目承载（已就绪）
 - `memory/`：会话记忆——**gitignore 本地承载，不随仓分发**（一档制 `agent-log.md` 四区；旧五件套历史原件在 `memory/legacy-pre-v250/` 只读保留）。
 - `docs/project-info.md`：项目导航六节（架构/目标/模块表/调研导航/参考资源/签章）。
-- `项目信息.md`：决策与发布史（权威，46KB）。
+- `项目信息.md`：决策与发布史（权威承载）。
 - `dist/`、`versions/personal-zh/`、`.trae/`：本地/私有，不随仓分发或按 gitignore 处理。
 
 ## 本仓库底线（区别于通用纪律）
 - 密钥/令牌绝不写入本仓库任何文件（verify-release 泄漏红线 D 项会拦）；机密文档仅存本机专用机密目录（位置不在此写出、不随仓，以 memory 最新记录为准）。
 - 发行动作（npm / GitHub Release / Gitee / ClawHub / About）必须先获用户批准 + `verify-release` **8/8** PASS + 观测阶段。
-- 当前基线 = **v3.3.0 已重部署五平台待发行**（上一发行态 v3.2.0 全渠道 2026-09-20，回执见 RELEASE-CHECKLIST L 节与项目信息 §五）——0928 夜班批细则 **373→405 条·32 类**（编号至 `#405`：挖矿两批 32 条 + 语义检索三层 + Hindsight 精炼协议 + `#379` 双写权威声明）+ 判据 **j2.5**（金样本 **23/23**）+ 门禁 **8 项** + 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8）。**三面校准以 sync-all 跑后回执为准**（0929 收尾复跑 `--check --hash`）。新会话验收锚=「在场提示」版本行 + `405 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。
+- 当前基线 = **v3.3.1 本批（双仓门面重构 + 净化瘦身 + 产品仓联动发行）**（上一发行态 v3.3.0 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST B 节与项目信息 §五）——细则 **405 条·32 类**（编号至 `#406`）+ 判据 **j2.5**（金样本 **23/23**）+ 门禁 **8 项** + 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8）。**三面校准以 sync-all 跑后回执为准**。新会话验收锚=「在场提示」版本行 + `405 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。

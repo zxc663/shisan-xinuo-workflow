@@ -69,16 +69,16 @@ $targetName = "$Prefix" + $PackageName
 $root = Split-Path -Parent $PSScriptRoot
 $probeOrder = @("workbuddy", "claude", "agents", "codex", "cursor", "trae", "zcode")
 
-# ---------- 多包模式（v3.0 家族：核心由主流程装，flows/roles 递归装） ----------
+# ---------- 多包模式（v3.0 家族：核心由主流程装，flows/roles/product 递归装） ----------
 if ($Family) {
     $repoSkill = Join-Path (Split-Path -Parent $PSScriptRoot) "skill"
-    foreach ($pkg in @("shisan-xinuo-flows", "shisan-xinuo-roles")) {
+    foreach ($pkg in @("shisan-xinuo-flows", "shisan-xinuo-roles", "shisan-xinuo-product")) {
         $pkgSrc = Join-Path $repoSkill $pkg
         Write-Host "`n===== family 安装: $pkg =====" -ForegroundColor Cyan
         & $PSCommandPath -Prefix $Prefix -PackageName $pkg -Source $pkgSrc -Platform $Platform -Target $Target -Dry:$Dry -Force:$Force
         if (-not $?) { throw "family 子安装失败: $pkg" }
     }
-    Write-Host "[family done] flows/roles 见上方分节（核心由主流程安装）"
+    Write-Host "[family done] flows/roles/product 见上方分节（核心由主流程安装）"
     exit 0
 }
 

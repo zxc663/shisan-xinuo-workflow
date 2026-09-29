@@ -80,16 +80,17 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ### 预期当前输出
 
-单版本配置下（verify 7 项）当前应全 PASS：
+当前应全 PASS（verify 8 项，H=判据自测）：
 
 ```
 [PASS] A 内容锚点+字符预算(主交付物全量特性)   (OK)
 [PASS] B hooks 三层(警告级)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=2.9.0 ; package.json version=2.9.0)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=3.3.1 ; package.json version=3.3.1)
 [PASS] D 泄漏红线(发布物)   (扫描面内 tracked 文件 0 命中)
 [PASS] E 正文净化(常驻/模板面过程注记=0)   (OK)
 [PASS] F 索引完整性(details 编号连续+症状索引全覆盖)   (OK)
 [PASS] G 事实对账(细则数/条目范围 单源)   (FACTS PASS)
+[PASS] H 判据自测(金样本回归=正例必放行/负对照必拒)   (23/23)
 ```
 
 ### 何时必跑
@@ -123,7 +124,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 
 ## 二、syncer.py（Skill 自更新三路合并器）
 
-`skill/shisan-xinuo-workflow/references/injection-core.md` 的「Skill 自更新协议」对应的执行器。把仓库 `skill/`（唯一中文版主交付物）同步到本机 Skill 安装目录。
+`skill/shisan-xinuo-workflow/references/injection-core.md` 的「Skill 自更新协议」对应的执行器。把仓库 `skill/` 主交付物同步到本机 Skill 安装目录。
 
 ### 位置与运行
 
