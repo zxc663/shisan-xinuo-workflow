@@ -1,8 +1,8 @@
 # Shisan Xinuo Agent Workflow
 
-**十三希诺 · 纪律元工作流（v3.3.1）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。
+**十三希诺 · 纪律元工作流（v3.4.0）**——让规则**真正被消费**、让结论**可复算**、让高危动作**先停后行**的工程治理元 Skill。
 
-> **本质一句话**：把「工程纪律」从**提示词**升级成**机制**——提示词只是载体（规则怎么送到模型面前），本体是四件套：**流程结构**（三级跑道 + 出口产物）+ **可跑门禁**（发行 8 项 / 产品工程 8 台）+ **可复算证据**（`GATE` 三挂靠 / 判据版本化 / 事实与叙述对账）+ **停点与记忆**（L3 封闭清单 / `risk_scan` / 405 条细则 / agent-log）。
+> **本质一句话**：把「工程纪律」从**提示词**升级成**机制**——提示词只是载体（规则怎么送到模型面前），本体是四件套：**流程结构**（三级跑道 + 出口产物）+ **可跑门禁**（发行 8 项 / 产品工程 8 台）+ **可复算证据**（`GATE` 三挂靠 / 判据版本化 / 事实与叙述对账）+ **停点与记忆**（L3 封闭清单 / `risk_scan` / 406 条细则 / agent-log）。
 
 | 看法 | 它是什么 | 决定什么 |
 | --- | --- | --- |
@@ -11,7 +11,7 @@
 
 > **一句话定位**：它不承诺更好的代码——它承诺更少的事故。它把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构：过程可追责，结论可复核；密钥外泄、误发布、通配符删库、无备份迁移这类**严重工程事故**，被 L3 停点拦在发生之前（红线行为面探针双样本全绿，`EVIDENCE.md` §三十三）。
 
-> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **405 lessons across 32 categories**. Ships as four independently installable packages (core / flows / roles / product). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
+> **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **406 lessons across 33 categories**. Ships as four independently installable packages (core / flows / roles / product). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
 
 ## 作者的话 · A note from the author
 
@@ -72,7 +72,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 2. **门禁化**——每个任务块收尾产出可复跑的 `GATE` 行（含真实命令与退出码），验证变成**证据**而非声明。
 3. **承载化**——项目根落 `memory/agent-log.md` 一档制（状态段/教训区/偏好段/流水区），跨会话续接有据可查。
 4. **注入化**——五种平台各有注入适配，规则在新会话**在场**；验收判据是平台解析到的 Base directory，不是文件里的版本号。
-5. **教训化**——踩过的坑按症状索引入库（405 条/32 类），下次同类症状先检索再动手。
+5. **教训化**——踩过的坑按症状索引入库（406 条/33 类），下次同类症状先检索再动手。
 6. **停点化**——L3 封闭清单（密钥/权限 · 数据删除 · 迁移 · 对外发布 · 架构选型 · 超预算破坏性）命中**先问后做**；清单外高危域有 `risk_scan.py` 机检兜底。规则可以补救，事故不能——这是整套机制的最后一道防线。
 
 三条常驻机制：**Token 精算机**（省的是仪式不是实质：检索按档位、命中即停、超预算写 `stop_reason` 止损）；**状态锚定**（状态段首行 `STATE: task_id|level|route|confirm|gates_passed|last_errpath`，三触发重读）；**判据可信度**（判据版本化 + 金样本回归 + 指纹，版本史见 `docs/roadtest-scorecards/JUDGELOG.md`）。
@@ -109,7 +109,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | `shisan-xinuo-workflow` | **核心**（纪律元工作流） | 三级跑道 / 判级速查 / 必问与红线 / `GATE` 12 字段 / 状态锚定 / 承载与留档 / 部署与自更新 / `references/`（注入核心、细则库、平台适配、规则清单）+ `templates/`（含 hooks 模板） |
 | `shisan-xinuo-flows` | **流程包** | 9 类任务工作流分册（新功能 / Bug 修复 / 重构 / 数据迁移 / 发布 / 前端设计 / 运维 / 文档 / 探索调研）+ 澄清流程 + 双调研与复用五问 + 模板 7 件 |
 | `shisan-xinuo-roles` | **角色包** | 8 个审查/执行角色（critic / risk-reviewer / security-auditor / debugger / contract / test / frontend / perf），每角色六字段解剖 + dispatch 矩阵 + 行动契约 |
-| `shisan-xinuo-product` | **产品工程包**（独立版本线 v0.2.6，本批联动发行；设计源与全部实证在 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill)） | 层级门（L0-L10）/ 产品对象六问 / 联通层契约（statechart）/ 双底双顶 / 判定表 / 8 台可重跑门禁（组件归因 / 态机 C1-C7 / 双向追溯 / 产品对象 P1-P4 / L0-L5 / 前端 lint / 可达性 / 使用率） |
+| `shisan-xinuo-product` | **产品工程包**（独立版本线 v0.2.7，本批 checker 反向变异修复；设计源与全部实证在 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill)） | 层级门（L0-L10）/ 产品对象六问 / 联通层契约（statechart）/ 双底双顶 / 判定表 / 8 台可重跑门禁（组件归因 / 态机 C1-C7 / 双向追溯 / 产品对象 P1-P4 / L0-L5 / 前端 lint / 可达性 / 使用率） |
 
 产品工程包解决的是另一类失败——**「产品该有的都得有」缺了没人报**：缺失是不可观测的偏差，测试全绿不代表该有的都在。它把「缺失逻辑」翻译成机器能检查的门禁（「缺失可检出」反向注入四变异实证，可重跑见设计源仓 `docs/reverse-injection/`）。
 
@@ -124,7 +124,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | **证据** | 门禁 | **8 项**发行门禁（含 H 判据自测）+ 事实对账单源断言（含条目上限） | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
 | **证据** | 行为面 harness | 探针矩阵 + scorecard 随仓 + 判据版本化/金样本自证/同批重判 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/` |
 | **防线与记忆**（高危先停 / 经验复利） | 清单外高危域机检 | `risk_scan.py` 扫 CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写——命中即至少按 L3 停点问询 | `细则 #370` |
-| **防线与记忆** | 细则库 | 405 条 / 32 类，症状索引检索键 100% 覆盖 | `references/details.md` |
+| **防线与记忆** | 细则库 | 406 条 / 33 类，症状索引检索键 100% 覆盖 | `references/details.md` |
 | **防线与记忆** | 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
 | **防线与记忆** | 项目承载 | `memory/agent-log.md` 一档制（四区）+ 双指标上限 + 机械归档 | 模板 + 核心 §8 |
 | **产品面**（第四包） | 产品工程门禁 | 8 台可重跑门禁，各带 `--selftest` 两态自测 | `skill/shisan-xinuo-product/scripts/` |
@@ -145,7 +145,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 - **三层注入**：记忆层（平台记忆/项目记忆文件）· 规则层（`AGENTS.md` / `CLAUDE.md` / 平台规则文件）· 配置层（hooks / provider / model）。项目级规则文件按平台注入点表定名，**先备份、合并不覆盖**。
 - **验收判据**是平台解析到的 Base directory 与注入副本内容，不是文件头里的版本号。
 - **注入版本 = 会话创建时的快照**：升级副本后必须**重开新会话**才生效。
-- **版本口径**：版本号以 `package.json` 为准，三个同线包 `SKILL.md` 的 `name/version` 与之一致（门禁断言）；产品工程包独立版本线（v0.2.6）。
+- **版本口径**：版本号以 `package.json` 为准，三个同线包 `SKILL.md` 的 `name/version` 与之一致（门禁断言）；产品工程包独立版本线（v0.2.7）。
 
 ## 验证与路测 · Evidence
 
@@ -161,7 +161,7 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 
 ## 分发渠道 · Distribution
 
-单一批次同步发行五渠道；下表为本批 **v3.3.1** 条目，发行回执见 [`RELEASE-CHECKLIST.md`](RELEASE-CHECKLIST.md)，滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
+单一批次同步发行五渠道；下表为**上一发行版 v3.3.1** 条目（本批 v3.4.0 准备态，发行后更新），发行回执见 [`RELEASE-CHECKLIST.md`](RELEASE-CHECKLIST.md)，滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
 
 | # | 渠道 | 链接 / 安装方式 | 本批版本 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -212,9 +212,9 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 
 | 项 | 值 |
 | --- | --- |
-| 版本 | **v3.3.1**（本批发行 2026-09-29；上一版 v3.3.0 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST） |
-| 交付形态 | **四包**：核心 `shisan-xinuo-workflow` + 流程包 + 角色包 + 产品工程包（独立版本线 v0.2.6） |
-| 细则库 | **405 条 / 32 类**（编号至 `#406`；类数=分节数，单源断言） |
+| 版本 | **v3.4.0**（本批准备态 2026-09-30；上一发行版 v3.3.1 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST） |
+| 交付形态 | **四包**：核心 `shisan-xinuo-workflow` + 流程包 + 角色包 + 产品工程包（独立版本线 v0.2.7） |
+| 细则库 | **406 条 / 33 类**（编号至 `#407`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
 | 行为面 | v3.1 全矩阵 **20/20 PASS**（单批样本）；部署后实跑 **24 针 22 PASS**；判据金样本 **23/23**（j2.5）；v3.3.0 Flash 档基线 13/20（模型档位归因，诚实口径） |
@@ -277,7 +277,8 @@ A：默认不联网、不外发；密钥类信息**绝不写入**代码/文档/�
 
 ## 版本历史 · Changelog
 
-- **v3.3.1**（2026-09-29，**本批**）：**双仓门面重构 + 净化瘦身 + 产品仓联动发行**——①README 分层瘦身（314→约 200 行）：宣发式元话术净化、四包口径对齐、facts 承载点重锚；②产品工程包升格为正式列名第四包并同步发行 v0.2.6（设计源仓 README 重构 + Release + zip）；③`install-skill.ps1 -Family` 纳入产品包（四包齐装）；④口径校对：AGENTS.md 基线行/scripts/README 门禁项数/facts_sync 死锚修复。细则 405 条/32 类、判据 j2.5、门禁 8 项不变。
+- **v3.4.0**（2026-09-30，**本批·准备态**）：**弱锚结构化 + 批X 反向变异修复 + 对标 A/C/D 施工**——①`ev=` 升格为与 GATE 12 字段并列的内联键（Flash 档 0/20 散文弱锚实证→结构化），stateLine 模板补实例形态；②批X 五 checker 十三缺口修复（registry/product-object/l0-l5/frontend-lint/a11y 的类型穿透/变体绕过/枚举死代码），selftest 全部补反向样例（细则 #407）；③`risk_scan` 高危域扩至 IaC 落盘+基础设施 reload；④flows 新增 §10 会话诊断复盘（七维+path:line 举证）、§9 五问升六问（+基线反例）；⑤盲评执行细化档落库；⑥退役机制首跑验证（usage-probe，双批次窗口未满零删除）。细则 **406 条/33 类**（+1：#407）。
+- **v3.3.1**（2026-09-29，**已发行**）：**双仓门面重构 + 净化瘦身 + 产品仓联动发行**——①README 分层瘦身（314→约 200 行）：宣发式元话术净化、四包口径对齐、facts 承载点重锚；②产品工程包升格为正式列名第四包并同步发行 v0.2.6（设计源仓 README 重构 + Release + zip）；③`install-skill.ps1 -Family` 纳入产品包（四包齐装）；④口径校对：AGENTS.md 基线行/scripts/README 门禁项数/facts_sync 死锚修复。细则 405 条/32 类、判据 j2.5、门禁 8 项不变。
 - **v3.3.0**（2026-09-29，**已发行**）：细则 373→**405 条 / 32 类** + 语义检索三层 + 机制八件（`narrative_sync` / `anchor_sweep` / `sync-all` / `net_pick` / `usage_probe` / 退役候选 / `#379` 权威声明 / Mimosa 反馈包）+ 行为面诚实口径（批 A′ 13/20 + 反向注入漏报 15 入预注册）。
 - **v3.2.0**（2026-09-20，**已发行**）：外部评审审计 + 条款级落刀批——`细则 #370`-`#374`（清单外高危域 / `GATE ev=` / 记忆档双指标 / 机器事实优先 / 副本内容哈希）+ 四个机检端口 + 判据 j2.5（金样本 23/23）。细则 368→373 条。
 - **v3.1.0 / v3.0.0 / v2.9.0**（2026-09-15~19，**均已发行**）：判据可信度批（j1.0→j2.4 + scorecard 指纹）/ 三包体系与 `GATE` 12 字段 / 独立审查修正批与安全基线。

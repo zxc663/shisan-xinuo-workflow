@@ -85,7 +85,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify-release.ps1 -SkipLeak
 ```
 [PASS] A 内容锚点+字符预算(主交付物全量特性)   (OK)
 [PASS] B hooks 三层(警告级)   (OK)
-[PASS] C 版本一致(交付物=package.json)   (SKILL version=3.3.1 ; package.json version=3.3.1)
+[PASS] C 版本一致(交付物=package.json)   (SKILL version=3.4.0 ; package.json version=3.4.0)
 [PASS] D 泄漏红线(发布物)   (扫描面内 tracked 文件 0 命中)
 [PASS] E 正文净化(常驻/模板面过程注记=0)   (OK)
 [PASS] F 索引完整性(details 编号连续+症状索引全覆盖)   (OK)

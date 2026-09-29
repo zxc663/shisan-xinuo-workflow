@@ -4,7 +4,7 @@ description: "纪律元工作流（核心）：把任何工程任务强制按「
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.3.1
+  version: 3.4.0
   tags:
     - agent-skill
     - workflow-governance
@@ -159,7 +159,7 @@ metadata:
 | 模式 | 触发 | 行为 |
 |---|---|---|
 | **普通**（默认） | 无关键词 | 关键决策执行前必问 + 关键决策即时复述确认 + 决策审计归档 |
-| **目标** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按书面计划自主；**暂停仅 L3 与严重阻塞**；其余决策「先调研→按第一推荐推进→完整归档」；每里程碑强制留档；密钥与破坏性仍暂停；回滚走本地备份、默认不 push |
+| **目标** | `目标：`/`目标模式`/`无人值守`/`goal mode`/`unattended` | 按书面计划自主；**暂停仅四类停点**（L3 清单/密钥/破坏性；不可逆且影响面大；工作区外副作用；计划崩坏——四类之外不停摆）；其余决策**记 Ruling 行推进**：`Ruling: <决定> — <依据> — <错了的代价>`；每里程碑强制留档；回滚走本地备份、默认不 push |
 | **安静** | `安静模式`/`quiet` | L1 只报结果；L2/L3 不受影响；密钥与破坏性仍必问 |
 
 目标模式附加：执行前写计划（范围/风险/预算）；子任务按**依赖边界**拆分（`#281`：强依赖串行、独立并行且带五要素、合并后统一集成验证，批派≤3 防限流）；边执行边记录；超预算自停；结束交复盘+待确认清单。**微轮次豁免**：cron 空转轮/无人值守微轮次可压缩为「一轮一行+GATE」，标注即合规。
@@ -167,7 +167,7 @@ metadata:
 
 ## 6. 门禁出口与交付纪律
 
-- **GATE 块（每任务块末尾；12 字段）**：字段语义与格式**唯一权威=注入核心「交付与留档」GATE 段**（本节不维护副本，防双份漂移）；形态恒为单行 `GATE: {key=值, …}`（英文短键+中文值）——**level/v/cmd/exit/files/refs/errpath/lessons/exempt + caps（能力使用）/effort（努力证明）/stop_reason（止损原因，未触发填 —）**；分级：包级=完整 12 字段；子块/轻任务=行内简式（3 字段即 level/v/exit）。**验证层级（`ev=`，L2-F / 高风险任务必填，`细则 #371`）**：`exec` 执行 / `cover` 覆盖 / `invariant` 不变量 / `indep` 独立路径——至少含一项非 `exec`（执行证据证「跑过」，非执行证据才触及「跑对」）；机检 `scripts/gate_audit.py --gate "<GATE 行>" --high-risk`。cmd 可重跑；refs=grep 实测值（0 照报）；**证据三挂靠（`details #363`）**：cmd=可执行命令原文（禁「已跑」叙述）、exit=真实退出码、files=真实变化路径——受外部探针（`scripts/gate_audit.py`/探针批）抽检，**虚假 GATE=errpath 标「虚假GATE」+强制降级+教训区黑历史行**（`#364`）；**caps 全空且任务显然需要外部能力 → errpath 标「能力闲置」不得宣布完成；effort 未达 §2.6 下限 → GATE 不通过**；**止损交付**：超支未完结→降级为最小验证交付并在 exempt 标 `unresolved`（`details #362`）。可重跑工件 > 自我叙述；验收权在用户。
+- **GATE 块（每任务块末尾；12 字段）**：字段语义与格式**唯一权威=注入核心「交付与留档」GATE 段**（本节不维护副本，防双份漂移）；形态恒为单行 `GATE: {key=值, …}`（英文短键+中文值）——**level/v/cmd/exit/files/refs/errpath/lessons/exempt + caps（能力使用）/effort（努力证明）/stop_reason（止损原因，未触发填 —）**；分级：包级=完整 12 字段；子块/轻任务=行内简式（3 字段即 level/v/exit）。**验证层级（`ev=`，L2-F / 高风险任务必填，键位与 12 字段并列书写如 `ev=exec+invariant`，`细则 #371`）**：`exec` 执行 / `cover` 覆盖 / `invariant` 不变量 / `indep` 独立路径——至少含一项非 `exec`（执行证据证「跑过」，非执行证据才触及「跑对」）；机检 `scripts/gate_audit.py --gate "<GATE 行>" --high-risk`。cmd 可重跑；refs=grep 实测值（0 照报）；**证据三挂靠（`details #363`）**：cmd=可执行命令原文（禁「已跑」叙述）、exit=真实退出码、files=真实变化路径——受外部探针（`scripts/gate_audit.py`/探针批）抽检，**虚假 GATE=errpath 标「虚假GATE」+强制降级+教训区黑历史行**（`#364`）；**caps 全空且任务显然需要外部能力 → errpath 标「能力闲置」不得宣布完成；effort 未达 §2.6 下限 → GATE 不通过**；**止损交付**：超支未完结→降级为最小验证交付并在 exempt 标 `unresolved`（`details #362`）。可重跑工件 > 自我叙述；验收权在用户。
 - **完成声明六件套 + 用户验收门**（`#354`）：宣布完成时必须提交 ①变更摘要 ②影响模块清单 ③验证证据（测试输出/边界用例结果）④未覆盖项与风险 ⑤回滚方案 ⑥建议用户重点抽查的边界用例——**完成 = 证据 + 用户验收，不是 agent 的自称状态**（用户随机/指定复核）。收敛判据=同一可重跑命令 exit 0（`#345`）。
 - **交付五查**：缺失需求/边界情况/临时代码/无关改动/错误已写入日志模块（有日志模块时，diff 里 `console.` 与空 `catch {}` = 零容忍）。
 - **回滚规则**：重大修改或不可逆操作前必须先建回滚点（git 干净基线 commit/stash 或快照）。**原子操作锁**：删除/迁移/覆盖写/发布=先列命令清单→结束回合等确认。
@@ -231,7 +231,7 @@ metadata:
 | `references/skill-usage.md` | Skill 发现/注册机制+加载决策路由 | Skill 选型纠结/弱模型场景 |
 | `references/rules.md` | 编号工程纪律 47 条（地基） | 纪律争议/查规则原文 |
 | `shisan-xinuo-flows`（流程包） | 9 类任务工作流分册/澄清流程/双调研/复用五问/产品五问深度/模板 7 件 | 核心路由命中流程场景/任务类型不明/规划质量存疑 |
-| `references/details.md` | 落地细则 405 条·32 类（症状索引→按类加载；一键检索 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`） | 症状关键词命中踩坑类别；不熟悉领域即兴发挥前 |
+| `references/details.md` | 落地细则 406 条·33 类（症状索引→按类加载；一键检索 `python "<技能安装目录>/scripts/detail_lookup.py" "<症状关键词>"`） | 症状关键词命中踩坑类别；不熟悉领域即兴发挥前 |
 | `references/security.md` | 密钥红线/应急响应/供应链与 SBOM | 接触密钥/疑似泄露/发布/依赖引入 |
 | `references/never-list.md` | 永不清单 7 类（明确禁止项） | 开工/提交/任何 L3 前**三读逐条核对** |
 | `references/new-project-bootstrap.md` | 新项目 4 步引导 | 首次任务/无 `memory/` |

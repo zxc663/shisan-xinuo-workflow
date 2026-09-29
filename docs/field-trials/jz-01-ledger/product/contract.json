@@ -1,0 +1,8 @@
+{
+  "recovery": [
+    {"state": "save_failed", "action": "RETRY", "target": "editing", "note": "保存失败后重试，回到编辑态修改后重新提交"}
+  ],
+  "non_error_failures": [
+    {"state": "saving", "action": "FAIL", "target": "save_failed", "note": "保存请求失败进入失败态"}
+  ]
+}

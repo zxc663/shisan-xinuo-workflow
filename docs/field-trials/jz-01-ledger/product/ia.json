@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {"path": "/home", "has_global_nav": true},
+    {"path": "/stats", "has_global_nav": false},
+    {"path": "/settings", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/home", "exits": 3},
+    {"path": "/stats", "exits": 1},
+    {"path": "/settings", "exits": 0}
+  ],
+  "find_paths": ["搜索"]
+}
