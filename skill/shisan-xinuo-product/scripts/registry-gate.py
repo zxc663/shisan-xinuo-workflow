@@ -20,13 +20,24 @@ from pathlib import Path
 MARK = "registry:"
 DEFAULT_BASELINE = ".registry-baseline.json"
 
+# 组件目录段（scope=components 的识别集合，防 src/ui 类命名逃逸——批 X RG-1）
+COMPONENT_DIRS = {"components", "component", "ui", "widgets"}
+# 非源码段排除（对齐 lint/a11y 排除表，防三方件误报——批 X RG-4）
+COMPONENT_EXCLUDE = {"node_modules", "dist", "build", ".git", "vendor", "coverage",
+                     "test", "tests", "__tests__", "__pycache__", ".next", ".nuxt"}
+
 
 def component_files(path: Path, scope: str, exts: list[str]) -> list[Path]:
+    exts = [e.lower() for e in exts]
     out: list[Path] = []
     for f in sorted(path.rglob("*")):
-        if f.suffix not in exts or not f.is_file():
+        if f.suffix.lower() not in exts or not f.is_file():
             continue
-        if scope == "components" and "component" not in str(f).lower():
+        parts = {p.lower() for p in f.relative_to(path).parts[:-1]}
+        parts.add(path.name.lower())  # 扫描根本身可能是组件目录（如 .../components）
+        if parts & COMPONENT_EXCLUDE:
+            continue
+        if scope == "components" and not (parts & COMPONENT_DIRS):
             continue
         out.append(f)
     return out
@@ -64,8 +75,25 @@ def selftest() -> int:
         (comp / "New.vue").write_text("// registry: New 自研归因=上游无解\nexport default () => <div/>", encoding="utf-8")
         missing, _ = scan(comp, "components", [".vue"], bl, write_baseline=False)
         ok3 = missing == []
-        print(f"selftest: 基线存量豁免={ok1} 新增无标记被拦={ok2} 新增带标记放行={ok3}")
-        return 0 if ok1 and ok2 and ok3 else 1
+        # 4) 反向：src/ui 目录（无 component 字样）无标记 → 必须拦（RG-1）
+        ui = root / "src" / "ui"
+        ui.mkdir(parents=True)
+        (ui / "Button.vue").write_text("export default () => <button/>", encoding="utf-8")
+        missing, _ = scan(root / "src", "components", [".vue"], bl, write_baseline=False)
+        ok4 = any("Button.vue" in m for m in missing)
+        # 5) 反向：大写后缀 .VUE 无标记 → 必须拦（RG-2）
+        (comp / "Upper.VUE").write_text("export default () => <div/>", encoding="utf-8")
+        missing, _ = scan(comp, "components", [".vue"], bl, write_baseline=False)
+        ok5 = any("Upper.VUE" in m for m in missing)
+        # 6) 反向：node_modules 三方件 → scope=all 也不报（RG-4）
+        nm = root / "node_modules" / "some-lib"
+        nm.mkdir(parents=True)
+        (nm / "lib.vue").write_text("<template/>", encoding="utf-8")
+        missing, _ = scan(root, "all", [".vue"], bl, write_baseline=False)
+        ok6 = not any("node_modules" in m for m in missing)
+        print(f"selftest: 基线存量豁免={ok1} 新增无标记被拦={ok2} 新增带标记放行={ok3} "
+              f"ui目录逃逸被拦={ok4} 大写后缀被拦={ok5} 三方件排除={ok6}")
+        return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 else 1
 
 
 def main() -> int:

@@ -4,7 +4,7 @@ description: "十三希诺工作流·流程包：9 类任务工作流分册（�
 license: MIT
 compatibility: "Trae、Codex、Claude Code、Cursor、Windsurf、WorkBuddy 及任意支持 Agent Skills 标准的 CLI 编码智能体"
 metadata:
-  version: 3.3.1
+  version: 3.4.0
   tags:
     - agent-skill
     - workflow-recipes
@@ -25,7 +25,7 @@ metadata:
 
 ## 索引
 
-**`references/workflows.md` 分节**：§0.0 澄清流程（状态澄清四步）｜§0.1 前置与总纲｜§0.2 联网调研可信依据（权威性四级：一手源>实证源>社区口碑>榜单热度）｜§0.3 产品完善度诊断｜§0.4 双调研规划（工程师+产品双视角）｜§0.5-0.6 调研矩阵与分流决策表｜§1 新功能/新项目开发 15 步｜§2 Bug 修复与问题排查 7 步｜§3-§9 其余任务类工作流｜复用五问决策链｜质量门禁细节。
+**`references/workflows.md` 分节**：§0.0 澄清流程（状态澄清四步）｜§0.1 前置与总纲｜§0.2 联网调研可信依据（权威性四级：一手源>实证源>社区口碑>榜单热度）｜§0.3 产品完善度诊断｜§0.4 双调研规划（工程师+产品双视角）｜§0.5-0.6 调研矩阵与分流决策表｜§1 新功能/新项目开发 15 步｜§2 Bug 修复与问题排查 7 步｜§3-§9 其余任务类工作流｜§10 会话诊断与复盘（七维外部分析+path:line 举证）｜复用五问决策链｜质量门禁细节。
 
 **`templates/` 七件**：`plan-template.md`（规划）｜`acceptance-criteria-template.md`（验收标准）｜`task-record-template.md`（任务记录含 GATE 字段）｜`retrospective-template.md`（复盘）｜`rollback-point-template.md`（回滚点）｜`prompt-budget.template.md`（提示词预算）｜`compact-retention-template.md`（压缩保留指令）。
 

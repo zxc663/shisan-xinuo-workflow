@@ -21,8 +21,8 @@ def _hook_log(msg):
 DISCIPLINE_PACK = (
     "[工作流纪律包·hooks 通道]\n"
     "每轮复述：每一用户轮首产物=复述（新任务全量三行；追加/继续=一行：收到 X｜理解为 Y｜边界 Z）\n"
-    "状态行（开工/阶段边界）：`Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> "
-    "confirm=<无需/已问/豁免:理由>`\n"
+    "状态行（开工/阶段边界，每轮首产物）：`Context: state=<读档/新建/单发> L=<L1/L2-S/L2-F> "
+    "confirm=<无需/已问/豁免:理由>`（实例形态：`Context: state=读档 L=L2-S confirm=无需`）\n"
     "回指加载：本核心为瘦身版——以 Skill 工具加载 shisan-xinuo-workflow（SKILL.md），"
     "细则/模板按症状索引回指\n"
     "复杂任务思考链：本质/必要/惯性三拆→显式列约束与假设→因果链 3-5 层逐环验证→围绕系统约束定对策（rules #7-#11）\n"
@@ -30,7 +30,8 @@ DISCIPLINE_PACK = (
     "#294 Edit 报 not read/modified=文件双通道混用｜#233 命名直觉=假绿｜#228 改包先重编｜"
     "#229 常驻进程旧 dist｜#214 响应分层断言｜#163 统一错误契约｜"
     "#256·#269 异步栈丢调用点·响应体只消费一次｜#262 深拷贝语义变体\n"
-    "收尾 GATE 12 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort/stop_reason（cmd/exit/files 须真实挂靠，虚假=降级）"
+    "收尾 GATE 12 字段：level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort/stop_reason"
+    "+ev=<exec/cover/invariant/indep，L2-F 必填一项非 exec>（cmd/exit/files 须真实挂靠，虚假=降级）"
     "（权威定义=注入核心交付段；refs 填 grep 实测值，禁自估）"
 )
 CARRIER_HINT = (

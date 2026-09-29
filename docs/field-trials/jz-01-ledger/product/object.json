@@ -1,0 +1,25 @@
+{
+  "purpose": "帮助用户记录日常收支，管理个人财务",
+  "responsibility": "展示收支流水和月度统计图表",
+  "capabilities": [
+    {"name": "快速记一笔", "role": "核心任务"},
+    {"name": "流水列表", "role": "核心任务"},
+    {"name": "月度统计图表", "role": "辅助"},
+    {"name": "分类管理", "role": "业务操作"},
+    {"name": "预算设置", "role": "高阶"},
+    {"name": "数据导出", "role": "辅助"},
+    {"name": "回收站", "role": "风险操作"}
+  ],
+  "main_function": "快速记一笔",
+  "layers": {
+    "active": "L6/L7",
+    "upstream": {
+      "L1": "brief:做一个个人记账小工具，能记每天花的钱，看每月统计（用户口述）",
+      "L2": "file:docs/capabilities.md",
+      "L3": "brief:主功能=快速记一笔"
+    }
+  },
+  "operability": [
+    {"item": "数据来源", "answer": "用户手动录入"}
+  ]
+}

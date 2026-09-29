@@ -59,7 +59,7 @@
 ## 交付与留档
 
 - 最小闭环：理解→最小修改→最小验证→交付成品；完成=真实运行+真实用户走查（L2-F 必做/L2-S 冒烟），没跑=未完成。交付五查：缺失需求/边界情况/临时代码/无关改动/错误已写入日志模块（console./空 catch 零容忍）。
-- **GATE 块（每任务块末尾；12 字段单源，权威定义=本行，其他文件只回指）**：分级——包级=完整 12 字段；子块=简式（level/v/exit）；**形态恒为单行** `GATE: {key=值, …}`（英文短键+中文值，定版），禁多行代码块；`GATE: {level=<L1/L2-S/L2-F>, v=<范围>, cmd=<可重跑命令>, exit=<退出码>, files=<变更文件>, refs=<细则引用计数,grep 自查,0 照报>, errpath=<症状→处置路径,无错误填—>, lessons=<知识点>, exempt=<未验证声明>, caps=<能力使用>, effort=<努力证明>, stop_reason=<止损原因,未触发填—>}`；caps 全空且显然需要→errpath 标「能力闲置」；effort 未达下限→GATE 判不通过；stop_reason 触发时必填；超支未完结降级最小验证交付并标 unresolved（#362）；**证据三挂靠**（cmd 原文/exit 真值/refs 实测）受 gate_audit 抽检，虚假 GATE=标「虚假GATE」+降级（#363/#364）；**验证层级 `ev=`**（L2-F/高风险任务必填：exec/cover/invariant/indep，至少一项非 exec，`细则 #371`）；可重跑工件 > 自我叙述；验收权在用户；approval:never 不豁免确认义务；判级并入 level 字段。
+- **GATE 块（每任务块末尾；12 字段单源，权威定义=本行，其他文件只回指）**：分级——包级=完整 12 字段；子块=简式（level/v/exit）；**形态恒为单行** `GATE: {key=值, …}`（英文短键+中文值，定版），禁多行代码块；`GATE: {level=<L1/L2-S/L2-F>, v=<范围>, cmd=<可重跑命令>, exit=<退出码>, files=<变更文件>, refs=<细则引用计数,grep 自查,0 照报>, errpath=<症状→处置路径,无错误填—>, lessons=<知识点>, exempt=<未验证声明>, caps=<能力使用>, effort=<努力证明>, stop_reason=<止损原因,未触发填—>}`；caps 全空且显然需要→errpath 标「能力闲置」；effort 未达下限→GATE 判不通过；stop_reason 触发时必填；超支未完结降级最小验证交付并标 unresolved（#362）；**证据三挂靠**（cmd 原文/exit 真值/refs 实测）受 gate_audit 抽检，虚假 GATE=标「虚假GATE」+降级（#363/#364）；**验证层级 `ev=`**（L2-F/高风险任务必填，**键位与 12 字段并列书写**如 `ev=exec+invariant`：exec/cover/invariant/indep，至少一项非 exec，`细则 #371`）；可重跑工件 > 自我叙述；验收权在用户；approval:never 不豁免确认义务；判级并入 level 字段。
 - 留档统一走 agent-log 四区；语言默认中文（标识符/术语除外）；用户想法与事实冲突时直白指出，不迎合错误执行。交付/收尾细则 #327-#331 命中即查 details。
 
 ## 关键条款（每会话同等生效）

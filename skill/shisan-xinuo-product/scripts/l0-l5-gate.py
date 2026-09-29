@@ -58,6 +58,23 @@ VANITY = re.compile(r"总注册|总下载|总PV|总访问|累计用户|累计注
 JOB_FORM = re.compile(r"[\u4e00-\u9fa5A-Za-z]+\s*[\u4e00-\u9fa5A-Za-z]+\s*(在|当|while|during|for)?\s*[\u4e00-\u9fa5A-Za-z]*")
 
 
+def _as_bool(v) -> bool:
+    """LL-2（批 X）：字符串 "false"/"0"/"no" 曾因 truthy 逃过三件套判——非布尔词形一律按 False。"""
+    if isinstance(v, bool):
+        return v
+    return isinstance(v, str) and v.strip().lower() in ("true", "yes", "1")
+
+
+def _as_int_or_none(v):
+    """LL-3（批 X）：字符串 "0" 曾因 `==0` 为 False 逃过死端判；非数值形态按 None→0 保守处理。"""
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, int):
+        return v
+    s = str(v).strip() if isinstance(v, str) else ""
+    return int(s) if s.lstrip("-").isdigit() else None
+
+
 def check_goal(goal: dict) -> tuple[list[str], list[str]]:
     fails: list[str] = []
     warns: list[str] = []
@@ -80,6 +97,9 @@ def check_goal(goal: dict) -> tuple[list[str], list[str]]:
             warns.append(f"L0-C13 主指标疑为虚荣/累计型（{ns}）——warning：基础设施类可合法，人工裁决")
         elif not METRIC_FORM.search(ns):
             fails.append(f"L0-C12 主指标无度量口径（{ns}）——不可度量目标不可判")
+    elif ns is not None:
+        # LL-1（批 X）：north_star=123 数字形态曾整段静默放行（isinstance(str) 不成立→全部检查落空）
+        fails.append(f"L0-C1/C10 主结果声明类型非法（{type(ns).__name__}）——须字符串或单元素数组")
     krs = goal.get("key_results") or []
     if krs:
         for i, kr in enumerate(krs, 1):
@@ -103,17 +123,18 @@ def check_ia(ia: dict) -> tuple[list[str], list[str]]:
         warns.append("L5-C1 组织系统声明缺失（分类主维度：主题/任务/用户/格式/时间）")
     g, l, li = ia.get("global_nav"), ia.get("local_nav"), ia.get("location_indicator")
     exempt = str(ia.get("local_nav_exempt", "")).strip()
-    missing = [n for n, v in (("全局导航", g), ("局部导航", l), ("当前位置指示", li)) if not v]
+    missing = [n for n, v in (("全局导航", g), ("局部导航", l), ("当前位置指示", li)) if not _as_bool(v)]
     if "局部导航" in missing and exempt:
         missing.remove("局部导航")
     if missing:
         fails.append(f"L5-C3 导航三件套缺 {'、'.join(missing)} 且无豁免声明")
     routes = ia.get("routes") or []
-    orphans = [r.get("path", "?") for r in routes if not r.get("has_global_nav")]
+    orphans = [r.get("path", "?") for r in routes if not _as_bool(r.get("has_global_nav"))]
     if orphans:
         fails.append(f"L5-C5 前门可达失败：孤页 {orphans}（≥半数访问不经首页，每页须可达全局导航）")
     pages = ia.get("pages") or []
-    dead = [p.get("path", "?") for p in pages if p.get("exits", 0) == 0 and not p.get("terminal")]
+    dead = [p.get("path", "?") for p in pages
+            if (_as_int_or_none(p.get("exits")) or 0) == 0 and not _as_bool(p.get("terminal"))]
     if dead:
         fails.append(f"L5-C10 死端页 {dead}（与 L7 无死端同构：无出链且非终态）")
     fp = ia.get("find_paths") or []
@@ -159,9 +180,19 @@ def selftest() -> int:
                "pages": [{"path": "/trap", "exits": 0}]}
     f5, w5 = check_ia(ia_bad)
     ok4 = any("L5-C5" in x for x in f5) and any("L5-C10" in x for x in f5) and any("L5-C3" in x for x in f5)
-    print(f"selftest: 合法目标+IA放行={ok1} 多目标/缺时间窗拦截={ok2} 虚荣warning不fail={ok3} 孤页/死端/三件套拦截={ok4} 键缺失必拦(F5)={ok5}"
+    # 批 X 反向变异（细则 #407）
+    g_ll1 = {"north_star": 123, "key_results": ok_goal_krs()}  # LL-1：数字 ns 曾静默放行
+    f_ll1, _ = check_goal(g_ll1)
+    ok6 = any("类型非法" in x for x in f_ll1)
+    ia_ll2 = {"organization": "主题", "global_nav": "false", "local_nav": True, "location_indicator": True,
+              "routes": [{"path": "/x", "has_global_nav": "false"}],  # LL-2：字符串 "false" 真值穿透
+              "pages": [{"path": "/y", "exits": "0"}]}  # LL-3：字符串 "0" 逃过死端判
+    f_ll2, _ = check_ia(ia_ll2)
+    ok7 = any("L5-C3" in x for x in f_ll2) and any("L5-C5" in x for x in f_ll2) and any("L5-C10" in x for x in f_ll2)
+    print(f"selftest: 合法目标+IA放行={ok1} 多目标/缺时间窗拦截={ok2} 虚荣warning不fail={ok3} 孤页/死端/三件套拦截={ok4} 键缺失必拦(F5)={ok5} "
+          f"批X反向LL1={ok6} LL2/LL3={ok7}"
           f"（warning 基线 {len(w1)+len(w2)+len(w4)+len(w5)} 条）")
-    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 else 1
+    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 else 1
 
 
 def ok_goal_krs() -> list[str]:

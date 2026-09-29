@@ -1,0 +1,19 @@
+{
+  "initial": "idle",
+  "states": {
+    "idle": {"on": {"OPEN_EDITOR": "editing", "OPEN_LIST": "list"}},
+    "editing": {
+      "on": {
+        "SUBMIT": [{"guard": "amount > 0", "target": "saving"}],
+        "CANCEL": "idle",
+        "DELETE": "deleted"
+      }
+    },
+    "saving": {"on": {"DONE": "done", "FAIL": "save_failed"}},
+    "save_failed": {"on": {"RETRY": "saving", "DISCARD": "idle"}},
+    "list": {"on": {"PICK": "editing", "CLOSE": "idle"}},
+    "done": {"type": "final"},
+    "importing": {"on": {"IMPORT_DONE": "list"}},
+    "conflict": {"on": {}}
+  }
+}

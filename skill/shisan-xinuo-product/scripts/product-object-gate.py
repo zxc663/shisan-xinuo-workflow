@@ -11,6 +11,8 @@
      adjudicated:<裁决>（显式裁决）；缺失或 file 引用悬空 → 逐层报出，exit 1。
   P4 可运营性：operability 数组非空且每条有 item+answer——前台能力必须有管理答案
      或显式裁决（判定=假能力，J-32）。
+  P4-W 覆盖维度（warning 级，jz-01 试金石回流）：operability 只答了「来源」一个维度
+     （谁管理/权限/备份恢复/fallback 落空）——六问⑥答一条不等于答完。
 
 与层级门的关系：本 gate 是「上游已确认」的机器抽查件，不替代跑道步骤 0a 的
 层级定位判断（层定位本身=人工裁决域，见 layer-stack.md §4）。
@@ -22,48 +24,62 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
 ROLES = ("核心任务", "业务操作", "辅助", "高阶", "风险操作")
-BANNED_VERB_PREFIXES = ("展示", "显示")
+# 句首禁用动词（允许前导空白/全角括号/引号包裹——批 X PO-2：`（展示…）` 曾绕过 startswith）
+BANNED_VERB_RE = re.compile(r"^[\s（(「『\"']*(展示|显示)")
 UPSTREAM_LAYERS = ("L1", "L2", "L3", "L4")
+# P4-W：可运营性内容维度词形（warning 级——P4 只拦缺失，这里拦「答一条当答完」）
+OPER_DIM = re.compile(r"来源|后台|权限|备份|恢复|fallback|兜底|删除|导出", re.IGNORECASE)
+
+
+def _clean_str(v) -> str:
+    """仅接受 str 类型；非 str（数字/bool/None）返回空串触发缺失判（批 X PO-3 类型混杂穿透）。"""
+    return v.strip() if isinstance(v, str) else ""
 
 
 def check(obj: dict, base: Path) -> list[str]:
     fails: list[str] = []
-    purpose = str(obj.get("purpose", "")).strip()
-    responsibility = str(obj.get("responsibility", "")).strip()
+    purpose = _clean_str(obj.get("purpose"))
+    responsibility = _clean_str(obj.get("responsibility"))
     caps = obj.get("capabilities") or []
 
     # P1 定义存在性（候选 11）
     if not purpose:
-        fails.append("P1 purpose 缺失（为什么存在=六问①，非空）")
+        fails.append("P1 purpose 缺失（为什么存在=六问①，非空 str）")
     if not responsibility:
-        fails.append("P1 responsibility 缺失（职责句=六问②）")
-    elif responsibility.startswith(BANNED_VERB_PREFIXES):
+        fails.append("P1 responsibility 缺失（职责句=六问②，非空 str）")
+    elif BANNED_VERB_RE.match(responsibility):
         fails.append(f"P1 职责句以「{responsibility[:2]}」开头——须管理性动词（X 管理/运营），禁展示/显示（J-29）")
     if not caps:
         fails.append("P1 capabilities 缺失或为空（能力清单=六问③）")
     else:
         for c in caps:
-            if not isinstance(c, dict) or not str(c.get("name", "")).strip() or not str(c.get("role", "")).strip():
+            if not isinstance(c, dict) or not _clean_str(c.get("name")) or not _clean_str(c.get("role")):
                 fails.append(f"P1 能力条目缺 name/role：{c}")
+            elif _clean_str(c.get("role")) not in ROLES:
+                fails.append(f"P1 能力 role '{c.get('role')}' 不在枚举 {ROLES} 内（批 X PO-4：枚举定义必须生效）")
 
     # P2 主功能唯一性
-    main_fn = str(obj.get("main_function", "")).strip()
+    main_fn = _clean_str(obj.get("main_function"))
     core = [str(c.get("name", "")).strip() for c in caps if isinstance(c, dict) and str(c.get("role", "")).strip() == "核心任务"]
     if caps:
         if len(core) != 1:
             fails.append(f"P2 role=核心任务 的能力数={len(core)}（须恰好 1）——主功能不明=「什么都有，但什么都不重要」")
-        if main_fn and main_fn not in {str(c.get("name", "")).strip() for c in caps if isinstance(c, dict)}:
-            fails.append(f"P2 main_function '{main_fn}' 不在 capabilities 中")
-        if main_fn and core and main_fn != core[0]:
-            fails.append(f"P2 main_function '{main_fn}' 与核心任务 '{core[0]}' 不一致")
+        if not main_fn:
+            fails.append("P2 main_function 缺失/为空（批 X PO-1：空值曾整段跳过唯一性检查）")
+        else:
+            if main_fn not in {str(c.get("name", "")).strip() for c in caps if isinstance(c, dict)}:
+                fails.append(f"P2 main_function '{main_fn}' 不在 capabilities 中")
+            if core and main_fn != core[0]:
+                fails.append(f"P2 main_function '{main_fn}' 与核心任务 '{core[0]}' 不一致")
 
     # P3 层级声明与上游引用存在性（候选 14）
     layers = obj.get("layers") or {}
-    if not str(layers.get("active", "")).strip():
+    if not _clean_str(layers.get("active")):
         fails.append("P3 layers.active 缺失（层级门 0a：声明本任务活动层）")
     upstream = layers.get("upstream") or {}
     for layer in UPSTREAM_LAYERS:
@@ -87,9 +103,22 @@ def check(obj: dict, base: Path) -> list[str]:
         fails.append("P4 operability 缺失或为空（六问⑥：谁管理/来源/权限/fallback，或显式裁决「本期无后台+谁管内容」）")
     else:
         for o in oper:
-            if not isinstance(o, dict) or not str(o.get("item", "")).strip() or not str(o.get("answer", "")).strip():
+            if not isinstance(o, dict) or not _clean_str(o.get("item")) or not _clean_str(o.get("answer")):
                 fails.append(f"P4 可运营性条目缺 item/answer：{o}")
     return fails
+
+
+def check_warnings(obj: dict) -> list[str]:
+    warns: list[str] = []
+    oper = obj.get("operability") or []
+    if oper:
+        blob = " ".join(_clean_str(o.get("item")) + " " + _clean_str(o.get("answer"))
+                        for o in oper if isinstance(o, dict))
+        dims = len(set(OPER_DIM.findall(blob)))
+        if dims < 2:
+            warns.append(f"P4-W 可运营性仅覆盖 {dims} 个管理维度（{blob.strip()[:40]}…）——"
+                         "谁管理/来源/权限/备份恢复/fallback 至少答两维或显式裁决「本期无后台+谁管」")
+    return warns
 
 
 def selftest() -> int:
@@ -121,11 +150,35 @@ def selftest() -> int:
     bad_p4 = dict(good, operability=[])
     ok_p4 = any(x.startswith("P4") for x in check(bad_p4, base))
 
-    ok = all([ok1, ok_p1, ok_p2, ok_p3, ok_p4])
+    # 批 X 反向变异（细则 #407：自测只盖正向样例时，反向变异是盲区）
+    bad_po1 = dict(good, main_function="")  # PO-1：空 main_function 曾整段跳过唯一性检查
+    ok_po1 = any("main_function 缺失" in x for x in check(bad_po1, base))
+    bad_po2 = dict(good, responsibility="（展示看板数据）")  # PO-2：全角括号包裹曾绕过 startswith
+    ok_po2 = any("禁展示/显示" in x for x in check(bad_po2, base))
+    bad_po3 = dict(good, purpose=123, layers=dict(good["layers"], active=6))  # PO-3：数字类型穿透 str() 转换
+    f_po3 = check(bad_po3, base)
+    ok_po3 = sum(1 for x in f_po3 if x.startswith("P1 purpose") ) >= 1 and any("layers.active" in x for x in f_po3)
+    bad_po4 = dict(good, capabilities=[{"name": "浏览清单", "role": "核心任务"}, {"name": "导出", "role": "管理"}])  # PO-4：枚举死代码
+    ok_po4 = any("不在枚举" in x for x in check(bad_po4, base))
+
+    # P4-W：单维度 operability → W；两维度以上 → 静默（jz-01 回流）
+    thin = dict(good, operability=[{"item": "数据来源", "answer": "用户手动录入"}])
+    w_thin = check_warnings(thin)
+    ok_pw1 = len(w_thin) == 1 and "1 个管理维度" in w_thin[0]
+    full = dict(good, operability=[{"item": "数据来源", "answer": "用户手动录入"},
+                                   {"item": "删除权限", "answer": "仅本人，回收站可恢复"}])
+    ok_pw2 = check_warnings(full) == []
+
+    ok = all([ok1, ok_p1, ok_p2, ok_p3, ok_p4, ok_po1, ok_po2, ok_po3, ok_po4, ok_pw1, ok_pw2])
     print(f"selftest: 合法定义放行={ok1} P1存在性/职责句拦截={ok_p1} P2主功能唯一拦截={ok_p2} "
-          f"P3层级声明+上游引用拦截={ok_p3} P4可运营性拦截={ok_p4} → {'PASS' if ok else 'FAIL'}")
+          f"P3层级声明+上游引用拦截={ok_p3} P4可运营性拦截={ok_p4} "
+          f"批X反向PO1={ok_po1} PO2={ok_po2} PO3={ok_po3} PO4={ok_po4} "
+          f"P4-W单维度W/两维静默={ok_pw1}/{ok_pw2} → {'PASS' if ok else 'FAIL'}")
     if not ok:
-        print("  detail:", {"p1": f_p1, "p2": check(bad_p2, base), "p3": f_p3})
+        print("  detail:", {"p1": f_p1, "p2": check(bad_p2, base), "p3": f_p3,
+                            "po1": check(bad_po1, base), "po2": check(bad_po2, base),
+                            "po3": f_po3, "po4": check(bad_po4, base),
+                            "pw1": w_thin})
     return 0 if ok else 1
 
 
@@ -141,6 +194,8 @@ def main() -> int:
         return 1
     p = Path(a.file)
     obj = json.loads(p.read_text(encoding="utf-8"))
+    for w in check_warnings(obj):
+        print("W", w)
     fails = check(obj, p.resolve().parent)
     if fails:
         print(f"FAIL: {len(fails)} 项产品对象缺陷：")

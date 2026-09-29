@@ -24,4 +24,4 @@
 ## 本仓库底线（区别于通用纪律）
 - 密钥/令牌绝不写入本仓库任何文件（verify-release 泄漏红线 D 项会拦）；机密文档仅存本机专用机密目录（位置不在此写出、不随仓，以 memory 最新记录为准）。
 - 发行动作（npm / GitHub Release / Gitee / ClawHub / About）必须先获用户批准 + `verify-release` **8/8** PASS + 观测阶段。
-- 当前基线 = **v3.3.1 本批（双仓门面重构 + 净化瘦身 + 产品仓联动发行）**（上一发行态 v3.3.0 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST B 节与项目信息 §五）——细则 **405 条·32 类**（编号至 `#406`）+ 判据 **j2.5**（金样本 **23/23**）+ 门禁 **8 项** + 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8）。**三面校准以 sync-all 跑后回执为准**。新会话验收锚=「在场提示」版本行 + `405 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。
+- 当前基线 = **v3.4.0 本批（弱锚结构化 + 批X checker 反向变异修复 + 对标 A/C/D 施工 + 盲评准备态）**（上一发行态 v3.3.1 全渠道 2026-09-29，回执见 RELEASE-CHECKLIST B/M 节与项目信息 §五）——细则 **406 条·33 类**（编号至 `#407`）+ 判据 **j2.5**（金样本 **23/23**）+ 门禁 **8 项** + 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8）。**三面校准以 sync-all 跑后回执为准**。新会话验收锚=「在场提示」版本行 + `406 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。

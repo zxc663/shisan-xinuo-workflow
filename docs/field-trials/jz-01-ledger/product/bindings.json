@@ -1,0 +1,8 @@
+{
+  "bindings": [
+    {"page": "HomePage", "component": "QuickBarButton", "feature": "快速记一笔", "backend": "POST /ledger", "evidence": "shot-home-quick.png"},
+    {"page": "HomePage", "component": "TransactionList", "feature": "流水列表", "backend": "GET /ledger", "evidence": "TODO"},
+    {"page": "StatsPage", "component": "StatsChart", "feature": "月度统计图表", "backend": "NONE(纯展示)", "evidence": "shot-stats.png"},
+    {"page": "HomePage", "component": "CategoryPicker", "feature": "分类选择", "backend": "GET /categories", "evidence": "shot-category.png"}
+  ]
+}

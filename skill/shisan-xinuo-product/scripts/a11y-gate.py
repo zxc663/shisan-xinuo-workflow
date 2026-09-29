@@ -33,6 +33,9 @@ TAG_IMG = re.compile(r"<img\b[^>]*>")
 TAG_FIELD = re.compile(r"<(input|select|textarea)\b[^>]*?>")
 TAG_FLOW = re.compile(r"<(label|input|select|textarea)\b[^>]*?>|</label>")
 TAG_CLICKABLE = re.compile(r"<(button|a)\b[^>]*?>(.*?)</\1>", re.S)
+# A3b（jz-01 试金石回流）：伪按钮——click 绑定落在非语义元素上（含 .self/.prevent 等修饰符）
+TAG_PSEUDO = re.compile(r"<([a-z][a-z0-9-]*)\b[^>]*?(?:@click(?:\.\w+)*|v-on:click(?:\.\w+)*|onClick|\(click\))=", re.I)
+NON_INTERACTIVE = {"div", "span", "p", "li", "ul", "ol", "section", "img", "td", "tr", "table", "h1", "h2", "h3", "h4", "h5", "h6"}
 TAG_HTML = re.compile(r"<html\b[^>]*>")
 ATTR = re.compile(r"""([\w-]+)\s*=\s*["']([^"']*)["']""")
 
@@ -45,7 +48,8 @@ def attrs_of(open_tag: str) -> dict[str, str]:
 
 
 def has_any(attrs: dict[str, str], names: tuple[str, ...]) -> bool:
-    return any(n in attrs for n in names)
+    # 批 X AG-1：aria-label="" 空值曾因「键在场」放行——可访问名须非空
+    return any(n in attrs and attrs[n].strip() for n in names)
 
 
 def line_of(text: str, pos: int) -> int:
@@ -101,10 +105,26 @@ def scan_file(p: Path) -> list[str]:
         name = open_tag[1:open_tag.find(" ")] if " " in open_tag else open_tag[1:-1]
         out.append((line_of(text, m.start()), "A3", f"<{name}> 内容为空且无可访问名", open_tag[:60]))
 
+    # A3b：伪按钮——click 绑定在非交互元素且无 role（点击热区无语义=键盘/读屏双双不可达）
+    for m in TAG_PSEUDO.finditer(text):
+        open_tag = m.group(0)
+        attrs = attrs_of(open_tag)
+        tag = m.group(1).lower()
+        if tag not in NON_INTERACTIVE:
+            continue  # 原生交互元素/自定义组件（大写开头）保守放行
+        if attrs.get("role", "").strip():
+            continue  # role 语义已声明（role="button" 等）
+        out.append((line_of(text, m.start()), "A3b",
+                    f"<{tag}> click 无 role（伪按钮：加 role=\"button\"+键盘事件，或改用 <button>）", open_tag[:60]))
+
     if p.suffix == ".html":
         for m in TAG_HTML.finditer(text):
-            if "lang" not in attrs_of(m.group(0)):
+            aa = attrs_of(m.group(0))
+            # 批 X AG-2：lang="" 空值曾因「键在场」放行——空 lang 与缺失同罪
+            if "lang" not in aa:
                 out.append((line_of(text, m.start()), "A4", "<html> 无 lang 属性", m.group(0)[:60]))
+            elif not aa["lang"].strip():
+                out.append((line_of(text, m.start()), "A4", '<html> lang 为空值', m.group(0)[:60]))
 
     # 基线稳定性：frag 空白规范化（换行/缩进不敏感）；行号随源码漂移=与 frontend-lint 同款已知权衡（源码变动重建基线）
     return [f"{rel}:{ln} [{rid}] {name}：{re.sub(r'\\s+', ' ', frag).strip()[:80]}" for ln, rid, name, frag in out]
@@ -127,6 +147,7 @@ def selftest() -> int:
             "<template>\n"
             '  <img src="x.png">\n'
             '  <input type="text">\n'
+            '  <input type="text" aria-label="">\n'  # 批 X AG-1：空 aria-label 曾放行
             "  <button></button>\n"
             "</template>\n",
             encoding="utf-8")
@@ -155,8 +176,18 @@ def selftest() -> int:
             encoding="utf-8")
         html_bad = t / "bad.html"
         html_bad.write_text("<html><body><p>x</p></body></html>", encoding="utf-8")
+        html_emptylang = t / "emptylang.html"
+        html_emptylang.write_text('<html lang=""><body><p>x</p></body></html>', encoding="utf-8")  # 批 X AG-2
         hidden_ok = t / "Hidden.vue"
         hidden_ok.write_text('<template><input type="hidden" name="csrf"></template>', encoding="utf-8")
+        pseudobad = t / "PseudoBad.vue"  # A3b 反向：click-div 无 role 必拦（jz-01 逃逸形态）
+        pseudobad.write_text('<template><div class="row" @click="go()">{{ x }}</div></template>', encoding="utf-8")
+        pseudook1 = t / "PseudoRole.vue"  # A3b 正向：role 已声明放行
+        pseudook1.write_text('<template><div role="button" @click="go()">x</div></template>', encoding="utf-8")
+        pseudook2 = t / "PseudoNative.vue"  # A3b 正向：原生 button 放行
+        pseudook2.write_text('<template><button @click="go()">x</button></template>', encoding="utf-8")
+        pseudook3 = t / "PseudoComp.vue"  # A3b 正向：自定义组件（大写开头）保守放行
+        pseudook3.write_text('<template><MyRow @click="go()" /></template>', encoding="utf-8")
 
         vb = scan_file(bad)
         ok1 = all(any(f"[{r}]" in x for x in vb) for r in ("A1", "A2", "A3"))
@@ -165,9 +196,15 @@ def selftest() -> int:
         ok4 = scan_file(wrapped) == []
         ok5 = any("[A4]" in x for x in scan_file(html_bad))
         ok6 = scan_file(hidden_ok) == []
+        ok7 = (sum(1 for x in vb if "[A2]" in x) >= 2  # 无名 + 空 aria-label 两条都拦（批 X AG-1）
+               and any("[A4]" in x for x in scan_file(html_emptylang)))  # 批 X AG-2 空 lang
+        vb_p = scan_file(pseudobad)
+        ok8 = any("[A3b]" in x for x in vb_p) and scan_file(pseudook1) == [] \
+            and scan_file(pseudook2) == [] and scan_file(pseudook3) == []
         print(f"selftest: 坏件三连(A1/A2/A3)={ok1} 好件放行={ok2} label-for豁免={ok3} "
-              f"包裹豁免={ok4} html-lang命中={ok5} hidden豁免={ok6}")
-        return 0 if all((ok1, ok2, ok3, ok4, ok5, ok6)) else 1
+              f"包裹豁免={ok4} html-lang命中={ok5} hidden豁免={ok6} 批X反向AG1/AG2={ok7} "
+              f"A3b伪按钮拦/放行={ok8}")
+        return 0 if all((ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8)) else 1
 
 
 def main() -> int:
