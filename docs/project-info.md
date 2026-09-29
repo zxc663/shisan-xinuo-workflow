@@ -1,7 +1,7 @@
 # 项目信息 · 索引式入口（shisan-xinuo-workflow 开发库）
 
 > **本文件是索引入口（六节导航），权威内容在对应源文件，绝不重复**（§2.5）。
-> 更新：2026-09-29（0928 夜班批：细则 373→**405 条/32 类** + 语义检索三层 + Hindsight 精炼协议；0929 夜班批：探针通道本地代理桥修复 + 批 A′ 矩阵/盲测 + 批 X 五门禁反向注入 + 批 G 闭环 + 批 E 填空 + 叙述对账机制 narrative_sync，执行记录见 gap-list §六） ｜ 判级：L2-F（判据版本化 j1.0→**j2.5** + 金样本回归 **23/23** + scorecard 指纹 + GATE 形态分型 + `scorecard_agg.py` + `JUDGELOG.md`；verify 8/8 含 H 项判据自测；细则 **405 条/32 类**〔编号至 `#405`〕）｜ 版本与部署状态：**v3.3.0 已重部署五平台待发行**（源库 3.3.0 · 注入 `--check --hash` 5/5；上一发行态=v3.2.0 全渠道，回执见 RELEASE-CHECKLIST L 节与 EVIDENCE §四十一） ｜ 沿革：v3.1.0 全渠道发行（2026-09-19）→ 2026-09-20 审计批 / 落刀批（#370-#374 + 四机检端口 + 判据 j2.5）/ 部署批 / v3.2.0 发行批 → 2026-09-28 夜班批（#375-#405 + 语义检索三层）/ 2026-09-29 夜班批（通道修复 + A′/X/G/E 四批） ｜ 签章：v2.7+ 重构施工计划已获用户全量批准（2026-09-12）；v3.0.0/v3.1.0/v3.2.0 已全渠道发行（回执见 RELEASE-CHECKLIST I/I-1/L 节与项目信息 §五）。
+> 更新：2026-09-29（v3.3.0 发行批：五渠道+About 全落，回执见 RELEASE-CHECKLIST B 节与 EVIDENCE §四十四；发行后实验面=T2 盲测三载体矩阵+T28 产品包 A/B；T6 误标反馈包 M1-M10 已外发 [zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)） ｜ 判级：L2-F（判据版本化 j1.0→**j2.5** + 金样本回归 **23/23** + scorecard 指纹 + GATE 形态分型 + `scorecard_agg.py` + `JUDGELOG.md`；verify 8/8 含 H 项判据自测；细则 **405 条/32 类**〔编号至 `#405`〕）｜ 版本与部署状态：**v3.3.0 已全渠道发行（2026-09-29）**——五渠道（GitHub Release id=398771797 / npm 3.3.0 / Gitee Release id=1173411 / ClawHub 1.0.21 / skills.sh）+ About 双端 len=179；三面校准=源库 3.3.0 · 注入 `--check --hash` 5/5（`sha256:669d122cddaa`）· 六副本 6/6=3.3.0（上一发行态=v3.2.0，见 EVIDENCE §四十一） ｜ 沿革：v3.1.0 全渠道发行（2026-09-19）→ 2026-09-20 审计批 / 落刀批（#370-#374 + 四机检端口 + 判据 j2.5）/ 部署批 / v3.2.0 发行批 → 2026-09-28 夜班批（#375-#405 + 语义检索三层）/ 2026-09-29 夜班批（通道修复 + A′/X/G/E 四批）→ **v3.3.0 发行批**（2026-09-29，五渠道+回执三档记账+盲测/A-B 实验收口） ｜ 签章：v2.7+ 重构施工计划已获用户全量批准（2026-09-12）；v3.0.0/v3.1.0/v3.2.0/v3.3.0 已全渠道发行（回执见 RELEASE-CHECKLIST I/I-1/L/B 节与项目信息 §五）。
 
 ## ① 架构
 开发库 = Agent Skill 「shisan-xinuo-workflow」的唯一权威源库（中文单版 v2.9.0+）。
@@ -39,7 +39,7 @@
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源）/ skill-split-plan-v3.0.md（v3.0 施工计划与进度表）/ version-plan-v310.md（v3.1 方案与选型）/ independent-review-v3.0-20260918.md（独立审查报告）/ roadtest-scorecards/（行为面 scorecard 时序库 + `JUDGELOG.md` 判据版本史 + evidence 原始输出存证）/ incidents/（事故取证与交接件） | project-info、reference-sources、计划档、独立审查、scorecards、JUDGELOG、判据、incidents |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
 | memory/ | 已实现（gitignore） | 本仓库会话记忆：一档制 `agent-log.md` 四区（状态段/教训区/偏好段/流水区；旧五件套历史原件在 legacy-pre-v250/ 只读） | agent-log、记忆、归档 |
-| dist/ | 已实现（gitignore） | 发行 zip（v2.9.0 终版 291,937B 已发行；**v3.0.0 待重打**——三包体系发行物，见 RELEASE-CHECKLIST F 节；v2.8.0 及更早历史版在位） | 发行 zip、发布包、dist、v3.0.0 |
+| dist/ | 已实现（gitignore） | 发行 zip（**v3.3.0 终版 2,125,915B/92 项已发行**——GitHub Release asset+Gitee 附件 id=3288018，重打校验 92=92 见 EVIDENCE §四十四；历史版在位） | 发行 zip、发布包、dist、v3.3.0 |
 | versions/personal-zh/ | 私有（gitignore） | 个人工作台版（v1.19 时代私有权威，v2.0 起不参与） | 个人版、personal-playbook |
 | RELEASE-CHECKLIST.md | 已实现 | 发行清单（v3.0.0 本批：F 发行增量/G 升级指南/H 部署后 A/B 复测；v2.9.0 及更早批次回执见各节沿革行） | 发行台账、渠道回执、门禁、升级指南、A/B 复测 |
 | .trae/ | 本地（gitignore） | Trae 侧 documents 历史 + rules/project_rules.md（项目级注入） | trae 规则、project_rules、documents |

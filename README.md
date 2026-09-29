@@ -172,24 +172,25 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | 评审提案落刀批（2026-09-20，**已随 v3.2.0 发行**） | 6 项条款级提案落地：新增 `细则 #370`-`#374`（清单外高危域枚举 / `GATE ev=` 验证层级 / 记忆档双指标+机械归档 / 机器事实优先+工件随仓 / 副本内容哈希）＋ `risk_scan.py`＋`agent_log_rotate.py`＋`gate_audit --gate/--independent-cmd`＋`deploy_injection --hash`＋判据 j2.5（金样本 **23/23**）；实测 373 条/30 类 · verify 8/8 | `EVIDENCE.md` §三十九 |
 | 落刀批部署验收（2026-09-20） | 五平台注入 **`--check` 5/5**（v3.1.0/count=373）+ **`--check --hash` 5/5 `HASH-OK`**（源库与五副本同 `sha256:2a64ca815ad4`）；技能副本三包 + WorkBuddy 双通道同步 exit 0；新会话实弹 **2/2 PASS**（指纹 `carrier_zcode=8a74176e730a`/`core_md=c06cdb347545`/`judge=j2.5`，`gate-ev` 输出 `ev_non_exec=True` 且判为 `package-12(13/12)`） | `EVIDENCE.md` §四十 |
 | v3.2.0 三面校准（2026-09-20） | 源库 3.2.0 · 五平台注入 **`--check` 5/5（v3.2.0/count=373）** + **`--hash` 5/5 `HASH-OK`** · 六处技能副本 **6/6 = 3.2.0**；新会话实弹 `l1-rename` **1/1 PASS**、`gate-ev` **1/3 PASS**（三针指纹一致 `core_md=c06cdb347545`/`judge=j2.5`——**`ev=` 实弹未稳定，本版已知缺口，不宣称行为面落地**） | `EVIDENCE.md` §四十一、`docs/release-notes-v3.2.0.md` §七 |
+| v3.3.0 三面校准+行为面基线（2026-09-29） | 源库 3.3.0 · 五平台注入 `--check --hash` **5/5 `HASH-OK`**（`sha256:669d122cddaa`）· 六处技能副本 **6/6 = 3.3.0**；批 A′ 无头矩阵 20 场景 **13/20 PASS**（gate 65%、`ev=` 0/20、stateLine 0/20——**Flash 档首条行为基线，诚实口径不宣称行为面落地**）；盲测三载体矩阵实锤 **hooks 载体=无头行为面单点承载**（B 臂全塌 0/12，注入静态面不达无头会话）；五门禁反向注入 27 例漏报 15（正向自测盲区，缺口入预注册随下版） | `EVIDENCE.md` §四十三/§四十四、`docs/gap-list-20260929.md` §六 |
 
 > **口径脚注（可复算入口）**：①「24 针」范围 = `precheck 1 + v310-inf-01 20 + 双击复采 v310-inf-01r 2 + v310-inf-02 1`，作废行（`env_death`）全数剔除、双击复采行**计入**；声明后新增的 `v310-inf-05` 不在该分母内。②按「剔除复采」读法重算得 23 有效 / 22 PASS，可用 `python scripts/scorecard_agg.py --exclude-recollect` 机检。③「20/20」为单批样本（含同批重判），不代表稳定通过率；2026-09-20 独立审计的新采样 7 针得 5 PASS / 2 FAIL（失败集=skip-floor / multi-task，与存量批同构）。
 
 ## 分发渠道 · Distribution
 
-单版本分发，**五个渠道同步发行**；下表为 **v3.2.0** 渠道实测状态（2026-09-20/21），滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
+单版本分发，**五个渠道同步发行**；下表为 **v3.3.0** 渠道实测状态（2026-09-29），滚动数据与分渠道分析见[发行成果汇总报告](docs/release-outcome-report-20260920.md)：
 
 | # | 渠道 | 链接 / 安装方式 | 当前版本 | 说明 |
 | --- | --- | --- | --- | --- |
-| 1 | **GitHub**（源库 + Release） | [github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow) · [Releases](https://github.com/zxc663/shisan-xinuo-workflow/releases) | v3.2.0 | 权威源库；每版附 dist zip |
-| 2 | **npm**（GitHub Packages） | [包页](https://github.com/zxc663/shisan-xinuo-workflow/pkgs/npm/shisan-xinuo-workflow) · `npm install @zxc663/shisan-xinuo-workflow` | 3.2.0 | 包为**私有可见性**，读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；**npmjs.org 未分发** |
-| 3 | **Gitee**（镜像 + Release） | [gitee.com/zxc663/shisan-xinuo-workflow](https://gitee.com/zxc663/shisan-xinuo-workflow) · [发行版](https://gitee.com/zxc663/shisan-xinuo-workflow/releases) | v3.2.0（**部分**） | 与 GitHub 同 commit/tag 双推；v3.2.0 push+tag ✅，**Release 与 About 待 32 位令牌**；每版附 zip 附件 |
-| 4 | **ClawHub**（OpenClaw 技能市场） | [clawhub.ai/zxc663/shisan-xinuo-workflow](https://clawhub.ai/zxc663/shisan-xinuo-workflow) · `openclaw skills install @zxc663/shisan-xinuo-workflow` | 1.0.20（平台侧递增号） | 平台侧版本号 1.0.x 递增，内容对应本仓版本（1.0.20 = 本仓 v3.2.0）；security scans 平台侧过审中 |
+| 1 | **GitHub**（源库 + Release） | [github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow) · [Releases](https://github.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.0 | 权威源库；每版附 dist zip |
+| 2 | **npm**（GitHub Packages） | [包页](https://github.com/zxc663/shisan-xinuo-workflow/pkgs/npm/shisan-xinuo-workflow) · `npm install @zxc663/shisan-xinuo-workflow` | 3.3.0 | 包为**私有可见性**，读取需 GitHub PAT（`.npmrc` 写 `//npm.pkg.github.com/:_authToken=<PAT>`）；**npmjs.org 未分发** |
+| 3 | **Gitee**（镜像 + Release） | [gitee.com/zxc663/shisan-xinuo-workflow](https://gitee.com/zxc663/shisan-xinuo-workflow) · [发行版](https://gitee.com/zxc663/shisan-xinuo-workflow/releases) | v3.3.0 | 与 GitHub 同 commit/tag 双推；v3.3.0 push+tag+Release+zip 附件 ✅（32 位令牌已入凭据管理器非交互供给）；每版附 zip 附件 |
+| 4 | **ClawHub**（OpenClaw 技能市场） | [clawhub.ai/zxc663/shisan-xinuo-workflow](https://clawhub.ai/zxc663/shisan-xinuo-workflow) · `openclaw skills install @zxc663/shisan-xinuo-workflow` | 1.0.21（平台侧递增号） | 平台侧版本号 1.0.x 递增，内容对应本仓版本（1.0.21 = 本仓 v3.3.0）；security scans 平台侧过审中 |
 | 5 | **skills.sh**（Agent Skills 索引） | [skills.sh/zxc663/shisan-xinuo-workflow](https://skills.sh/zxc663/shisan-xinuo-workflow) · `npx skills add zxc663/shisan-xinuo-workflow` | 随 GitHub 同步 | 自动索引 GitHub 源库 |
 
 配套动作：每版发行时 GitHub + Gitee 仓库简介（About）双端同步 PATCH。
 
-**v3.2.0 渠道实测（2026-09-20/21）**：GitHub Release `id=392486105`（asset `…v3.2.0.zip` id=577094413 / 347,556B）· npm `@zxc663/shisan-xinuo-workflow@3.2.0`（45 文件）· Gitee push+tag `v3.2.0` ✅（Release/About 待令牌）· ClawHub `1.0.20`（pending security scans）· About GitHub len=165（Gitee 待令牌）· skills.sh 随 push 自动索引。**三面校准**：源库 3.2.0 · 五平台注入 `--check` 5/5 + `--hash` 5/5 `HASH-OK` · 六处技能副本 6/6=3.2.0；**v3.1.0/count=373 为落刀批部署当日（源库当时仍标 v3.1.0）的记录，当前校准以本行为准**。
+**v3.3.0 渠道实测（2026-09-29）**：GitHub Release `id=398771797`（2026-09-29T02:17Z 发布，asset `…v3.3.0.zip` 2,125,915B）· npm `@zxc663/shisan-xinuo-workflow@3.3.0`（74 文件，shasum `c4a98933456e2f02bf88d3a2bede2e16a33c52da`）· Gitee push+tag `v3.3.0` ✅ + Release `id=1173411`（附件 id=3288018，curl+凭据管理器非交互供给）· ClawHub `1.0.21`（pending security scans）· About 双端 len=179（GitHub GET 读回验证；Gitee 连带修复 v3.1 期陈旧 description）· skills.sh 随 push 自动索引。**三面校准**：源库 3.3.0 · 五平台注入 `--check` 5/5 + `--hash` 5/5 `HASH-OK`（`sha256:669d122cddaa`）· 六处技能副本 6/6=3.3.0；**v3.2.0 渠道行（2026-09-20/21）为上一发行态当日记录，当前校准以本行为准**。
 
 ## 快速体验 · Quick start
 
@@ -229,12 +230,12 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 
 | 项 | 值 |
 | --- | --- |
-| 版本 | **v3.2.0**（已发行 2026-09-20/21；Gitee Release/About 待令牌；上一版 v3.1.0 2026-09-19） |
+| 版本 | **v3.3.0**（已发行 2026-09-29，五渠道全落+About 双端；上一版 v3.2.0 2026-09-20） |
 | 交付形态 | **三包**：核心 `shisan-xinuo-workflow` + 流程包 `shisan-xinuo-flows` + 角色包 `shisan-xinuo-roles` |
 | 细则库 | **405 条 / 32 类**（编号至 `#406`；类数=分节数，单源断言） |
 | 注入核心 | **≤ 6000 字符**（PowerShell 字符数 + Python code-point 双口径） |
 | 完成块 | `GATE` **12 字段**：`level / v / cmd / exit / files / refs / errpath / lessons / exempt / caps / effort / stop_reason` |
-| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4，**单批样本**）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹）；**2026-09-20 独立审计新采样 7 针 5 PASS**（失败集 skip-floor / multi-task，与存量批同构）；**判据金样本回归 23/23**（正例 9 / 负例 14，判据 j2.5）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**；口径构成见「验证与路测」表下脚注 |
+| 行为面 | v3.1 全矩阵 **20/20 PASS**（判据 j2.4，**单批样本**）；v3.1.0 部署后实跑 **24 针 22 PASS**（scorecard 带被测副本/平台/判据指纹）；**2026-09-20 独立审计新采样 7 针 5 PASS**（失败集 skip-floor / multi-task，与存量批同构）；**判据金样本回归 23/23**（正例 9 / 负例 14，判据 j2.5）；**v3.3.0 批 A′ Flash 档无头矩阵 13/20**（`ev=` 0/20、stateLine 0/20，首条 Flash 档基线——模型档位归因，见 gap-list §六）；同批输出两版判据重判：j1.0 18/20 → j2.2–j2.4 **20/20**；口径构成见「验证与路测」表下脚注 |
 | 判据可信度 | 判据版本化（j1.0→j2.5）+ `--judge-selftest` 金样本回归 + `--rescore` 同批重判 + 环境死亡行**证据签名** + GATE 形态分型（包级 12 / 子块简式 / 杂键；`ev=` 为可选扩展字段，不计杂键） |
 | 门禁 | `scripts/verify-release.ps1` **8 项**（A 内容锚点 / B hooks 三层 / C 版本一致 / D 泄漏红线 / E 正文净化 / F 索引完整性 / G 事实对账 / **H 判据自测**） |
 
@@ -298,6 +299,7 @@ A：默认不联网、不外发；密钥类信息**绝不写入**代码/文档/�
 
 ## 版本历史 · Changelog
 
+- **v3.3.0**（2026-09-29，**已发行**）：**挖矿回流 + 语义检索三层 + 机制补全**——①细则 373→**405 条 / 32 类**（编号至 `#406`）：§31 全机挖矿回流（7 路子代理 27 仓 ~91 候选→16 条）+ §32 富矿二批（48 候选→16 条）+ Hindsight 精炼协议 +「不确定先问」四落点 + product 判例回流 9 条，查重工随仓。②语义检索三层：扩写表 60 族 + E6 假阳性修复 + 金样本 60/60 + **嵌入语义兜底层**（bge-m3 406 条索引，余弦 0.55 定标）。③机制八件：`narrative_sync` 叙述对账 / `anchor_sweep` / `sync-all` 一键三连 / `net_pick` / `usage_probe` / 退役候选清单 / `#379` 叙述权威声明 / Mimosa 误标反馈包（M1-M10，已外发 [zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)）。④行为面：批 A′ Flash 档无头矩阵 20 场景 13/20 PASS（诚实口径）+ 盲测三载体矩阵（hooks 载体=无头行为面单点）+ 五门禁反向注入 27 例漏报 15。⑤Mimosa 42 findings 清零（38 处 `_confine` + gate_audit 列表形态）。发行渠道：GitHub Release `id=398771797` ✅ · npm 3.3.0 ✅ · Gitee Release `id=1173411` ✅ · ClawHub 1.0.21（pending scans）· About 双端 len=179 ✅。
 - **v3.2.0**（2026-09-20，**已发行**）：**外部评审审计 + 条款级落刀批**——①审计（双轨：独立五维 + 与外部评审逐条对账 17 项；报告 `docs/audit-external-review-20260920.md`）②六项条款级提案落地：`细则 #370` 清单外高危域执行层枚举（L3 清单语义不变）/ `#371` `GATE ev=` 验证层级（exec/cover/invariant/indep，L2-F 与高风险至少一项非 exec；12 字段定版不变）/ `#372` 记忆档双指标上限（行数 × 体积先到者）+ 机械归档 / `#373` 机器事实优先于 LLM 判据 + 公开数字须随仓可复算 / `#374` 注入副本内容哈希验收 ③四个机检端口：`risk_scan.py`、`agent_log_rotate.py`、`gate_audit --gate/--high-risk/--independent-cmd`、`deploy_injection --check --hash` ④判据 **j2.5**（新场景 `gate-ev` + 正负金样本，**23/23**）⑤`#266` 「≥2 种负载形状」澄清为**下限** + 盲评实验设计档。细则 368→**373 条 / 29→30 类**（编号至 `#374`）。发行渠道：GitHub Release ✅ · npm 3.2.0 ✅ · ClawHub 1.0.20（pending scans）· Gitee push+tag ✅（**Release/About 待令牌，部分完成**）。
 - **v3.1.0**（2026-09-19，**已发行**）：**判据可信度批**——判据版本化 j1.0→j2.4 + 金样本回归 21/21 + scorecard 指纹 + GATE 形态分型 + 环境死亡行证据签名 + 新增时序库聚合器与判据版本史；判据修订三处（回植「拒改取证」「可逆化+声明」两条合规路径、cap-web 检索痕迹对齐设计原文）、两处裁决（multi-task 维持 FAIL、`verify_trace`/`effort` 去自满足）与状态行 `confirm=` 形态补口（第三例判据滞后）；`verify-release` 增至 8 项（H 判据自测），细则 366→**368 条 / 29 类**（#368 判据即代码 + #369 L3 无人值守双合规路径）。无头全矩阵 **20/20**；v3.1.0 部署后无限循环实跑 **24 针 22 PASS**。
 - **v3.0.0**（2026-09-18，**已全渠道发行**）：三包体系（核心/流程/角色）+ 细则治理（366 条/28 类，检索键 100% 覆盖）+ Token 精算机 + 反作弊与状态锚定 + `GATE` 12 字段 + 探针 harness 收编进仓 + 利用率处置批 + 五平台注入重部署。
