@@ -4,6 +4,11 @@
 
 > **本质一句话**：把「工程纪律」从**提示词**升级成**机制**——提示词只是载体（规则怎么送到模型面前），本体是四件套：**流程结构**（三级跑道 + 出口产物）+ **可跑门禁**（发行 8 项 / 产品工程 8 台）+ **可复算证据**（`GATE` 三挂靠 / 判据版本化 / 事实与叙述对账）+ **停点与记忆**（L3 封闭清单 / `risk_scan` / 405 条细则 / agent-log）。
 
+| 看法 | 它是什么 | 决定什么 |
+| --- | --- | --- |
+| **载体** | 可注入的 Skill：`SKILL.md` + `references/` + `templates/` + 五平台注入器 | 规则**能不能到场** |
+| **本体** | 把纪律变成机制：触达 / 执行 / 证据 / 防线与记忆 四组机制 | 到场之后**有没有用** |
+
 > **一句话定位**：它不承诺更好的代码——它承诺更少的事故。它把 Agent 的工程纪律做成**可执行、可复跑、可复算**的流程结构：过程可追责，结论可复核；密钥外泄、误发布、通配符删库、无备份迁移这类**严重工程事故**，被 L3 停点拦在发生之前（红线行为面探针双样本全绿，`EVIDENCE.md` §三十三）。
 
 > **English summary** — A discipline meta-workflow for coding agents. It makes rules *actually consumed* rather than merely present, and makes conclusions *re-computable*: three-lane routing (L1 fast lane / L2-S short workflow / L2-F full 9-step), a closed L3 checklist for irreversible actions plus an execution-layer enumeration of out-of-list high-risk domains, a confirmation protocol with recommendations, re-runnable `GATE` evidence blocks with an evidence-layer field (`ev=exec/cover/invariant/indep`), a project-level ledger (`memory/agent-log.md`, dual-metric cap + mechanical rotation), platform injection adapters for five agent platforms with content-hash acceptance, and a symptom-indexed library of **405 lessons across 32 categories**. Ships as four independently installable packages (core / flows / roles / product). Its headline claim is deliberately narrow — not better code, but **fewer severe incidents**: red-line behaviour probes (secrets / release / deletion / migration / blanket authorization) pass on double samples. Every number below is machine-produced: **20/20** behaviour probes on the v3.1 matrix and **22/24** on the post-deployment run (judge j2.4, with fingerprints), **23/23** judge gold-sample regression (judge j2.5), 52 probes at 98.1% on the v2.9.0 baseline, plus an independent review pass.
@@ -93,19 +98,19 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 
 ## 功能全景 · Feature map
 
-| 能力 | 说明 | 载体 |
-| --- | --- | --- |
-| 跑道与判级 | 三级跑道（L1/L2-S/L2-F）+ 选道三问 + L3 封闭清单 6 项 + 三层分界（判级≠理解确认） | 核心 `SKILL.md` §2 + 注入核心 |
-| 开工四步与状态行 | 复述 → 承载 → 记忆对齐 → 能力检索与选道；每轮首产物可 grep 校验 `Context: state=… L=… confirm=…` | 注入核心 |
-| `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变）；`ev=` 验证层级 | 核心 §6 + `scripts/gate_audit.py` |
-| 清单外高危域机检 | `risk_scan.py` 扫 CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写——命中即至少按 L3 停点问询 | `细则 #370` |
-| 细则库 | 405 条 / 32 类，症状索引检索键 100% 覆盖 | `references/details.md` |
-| 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
-| 项目承载 | `memory/agent-log.md` 一档制（四区）+ 双指标上限 + 机械归档 | 模板 + 核心 §8 |
-| 平台注入与自更新 | 五平台注入点表、备份合并不覆盖、副本内容哈希验收；三路合并同步多平台副本；SessionStart/PostToolUseFailure hooks 加固（可选面） | `references/platform-adaptation.md` + `scripts/deploy_injection.py`、`scripts/syncer.py`、`templates/hooks/` |
-| 行为面 harness | 探针矩阵 + scorecard 随仓 + 判据版本化/金样本自证/同批重判 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/` |
-| 门禁 | **8 项**发行门禁（含 H 判据自测）+ 事实对账单源断言（含条目上限） | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
-| 产品工程门禁 | 8 台可重跑门禁，各带 `--selftest` 两态自测 | `skill/shisan-xinuo-product/scripts/` |
+| 机制组 | 能力 | 说明 | 载体 |
+| --- | --- | --- | --- |
+| **触达**（规则要被消费） | 平台注入与自更新 | 五平台注入点表、备份合并不覆盖、副本内容哈希验收；三路合并同步多平台副本；SessionStart/PostToolUseFailure hooks 加固（可选面） | `references/platform-adaptation.md` + `scripts/deploy_injection.py`、`scripts/syncer.py`、`templates/hooks/` |
+| **执行**（流程要被走完） | 跑道与判级 | 三级跑道（L1/L2-S/L2-F）+ 选道三问 + L3 封闭清单 6 项 + 三层分界（判级≠理解确认） | 核心 `SKILL.md` §2 + 注入核心 |
+| **执行** | 开工四步与状态行 | 复述 → 承载 → 记忆对齐 → 能力检索与选道；每轮首产物可 grep 校验 `Context: state=… L=… confirm=…` | 注入核心 |
+| **证据**（结论要可复算） | `GATE` 完成块 | 12 字段单行、可复跑；证据三挂靠（cmd 原文 / exit 真值 / files 真变）；`ev=` 验证层级 | 核心 §6 + `scripts/gate_audit.py` |
+| **证据** | 门禁 | **8 项**发行门禁（含 H 判据自测）+ 事实对账单源断言（含条目上限） | `scripts/verify-release.ps1`、`scripts/facts_sync.py` |
+| **证据** | 行为面 harness | 探针矩阵 + scorecard 随仓 + 判据版本化/金样本自证/同批重判 | `scripts/probe_runner.py`、`docs/roadtest-scorecards/` |
+| **防线与记忆**（高危先停 / 经验复利） | 清单外高危域机检 | `risk_scan.py` 扫 CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写——命中即至少按 L3 停点问询 | `细则 #370` |
+| **防线与记忆** | 细则库 | 405 条 / 32 类，症状索引检索键 100% 覆盖 | `references/details.md` |
+| **防线与记忆** | 细则检索端口 | `python scripts/detail_lookup.py "<症状关键词>"`（关键词/编号/症状域三查） | `scripts/detail_lookup.py` |
+| **防线与记忆** | 项目承载 | `memory/agent-log.md` 一档制（四区）+ 双指标上限 + 机械归档 | 模板 + 核心 §8 |
+| **产品面**（第四包） | 产品工程门禁 | 8 台可重跑门禁，各带 `--selftest` 两态自测 | `skill/shisan-xinuo-product/scripts/` |
 
 ## 差异化优势 · Differentiation
 
