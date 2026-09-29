@@ -42,6 +42,10 @@
 **本批先例**：Gitee 仓库 PATCH 必带 `name`（缺=400）；单条 Release GET 405/40001 → 改列表端点读回；npm 用 `gh auth token` 直注 `GITHUB_TOKEN`；Codex 工具通道可直提 commit/push（Mimosa 只拦 ZCode 通道——「commit 交用户终端」的旧口径在 Codex 侧不适用）。
 **余件**：ClawHub 1.0.22（用户侧提交）；行为面复测（探针通道需本地桥）。
 
+**发行后修订（2026-09-29）**：`作者的话` 按用户指令重构——保留金句「工程化的确定性和稳定性……」一句，余段改写为「确定性=触达端口复现 / 稳定性=可复算证据」的本质表述 → commit `bfcc07c`，双远端 main 已推（Gitee 直推；GitHub 首推 SSL 抖动、重试成功）。
+
+**已知漂移（诚实记录）**：npm 3.3.1 tarball 与 GitHub/Gitee Release zip 内的 README 仍是旧版 `作者的话`（网页渲染面=新文案、包面=旧文案）。如需三面文字一致 → 出 **v3.3.2** 重打 dist + npm（L3，待批准）。
+
 ## A. 本仓已备（v3.3.0；[ ] = 终局门禁复跑后确认回填）
 
 - [x] 版本锁 3.3.0（package.json/三包 frontmatter/README/AGENTS 基线/docs/project-info/项目信息 §六·九 About 预案）——verify C 项 PASS（3.3.0=3.3.0）
