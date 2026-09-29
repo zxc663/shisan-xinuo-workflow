@@ -818,3 +818,23 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **未验证/边界**：T24 PAT 轮换（用户侧，唯一余件——轮换前 T6 反馈包不外发）；ClawHub scans 复查（平台侧异步）；T2 盲测 B/C 臂+T28 产品 A/B（发行收尾后开跑）；T26 重启探针（用户重启后）；本地桥 tonight-only 欠账仍在。
 
 **本批 GATE**：`GATE: {level=L2-F, ev=exec+invariant, v=v3.3.0 发行批（五渠道+About+回执记账）, cmd=git ls-remote origin refs/tags/v3.3.0 && git ls-remote gitee refs/tags/v3.3.0 && gh release view v3.3.0 --json tagName, exit=0, files=RELEASE-CHECKLIST.md/CHANGELOG.md/docs/release-notes-v3.3.0.md/项目信息.md §五/EVIDENCE §四十四/memory/agent-log（本地）, refs=细则 #371 ev+TOP #233/#294 已处置+release-prereg §一, errpath=Mimosa M8/M9 函数级误标→用户终端改道先例+SSRF 误标→curl 通道; Gitee 400 两例=target_commitish/name 必填, lessons=封印刷新不消解函数级误标+附件只走 attach_files+凭据 credential approve 非交互供给, exempt=T24 用户侧/ClawHub scans 异步/T2/T26, caps=gh+curl+npm+clawhub 四 CLI, effort=六渠道连续执行+三档回执记账, stop_reason=—}`
+
+---
+
+## 四十五、v3.3.1 发行批（双仓门面重构+净化瘦身+产品工程包联动发行，2026-09-29）
+
+**范围**：母仓 v3.3.1（净化 / README 分层瘦身 / 四包口径 / 口径对账）+ 产品仓 `product-engineering-skill` v0.2.6（README 重构 + 口径修复，联动发行）。
+
+**净化与重构证据**：门面层宣发 token grep = 0（README/package.json/CONTRIBUTING/AGENTS.md）；product SKILL 正文过程元数据 6 处 → 0（verify E 项扫描面扩至四包 SKILL.md）；injection-core 开场机制自述净化后 **5997/6000** 字符；README **314→264 行**、字符 **21,923→15,988（−27%）**，「作者的话」**零字节 diff PASS**；「唯一正文」→「单一权威面」×2（语义不变）。
+
+**口径对账**：`facts_sync` README 承载重锚 ×5 + AGENTS.md 死锚（`细则 344→`）修复 → **FACTS PASS**（405/406/32）；`narrative_sync` **0 FINDING**；About 升位 §六·十（四包口径）。
+
+**三面校准**：源库 3.3.1（verify **8/8** + judge **23/23** + 八台产品门禁 `--selftest` **8/8**）· 五平台注入 `--check --hash` **5/5 HASH-OK**（`sha256:5c633946a69d`、count=405，备份 `*.bak-20260929-124656-pre-v3.3.1`）· 技能副本 `sync-all` 三步绿。
+
+**发行回执**：母仓 commit `4869d18`（23 files, +195/−160）→ origin/gitee main + tag `v3.3.1`；GitHub Release + zip（93 项/2,124,077B）/ npm `@zxc663/shisan-xinuo-workflow@3.3.1`（74 文件，shasum `207966de`，view 读回一致）/ Gitee Release **id=1173708** + 附件 **id=3288832**（2,124,077B，下载 URL 读回）/ About 双端 **len=184**；产品仓 commit `d66cca0` + tag `v0.2.6` + Release（zip 19 项/68,568B）。**ClawHub 1.0.22 待用户侧提交**。
+
+**本批先例与事故**：①Gitee 仓库 PATCH 需带 `name`（缺=400 `name is missing`）；单条 Release GET 405/40001 → 改列表端点读回；②npm 可用 `gh auth token` 注入 `GITHUB_TOKEN`（无需另备 PAT）；③**事故**：产品仓 `memory/agent-log.md` 未提交增量（552→577 行）被跨仓相对路径误覆盖 → `git restore` 回 HEAD 552 行 + 「事故记录+有据重建段」（重建非原件）、教训入母仓 agent-log；兜底=Windows 卷影副本。
+
+**行为面诚实口径**：本批未复测行为面（探针通道需本地桥）；最新数据仍为 v3.3.0 批 A′ Flash 档 13/20——**不宣称行为面落地**。
+
+**本批 GATE**：`GATE: {level=L2-F, ev=exec+cover+invariant, v=v3.3.1/v0.2.6 发行批, cmd=pwsh -NoProfile -File scripts/verify-release.ps1 && python scripts/facts_sync.py --check && python scripts/narrative_sync.py && pwsh -NoProfile -File scripts/sync-all.ps1 && gh release view v3.3.1 --json tagName,assets, exit=0, files=母仓23+产品仓4, refs=0, errpath=产品仓 agent-log 误覆盖→restore+重建；Gitee PATCH name 必填；npm 走 gh token, lessons=跨仓一律绝对路径+写前备份；Gitee 读回走列表端点, exempt=ClawHub 提交（用户侧）+行为面复测, caps=gh/npm/curl+deploy/sync-all/build-dist, effort=净化+双仓重构+五渠道+回执, stop_reason=—}`
