@@ -51,6 +51,7 @@
 - 发行 → scripts/README.md（装机/校验）+ RELEASE-CHECKLIST.md（v3.0.0 F-H 节：三包/口径/dist/升级指南/A-B 复测）。
 - 口径核账/细则数 → scripts/facts_sync.py（单源对账，verify G 项底层）。
 - 改判据/路测结论 → 判据实体=`scripts/probe_runner.py`（`JUDGE_VERSION`；改判据→`--judge-selftest` 回归 + `JUDGELOG.md` 留痕）+ 聚合=`scripts/scorecard_agg.py`（剔废/三态）；纪律=details #368。
+- 对标/借鉴外部项目 → `docs/design-specs/benchmark-refresh-20260929.md`（批 R 新贵）＋ `docs/design-specs/benchmark-superpowers-20260929.md`（superpowers 可吸收清单 A-F，含成本/验证法）；对标基线=`docs/comparison-v290-analysis-20260916.md`（十一家）。
 - 决策追溯 → 项目信息.md（§三 决策 1-54）+ memory/task-log/。
 
 ## ⑤ 参考资源
