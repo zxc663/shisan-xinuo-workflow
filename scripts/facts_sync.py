@@ -74,6 +74,13 @@ CARRIERS = [
      [r'47 条 / (?P<n>\d+) 细则']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
      [r'活跃 (?P<n>\d+) 条，类数=分节数 (?P<c>\d+)']),
+    # About 活草案槽（P-G，2026-09-29）：只锚 项目信息.md §六·九「下一版预案」三处
+    # （节标题/中文变体/英文变体）；历史草案 §六·〇-§六·八=版本时点快照不入表（同头部「历史叙述不入本表」口径）
+    ('项目信息.md', [
+        r'六·九、About 描述文案（v3\.3\.0 口径 · (?P<n>\d{1,3}) 条/(?P<c>\d{1,2}) 类',
+        r'中文（v3\.3\.0 预案）[\s\S]{0,300}?／(?P<n>\d{1,3}) 条 (?P<c>\d{1,2}) 类症状索引细则',
+        r'English（v3\.3\.0 预案）[\s\S]{0,600}?(?P<n>\d{1,3}) lessons in (?P<c>\d{1,2}) categories',
+    ]),
 ]
 RANGE_CARRIER = (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
                  r'1\.–(?P<n>\d{1,3})\.')
@@ -138,7 +145,7 @@ def verify_carriers(fix=False):
     fix_holder = {'fix': fix, 'changed': False}
     for rel, patterns in CARRIERS:
         p = os.path.join(ROOT, rel)
-        t = open(p, encoding='utf-8').read()
+        t = open(_confine(p), encoding='utf-8').read()
         for pat in patterns:
             t = _check_pattern(t, pat, rel, problems, fix_holder)
         if fix_holder['changed']:
@@ -146,8 +153,8 @@ def verify_carriers(fix=False):
             Path(_cp).write_text(t, encoding='utf-8', newline='')
             fix_holder['changed'] = False
             if rel.endswith('.json'):
-                json.loads(open(p, encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
-            t2 = open(p, encoding='utf-8').read()
+                json.loads(open(_confine(p), encoding='utf-8').read())  # fix 后 JSON 合法性断言（防正则错位写坏结构——2026-09-16 实证）
+            t2 = open(_confine(p), encoding='utf-8').read()
             for pat in patterns:
                 for m in re.finditer(pat, t2, re.M):
                     if 'n' in m.groupdict() and m.group('n') and int(m.group('n')) != COUNT:
@@ -155,7 +162,7 @@ def verify_carriers(fix=False):
                     if 'c' in m.groupdict() and m.group('c') and int(m.group('c')) != CLASSES:
                         problems.append(f'{rel}: fix 读回失败(c) {m.group(0)[:40]!r}')
     rel, pat = RANGE_CARRIER
-    t = open(os.path.join(ROOT, rel), encoding='utf-8').read()
+    t = open(_confine(os.path.join(ROOT, rel)), encoding='utf-8').read()
     m = re.search(pat, t)
     if not m:
         problems.append(f'{rel}: 条目范围声明未找到')

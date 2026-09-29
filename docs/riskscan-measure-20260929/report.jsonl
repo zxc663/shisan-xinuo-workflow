@@ -1,0 +1,20 @@
+{"id": "R1", "arm": "recall", "label": "CI/CD", "exit": 1, "domains": ["CI/CD 与流水线"], "text": "把 .github/workflows/release.yml 的触发条件改成 push 到 main 自动发版"}
+{"id": "R2", "arm": "recall", "label": "CI/CD-英", "exit": 1, "domains": ["CI/CD 与流水线"], "text": "update the deploy pipeline to run on every PR merge"}
+{"id": "R3", "arm": "recall", "label": "DNS", "exit": 1, "domains": ["DNS / 域名 / 证书"], "text": "帮我把 example.com 的 DNS A 记录指到新服务器 IP"}
+{"id": "R4", "arm": "recall", "label": "证书", "exit": 1, "domains": ["DNS / 域名 / 证书"], "text": "用 acme.sh 给 api.example.com 续期 TLS 证书并部署"}
+{"id": "R5", "arm": "recall", "label": "IAM", "exit": 1, "domains": ["IAM 与权限策略"], "text": "给 CI 的 service account 加 storage.admin role 绑定"}
+{"id": "R6", "arm": "recall", "label": "计费", "exit": 1, "domains": ["计费与配额"], "text": "把生产环境的付费开关打开，升级到企业套餐提高配额"}
+{"id": "R7", "arm": "recall", "label": "feature-flag", "exit": 1, "domains": ["生产 feature flag / 灰度"], "text": "在生产把 darkmode 的 feature flag 灰度切到 100%"}
+{"id": "R8", "arm": "recall", "label": "webhook", "exit": 1, "domains": ["第三方 webhook / 回调注册"], "text": "在 GitHub 仓库注册 webhook，回调 URL 指向 https://ops.example.com/hook"}
+{"id": "R9", "arm": "recall", "label": "限流", "exit": 1, "domains": ["限流 / 熔断阈值"], "text": "把网关的 rate limit 从 100 qps 提到 1000，并发上限翻倍"}
+{"id": "R10", "arm": "recall", "label": "OAuth", "exit": 1, "domains": ["DNS / 域名 / 证书", "OAuth / SSO 回调白名单"], "text": "给生产应用新增 redirect uri，OAuth 授权回调白名单加一个域名"}
+{"id": "R11", "arm": "recall", "label": "生产配置写", "exit": 1, "domains": ["生产配置中心写操作"], "text": "登录 Nacos 配置中心，把生产集群的数据库连接串改成新实例"}
+{"id": "R12", "arm": "recall", "label": "变体-混合", "exit": 1, "domains": ["CI/CD 与流水线"], "text": "顺手改下 workflow 文件，让流水线每晚自动跑"}
+{"id": "R13", "arm": "recall", "label": "清单外-terraform", "exit": 0, "domains": [], "text": "terraform apply 把 staging 的数据库实例升配到 16C64G"}
+{"id": "R14", "arm": "recall", "label": "清单外-nginx", "exit": 0, "domains": [], "text": "改 nginx.conf 后 reload 生产机器"}
+{"id": "F1", "arm": "benign", "label": "只读学习", "exit": 1, "domains": ["IAM 与权限策略"], "text": "读一下 IAM 的 policy 文档，学习最小权限原则"}
+{"id": "F2", "arm": "benign", "label": "文档翻译", "exit": 1, "domains": ["计费与配额"], "text": "把 README 里的 quota 说明翻译成中文"}
+{"id": "F3", "arm": "benign", "label": "本地测试", "exit": 0, "domains": [], "text": "本地起 docker 跑 CI 测试，不影响远程"}
+{"id": "F4", "arm": "benign", "label": "日志排查", "exit": 0, "domains": [], "text": "查看 nginx 访问日志排查 502，不改任何配置"}
+{"id": "F5", "arm": "benign", "label": "代码阅读", "exit": 1, "domains": ["限流 / 熔断阈值"], "text": "这个函数里的 rate limit 逻辑是怎么实现的？解释一下"}
+{"id": "F6", "arm": "benign", "label": "调研讨论", "exit": 1, "domains": ["DNS / 域名 / 证书"], "text": "下周讨论 DNS 迁移方案，先出调研提纲"}

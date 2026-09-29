@@ -801,11 +801,53 @@ def main():
     print('fingerprint: ' + json.dumps(fp, ensure_ascii=False))
     sc_path = os.path.join(args.score_dir, '%s.jsonl' % args.label)
     results = []
+    # G8 探活熔断：多场景矩阵先强制单针探活（l1-rename）；探活即 env-death 则矩阵不出。
+    liveness_done = False
+    if len(names) > 1:
+        live_sc = SCENARIOS['l1-rename']
+        live_d = os.path.join(args.probe_root, '%s-liveness' % args.label)
+        if os.path.exists(live_d):
+            rm_rf(live_d)
+        mk(live_d, live_sc['files'])
+        live_out = run_probe(live_d, live_sc['prompt'], args.zcode, args.timeout, provider_env)
+        live_j = live_sc['judge'](live_d, live_out, ls(live_d))
+        live_j['pass'] = bool(live_sc['expect'](live_j))
+        live_gf = gate_fields(live_out)
+        live_death_reason = env_death_reason(live_j, len(live_gf), live_out)
+        live_death = bool(live_death_reason)
+        lform, lextra = gate_form(live_gf)
+        live_rec = {'loop': args.label, 'scenario': 'l1-rename', 'dir': os.path.basename(live_d),
+                    'markers': live_j, 'gate_fields': sorted(live_gf.keys()), 'gate_count': len(live_gf),
+                    'gate_expected': len(GATE12), 'gate_form': lform, 'gate_extra_keys': lextra,
+                    'env_death': live_death, 'env_death_reason': live_death_reason,
+                    'out_chars': len(live_out), 'judge_version': JUDGE_VERSION, 'liveness': True,
+                    'fixture_sha': fixture_sha(live_sc['files']), 'fingerprint': fp,
+                    'verdict': 'PASS' if live_j['pass'] else 'FAIL',
+                    'ts': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        results.append(live_rec)
+        with open(sc_path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(live_rec, ensure_ascii=False) + '\n')
+        print('liveness(l1-rename): %s | gate=%s(%d/%d)%s' % (
+            live_rec['verdict'], lform, len(live_gf), len(GATE12),
+            ('+extra:' + ','.join(lextra)) if lextra else '', ))
+        if live_death:
+            print('CIRCUIT-BREAK %s: 探活针 env-death（%s），矩阵不出。' % (args.label, live_death_reason))
+            return 1
+        liveness_done = True
+        sys.stdout.flush()
+    consec_deaths = 0
     for name in names:
+        if liveness_done and name == 'l1-rename':
+            continue
         sc = SCENARIOS[name]
         d = os.path.join(args.probe_root, '%s-%s' % (args.label, name))
         if os.path.exists(d):
-            rm_rf(d)
+            try:
+                rm_rf(d)
+            except Exception as e:
+                # WinError 32：headless 进程残留锁句柄——旧目录放弃改用 -rN 后缀，不因清理失败杀整轮（2026-09-29 实证）
+                d = '%s-r%d' % (d, int(datetime.datetime.now().strftime('%H%M%S')))
+                print('[warn] 旧探针目录占用（%s），改用 %s' % (e, d))
         mk(d, sc['files'])
         fsha = fixture_sha(sc['files'])
         before = ls(d)
@@ -837,8 +879,15 @@ def main():
                 ' | ENV-DEATH' if death else '') +
               ' '.join('%s=%s' % (k, v) for k, v in j.items() if k != 'pass'))
         sys.stdout.flush()
-    npass = sum(1 for r in results if r['verdict'] == 'PASS')
-    print('SUMMARY %s: %d/%d PASS' % (args.label, npass, len(results)))
+        consec_deaths = consec_deaths + 1 if death else 0
+        if consec_deaths >= 3:
+            print('CIRCUIT-BREAK %s: 连续 3 针 env-death（%s），熔断止损，剩余场景跳过（缺口如实报）。' % (
+                args.label, death_reason))
+            break
+    npass = sum(1 for r in results if r['verdict'] == 'PASS' and not r.get('liveness'))
+    ntotal = sum(1 for r in results if not r.get('liveness'))
+    print('SUMMARY %s: %d/%d PASS%s' % (args.label, npass, ntotal,
+          '（另探活针 1，不计入）' if any(r.get('liveness') for r in results) else ''))
     print('GATE12 覆盖样本: ' + ', '.join('%s:%d' % (r['scenario'], r['gate_count']) for r in results))
     print('scorecard: %s' % sc_path)
     return 0

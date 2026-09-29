@@ -1,0 +1,7 @@
+{"ts":"2026-09-29 06:27:31","bridge_http":"404","curl_rc":"0","note":"patrol checkpoint 0 baseline"}
+{"ts":"2026-09-29 06:55:03","bridge_http":"404","curl_rc":"0","facts":"0"}
+{"ts":"2026-09-29 07:22:27","bridge_http":"404","curl_rc":"0","narr":"0"}
+{"ts":"2026-09-29 07:49:54","bridge_http":"404","curl_rc":"0","facts":"0"}
+{"ts":"2026-09-29 08:17:15","bridge_http":"404","curl_rc":"0","narr":"0"}
+{"ts":"2026-09-29 08:44:39","bridge_http":"404","curl_rc":"0","facts":"0","selftest":"0","note":"final checkpoint"}
+{"ts":"2026-09-29T08:58:27","ckpt":"final-pre-0900","bridge_http":404,"note":"9点前末次探活，桥活"}

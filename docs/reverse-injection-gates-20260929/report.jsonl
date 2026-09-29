@@ -1,0 +1,27 @@
+{"id": "ctrl-rg-marked", "gate": "registry", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "对照：带标记组件放行", "detail": "missing=[]"}
+{"id": "rg-scope-hole", "gate": "registry", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "组件目录不含 component 字样→默认 scope 永不扫描", "detail": "missing=[]"}
+{"id": "rg-ext-case", "gate": "registry", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "大写后缀 .VUE 不在默认 ext", "detail": "missing=[]"}
+{"id": "rg-marker-forge", "gate": "registry", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "判据缺口：标记=文本包含，字符串字面量即可伪造（契约内放行，弱判据）", "detail": "missing=[]"}
+{"id": "rg-node-modules-fp", "gate": "registry", "want": "allowed", "blocked": true, "verdict": "FALSE-POSITIVE", "note": "无 node_modules 排除（lint 两门禁有）→ --scope all 视角三方依赖被报", "detail": "missing=['node_modules\\\\pkg\\\\index.vue']"}
+{"id": "ctrl-po-good", "gate": "product-object", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "对照：合法定义放行", "detail": "fails=[]"}
+{"id": "po-role-enum", "gate": "product-object", "want": "blocked", "blocked": true, "verdict": "OK-CAUGHT", "note": "ROLES 枚举定义未在 check 中使用", "detail": "fails=['P2 role=核心任务 的能力数=0（须恰好 1）——主功能不明=「什么都有，但什么都不重要」']"}
+{"id": "po-empty-mainfn", "gate": "product-object", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "main_function 空串时 P2 三项检查全跳过", "detail": "fails=[]"}
+{"id": "po-resp-prefix", "gate": "product-object", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "禁用动词前缀绕过：全角括号包裹", "detail": "fails=[]"}
+{"id": "po-purpose-number", "gate": "product-object", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "JSON 数字型 purpose 经 str() 穿透存在性检查", "detail": "fails=[]"}
+{"id": "ctrl-po-ghost-file", "gate": "product-object", "want": "blocked", "blocked": true, "verdict": "OK-CAUGHT", "note": "对照：file: 上游悬空必须拦", "detail": "fails=['P3 上游 L2 引用 file:ghost.md 不存在或为空（上游引用悬空）']"}
+{"id": "ctrl-ll-good", "gate": "l0-l5", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "对照：合法目标+IA 放行", "detail": "fails=[]"}
+{"id": "ll-ns-number", "gate": "l0-l5", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "north_star 数字型：非 str 即跳过全部声明检查（F5 同族未盖类型面）", "detail": "fails=[]"}
+{"id": "ll-nav-false-str", "gate": "l0-l5", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "字符串 \"false\" 为 truthy，三件套判虚", "detail": "fails=[]"}
+{"id": "ll-exits-str", "gate": "l0-l5", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "exits=\"0\" 字符串绕过死端判定（==0 对 str 恒 False）", "detail": "fails=[]"}
+{"id": "ctrl-ll-nokey", "gate": "l0-l5", "want": "blocked", "blocked": true, "verdict": "OK-CAUGHT", "note": "F5 回归对照：键缺失必须拦", "detail": "fails=['L0-C1/C10 主结果声明缺失（north_star 键不存在）——目标未被陈述']"}
+{"id": "ctrl-fl-clean", "gate": "frontend-lint", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "对照：干净文件放行", "detail": "violations=0 []"}
+{"id": "fl-style-single-quote", "gate": "frontend-lint", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "单引号内联样式：R1 只认 style=\"", "detail": "violations=0 []"}
+{"id": "fl-console-table", "gate": "frontend-lint", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "console.table/trace 不在 R3 枚举", "detail": "violations=0 []"}
+{"id": "fl-catch-noparen", "gate": "frontend-lint", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "ES2019 optional catch binding：catch {} 无参形态", "detail": "violations=0 []"}
+{"id": "fl-rgb-upper", "gate": "frontend-lint", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "R2 大小写敏感：RGB( 大写函数名", "detail": "violations=0 []"}
+{"id": "ctrl-fl-inline", "gate": "frontend-lint", "want": "blocked", "blocked": true, "verdict": "OK-CAUGHT", "note": "对照：双引号内联样式拦截", "detail": "violations=1 ['fixtures/22-fl-inline/src/F.tsx:1 [R1] 内联样式（§4-5）：export const F = () => <div style=\"color:red\">x</div>;']"}
+{"id": "ctrl-ag-good", "gate": "a11y", "want": "allowed", "blocked": false, "verdict": "OK-ALLOWED", "note": "对照：好件放行", "detail": "violations=0 []"}
+{"id": "ag-empty-label-wrap", "gate": "a11y", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "空 label 包裹豁免：label 无文本=无可访问名", "detail": "violations=0 []"}
+{"id": "ag-lang-empty", "gate": "a11y", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "lang=\"\" 空值：有键无值=无语言声明", "detail": "violations=0 []"}
+{"id": "ag-emoji-button", "gate": "a11y", "want": "blocked", "blocked": false, "verdict": "CONFIRMED-MISS", "note": "判据缺口（v1 诚实边界内）：emoji-only 按钮文本非空→放行，读屏可达名存疑", "detail": "violations=0 []"}
+{"id": "ctrl-ag-img-noalt", "gate": "a11y", "want": "blocked", "blocked": true, "verdict": "OK-CAUGHT", "note": "对照：img 无 alt 拦截", "detail": "violations=1 ['fixtures/27-ag-img/src/J.vue:1 [A1] img 无 alt：<img src=\"x.png\">']"}
