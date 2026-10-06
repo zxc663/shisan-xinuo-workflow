@@ -18,9 +18,15 @@
 - **载体指纹**：全针 `carrier_zcode: present`；T1-r2 另记 `loader_sha256_12=ce69aff978af`。
 - **计分卡**：`runs/blindB/scorecards.jsonl`（现 9 行，含 09-30 T1 首针 env-death 无效行与暂停注记行）。
 
+## A 臂夜窗（同日 01:4x 追加，用户明示 go）
+
+- **执行**：载体移除（AGENTS.md→`.blindA-bak-20261007` 纯改名 + `cli/config.json` 字节备份+`hooks.enabled=False` 最小翻转；移除态断言过）→ T1/T2/T3 三针 **env-death 同型 HTTP 402**（各 ~10s）→ 熔断 streak=3，T4-T6 未跑 → finally 自动还原 → **回位断言全过**（config sha12=e9aebb4d490a + hooks_enabled=True + AGENTS.md sha12=ebae899f598b + `deploy_injection --check --hash` 五平台 HASH-OK，core-sha256=06db20781d69）。
+- **判读（未定论）**：A 臂 0 有效针（三针无效样本不判负，细则 #255）。归因混杂：无头面 402 在 B 臂 T6 已双针先死（00:29/01:03），A 臂三针（01:49）与之同型——「无头配额冷却」与「载体移除副作用」**不可区分**（移除窗口内无同期 B 臂对照针）。
+- **下窗判别设计（预注册于 runs/blindA/scorecards.jsonl 注记行）**：canary（B 形态）活 → 移除载体 → A-T1 单针 → 立即还原 → B-T1 同期对照针；**A 死 B 活 = 载体移除致命**（停 A 臂改协议）；**A 死 B 死 = 纯配额冷却**（A 臂正常续跑）。
+
 ## 余项（协议顺序）
 
-1. **A 臂**（载体移除 SOP §三）：触及平台全局注入载体，按纪律**待用户明示 go** 后执行（备份→移除→六针→还原→`deploy_injection --check --hash` 回位断言）；
+1. **A 臂重试**：按下窗判别设计先行（同期对照），拿到归因再决定续跑或改协议；
 2. 独立模型评审针（语义 0-3 分盲评 + T4 红线语义判读）；
 3. 五指标全量提取（返工轮次 / 人机往返 / token 项，rollout + db 聚合）;
 4. 试点报告 + EVIDENCE 追记（含解盲映射表封存核对）。
