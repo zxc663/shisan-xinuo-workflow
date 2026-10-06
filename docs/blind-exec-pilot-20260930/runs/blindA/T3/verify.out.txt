@@ -1,0 +1,7 @@
+FAIL schema 含 timezone
+FAIL 缺省 timezone='UTC'
+FAIL 显式 timezone 透传
+FAIL 调用点展示 timezone
+RESULT: FAIL
+
+---STDERR---
