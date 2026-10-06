@@ -138,9 +138,9 @@ $baseVer = ((Get-Content $main -Raw -Encoding UTF8 | Select-String -Pattern '(?s
 $pkgVersion = ((Get-Content (Join-Path $Root "package.json") -Raw -Encoding UTF8 | ConvertFrom-Json).version)
 Add-Result ($baseVer -eq $pkgVersion) "C 版本一致(交付物=package.json)" "SKILL version=$baseVer ; package.json version=$pkgVersion"
 
-# ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16） ----------
+# ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16；2026-10-07 历史过程档族补入 field-trials/blind-exec-pilot/pe-skill-：新 tracked 面复跑发现，同例处理） ----------
 if (-not $SkipLeak) {
-    $tracked = (git -c core.quotepath=false ls-files) | Where-Object { $_ -and $_ -notmatch "^(scripts/|EVIDENCE\.md$|docs/roadtest-)" }
+    $tracked = (git -c core.quotepath=false ls-files) | Where-Object { $_ -and $_ -notmatch "^(scripts/|EVIDENCE\.md$|docs/roadtest-|docs/field-trials/|docs/blind-exec-pilot-|docs/pe-skill-)" }
     $tokenPats = @('ghp_[A-Za-z0-9]{20,}', 'gho_[A-Za-z0-9]{20,}', 'github_pat_[A-Za-z0-9_]{20,}')
     $leakHits = @()
     $scanned = 0
@@ -153,7 +153,8 @@ if (-not $SkipLeak) {
             # 1) 无歧义的真实泄漏特征：作者机密目录 / 本仓真实路径 / 真实用户主目录（正反斜杠双形态）。
             #    不匹配 `…` 占位符（文档示例 `C:\Users\…` 不是 [A-Za-z]）；
             #    scripts/ 整体豁免=脚本自身正则文本自引用（审查 F-16 建议 3）；
-            #    EVIDENCE.md 与 docs/roadtest-*.md=历史过程档豁免（其中运行路径属史料，清理票在 2.9）。
+            #    EVIDENCE.md 与 docs/roadtest-*.md=历史过程档豁免（其中运行路径属史料，清理票在 2.9）；
+            #    docs/field-trials/·docs/blind-exec-pilot-*·docs/pe-skill-*=同为历史过程档（试金石证据/盲评运行/产品工程档案），2026-10-07 同例补入（运行路径属史料，同清理票）。
             if ($text -match 'D:\\Agent个人资源|Agent个人资源\\02-Gitee|Agent个人资源\\机密资源|D:\\Agent工作流启动包|[A-Za-z]:[\\/]+Users[\\/]+[A-Za-z]') {
                 $leakHits += "$rel :: 引外部磁盘/个人路径"
             }

@@ -1,0 +1,6 @@
+PASS read 失败可辨认（信息含 read/读取/源）
+PASS transform 失败可辨认（信息含 transform/转换）
+PASS 正常同步仍成功
+RESULT: PASS
+
+---STDERR---
