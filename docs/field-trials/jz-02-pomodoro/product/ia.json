@@ -1,0 +1,11 @@
+{
+  "global_nav": true,
+  "local_nav": true,
+  "routes": [
+    {"path": "/", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/", "exits": 2}
+  ],
+  "find_paths": []
+}

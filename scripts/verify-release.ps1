@@ -97,6 +97,13 @@ foreach ($pkg in @('shisan-xinuo-workflow','shisan-xinuo-flows','shisan-xinuo-ro
     if ($st -notmatch "name:\s*$pkg") { $probsA += "家族包 name 不一致: $pkg" }
     if ($st -notmatch "version:\s*$([regex]::Escape($pkgVer))") { $probsA += "家族包版本与 package.json 不一致: $pkg" }
 }
+# 单文件蒸馏版伴生件（存在 + 基线行 + 衍生物声明；轻量断言，随 A 项计）
+$singleMd = Join-Path $Root "skill\shisan-xinuo-single\SKILL.md"
+if (-not (Test-Path $singleMd)) { $probsA += "缺单文件蒸馏版伴生件: skill/shisan-xinuo-single/SKILL.md" } else {
+    $sgt = Get-Content $singleMd -Raw -Encoding UTF8
+    if ($sgt -notmatch "主体系 v") { $probsA += "单文件蒸馏版缺基线行（应含「主体系 v…」基线指向）" }
+    if ($sgt -notmatch "衍生物声明") { $probsA += "单文件蒸馏版缺衍生物声明" }
+}
 # 形态冒烟（v3.0 批⑤：纯数值门禁对同长度文本损坏盲区——首行形态断言）
 $formChecks = @(
     @('README.md', 0, '# Shisan Xinuo Agent Workflow'),

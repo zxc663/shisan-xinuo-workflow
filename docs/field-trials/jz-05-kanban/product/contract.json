@@ -1,0 +1,12 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "board": {"ui": "三列看板：待办/进行中/已完成，卡片可拖拽"},
+    "dragging": {"ui": "拖拽中：源卡半透明，目标列高亮"},
+    "blocked": {"ui": "卡片标红+阻断角标，操作只剩「解除阻断」"},
+    "archived": {"ui": "归档列表只读留痕"}
+  },
+  "recovery": [
+    {"state": "blocked", "action": "UNBLOCK", "target": "board"}
+  ]
+}

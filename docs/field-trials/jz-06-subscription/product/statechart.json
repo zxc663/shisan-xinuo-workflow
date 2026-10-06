@@ -1,0 +1,35 @@
+{
+  "initial": "trialing",
+  "states": {
+    "trialing": {
+      "on": {
+        "SUBSCRIBE": "active",
+        "TRIAL_EXPIRE": "expired"
+      }
+    },
+    "active": {
+      "on": {
+        "PAY_FAIL": "payment_failed",
+        "CANCEL": "canceled"
+      }
+    },
+    "payment_failed": {
+      "type": "error",
+      "on": {
+        "RETRY_PAY": "active",
+        "CONTACT_SUPPORT": "support_hold"
+      }
+    },
+    "support_hold": {
+      "on": {
+        "RESOLVE": "active"
+      }
+    },
+    "expired": {
+      "on": {
+        "RESUBSCRIBE": "active"
+      }
+    },
+    "canceled": {"type": "final"}
+  }
+}

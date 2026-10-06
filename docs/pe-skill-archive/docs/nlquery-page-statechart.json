@@ -1,0 +1,10 @@
+{
+  "id": "nlquery-page",
+  "initial": "idle",
+  "states": {
+    "idle":       { "on": { "RUN": "querying" } },
+    "querying":   { "on": { "RESULT": "result", "NO_RESULT": "result", "FAIL": "queryError" } },
+    "result":     { "on": { "RUN": "querying" } },
+    "queryError": { "on": { "RUN": "querying" } }
+  }
+}

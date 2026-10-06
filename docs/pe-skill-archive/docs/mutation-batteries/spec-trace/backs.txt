@@ -1,0 +1,3 @@
+GET /favorites
+DELETE /favorites
+GET /dead-stats

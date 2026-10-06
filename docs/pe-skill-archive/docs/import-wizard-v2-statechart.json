@@ -1,0 +1,47 @@
+{
+  "id": "import-wizard-v2",
+  "initial": "idle",
+  "states": {
+    "idle": { "on": { "SELECT_FILE": "queued", "CLEAR_LEDGER": "confirmClear", "RESUME_STAGED": "awaitingReview" } },
+    "confirmClear": { "on": { "CONFIRM": "purging", "CANCEL": "idle" } },
+    "purging": { "on": { "DONE": "idle", "FAIL": "idle" } },
+    "queued": {
+      "on": {
+        "START": "parsing",
+        "REMOVE_FILE": { "target": "queued", "guard": "queueNonEmpty", "guardDesc": "移除单个文件后队列仍非空——留在 queued；最后一个文件移除后走 QUEUE_EMPTIED 回 idle" },
+        "QUEUE_EMPTIED": "idle",
+        "ADD_FILE": "queued",
+        "RESUME_STAGED": "awaitingReview"
+      }
+    },
+    "parsing": {
+      "on": {
+        "NEED_ZIP_PW": "awaitingPassword",
+        "NEED_PDF_PW": "awaitingPassword",
+        "PARSE_DONE": "classifying",
+        "FILE_FAILED": { "target": "queued", "guardDesc": "文件级子状态：失败件标'失败'留队列，串行指针前进——批量语义下失败不打全局态（v1 粒度错误修正）" },
+        "BATCH_DONE": "queued",
+        "CANCEL": "cancelling"
+      }
+    },
+    "awaitingPassword": { "on": { "SUBMIT_PW": "parsing", "REMOVE_FILE": { "target": "queued", "guard": "queueNonEmpty", "guardDesc": "同 queued.REMOVE_FILE" } } },
+    "classifying": {
+      "on": {
+        "ALL_DUP": "queued",
+        "STAGED": "awaitingReview",
+        "FILE_FAILED": { "target": "queued", "guardDesc": "文件级失败回队列（同 parsing.FILE_FAILED）" },
+        "BATCH_DONE": "queued",
+        "CANCEL": "cancelling"
+      }
+    },
+    "awaitingReview": {
+      "on": {
+        "CONFIRM_STAGED": "committing",
+        "DISCARD": "queued",
+        "LEAVE_STAGED": { "target": "idle", "guardDesc": "暂存保留退出（staged_txns 持久）：用户可离开，回来经 RESUME_STAGED 恢复——v1 漏边（对方评审疑问 2）" }
+      }
+    },
+    "committing": { "on": { "DONE": "queued", "FAIL": "awaitingReview" } },
+    "cancelling": { "on": { "DONE": "queued" } }
+  }
+}

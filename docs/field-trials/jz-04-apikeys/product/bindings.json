@@ -1,0 +1,16 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "KeyTable": "密钥列表（指纹/状态/操作）",
+    "RevealModal": "一次性明文展示弹层",
+    "CreateKeyForm": "生成密钥表单",
+    "KeyUsageChart": "单密钥用量图"
+  },
+  "bindings": [
+    {"page": "KeysPage", "component": "KeyTable", "feature": "吊销密钥", "backend": "DELETE /keys/{id}", "evidence": "shot-revoke.png"},
+    {"page": "KeysPage", "component": "CreateKeyForm", "feature": "生成密钥", "backend": "POST /keys", "evidence": "shot-create.png"},
+    {"page": "UsagePage", "component": "KeyUsageChart", "feature": "查看用量", "backend": "GET /keys/{id}/usage", "evidence": "待补"},
+    {"page": "KeysPage", "component": "KeyTable", "feature": "列表展示", "backend": "GET /keys", "evidence": "shot-list.png"},
+    {"page": "KeysPage", "component": "RevealModal", "feature": "轮换密钥", "backend": "POST /keys/rotate", "evidence": "shot-rotate.png"}
+  ]
+}

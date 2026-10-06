@@ -1,0 +1,31 @@
+{
+  "initial": "browsing",
+  "states": {
+    "browsing": {
+      "on": {
+        "PICK_SLOT": {"target": "confirming", "guard": "slot.available"},
+        "VIEW_MINE": {"target": "my_bookings"}
+      }
+    },
+    "confirming": {
+      "on": {
+        "CONFIRM": {"target": "booked"},
+        "BACK": {"target": "browsing"}
+      }
+    },
+    "booked": {
+      "on": {
+        "CANCEL": {"target": "cancelled"},
+        "CONFLICTED": {"target": "conflict"}
+      }
+    },
+    "conflict": {},
+    "cancelled": {},
+    "my_bookings": {
+      "on": {
+        "CANCEL": {"target": "cancelled"},
+        "BACK": {"target": "browsing"}
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "report-page",
+  "initial": "loading",
+  "states": {
+    "loading":        { "on": { "LOADED_MONTH": "idleMonth", "LOADED_NONMONTH": "nonMonthNote", "LOAD_FAIL": "offline" } },
+    "nonMonthNote":   { "on": { "PERIOD_TO_MONTH": "loading" } },
+    "offline":        { "on": { "ENGINE_RECOVER": "loading" } },
+    "idleMonth":      { "on": { "GENERATE": "generating", "PERIOD_CHANGE": "loading", "ENGINE_DOWN": "offline" } },
+    "hasReport":      { "on": { "REGENERATE": "generating", "PERIOD_CHANGE": "loading" } },
+    "generateFailed": { "on": { "REGENERATE": "generating", "PERIOD_CHANGE": "loading" } },
+    "generating":     { "on": { "DONE": "hasReport", "FAIL_MARKED": "generateFailed", "FAIL_UNMARKED": "generateError" } },
+    "generateError":  { "on": { "REGENERATE": "generating", "PERIOD_CHANGE": "loading" } }
+  }
+}

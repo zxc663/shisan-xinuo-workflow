@@ -1,0 +1,23 @@
+{
+  "organization": "任务",
+  "global_nav": true,
+  "local_nav": true,
+  "location_indicator": true,
+  "routes": [
+    {"path": "/board", "has_global_nav": true},
+    {"path": "/board/archive", "has_global_nav": true},
+    {"path": "/team", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/board", "exits": 2},
+    {"path": "/board/archive", "exits": 1},
+    {"path": "/team", "exits": 1}
+  ],
+  "find_paths": [
+    {"task": "从看板把一张卡拖到已完成列", "clicks": 1, "ok": true},
+    {"task": "从看板找到上周归档的任务", "clicks": 2, "ok": true}
+  ],
+  "tree_tests": [
+    {"task": "找到阻断任务的解除入口", "correct_leaf": "/board", "success_rate": 0.9, "directness": 0.7}
+  ]
+}

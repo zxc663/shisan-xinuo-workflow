@@ -17,6 +17,8 @@
   T3 完全相同的四元组（page/component/feature/backend）重复 → 冗余行
   T4 UI 孤儿：--components <文件列表> 代码中存在但清单未登记的组件 → 发明/漏登记
   T5 死逻辑：--backends <文件列表> 后端逻辑块存在但无任何组件消费 → classifyNotice 式死代码
+  T6 幽灵端点：绑定行 backend 形似 HTTP 端点（动词+路径 / URL）但不在 --backends 实际清单 → 引用不存在的后端
+    （jz-02 试金石回流：绑定 GET /api/stats 而后端无此块，T4/T5 双向都查不到；localStorage 等客户端存储非 URL 形，不拦）
 
 用法：python spec-trace-gate.py --file bindings.json [--components list.txt] [--backends list.txt]
       python spec-trace-gate.py --selftest
@@ -31,6 +33,14 @@ from pathlib import Path
 
 BAD = re.compile(r"^\s*(无|未验证|TODO|待补|暂无|-|NONE)$", re.I)
 PURE_DISPLAY = re.compile(r"^NONE\(.+\)$")
+# URL 形：HTTP 动词+路径（GET /x）或含 scheme（https://）或以 / 开头——localStorage/IndexedDB 等客户端存储不匹配
+URLISH = re.compile(r"^(?:[A-Z]{3,8}\s+\S+|.+:\/\/|\/)")
+
+
+def _norm(s: str) -> str:
+    """路径参数段归一化：`{任意名}` → `{}`——bindings 手写 `{id}` 与后端声明 `{appt_id}` 语义同端点，
+    严格串比对会把同一端点同时报成 T5 死逻辑+T6 幽灵（jz-03 试金石回流）。"""
+    return re.sub(r"\{[^}/]*\}", "{}", s)
 
 
 def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[str] | None) -> list[str]:
@@ -40,11 +50,13 @@ def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[st
     seen_quads: set[tuple] = set()
     used_components: set[str] = set()
     used_backends: set[str] = set()
+    defect_rows: list[tuple[str, str]] = []  # T1 缺段行 (component, backend)——未计入消费集，其孤儿/死逻辑为连带暴露
     for i, b in enumerate(bindings, 1):
         page, comp = b.get("page", ""), b.get("component", "")
         feat, be, ev = b.get("feature", ""), b.get("backend", ""), b.get("evidence", "")
         if not (page and comp and feat and be and ev):
             fails.append(f"T1 第{i}行五段不齐：{page}/{comp}/{feat}/{be}/{ev or '(空)'}")
+            defect_rows.append((comp, be))
             continue
         if BAD.match(ev):
             fails.append(f"T2 第{i}行 evidence 占位语（{ev}）——无真渲染证据不得声称已验证")
@@ -59,10 +71,26 @@ def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[st
             used_backends.add(be)
     if comp_list:
         for ghost in sorted(comp_list - used_components):
-            fails.append(f"T4 UI 孤儿：组件 '{ghost}' 存在于代码但未登记任何功能绑定")
-    if backend_list:
-        for dead in sorted(backend_list - used_backends):
-            fails.append(f"T5 死逻辑：后端块 '{dead}' 无任何组件消费（classifyNotice 式）")
+            tag = next((f"（连带：T1 缺段行 '{c}' 未计入消费集，本条由缺段连带暴露）"
+                        for c, _ in defect_rows if c == ghost), "")
+            fails.append(f"T4 UI 孤儿：组件 '{ghost}' 存在于代码但未登记任何功能绑定{tag}")
+    # 注意判空语义：None=未提供 --backends（检查不适用）；空 set=提供了但实际零后端——
+    # 空清单恰是幽灵端点最典型场景（纯前端夹具引用了不存在的 API），不得被 falsy 吞掉（jz-02 实测抓到本 bug）
+    if backend_list is not None:
+        norm_list = {_norm(x) for x in backend_list}
+        norm_used = {_norm(x) for x in used_backends}
+        for dead in sorted(norm_list - norm_used):
+            tag = next((f"（连带：T1 缺段行 backend '{_norm(b)}' 未计入消费集，本条由缺段连带暴露）"
+                        for c, b in defect_rows if not PURE_DISPLAY.match(b) and _norm(b) == dead), "")
+            fails.append(f"T5 死逻辑：后端块 '{dead}' 无任何组件消费（classifyNotice 式）{tag}")
+        # T6 幽灵端点（jz-02 回流）：URL 形 backend 必须命中实际后端清单（路径参数段归一化后比对，jz-03）——
+        # 双向对账的另一半：T5 查「有块没人用」，T6 查「有行没块」
+        for b in bindings:
+            be = b.get("backend", "")
+            if PURE_DISPLAY.match(be) or not URLISH.match(be):
+                continue
+            if _norm(be) not in norm_list:
+                fails.append(f"T6 幽灵端点：'{b.get('component', '?')}' 绑定 backend '{be}' 不在实际后端清单（引用不存在的端点/拼错/未实现）")
     return fails
 
 
@@ -90,8 +118,32 @@ def selftest() -> int:
     f3 = check([{"page": "P", "component": "C1", "feature": "F1",
                  "backend": "POST /imports/parse", "evidence": "s.png"}], None, loaded)
     ok4 = len(f3) == 1 and "T5" in f3[0] and "GET /unused" in f3[0]
-    print(f"selftest: 合法绑定放行={ok1} 占位/冗余/UI孤儿/死逻辑全拦={ok2}（{len(f)} 项） 多词backend整串加载={ok3} 死逻辑只报真死={ok4}")
-    return 0 if ok1 and ok2 and ok3 and ok4 else 1
+    # T6 反向变异（jz-02 回流，#407）：幽灵端点必拦 + localStorage 非URL形不拦
+    ghost = [{"page": "P", "component": "C1", "feature": "F1", "backend": "GET /api/stats", "evidence": "s.png"},
+             {"page": "P", "component": "C2", "feature": "F2", "backend": "localStorage", "evidence": "s2.png"}]
+    f5 = check(ghost, None, {"GET /real"})
+    ok5 = any("T6" in x and "/api/stats" in x for x in f5) and not any("localStorage" in x and "T6" in x for x in f5)
+    # T6 空清单变异：--backends 给了但文件为空（纯前端）——URL 形绑定此时全是幽灵，不得被 falsy 吞掉
+    f6 = check(ghost[:1], None, set())
+    ok6 = any("T6" in x for x in f6)
+    # 参数段归一化变异（jz-03 回流）：{id} vs {appt_id} 语义同端点——T5/T6 都不得报；真删端点仍拦
+    param = [{"page": "P", "component": "C1", "feature": "F1", "backend": "DELETE /appointments/{id}", "evidence": "s.png"}]
+    f7 = check(param, None, {"DELETE /appointments/{appt_id}", "GET /x"})
+    ok7 = not any(("T5" in x or "T6" in x) and "appointments" in x for x in f7)
+    gone = check(param, None, {"GET /x"})
+    ok8 = any(("T5" in x or "T6" in x) for x in gone)
+    # T1 连带标注正反四面（jz-06 E1 回流，#407）：缺段行的组件/后端在 T4/T5 报文中带「连带」标注；
+    # 无缺段来源的孤儿/死逻辑（C9、GET /dead）不得误标
+    linked = [{"page": "P", "component": "C1", "feature": "F1", "backend": "POST /a", "evidence": ""}]
+    f9 = check(linked, {"C1", "C9"}, {"POST /a", "GET /dead"})
+    t4_c1 = next((x for x in f9 if "T4" in x and "'C1'" in x), "")
+    t4_c9 = next((x for x in f9 if "T4" in x and "'C9'" in x), "")
+    t5_a = next((x for x in f9 if "T5" in x and "POST /a" in x), "")
+    t5_dead = next((x for x in f9 if "T5" in x and "GET /dead" in x), "")
+    ok9 = ("连带" in t4_c1 and t4_c9 and "连带" not in t4_c9
+           and "连带" in t5_a and t5_dead and "连带" not in t5_dead)
+    print(f"selftest: 合法绑定放行={ok1} 占位/冗余/UI孤儿/死逻辑全拦={ok2}（{len(f)} 项） 多词backend整串加载={ok3} 死逻辑只报真死={ok4} 幽灵端点拦/客户端存储豁免={ok5} 空清单仍拦幽灵={ok6} 参数名归一化放行={ok7} 端点真消失仍拦={ok8} T1缺段连带标注四面={ok9}（{len(f9)} 项）")
+    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 else 1
 
 
 def _load_list(path: str) -> set[str]:

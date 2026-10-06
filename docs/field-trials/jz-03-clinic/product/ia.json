@@ -1,0 +1,22 @@
+{
+  "global_nav": true,
+  "local_nav": true,
+  "location": true,
+  "routes": [
+    {"path": "/", "has_global_nav": true},
+    {"path": "/departments", "has_global_nav": true},
+    {"path": "/schedule/:doctorId", "has_global_nav": true},
+    {"path": "/my", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/", "exits": 2},
+    {"path": "/departments", "exits": 1},
+    {"path": "/schedule/:doctorId", "exits": 2},
+    {"path": "/my", "exits": 0}
+  ],
+  "find_paths": [
+    {"task": "从首页到挂王医生下周三的号", "clicks": 3, "ok": true},
+    {"task": "从首页取消已有预约", "clicks": 2, "ok": true}
+  ],
+  "tree_tests": "2026-09 导航实测 5 任务 4 过"
+}

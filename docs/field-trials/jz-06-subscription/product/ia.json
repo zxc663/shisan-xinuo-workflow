@@ -1,0 +1,21 @@
+{
+  "organization": "任务",
+  "global_nav": true,
+  "local_nav": true,
+  "location_indicator": true,
+  "routes": [
+    {"path": "/billing", "has_global_nav": true},
+    {"path": "/billing/invoices", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/billing", "exits": 2},
+    {"path": "/billing/invoices", "exits": 1}
+  ],
+  "find_paths": [
+    {"task": "从个人页进入并开通 Pro 订阅", "clicks": 2, "ok": true},
+    {"task": "找到上个月账单并下载", "clicks": 3, "ok": true}
+  ],
+  "tree_tests": [
+    {"task": "找到支付失败后的重试入口", "correct_leaf": "/billing", "success_rate": 0.88, "directness": 0.72}
+  ]
+}

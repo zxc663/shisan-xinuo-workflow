@@ -29,7 +29,13 @@ import re
 import sys
 from pathlib import Path
 
-COMPONENT_EXCLUDE = re.compile(r"(test|spec|story|stories|\.d\.ts|node_modules|\.next|dist|build)")
+# jz-07 回流：旧子串匹配曾把 TaskHistory.vue（含 story 子串）整文件误排除——History 类命名
+# 超常见，方向=假阴性漏报。改为路径段锚定：test/spec/story/evidence/smoke 须为完整目录段；
+# node_modules/dist/build 等目录段锚定；.d.ts 后缀锚定
+COMPONENT_EXCLUDE = re.compile(
+    r"(^|[/\\])(test|tests|spec|specs|story|stories|evidence|smoke)([/\\])"
+    r"|(^|[/\\])(node_modules|\.next|dist|build)([/\\])"
+    r"|\.d\.ts$")
 STYLE_BLOCK = re.compile(r"<style[\s>].*?</style>", re.S)
 # 批 X FL-1：style=' 单引号形态曾绕过；FL-4：RGB( 大写函数名曾绕过（re.I 补）
 R1 = re.compile(r"style=[\"']|:style=[\"']|style=\{\{")
@@ -39,6 +45,9 @@ R3 = re.compile(r"console\.(log|debug|info|warn|error|table|trace|dir|count)\b")
 # 批 X FL-3：可选绑定 catch {}（无括号形态）曾绕过
 R4 = re.compile(r"catch\s*(?:\([^)]*\))?\s*\{\s*\}")
 RULES = {"R1": R1, "R2": R2, "R3": R3, "R4": R4}
+# R2 canvas 豁免的第二形态：2D 上下文属性赋值（strokeStyle/fillStyle 为 canvas 专属 API 名，
+# 误放行面≈0；自定义函数参数如 makeGlowSprite('#..') 语义不可机判=人工域，保持拦）
+CANVAS_ASSIGN = re.compile(r"\.(?:strokeStyle|fillStyle)\s*=")
 
 # R5 空态启发（warning 级）：v-else 合法、v-else-if 不算空分支；v-if="!x.length" 形态算
 V_FOR = re.compile(r"\bv-for\b")
@@ -70,6 +79,10 @@ def scan_file(p: Path, rules: dict[str, re.Pattern]) -> list[str]:
         for rid, rx in active.items():
             # R2 的 meta 豁免：theme-color 等 content 色值是页面元数据非组件样式（F10 族，2026-09-25）
             if rid == "R2" and line.lstrip().startswith("<meta"):
+                continue
+            # R2 的 canvas 豁免（site-02 回流）：addColorStop( 调用行内的色值是 canvas
+            # 渐变 API 的绘制参数（粒子/图表动画），非组件样式 token 逃逸
+            if rid == "R2" and (".addColorStop(" in line or CANVAS_ASSIGN.search(line)):
                 continue
             if rx.search(line):
                 out.append(f"{p.as_posix()}:{i} [{rid}] {RULE_NAMES[rid]}：{line.strip()[:80]}")
@@ -138,10 +151,39 @@ def selftest() -> int:
         warn_elseif.write_text('<template><div v-if="loading">…</div><div v-else-if="list.length"><div v-for="i in list" :key="i">{{ i }}</div></div></template>', encoding="utf-8")
         ok7w = len(scan_warnings(warn_no)) == 1 and scan_warnings(warn_else) == [] \
             and scan_warnings(warn_notlen) == [] and len(scan_warnings(warn_elseif)) == 1
+        # site-02 回流：canvas addColorStop 绘制参数放行，普通样式色仍拦（#407 双向）
+        canvasfile = t / "canvas.js"
+        canvasfile.write_text("grad.addColorStop(0, 'rgba(90,70,160,0.14)');\n"
+                              "ctx.strokeStyle = '#cfe4ff';\n"
+                              "ctx.fillStyle = 'rgba(0,0,0,0.5)';\n"
+                              "el.style.background = 'rgba(0,0,0,0.5)';\n"
+                              "s = makeGlowSprite('#dbeeff', 'rgba(1,2,3,0.9)');\n", encoding="utf-8")
+        vc = scan_file(canvasfile, RULES)
+        ok8c = ((not any("addColorStop" in x or "strokeStyle" in x or "fillStyle" in x for x in vc))
+                and sum(1 for x in vc if "[R2]" in x) == 2)  # 普通样式赋值+自定义函数参数仍拦
+        # site-01 回流：evidence/smoke 证据目录整文件排除（与 test/spec 同语义）
+        evdir = t / "evidence"
+        evdir.mkdir()
+        smokef = evdir / "smoke-core.js"
+        smokef.write_text("console.log('SMOKE RESULT: ok');\n", encoding="utf-8")
+        ok9e = collect(evdir, [".js"]) == []
+        # jz-07 回流反向变异：文件名含 story 子串（TaskHistory）不得整文件误排除；story/ 目录仍排除
+        compdir = t / "components"
+        compdir.mkdir()
+        hf = compdir / "TaskHistory.vue"
+        hf.write_text("<script setup>\nconsole.log('x')\n</script>\n", encoding="utf-8")
+        ok10h = (collect(compdir, ['.vue']) and
+                 sum(1 for x in scan_file(hf, RULES) if '[R3]' in x) == 1)
+        sdir = compdir / "story"
+        sdir.mkdir()
+        (sdir / "A.vue").write_text("console.log('y')\n", encoding="utf-8")
+        kept = collect(compdir, ['.vue'])
+        ok10s = len(kept) == 1 and kept[0].name == "TaskHistory.vue"
         print(f"selftest: 违例三连(R1/R2/R4)={ok1} 干净文件放行={ok2} style 块色值合法={ok3} "
               f"css 文件色值豁免={ok4} meta 色值豁免={ok5} 批X反向FL1-4={ok6} "
-              f"R5空态W拦/放行={ok7w}")
-        return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7w else 1
+              f"R5空态W拦/放行={ok7w} canvas豁免={ok8c} 证据目录排除={ok9e} "
+              f"History名不误排除/目录段仍排除={ok10h and ok10s}")
+        return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7w and ok8c and ok9e and ok10h and ok10s else 1
 
 
 def main() -> int:

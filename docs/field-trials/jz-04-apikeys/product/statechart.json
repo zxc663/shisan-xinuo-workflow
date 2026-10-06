@@ -1,0 +1,46 @@
+{
+  "initial": "viewing",
+  "states": {
+    "viewing": {
+      "on": {
+        "OPEN_CREATE": {"target": "creating"},
+        "OPEN_KEY": {"target": "usage"}
+      }
+    },
+    "creating": {
+      "on": {
+        "SUBMIT": {"target": "unrevealed", "guard": "name.length > 0"},
+        "CANCEL": {"target": "viewing"}
+      }
+    },
+    "unrevealed": {
+      "on": {
+        "REVEAL": {"target": "revealed"}
+      }
+    },
+    "revealed": {
+      "on": {
+        "ACK": {"target": "active"}
+      }
+    },
+    "active": {
+      "on": {
+        "REVOKE": {"target": "revoking"},
+        "VIEW_USAGE": {"target": "usage_detail"}
+      }
+    },
+    "revoking": {
+      "on": {
+        "CONFIRM": {"target": "revoked"},
+        "ABORT": {"target": "active"}
+      }
+    },
+    "revoked": {"type": "final"},
+    "usage": {
+      "on": {
+        "BACK": {"target": "viewing"}
+      }
+    },
+    "rate_limited": {"type": "error"}
+  }
+}

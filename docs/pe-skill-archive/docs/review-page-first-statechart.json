@@ -1,0 +1,14 @@
+{
+  "id": "review-page",
+  "initial": "loading",
+  "states": {
+    "loading":       { "on": { "LOADED_EMPTY": "empty", "LOADED_ROWS": "ready", "LOAD_FAIL": "loadError" } },
+    "loadError":     { "on": { "RETRY": "loading" } },
+    "empty":         { "on": { "PERIOD_CHANGE": "loading" } },
+    "ready":         { "on": { "PERIOD_CHANGE": "loading", "CONFIRM_ROW": "rowConfirming", "EXCLUDE_ROW": "rowExcluding", "BULK_CONFIRM": "bulkConfirming", "RECLASSIFY": "reclassifying" } },
+    "rowConfirming": { "on": { "DONE": "ready", "FAIL": "ready" } },
+    "rowExcluding":  { "on": { "DONE": "ready", "FAIL": "ready" } },
+    "bulkConfirming":{ "on": { "DONE": "ready", "FAIL": "ready" } },
+    "reclassifying": { "on": { "DONE": "ready", "FAIL": "ready" } }
+  }
+}

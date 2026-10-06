@@ -1,0 +1,43 @@
+{
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "on": {
+        "OPEN_CREATE": {"target": "editing"},
+        "OPEN_EDIT": {"target": "editing"},
+        "OPEN_DELETE": {"target": "confirming"}
+      }
+    },
+    "editing": {
+      "on": {
+        "SAVE": {"target": "scheduled", "guard": "cron 表达式校验通过", "guardDesc": "非法 cron 拦截不落库"}
+      }
+    },
+    "confirming": {
+      "on": {
+        "CONFIRM": {"target": "idle"},
+        "ABORT": {"target": "idle"}
+      }
+    },
+    "scheduled": {
+      "on": {
+        "TRIGGER": {"target": "running", "guard": "cron 表达式有效", "guardDesc": "禁用任务与非法 cron 不触发"},
+        "OPEN_EDIT": {"target": "editing"},
+        "DISABLE": {"target": "disabled"}
+      }
+    },
+    "running": {
+      "on": {
+        "SUCCESS": {"target": "scheduled"},
+        "FAIL": {"target": "failed"},
+        "CANCEL": {"target": "scheduled"}
+      }
+    },
+    "failed": {},
+    "history": {
+      "on": {
+        "BACK": {"target": "scheduled"}
+      }
+    }
+  }
+}

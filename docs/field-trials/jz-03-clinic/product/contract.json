@@ -1,0 +1,14 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "browsing": {"ui": "科室/医生/排班三级浏览，时段可点"},
+    "confirming": {"ui": "确认弹层：医生/时段/就诊人，确认与返回"},
+    "booked": {"ui": "预约成功页：取号码+取消按钮"},
+    "conflict": {"ui": "冲突提示：该时段已被约满，提供同时段其他医生/近期时段两个出口"},
+    "cancelled": {"ui": "取消成功回执"},
+    "my_bookings": {"ui": "我的预约列表，逐条可取消"}
+  },
+  "recovery": [
+    {"state": "conflict", "action": "RETRY", "target": "browsing"}
+  ]
+}

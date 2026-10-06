@@ -1,0 +1,9 @@
+{
+  "id": "settings-purge",
+  "initial": "browsing",
+  "states": {
+    "browsing":    { "on": { "OPEN_PURGE": "confirming" } },
+    "confirming":  { "on": { "CONFIRM": "purging", "CANCEL": "browsing" } },
+    "purging":     { "on": { "DONE": "browsing", "FAIL": "browsing" } }
+  }
+}

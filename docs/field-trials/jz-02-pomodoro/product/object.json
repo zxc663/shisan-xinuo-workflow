@@ -1,0 +1,27 @@
+{
+  "purpose": "帮用户保持专注节奏",
+  "responsibility": "展示计时进度和统计",
+  "capabilities": [
+    {"name": "开始专注", "role": "核心任务"},
+    {"name": "暂停继续", "role": "核心任务"},
+    {"name": "跳过休息", "role": "业务操作"},
+    {"name": "每日统计", "role": "辅助"},
+    {"name": "自定义时长", "role": "高阶"},
+    {"name": "白噪音", "role": "辅助"},
+    {"name": "深色模式", "role": "辅助"}
+  ],
+  "main_function": "开始专注",
+  "layers": {
+    "active": "L6",
+    "upstream": {
+      "L1": "brief:番茄钟计时器网页，25+5，可暂停，记录每日完成数（用户口述）",
+      "L2": "brief:能力 7 条",
+      "L3": "brief:主功能=开始专注",
+      "L4": "adjudicated:纯前端无后台，数据在 localStorage"
+    }
+  },
+  "operability": [
+    {"item": "数据来源", "answer": "localStorage 本地存储"},
+    {"item": "删除记录", "answer": "设置抽屉里清空今日记录，二次确认"}
+  ]
+}

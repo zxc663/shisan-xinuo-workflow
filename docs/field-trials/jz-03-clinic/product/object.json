@@ -1,0 +1,24 @@
+{
+  "purpose": "让社区患者在家就能挂上号",
+  "responsibility": "管理号源预约与取消",
+  "capabilities": [
+    {"name": "按科室找医生", "role": "核心任务"},
+    {"name": "挑排班时段预约", "role": "核心任务"},
+    {"name": "取消预约", "role": "业务操作"},
+    {"name": "查看我的预约", "role": "业务操作"},
+    {"name": "候补排队", "role": "高阶"}
+  ],
+  "main_function": "挑排班时段预约",
+  "layers": {
+    "active": "L6",
+    "upstream": {
+      "L1": "brief:社区医院网上挂号，选科室医生排班时段，冲突提示换时间，可取消（用户口述）",
+      "L2": "brief:能力 5 条",
+      "L3": "brief:主功能=挑排班时段预约",
+      "L4": "file:docs/spec.md"
+    }
+  },
+  "operability": [
+    {"item": "数据来源", "answer": "医院 HIS 排班系统每日同步"}
+  ]
+}

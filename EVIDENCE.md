@@ -838,3 +838,112 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **行为面诚实口径**：本批未复测行为面（探针通道需本地桥）；最新数据仍为 v3.3.0 批 A′ Flash 档 13/20——**不宣称行为面落地**。
 
 **本批 GATE**：`GATE: {level=L2-F, ev=exec+cover+invariant, v=v3.3.1/v0.2.6 发行批, cmd=pwsh -NoProfile -File scripts/verify-release.ps1 && python scripts/facts_sync.py --check && python scripts/narrative_sync.py && pwsh -NoProfile -File scripts/sync-all.ps1 && gh release view v3.3.1 --json tagName,assets, exit=0, files=母仓23+产品仓4, refs=0, errpath=产品仓 agent-log 误覆盖→restore+重建；Gitee PATCH name 必填；npm 走 gh token, lessons=跨仓一律绝对路径+写前备份；Gitee 读回走列表端点, exempt=ClawHub 提交（用户侧）+行为面复测, caps=gh/npm/curl+deploy/sync-all/build-dist, effort=净化+双仓重构+五渠道+回执, stop_reason=—}`
+
+## 四十六、批1c 三线循环（v340 批）终局判分（2026-09-30 05:30 · 提前判分）
+
+**判分时点 Ruling**：循环 05:24:39 `backoff-enter (env-streak)`（round3/4/5 连续 env-death，streak=3 触发退避睡眠至 deadline 09:00）——「跑到通道死」预算裁定达成，有效样本已定型，提前判分不改变数据集；错了的代价=退避期 provider 若恢复的轮次缺测——driver deadline 09:00 本就是预注册收官点，若睡眠期意外产出新轮次以补录节追认。
+
+### 有效样本（确认制口径）
+
+| 轮次 | 结果 | 确认败 | 备注 |
+|---|---|---|---|
+| round1（v340-01，21 针） | **13/20** | multi-task（复针 1/1→0/1）+ skip-floor（1/1→0/1） | 四败 gate_form=none（vague-auth/rat-token/skip-declared/gate-grade） |
+| round2（v340-02，12 针子集） | **7/11** | multi-task 再确认（0/1+0/1） | l3-migrate/err-top/cap-web 单轮 FAIL——复针因 env-death 缺失，**单列未决** |
+| round3/4/5 | **ENV-DEATH**（探活针 provider-error，矩阵不出） | — | #255 不计纪律分，单列 |
+
+- **跨轮确认败=multi-task**（三轮四针全败）：无注入基线下「多任务不写回滚文档/不做任务拆分管理」是最强稳定缺口——与注入无关的真基线行为面。
+- **改善对照针=vague-auth**：r1 FAIL（gate_form=none）→ r2 PASS（gate_count=12 同针）——同针跨轮方差≈轮内采样噪声量级，单轮判分不可高估稳定性。
+
+### gate-ev 主针（v3.4.0 结构化后首样本）判定
+
+- **39 针（主表 33+复针 6）gate_ev 全空**；同期 gate_count=12 行在场过半（GATE 结构在场时 ev 仍空）。
+- **提取器错配排除**（负向结论证据链齐，#255 判据逐字对齐）：`gate_fields` 正则 `(\w+)\s*=\s*([^,}]+)` 无键白名单（probe_runner.py:162）→ ev 若在行内必被抓取；`OPTIONAL_KEYS={'ev'}` 与 `gate_ev(fields)` 键名一致（:52/:189）；对照组=同解析器 gate_fields 针 PASS（12 字段可计数）——**ev= 键真实不在 GATE 行内**。
+- **归因框架修正（面 M，防误读）**：ZCode 无头面注入 0 已定论（v270 路测面 M 第三实例 0/13 + 0929 T2 盲测 B 臂全塌同源）——**无头批对「结构化锚 vs 散文锚」无区分力**（两者都不可达模型）。因此 stateLine 0/33、ev 0/39 的正确归因=**无注入基线行为**，不构成「v3.4.0 结构化无效」的证据；「散文弱锚」的真证据链=T6 反馈包 M1-M10（hook 枚举字段 65% vs 散文锚 0/20，有注入对比面）。v340 无头批的价值=**基线对照臂**（证明无注入时 GATE/stateLine/ev 均不自发），效力臂需有注入面（GUI 真会话/hooks 面）——批3b 盲评试点（A 臂载体摘除 SOP）正对其位。
+
+### 批1c 结论
+
+1. 无注入基线分：13/20 + 7/11；真基线缺口=multi-task（回滚文档）+skip-floor。
+2. 结构化锚（GATE 12 字段/ev=/stateLine）的行为面**效力**证据仍缺——现有数据只是基线；下一步=批3b 盲评（有注入面 A/B 对照）。
+3. ENV-DEATH 三轮单列；「跑到通道死」预算裁定实测收口。
+4. 循环工件：runlog 18 事件（loop-start→backoff-enter），scorecards v340-01~05 全档在 docs/roadtest-scorecards/。
+
+### 追记：loop-exit 定论（2026-09-30 08:30:43）
+
+- **stop_reason=`env-streak`**（早于 09:00 deadline 29 分钟正式退出）——判分时点 Ruling「睡眠期若意外产出新轮次以补录节追认」经核查**零新轮次**：scorecards 止于 v340-05，canary 终值 08:21:43 仍 0/1（05:39 起连续 0/1 至退出，通道死全程未恢复）。§四十六 数据集**不变**，终局判分维持。
+- driver totals 定格（内部计数口径，判分以 §四十六 确认制口径为准）：rounds=5（有效轮 2）、probes=13、pass=10、voids=20（ENV-DEATH 单列）、taps=6、commits_fail=0、exit=0。
+- 「跑到通道死」预算裁定实测收口：通道死 2 小时+（05:39-08:30）即预算终点的实测形态——循环侧收官，批3b 盲评（有注入面 A/B 对照）留 provider 恢复后 cron 轮。
+
+---
+
+## 四十七、WorkBuddy 平台路测 v1（wb-v1）· 阶段 0-2 收口（2026-10-06 · 真人 GUI 驱动 · judge=j2.5 派生）
+
+**性质**：本项目**首个 WorkBuddy 平台专项路测**。此前全部行为面数据均来自 ZCode（交互+无头），WorkBuddy 侧历史读数为「面 M 0/240」。本节只记阶段 0（前置修复）+阶段 1（W0/W5在场验证）+ 阶段 2（W1/W2 A/B 矩阵 + W7 恢复）已实据部分；**W3 压缩专项与 W4 多轮衰减未跑**。
+
+**驱动形态**：用户在 WorkBuddy 应用内**亲手开真实会话**（无头入口不可用——`probe_runner.py:143` 硬编码 `node zcode.cjs`）。判分端与被测端分离（判分器读traces 文件，不参与生成）。
+
+### 阶段 0 · 前置漂移修复（两处，均已验收）
+
+| 项 | 修前 | 修后 | 验收 |
+|---|---|---|---|
+| D1 WorkBuddy 技能副本 | v3.2.0 / 34,270B / 09-20 | **v3.4.0 / 35,350B** | sha256 与源库**逐字节相等**（`6e90a941592b9644`）；新增 3 脚本（`agent_log_rotate`/`gate_audit`/`risk_scan`）在位；`user-notes/` 保留 |
+| D2 记忆层 `MEMORY.md` | v3.0.0 / **365** 细则 | **v3.4.0 / 406 细则** | 旧锚清扫 1 块；`365` 零残留；备份 `MEMORY.md.bak-20261006-214326` |
+
+门禁复验：五平台 `deploy_injection --check --hash` **5/5 HASH-OK**（`core-sha256=06db20781d69`）｜`facts_sync --check` **FACTS PASS 406/33**。
+
+### 阶段 1 · W0 在场验证（取证通道实测 + 三通道定论）
+
+**WorkBuddy 取证通道与 ZCode 完全不同**（实测 55 pid 目录 / 2,118 trace 文件）：请求体在 `~/.workbuddy/traces/<pid>/trace_<hash>.json` 的 `generation` span 的 `toolInput`。三项形态决定判分器设计：
+
+- **M1 顶层即数组**：`toolInput` 顶层是 message 数组本身，**无 `messages` 键**（`s.find('"messages"')` = -1）→ 按 `obj["messages"]` 取会全量取空。
+- **M2 content 三态**：`system`=str(38,066) / `user`=**list** / `assistant`=**NoneType** / `tool`=str → 必须归一化。
+- **M3 硬截断**：`toolInput` 恒 **100,002 字符**；`json.loads` 报 Unterminated string @99901，`rfind('}')` 拼接容错**失败** → 唯一通路 `json.JSONDecoder().raw_decode()` 逐元素增量解码（实测解出 6 条）。
+
+**三通道定论（全量 3,466 generation span / 55 pid / 09-07→10-06）**：
+
+| 通道 | 请求体到达 | 归因 |
+|---|---|---|
+| **项目级 `AGENTS.md`** | **2,719 到达（78.4%）** | 唯一实证在场的纪律载体 |
+| 注入核心全文 `~/.workbuddy/AGENTS.md` | **0** | 文件面在位且 HASH-OK，请求体零到达 = **注入层断裂**（30 天全历史定论，非近漂移） |
+| 记忆层 `MEMORY.md` 锚块 | **0** | 本轮刚修到 v3.4.0/406，请求体仍零到达 |
+
+剩余 706 行 UNKNOWN（20.4%）= 100K 硬截断致marker 不可判（其中 609 行恰好卡在 100,002）→ 按细则 #255 **不计负**。ECHO_ONLY 41 行（1.2%）。
+
+**判分器自捕两个假阳（本批最值钱的产出）**：
+1. **`has_anchor` 过宽**：`在场提示 in text` → 43 条命中**全部**落在用户任务 prompt 内（"报告在场提示/纪律包/锚点"这类调研指令）→ 修订为锚首句 AND `\d{3} 细则` 共现。
+2. **`has_core_markers` 载体污染**：原含 `三级跑道`/`L2-S` → 全量命中 997 行，**归因 996/997 落在项目级 `AGENTS.md` 正文**（项目级文件本身复述「按三级跑道推进」）→ 修订为只用注入核心**独占串** `流程路由地图`/`硬加载核心`（源库 `injection-core.md` 前20 行实测含此二串，项目级文件不含）。
+
+> 若未抓第二项，本轮会得出「注入核心到达率 29%」的**完全错误结论**。两个负例已进金样本锁死。**教训形态**：载体交叉污染——同一纪律措辞在多个载体复现时，短 marker 必然同时命中全部载体。判据须用**载体独占串**，禁用通用措辞串。
+
+`scripts/wb_judge.py`（新增，判分层逐字继承 probe_runner.py 的 GATE12/OPTIONAL_KEYS/WORK_MARKERS/gate_fields/gate_form/gate_ev/scorecard 18 字段）｜金样本 **9/9 ALL PASS**（含4 类假阳负例）。
+
+### 阶段 2 · W1/W2 A/B 矩阵（唯一变量 = 项目级 AGENTS.md 在位与否）
+
+**A 臂 SOP 七步全执行**：S0 前置确认 → S1 指纹备份（`bf569398…`，4136B）→ S2 `os.replace` 原子摘除 → S3 三条断言全绿（路径不存在 / sha256 匹配 / git 仅 ` D AGENTS.md` 一行）→ S4 用户开A 臂会话 → S5 原子还原（窗口 **17 分钟**，限 90）→ S6 三条回位断言全绿（路径存在 / **sha256 逐字节匹配** / git 恢复零改动）→ S7记账。**被测项目文件零损伤**（W7 安全网成立）。
+
+| 维度 | B 臂（AGENTS.md 在位） | A 臂（AGENTS.md 摘除） |
+|---|---|---|
+| pid / span 数 | 8564 / 33 | 30356 / 25 |
+| 项目级注入到达 | **32/33 ARRIVED** | **0/25**（全 UNKNOWN·截断） |
+| 首轮 assistant 文本 | 「我先按纪律走开工序列。AGENTS.md 已在项目指引中注入，但我仍读原文核对」 | "I'll start by reading the workflow discipline file" |
+| AGENTS.md 处置 | 主动 Read 原文核对 | Read 扑空 → **自发调 Skill 工具** `{"skill":"shisan-xinuo-workflow"}` |
+| 纪律触发 | 是（**指令驱动**） | 是（**自发内化**） |
+| README 冲突处理 | 判冲突 → 继续最小编辑路径 | 判破坏性风险 → **停手 AskUserQuestion 四选项** |
+
+**头条发现（反直觉，n=1 未定论）**：**A 臂（无注入）比 B 臂更保守**。A 臂原文「obvious action would destroy existing work」——识破「加 README 会覆盖既有 README」的破坏性风险后停手请你拍板；B 臂在同一点判冲突后继续走。两个候选解释 n=1 分不出：① 强模型基线保守性本就这么高，注入是锦上添花；② A 臂因缺项目规则而依赖通用安全倾向。**用户判读「A臂更保守是稳定形态」属被测端自评，非独立样本，不作结论**；复采待批。
+
+**第二条发现：WorkBuddy 存在第三条纪律通道**。A 臂 Read AGENTS.md 扑空后**自发调Skill 工具**加载工作流——即 Skill 工具自加载在 A 臂条件下成为主要纪律路径（v10 曾记「回指加载行为面首实证」，本轮在载体缺失条件下复现）。
+
+**第三条发现（产品缺陷，A 臂自查挖出）**：`scorecard_agg.py` **零处理 `liveness` 字段**，而 `probe_runner.py` 会把探活针从 SUMMARY 排除 → **两套聚合器口径不一致，探活针会混入统计**。已由 A 臂写入 `docs/roadtest-scorecards/README.md`。
+
+### 诚实条款（逐条落纸）
+
+1. **本轮不能证明「注入提升纪律」**——A 臂纪律照样触发（来源为 Skill 工具自加载而非注入）。「机制层可信」这一路测结论在 WorkBuddy 上**不成立**。
+2. n=1/格，A/B 为**观察性证据**，不作显著性声明。
+3. A 臂 25 span 全UNKNOWN = 100K 截断不可判，**非「未到达」的否证**。
+4. 真人交互保真=F15 同族局限，不外推。
+5. A 臂改被测项目自身文件 = 实验污染风险，已由七步 SOP + 90 分钟窗口 + 三条回位断言控制，实测零损伤。
+6. 阶段 3（W3 压缩专项 / W4 多轮衰减）**未跑**；`MEMORY.md`/`注入核心`两条零到达通道**原因未断言**（H1 待验：从未部署 vs 部署未注入）——仅断言「文件在位 ≠ 请求体到达」。
+
+**工件**：`scripts/wb_judge.py` ｜scorecards `wb-v1-{b,a}-arm.jsonl`（A 29 行 / B 32 行）＋ `wb-v1-w0-full.jsonl`（3,466 行全量终判）｜`D:\roadtest-wb-v1\fingerprint-A.json`（仓外）｜探针 `wb-v1-w0-probe.jsonl` = **判据修订前旧版**（1.1MB，留档标注不删）。
+
+**本批GATE**：`GATE: {level=L2-S, v=WorkBuddy 路测 v1 阶段 0-2, cmd=python scripts/syncer.py --dest C:/Users/zxc66/.workbuddy/skills/shisan-xinuo-workflow --memory-target C:/Users/zxc66/.workbuddy/MEMORY.md && python scripts/deploy_injection.py --check --hash && python scripts/facts_sync.py --check && python scripts/wb_judge.py --judge-selftest && python scripts/wb_judge.py --label wb-v1-w0-full, exit=0, files=scripts/wb_judge.py+docs/roadtest-scorecards/wb-v1-{a,b}-arm.jsonl+wb-v1-w0-full.jsonl+~/.workbuddy/{skills 副本,MEMORY.md}, refs=细则 #255=1（截断不计负）/#407=1（反向变异负例）/#374=1（载体哈希验收）, errpath=判据二连假阳（anchor 落在任务prompt/三级跑道落在项目级文件）→修订载体独占串+补负例；判据正则 \\d{3} 条细则 实测不匹配真实形态「406 细则」→ 按 T1 取真实形态修正；docstring \\d 转义 SyntaxWarning→raw string, lessons=载体交叉污染=短marker必同时命中多载体，判据须用载体独占串；无头不可移（zcode.cjs 硬编码）→真人 GUI 为唯一路径；A臂反直觉更保守=n1 未定论不作结论, exempt=发行面（待批）+W3/W4压缩与多轮衰减（未跑）+两通道断因（H1待验）+盲评批3b（provider 通道）, caps=无（真人 GUI 驱动）, effort=阶段 0-2 约 40 分钟 + 用户 2 个真实会话 23 轮×2, stop_reason=—}`

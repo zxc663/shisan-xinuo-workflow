@@ -1,0 +1,14 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "idle": {"ui": "任务列表：名称/cron/启停开关/下次运行时间/操作（编辑/删除/立即运行）"},
+    "editing": {"ui": "新建/编辑表单：名称+cron 表达式（实时校验）"},
+    "confirming": {"ui": "删除确认弹层：显示任务名与影响范围"},
+    "scheduled": {"ui": "列表行状态=等待中，展示下次触发时间"},
+    "running": {"ui": "列表行状态=运行中，可取消"},
+    "failed": {"ui": "列表行状态=失败标红，展示错误摘要与重试按钮"}
+  },
+  "recovery": [
+    {"state": "failed", "action": "RETRY", "target": "paused"}
+  ]
+}

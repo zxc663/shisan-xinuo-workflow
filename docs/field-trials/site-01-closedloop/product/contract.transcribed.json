@@ -1,0 +1,9 @@
+{
+  "contract_version": "0.2.6",
+  "_provenance": "忠实转写自被测项目 /d/产品工程闭环实验/docs/contracts/favorites.contract.md §③「错误态 recovery 行」表格（三行，2026-09-30 转写）；被测项目只读未改，本文件为本仓测量侧工件。原项目 recovery 语义仅存在于 markdown 人工契约，无机器可读 JSON——即本次实地轨发现 #1（C7 盲窗）。",
+  "recovery": [
+    {"state": "export_failed", "action": "RETRY_EXPORT", "target": "exporting"},
+    {"state": "export_failed", "action": "ABORT", "target": "list"},
+    {"state": "permission_denied", "action": "DISMISS", "target": "list"}
+  ]
+}

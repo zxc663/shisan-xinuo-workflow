@@ -1,0 +1,19 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "DepartmentCard": "科室入口卡片（首页/科室列表）",
+    "ScheduleTable": "医生周排班表",
+    "TimeSlotGrid": "时段格子，点击选号",
+    "BookingForm": "确认弹层表单",
+    "MyAppointmentList": "我的预约列表",
+    "WaitingList": "候补队列面板"
+  },
+  "bindings": [
+    {"page": "DepartmentsPage", "component": "DepartmentCard", "feature": "按科室找医生", "backend": "GET /departments", "evidence": "shot-dept.png"},
+    {"page": "SchedulePage", "component": "ScheduleTable", "feature": "查看周排班", "backend": "GET /slots", "evidence": "shot-schedule.png"},
+    {"page": "SchedulePage", "component": "TimeSlotGrid", "feature": "挑排班时段预约", "backend": "POST /apointments", "evidence": "shot-book.png"},
+    {"page": "SchedulePage", "component": "BookingForm", "feature": "确认预约信息", "backend": "POST /apointments", "evidence": "shot-confirm.png"},
+    {"page": "MyPage", "component": "MyAppointmentList", "feature": "取消预约", "backend": "DELETE /appointments/{id}", "evidence": "TODO"},
+    {"page": "MyPage", "component": "MyAppointmentList", "feature": "查看我的预约", "backend": "GET /appointments/mine", "evidence": "shot-mine.png"}
+  ]
+}

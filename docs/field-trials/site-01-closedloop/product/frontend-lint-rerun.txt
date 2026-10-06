@@ -1,0 +1,5 @@
+FAIL: 4 项新增前端 lint 违例（存量 0 条已由基线豁免）：
+  ✗ D:/产品工程闭环实验/app.js:602 [R1] 内联样式（§4-5）：'<div class="progress-track"><div class="progress-fill" style="width:' + pct + '
+  ✗ D:/产品工程闭环实验/docs/evidence/smoke-core.js:14 [R3] console 调试残留（交付五查）：if (cond) { passCount++; console.log('PASS ' + name); }
+  ✗ D:/产品工程闭环实验/docs/evidence/smoke-core.js:15 [R3] console 调试残留（交付五查）：else { failCount++; console.log('FAIL ' + name + (extra ? ' —— ' + extra : ''));
+  ✗ D:/产品工程闭环实验/docs/evidence/smoke-core.js:627 [R3] console 调试残留（交付五查）：console.log('SMOKE RESULT: ' + passCount + ' passed, ' + failCount + ' failed');

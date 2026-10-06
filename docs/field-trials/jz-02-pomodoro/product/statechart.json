@@ -1,0 +1,35 @@
+{
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "on": {
+        "START": {"target": "focusing", "guard": "durationMin > 0"}
+      }
+    },
+    "focusing": {
+      "on": {
+        "TICK": {"target": "focusing"},
+        "PAUSE": {"target": "paused"},
+        "SKIP": {"target": "short_break"},
+        "VIEW_STATS": {"target": "stats"}
+      }
+    },
+    "paused": {
+      "on": {
+        "RESUME": {"target": "focusing"}
+      }
+    },
+    "short_break": {
+      "on": {
+        "BREAK_DONE": {"target": "short_break"},
+        "SKIP": {"target": "focusing"}
+      }
+    },
+    "long_break": {
+      "on": {
+        "BREAK_DONE": {"target": "idle"},
+        "SKIP": {"target": "idle"}
+      }
+    }
+  }
+}
