@@ -1,0 +1,48 @@
+{
+ "_provenance": "转写自 D:/工具箱对照-甲用Skill/docs/design-specs/toolbox-product-spec.md（真实项目，修正二前产物）。purpose 改写自其总功能句；capabilities=其八工具；职责句/主功能/层级/可运营性=该项目未定义，忠实留空以检验门禁。",
+ "purpose": "让需要随手小工具的开发者与文字设计工作者，零安装零联网零等待地完成 JSON/颜色/正则/时间戳/Markdown/密码/Base64/UUID 八类日常任务，且每一步出错都有出路",
+ "responsibility": "八类日常小工具的托管与运营（按其总功能句改写为管理形态；原档无显式职责句）",
+ "capabilities": [
+  {
+   "name": "JSON 格式化与校验",
+   "role": ""
+  },
+  {
+   "name": "颜色换算与对比度",
+   "role": ""
+  },
+  {
+   "name": "正则调试",
+   "role": ""
+  },
+  {
+   "name": "时间戳换算",
+   "role": ""
+  },
+  {
+   "name": "Markdown 预览",
+   "role": ""
+  },
+  {
+   "name": "密码生成",
+   "role": ""
+  },
+  {
+   "name": "Base64 编解码",
+   "role": ""
+  },
+  {
+   "name": "UUID 生成",
+   "role": ""
+  }
+ ],
+ "layers": {
+  "active": "L6/L7",
+  "upstream": {
+   "L1": "adjudicated:原档无对象层定义",
+   "L2": "adjudicated:八工具即能力（原档功能句）",
+   "L3": "adjudicated:原档未定义主次",
+   "L4": "adjudicated:纯本地零依赖，无后台"
+  }
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "idle": {"ui": "「开始专注」主按钮 + 时长设置入口"},
+    "focusing": {"ui": "倒计时球 + 暂停/放弃按钮"},
+    "paused": {"ui": "倒计时球（冻结）+ 继续/放弃按钮"},
+    "short_break": {"ui": "休息倒计时 + 跳过按钮"},
+    "long_break": {"ui": "长休息倒计时 + 跳过按钮"}
+  },
+  "recovery": [
+    {"state": "paused", "action": "RESUME", "target": "focusing"}
+  ]
+}

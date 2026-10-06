@@ -1,0 +1,18 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "TaskList": "任务列表与启停开关",
+    "TaskForm": "新建/编辑任务表单",
+    "RunNowButton": "手动立即触发",
+    "TaskHistory": "运行历史列表",
+    "CronField": "cron 表达式输入与校验"
+  },
+  "bindings": [
+    {"page": "CronPage", "component": "TaskList", "feature": "查看任务列表", "backend": "GET /tasks", "evidence": "shot-list.png"},
+    {"page": "CronPage", "component": "TaskForm", "feature": "新建定时任务", "backend": "POST /tasks"},
+    {"page": "CronPage", "component": "TaskForm", "feature": "编辑与删除任务", "backend": "DELETE /tasks/{id}", "evidence": "shot-edit.png"},
+    {"page": "CronPage", "component": "TaskList", "feature": "启停任务", "backend": "POST /tasks/{id}/toggle", "evidence": "shot-toggle.png"},
+    {"page": "CronPage", "component": "RunNowButton", "feature": "手动触发一次", "backend": "POST /tasks/{id}/run-now", "evidence": "shot-run.png"},
+    {"page": "CronPage", "component": "TaskHistory", "feature": "查看运行历史", "backend": "GET /tasks/{id}/history", "evidence": "shot-history.png"}
+  ]
+}

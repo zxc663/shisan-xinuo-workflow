@@ -1,0 +1,21 @@
+{
+  "organization": "任务",
+  "global_nav": true,
+  "local_nav": true,
+  "location_indicator": true,
+  "routes": [
+    {"path": "/cron", "has_global_nav": true},
+    {"path": "/cron/history", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/cron", "exits": 2},
+    {"path": "/cron/history", "exits": 1}
+  ],
+  "find_paths": [
+    {"task": "从首页进入并新建一个每天 9 点的定时任务", "clicks": 2, "ok": true},
+    {"task": "找到某个任务最近一次失败的原因", "clicks": 3, "ok": true}
+  ],
+  "tree_tests": [
+    {"task": "找到手动立即触发任务的入口", "correct_leaf": "/cron", "success_rate": 0.9, "directness": 0.75}
+  ]
+}

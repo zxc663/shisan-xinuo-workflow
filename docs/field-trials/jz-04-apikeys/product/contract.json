@@ -1,0 +1,17 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "viewing": {"ui": "密钥列表：名称/前 8 位指纹/状态/操作"},
+    "creating": {"ui": "命名+备注表单，生成按钮"},
+    "unrevealed": {"ui": "「密钥已生成」提示，点击查看一次性明文"},
+    "revealed": {"ui": "明文一次性展示+复制按钮+「我已保存」确认"},
+    "active": {"ui": "列表行状态=启用，操作：看用量/吊销"},
+    "revoking": {"ui": "吊销确认弹层：需输入密钥名称二次确认"},
+    "revoked": {"ui": "列表行状态=已吊销（只读留痕）"},
+    "usage": {"ui": "单密钥用量图表+返回"},
+    "rate_limited": {"ui": "请求过频提示，稍后自动恢复"}
+  },
+  "recovery": [
+    {"state": "rate_limited", "action": "WAIT", "target": "active"}
+  ]
+}

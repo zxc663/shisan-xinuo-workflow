@@ -1,0 +1,5 @@
+DELETE /tasks/{id}
+GET /tasks
+GET /tasks/{id}/history
+POST /tasks
+POST /tasks/{id}/toggle

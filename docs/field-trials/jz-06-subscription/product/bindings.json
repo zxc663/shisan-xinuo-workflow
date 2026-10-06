@@ -1,0 +1,16 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "PlanPicker": "方案选择与开通/升级",
+    "UpgradeButton": "升级入口（proration 提示）",
+    "BillingPortal": "订阅状态与取消",
+    "InvoiceTable": "历史账单列表"
+  },
+  "bindings": [
+    {"page": "BillingPage", "component": "PlanPicker", "feature": "开通订阅", "backend": "POST /subscribe", "evidence": "shot-sub.png"},
+    {"page": "BillingPage", "component": "UpgradeButton", "feature": "升级方案", "backend": "POST /subscribe/upgrade", "evidence": "shot-upg.png"},
+    {"page": "BillingPage", "component": "BillingPortal", "feature": "取消订阅", "backend": "POST /subscription/cancel"},
+    {"page": "BillingPage", "component": "InvoiceTable", "feature": "账单列表", "backend": "GET /invoices", "evidence": "shot-inv.png"},
+    {"page": "BillingPage", "component": "InvoiceTable", "feature": "下载发票", "backend": "GET /invoices/{invoice_id}/download", "evidence": "shot-dl.png"}
+  ]
+}

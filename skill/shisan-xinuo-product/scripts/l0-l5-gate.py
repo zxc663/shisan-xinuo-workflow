@@ -54,7 +54,11 @@ from pathlib import Path
 TIME_WINDOW = re.compile(
     r"\d{4}年|\d{4}-\d{2}|\d{4}-\d{2}-\d{2}|Q[1-4]|\d+\s*(天|日|周|个月|月|季度|年)|年底|月初|月末|底前|内上线|内发布")
 METRIC_FORM = re.compile(r"\d|≥|≤|>|<|提升|降低|达到|占比|%|率|次数|人均")
-VANITY = re.compile(r"总注册|总下载|总PV|总访问|累计用户|累计注册")
+# C13 双击晋升（jz-07「累计执行次数破十万」+jz-02「累计专注时长」两例漏报）：裸名词表之外，
+# 补「累计/总共/总计 + 业务量词」组合形；「累计成功率/累计完成率」等质量指标不在表内（可合法）
+VANITY = re.compile(
+    r"总注册|总下载|总PV|总访问|累计用户|累计注册"
+    r"|(累计|总共|总计)[^\n]{0,6}(次数|执行|完成|处理|点击|浏览|访问|时长)")
 JOB_FORM = re.compile(r"[\u4e00-\u9fa5A-Za-z]+\s*[\u4e00-\u9fa5A-Za-z]+\s*(在|当|while|during|for)?\s*[\u4e00-\u9fa5A-Za-z]*")
 
 
@@ -141,7 +145,12 @@ def check_ia(ia: dict) -> tuple[list[str], list[str]]:
     if len(fp) == 1:
         warns.append("L5-C6 查找路径类型仅 1 种（多重分类原则建议 ≥2：浏览+搜索/标签筛选）")
     tt = ia.get("tree_tests") or []
-    if not tt:
+    if isinstance(tt, str) and tt.strip():
+        # 文本引用形态（jz-04 试金石回流）：算「有报告」不触发缺报告警告，但不可机判要素——
+        # 此前落到 for t in tt 逐字符迭代引发 t.get 崩溃 → 整个 IA 检查被外层 except 吞掉
+        warns.append("L5-C11 tree_tests 为文本引用（不可机判要素），建议结构化记录"
+                     "（task/correct_leaf/success_rate/directness）")
+    elif not tt:
         warns.append("L5-C11 无 tree testing 报告——关键导航任务建议 ≥3 任务实测（工件存在性）")
     else:
         for t in tt:
@@ -189,10 +198,28 @@ def selftest() -> int:
               "pages": [{"path": "/y", "exits": "0"}]}  # LL-3：字符串 "0" 逃过死端判
     f_ll2, _ = check_ia(ia_ll2)
     ok7 = any("L5-C3" in x for x in f_ll2) and any("L5-C5" in x for x in f_ll2) and any("L5-C10" in x for x in f_ll2)
+    # LL-4（jz-04 试金石回流，#407 反向变异）：tree_tests 文本引用不崩检，其余 L5 检查不被吞
+    ia_ll4 = {"organization": "任务", "global_nav": True, "local_nav": True, "location_indicator": True,
+              "routes": [{"path": "/a", "has_global_nav": False}],
+              "pages": [{"path": "/a", "exits": 0}],
+              "find_paths": ["浏览", "搜索"],
+              "tree_tests": "2026-09 导航实测 3 任务全过"}
+    f_ll4, w_ll4 = check_ia(ia_ll4)
+    ok8 = (any("L5-C5" in x for x in f_ll4) and any("L5-C10" in x for x in f_ll4)
+           and any("L5-C11" in x and "文本引用" in x for x in w_ll4))
+    # C13 组合形回流（jz-07/jz-02 双击，#407 反向变异）：累计×业务量词命中，质量指标（累计成功率）放行
+    g_van2 = {"north_star": "累计执行次数破十万", "key_results": ok_goal_krs()}
+    _, w_v2 = check_goal(g_van2)
+    g_van3 = {"north_star": "累计专注时长破千小时", "key_results": ok_goal_krs()}
+    _, w_v3 = check_goal(g_van3)
+    g_van_neg = {"north_star": "数据备份任务累计成功率≥99%（2026-12）", "key_results": ok_goal_krs()}
+    f_vn, w_vn = check_goal(g_van_neg)
+    ok9 = (any("L0-C13" in x for x in w_v2) and any("L0-C13" in x for x in w_v3)
+           and not any("L0-C13" in x for x in w_vn) and not f_vn)
     print(f"selftest: 合法目标+IA放行={ok1} 多目标/缺时间窗拦截={ok2} 虚荣warning不fail={ok3} 孤页/死端/三件套拦截={ok4} 键缺失必拦(F5)={ok5} "
-          f"批X反向LL1={ok6} LL2/LL3={ok7}"
-          f"（warning 基线 {len(w1)+len(w2)+len(w4)+len(w5)} 条）")
-    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 else 1
+          f"批X反向LL1={ok6} LL2/LL3={ok7} LL4文本引用不崩={ok8} C13组合形/质量指标放行={ok9}"
+          f"（warning 基线 {len(w1)+len(w2)+len(w4)+len(w5)+len(w_ll4)} 条）")
+    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 else 1
 
 
 def ok_goal_krs() -> list[str]:
@@ -235,7 +262,9 @@ def main() -> int:
                 fails += f2
                 warns += w2
             except Exception as e:  # noqa: BLE001
-                warns.append(f"L5 IA 档不可解析（{e}）——按未提供处理")
+                # jz-03/jz-04 试金石双击回流：IA 档在档却不可解析曾按「未提供」放行（fail-open，
+                # L5 全部检查被静默跳过）——对齐 goal 侧 L0-C10 语义：工件损坏=缺陷，exit 1
+                fails.append(f"L5 IA 档在档但不可解析（{e}）——工件损坏按缺陷计，不按未提供放行")
     for x in warns:
         print("W", x)
     if fails:

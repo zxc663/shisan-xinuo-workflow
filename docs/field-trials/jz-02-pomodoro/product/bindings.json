@@ -1,0 +1,18 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "TimerWidget": "主计时球，含开始/暂停/跳过操作",
+    "StatsPanel": "今日完成数与专注时长列表",
+    "BreakSplash": "休息态全屏遮罩，点击跳过",
+    "SettingsDrawer": "自定义时长与白噪音开关抽屉"
+  },
+  "bindings": [
+    {"page": "TimerPage", "component": "TimerWidget", "feature": "开始专注", "backend": "localStorage", "evidence": "shot-timer-start.png"},
+    {"page": "TimerPage", "component": "TimerWidget", "feature": "暂停继续", "backend": "NONE(纯展示)", "evidence": "shot-timer-pause.png"},
+    {"page": "TimerPage", "component": "TimerWidget", "feature": "跳过休息", "backend": "localStorage", "evidence": "shot-skip.png"},
+    {"page": "TimerPage", "component": "StatsPanel", "feature": "查看今日统计", "backend": "GET /api/stats", "evidence": "shot-stats.png"},
+    {"page": "TimerPage", "component": "StatsPanel", "feature": "删除记录", "backend": "localStorage", "evidence": "待补"},
+    {"page": "BreakOverlay", "component": "BreakSplash", "feature": "跳过休息", "backend": "NONE(纯展示)", "evidence": "shot-break.png"},
+    {"page": "TimerPage", "component": "SettingsDrawer", "feature": "保存自定义时长", "backend": "localStorage", "evidence": "shot-settings.png"}
+  ]
+}

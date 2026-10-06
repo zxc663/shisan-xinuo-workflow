@@ -1,0 +1,13 @@
+{
+  "id": "budget-page",
+  "initial": "loading",
+  "states": {
+    "loading":        { "on": { "LOADED_MONTH": "monthView", "LOADED_NONMONTH": "nonMonthNote", "LOAD_FAIL": "offline" } },
+    "nonMonthNote":   { "on": { "PERIOD_TO_MONTH": "loading" } },
+    "offline":        { "on": { "ENGINE_RECOVER": "loading" } },
+    "monthView":      { "on": { "OPEN_EDIT": "editModal", "OPEN_COPY_PREV": "copyPrevModal", "PERIOD_CHANGE": "loading", "ENGINE_DOWN": "offline" } },
+    "editModal":      { "on": { "SAVE": "saving", "CANCEL": "monthView" } },
+    "copyPrevModal":  { "on": { "SAVE": "saving", "CANCEL": "monthView" } },
+    "saving":         { "on": { "DONE": "monthView", "FAIL": "editModal" } }
+  }
+}

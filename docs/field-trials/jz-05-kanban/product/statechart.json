@@ -1,0 +1,24 @@
+{
+  "initial": "board",
+  "states": {
+    "board": {
+      "on": {
+        "DRAG_START": "dragging",
+        "BLOCK": "blocked",
+        "ARCHIVE": "archived"
+      }
+    },
+    "dragging": {
+      "on": {
+        "DROP": {"target": "board", "guard": "target_column != source_column", "guardDesc": "跨列投放才提交移动；同列投放视为取消，不发起请求"}
+      }
+    },
+    "blocked": {
+      "type": "error",
+      "on": {
+        "UNBLOCK": "board"
+      }
+    },
+    "archived": {"type": "final"}
+  }
+}

@@ -1,0 +1,4 @@
+DELETE /keys/{key_id}
+GET /keys
+GET /keys/{key_id}/usage
+POST /keys

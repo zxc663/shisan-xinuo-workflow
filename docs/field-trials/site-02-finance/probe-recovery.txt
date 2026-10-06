@@ -1,0 +1,4 @@
+PROBE: 发现 1 个疑似 recovery 语义 markdown 档（错误态语义停留人工契约=C7 对账输入缺失）：
+  ✗ C:\Users\zxc66\Desktop\个人财务账单智能规划助手-9.20\docs\02-产品设计\交互设计说明.md
+      ←标题：## 4. 状态与异常总表
+提醒：markdown 契约不构成 C7 机器可读输入——按忠实转写补 contract.json 的 recovery 键（(state, action, target) 行）后重跑 C7；本探针只提醒不 FAIL，转写意图需人工核对。

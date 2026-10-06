@@ -1,0 +1,2 @@
+{"arm": "B", "task": "T1", "ts": "2026-09-30 05:44:01", "rc_verify": null, "wall_sec": 259, "chars": 31296}
+{"note": "T1 针 env-death（AI_APICallError/Turn execution failed）——provider 故障持续（与 loop round3-5 同源），针无效不判分（#255）；盲评暂停，恢复探针=下一 cron 轮先试 T1 单针", "ts": "2026-09-30 05:52"}

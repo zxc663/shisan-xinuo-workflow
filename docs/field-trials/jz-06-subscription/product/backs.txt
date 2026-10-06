@@ -1,0 +1,6 @@
+GET /invoices
+GET /invoices/{id}/download
+GET /plans
+POST /subscribe
+POST /subscribe/upgrade
+POST /subscription/cancel

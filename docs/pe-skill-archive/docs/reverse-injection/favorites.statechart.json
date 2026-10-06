@@ -1,0 +1,109 @@
+{
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "on": {
+        "LOAD": "loading"
+      }
+    },
+    "loading": {
+      "on": {
+        "LOADED": "list",
+        "LOADED_EMPTY": "empty",
+        "LOAD_FAIL": "empty"
+      }
+    },
+    "empty": {
+      "on": {
+        "ADD": "adding",
+        "LOAD": "loading"
+      }
+    },
+    "list": {
+      "on": {
+        "ADD": "adding",
+        "EXPORT": "exporting",
+        "REQUEST_DELETE": [
+          {
+            "target": "confirm_delete",
+            "guard": "role === 'admin'",
+            "guardDesc": "仅管理员可发起删除：删除=风险操作，先过确认弹窗（DEFINITION ③能力7 / O-5）"
+          },
+          {
+            "target": "permission_denied",
+            "guard": "role !== 'admin'",
+            "guardDesc": "非管理员点删除：不进入删除确认，落权限不足态提示（DEFINITION 问⑤第5组：非管理员不渲染删除入口，绕过 UI 的直接调用在此拦截，O-5）"
+          }
+        ],
+        "VIEW_RECYCLE": {
+          "target": "recycle_bin",
+          "guard": "role === 'admin'",
+          "guardDesc": "回收站仅管理员可见可操作（DEFINITION O-5 / Q7 裁决）"
+        },
+        "UNDO": {
+          "target": "list",
+          "guard": "now - lastDeletedAt <= 10000",
+          "guardDesc": "撤销窗 10 秒内一键撤销，条目直接回在册，不经回收站手动恢复（DEFINITION ③能力3 / O-3 裁决 10s〔待真人复核 Q3〕）；超窗 toast 已消失，本事件不再可触发"
+        }
+      }
+    },
+    "adding": {
+      "on": {
+        "SUBMIT": "list",
+        "CANCEL": [
+          {
+            "target": "empty",
+            "guard": "itemCount === 0",
+            "guardDesc": "空清单发起新增后取消：无可展示条目，回空态引导（O-9）"
+          },
+          {
+            "target": "list",
+            "guard": "itemCount > 0",
+            "guardDesc": "正常清单发起新增后取消：放弃本次输入，回正常列表"
+          }
+        ]
+      }
+    },
+    "confirm_delete": {
+      "on": {
+        "CONFIRM_DELETE": "list",
+        "CANCEL": "list"
+      }
+    },
+    "recycle_bin": {
+      "on": {
+        "RESTORE": "restoring",
+        "CONFIRM_HARD_DELETE": {
+          "target": "recycle_bin",
+          "guard": "hardDeleteConfirmed === true",
+          "guardDesc": "彻底删除须先通过回收站内二次确认+不可恢复警示（DEFINITION ③能力8）；执行后条目永久移除、站内刷新，站空则显示回收站空态文案（O-9）"
+        },
+        "BACK": "list"
+      }
+    },
+    "permission_denied": {
+      "on": {
+        "DISMISS": "list"
+      }
+    },
+    "exporting": {
+      "on": {
+        "EXPORT_DONE": "list",
+        "EXPORT_FAIL": "export_failed",
+        "CANCEL_EXPORT": "list"
+      }
+    },
+    "export_failed": {
+      "on": {
+        "RETRY_EXPORT": "exporting",
+        "ABORT": "list"
+      }
+    },
+    "restoring": {
+      "on": {
+        "RESTORE_DONE": "list",
+        "RESTORE_FAIL": "recycle_bin"
+      }
+    }
+  }
+}

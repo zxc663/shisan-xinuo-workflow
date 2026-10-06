@@ -48,7 +48,8 @@ CARRIERS = [
         r'\*\*(?P<n>\d+) lessons across (?P<c>\d+) categories\*\*',
         r'\| 细则库 \| (?P<n>\d+) 条 / (?P<c>\d+) 类，症状索引检索键',
         r'\| 细则库 \| \*\*(?P<n>\d+) 条 / (?P<c>\d+) 类\*\*（编号至 `#(?P<e>\d+)`',
-        r'细则 (?P<n>\d+) 条/(?P<c>\d+) 类、判据 j2\.5、门禁 8 项不变',
+        # 「细则 N 条/M 类、判据 j2.5、门禁 8 项不变」式行不入表：它是版本沿革 bullet（本批语义随版本滚动，
+        # 上一版即成史实——2026-09-30 实证 --fix 曾把 README v3.3.1 历史 bullet 的 405/32 机械改写为 406/33）
     ]),
     ('AGENTS.md', [r'细则 \*\*(?P<n>\d+) 条·(?P<c>\d+) 类\*\*']),
     ('docs/reference-sources.md', [
@@ -69,12 +70,12 @@ CARRIERS = [
      [r'47 条 / (?P<n>\d+) 细则']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
      [r'活跃 (?P<n>\d+) 条，类数=分节数 (?P<c>\d+)']),
-    # About 活草案槽（P-G，2026-09-29；v3.3.1 升位）：只锚 项目信息.md 最新一节「下一版预案」三处
+    # About 活草案槽（P-G，2026-09-29；v3.4.0 升位）：只锚 项目信息.md 最新一节「下一版预案」三处
     # （节标题/中文变体/英文变体）；历史草案 §六·〇-§六·九=版本时点快照不入表（同头部「历史叙述不入本表」口径）
     ('项目信息.md', [
-        r'六·十、About 描述文案（v3\.3\.1 口径 · (?P<n>\d{1,3}) 条/(?P<c>\d{1,2}) 类',
-        r'中文（v3\.3\.1 预案）[\s\S]{0,300}?／(?P<n>\d{1,3}) 条 (?P<c>\d{1,2}) 类症状索引细则',
-        r'English（v3\.3\.1 预案）[\s\S]{0,600}?(?P<n>\d{1,3}) lessons in (?P<c>\d{1,2}) categories',
+        r'六·十、About 描述文案（v3\.4\.0 口径 · (?P<n>\d{1,3}) 条/(?P<c>\d{1,2}) 类',
+        r'中文（v3\.4\.0 预案）[\s\S]{0,300}?／(?P<n>\d{1,3}) 条 (?P<c>\d{1,2}) 类症状索引细则',
+        r'English（v3\.4\.0 预案）[\s\S]{0,600}?(?P<n>\d{1,3}) lessons in (?P<c>\d{1,2}) categories',
     ]),
 ]
 RANGE_CARRIER = (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
@@ -138,7 +139,11 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
 def verify_carriers(fix=False):
     problems = []
     fix_holder = {'fix': fix, 'changed': False}
+    root_rp = Path(ROOT).resolve()
     for rel, patterns in CARRIERS:
+        # 入口白名单断言：承载点路径 resolve 后必须落在仓根内（read 前置，防 ../ 形态混入硬表）
+        if not Path(os.path.join(ROOT, rel)).resolve().is_relative_to(root_rp):
+            raise SystemExit('E: carrier path escape -> %s' % rel)
         p = os.path.join(ROOT, rel)
         _cr = _confine(p)
         t = open(_cr, encoding='utf-8').read()

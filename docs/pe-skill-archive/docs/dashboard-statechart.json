@@ -1,0 +1,11 @@
+{
+  "id": "dashboard",
+  "initial": "loading",
+  "states": {
+    "loading":       { "on": { "LOADED": "ready", "LOAD_EMPTY": "empty", "LOAD_FAIL": "offline" } },
+    "empty":         { "on": { "GOTO_IMPORT": "idle-exit", "PERIOD_CHANGE": "loading" } },
+    "ready":         { "on": { "PERIOD_CHANGE": "loading", "ENGINE_DOWN": "offline" } },
+    "offline":       { "on": { "ENGINE_RECOVER": "loading" } },
+    "idle-exit":     { "type": "final" }
+  }
+}

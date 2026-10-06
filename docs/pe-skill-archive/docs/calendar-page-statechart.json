@@ -1,0 +1,11 @@
+{
+  "id": "calendar-page",
+  "initial": "loading",
+  "states": {
+    "loading":       { "on": { "LOADED": "ready", "LOAD_EMPTY": "empty", "LOAD_FAIL": "offline" } },
+    "empty":         { "on": { "PERIOD_CHANGE": "loading" } },
+    "offline":       { "on": { "ENGINE_RECOVER": "loading" } },
+    "ready":         { "on": { "SELECT_DAY": "daySelected", "PERIOD_CHANGE": "loading", "ENGINE_DOWN": "offline" } },
+    "daySelected":   { "on": { "SELECT_DAY": "daySelected", "PERIOD_CHANGE": "loading", "ENGINE_DOWN": "offline" } }
+  }
+}

@@ -1,0 +1,5 @@
+DELETE /appointments/{appt_id}
+GET /appointments/mine
+GET /departments
+GET /slots
+POST /appointments

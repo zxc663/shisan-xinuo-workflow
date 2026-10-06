@@ -1,0 +1,2 @@
+OK: 组件 0 项 → D:/Agent工作流启动包/shisan-xinuo-workflow/docs/field-trials/site-01-closedloop/product/comps.txt；端点 0 项 → D:/Agent工作流启动包/shisan-xinuo-workflow/docs/field-trials/site-01-closedloop/product/backs.txt
+提醒：bindings.json（feature↔component 绑定）是跑道产物，本器不代生产——喂 gate 前先人工/会话落绑定。

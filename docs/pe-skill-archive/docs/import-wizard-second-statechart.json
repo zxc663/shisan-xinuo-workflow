@@ -1,0 +1,34 @@
+{
+  "id": "import-wizard",
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "on": { "SELECT_FILE": "queued", "CLEAR_LEDGER": "confirmClear" }
+    },
+    "confirmClear": {
+      "on": { "CONFIRM": "purging", "CANCEL": "idle" }
+    },
+    "purging": { "on": { "DONE": "idle", "FAIL": "idle" } },
+    "queued": {
+      "on": { "START": "parsing", "REMOVE_FILE": "idle", "ADD_FILE": "queued" }
+    },
+    "parsing": {
+      "on": { "NEED_ZIP_PW": "awaitingPassword", "NEED_PDF_PW": "awaitingPassword", "PARSE_DONE": "classifying", "PARSE_FAIL": "fileFailed", "CANCEL": "cancelling" }
+    },
+    "awaitingPassword": {
+      "on": { "SUBMIT_PW": "parsing", "REMOVE_FILE": "idle" }
+    },
+    "classifying": {
+      "on": { "ALL_DUP": "allDup", "CLASSIFY_DONE": "awaitingReview", "FAIL": "fileFailed", "CANCEL": "cancelling" }
+    },
+    "awaitingReview": {
+      "on": { "CONFIRM_STAGED": "committing", "DISCARD": "idle" }
+    },
+    "committing": { "on": { "DONE": "queued", "FAIL": "awaitingReview" } },
+    "allDup": { "on": { "REMOVE_FILE": "idle", "START": "parsing" } },
+    "fileFailed": {
+      "on": { "RETRY": "parsing", "REMOVE_FILE": "idle" }
+    },
+    "cancelling": { "on": { "DONE": "queued" } }
+  }
+}

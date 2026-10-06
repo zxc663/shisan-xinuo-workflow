@@ -1,0 +1,25 @@
+{
+  "purpose": "让用户放心地把重复工作交给定时任务，失败时有感知有出路",
+  "responsibility": "展示定时任务列表与运行记录",
+  "main_function": "新建定时任务",
+  "capabilities": [
+    {"name": "新建定时任务", "role": "核心任务"},
+    {"name": "编辑与删除任务", "role": "业务操作"},
+    {"name": "启停任务", "role": "业务操作"},
+    {"name": "手动触发一次", "role": "辅助"},
+    {"name": "查看运行历史", "role": "辅助"}
+  ],
+  "operability": [
+    {"item": "数据来源", "answer": "本地 mock 后端单源，页面不落盘"},
+    {"item": "fallback", "answer": "后端不可用时任务列表只读并提示"}
+  ],
+  "layers": {
+    "active": "L6",
+    "upstream": {
+      "L1": "brief:定时任务管理器，新建/编辑删除/启停/手动触发/运行历史（用户口述）",
+      "L2": "brief:能力 7 条原子需求",
+      "L3": "brief:主功能=新建定时任务",
+      "L4": "adjudicated:失败任务必须有重试与通知出路，不能静默丢失"
+    }
+  }
+}

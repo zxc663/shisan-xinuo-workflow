@@ -27,7 +27,7 @@
 
 - **误操作被拦下来是真的**：作者日常使用中多次拦下本该发生的操作；红线行为面探针（密钥 / 发布 / 删除 / 迁移 / 笼统授权，双样本全绿，`EVIDENCE.md` §三十三）给出可复跑的同向证据。这是该装它的第一理由。
 - **返工少了**：该问的先问、该留的回滚点先留、结论终带可复跑证据——错误在发生前/发生时被抓住，而不是在复盘时。
-- **跨会话不断链**：`memory/agent-log.md` 一档制 + 细则库（405 条/32 类）把踩过的坑留给下一次。
+- **跨会话不断链**：`memory/agent-log.md` 一档制 + 细则库（406 条/33 类）把踩过的坑留给下一次。
 
 **它明确要付的（别被"轻量"误导）**：
 
@@ -110,6 +110,8 @@ Agent 的常见失败不是「不会写代码」，而是**规则在场却不被
 | `shisan-xinuo-flows` | **流程包** | 9 类任务工作流分册（新功能 / Bug 修复 / 重构 / 数据迁移 / 发布 / 前端设计 / 运维 / 文档 / 探索调研）+ 澄清流程 + 双调研与复用五问 + 模板 7 件 |
 | `shisan-xinuo-roles` | **角色包** | 8 个审查/执行角色（critic / risk-reviewer / security-auditor / debugger / contract / test / frontend / perf），每角色六字段解剖 + dispatch 矩阵 + 行动契约 |
 | `shisan-xinuo-product` | **产品工程包**（独立版本线 v0.2.7，本批 checker 反向变异修复；设计源与全部实证在 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill)） | 层级门（L0-L10）/ 产品对象六问 / 联通层契约（statechart）/ 双底双顶 / 判定表 / 8 台可重跑门禁（组件归因 / 态机 C1-C7 / 双向追溯 / 产品对象 P1-P4 / L0-L5 / 前端 lint / 可达性 / 使用率） |
+
+> 另含**单文件版**（`skill/shisan-xinuo-single/`）：核心包 SKILL.md 全文并入一个文件（自用硬注入）；写入平台规则文件后每会话常驻（文件内含「要动的文件」表）；细则库 / 流程 / 角色 / 产品包与脚本门禁仍在主体系。
 
 产品工程包解决的是另一类失败——**「产品该有的都得有」缺了没人报**：缺失是不可观测的偏差，测试全绿不代表该有的都在。它把「缺失逻辑」翻译成机器能检查的门禁（「缺失可检出」反向注入四变异实证，可重跑见设计源仓 `docs/reverse-injection/`）。
 
@@ -230,7 +232,8 @@ python scripts/scorecard_agg.py --baseline <旧标签> --current <新标签>   #
 │   ├── shisan-xinuo-workflow/    # 核心包：SKILL.md + references/ + templates/
 │   ├── shisan-xinuo-flows/       # 流程包：9 类工作流分册 + 模板
 │   ├── shisan-xinuo-roles/       # 角色包：8 角色 + dispatch 矩阵
-│   └── shisan-xinuo-product/     # 产品工程包：判据 + 8 台门禁（设计源与实证在独立仓）
+│   ├── shisan-xinuo-product/     # 产品工程包：判据 + 8 台门禁（设计源与实证在独立仓）
+│   └── shisan-xinuo-single/      # 单文件版（核心全量·自用硬注入）
 ├── scripts/                      # 工具面：部署/同步/门禁/事实对账/审计/探针
 ├── docs/                         # 项目导航 + 计划 + 独立审查/审计报告 + 路测 scorecards
 ├── memory/                       # 单项目承载（本地档案，随 .gitignore 不入仓）

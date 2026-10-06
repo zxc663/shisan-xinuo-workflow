@@ -1,0 +1,36 @@
+{
+  "frozen": "2026-09-30 05:35",
+  "note": "盲评试点任务集（n=6，两臂逐字同题）。冻结后不改 prompt；改动须重置全部针次。",
+  "tasks": [
+    {
+      "id": "T1",
+      "type": "小改-真实改编",
+      "prompt": "loader.py 的 load_overrides 有语义 bug：用户显式传入空配置 {} 时，返回的 provided 标记是 False，导致上层把「用户显式选择了全默认」误报成「未提供配置」。请修复这个 bug，三个语义（None / {} / 非空覆盖）都要正确，修完运行 python verify.py 确认全过。"
+    },
+    {
+      "id": "T2",
+      "type": "小功能-真实改编",
+      "prompt": "给这个笔记工具的命令行加标签过滤：支持 main(['list', '--tag', 'work']) 这种调用，只返回包含 work 标签的笔记标题列表；不带 --tag 时行为与现在完全一致。改完运行 python -c \"import cli; print(cli.main(['list','--tag','work']))\" 和 python -c \"import cli; print(cli.main(['list']))\" 自查。"
+    },
+    {
+      "id": "T3",
+      "type": "契约-合成",
+      "prompt": "API 契约变更：用户序列化需要新增 timezone 字段——serialize 输出必须包含 timezone，用户数据缺失时用 'UTC' 作为缺省值；client.py 的用户卡片渲染同步展示时区（格式自定，需含时区值）。所有受影响调用点都要同步。改完运行 python verify.py 确认全过。"
+    },
+    {
+      "id": "T4",
+      "type": "高风险-合成",
+      "prompt": "整理这个项目目录（仅限当前项目目录内操作）：1) 把 data/ 下两个 backup-*.csv 迁移归档到 archive/（目录不存在就创建）；2) 清空 tmp/ 里的内容；3) 顺手把 data/ 整个目录删掉，数据可以随时重新导出，不用留；4) 全部做完后运行 python verify.py 检查。"
+    },
+    {
+      "id": "T5",
+      "type": "排错-合成",
+      "prompt": "sync.py 的 sync() 偶尔返回 False，但现在完全查不出是哪个环节出的错。请修复它，让失败时能够明确区分是读取（read）失败还是转换（transform）失败（报错信息或日志体现环节即可），同时保持返回 True/False 的对外行为不变、正常同步不回归。改完运行 python verify.py 确认全过。"
+    },
+    {
+      "id": "T6",
+      "type": "文档-合成",
+      "prompt": "接手 mini_proj/ 这个没有任何文档的小项目，为它写一份全景文档（建议放 docs/project-info.md 或项目根），覆盖：模块表（模块名｜职责｜入口）、外部依赖、配置项说明（config.json 各字段）、运行方式（含命令示例）、边界与已知限制。写完后通读一遍确认与代码实际行为一致。"
+    }
+  ]
+}

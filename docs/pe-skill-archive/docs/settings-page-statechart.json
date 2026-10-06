@@ -1,0 +1,11 @@
+{
+  "id": "settings-page",
+  "initial": "loading",
+  "states": {
+    "loading":        { "on": { "LOADED": "ready", "LOAD_FAIL": "degradedReady" } },
+    "degradedReady":  { "on": { "RELOAD": "loading" } },
+    "ready":          { "on": { "PICK_PROVIDER": "ready", "OPEN_ADV": "ready", "SAVE": "saving", "TEST_CONN": "testing", "RELOAD": "loading" } },
+    "saving":         { "on": { "DONE": "ready", "FAIL": "ready" } },
+    "testing":        { "on": { "DONE": "ready", "FAIL": "ready" } }
+  }
+}

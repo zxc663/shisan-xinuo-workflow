@@ -1,0 +1,2 @@
+FAIL: 1 项新增前端 lint 违例（存量 0 条已由基线豁免）：
+  ✗ D:/产品工程闭环实验/app.js:602 [R1] 内联样式（§4-5）：'<div class="progress-track"><div class="progress-fill" style="width:' + pct + '

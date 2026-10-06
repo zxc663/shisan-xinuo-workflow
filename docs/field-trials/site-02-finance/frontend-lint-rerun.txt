@@ -1,0 +1,8 @@
+FAIL: 7 项新增前端 lint 违例（存量 0 条已由基线豁免）：
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:66 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：white : makeGlowSprite('#dbeeff', 'rgba(255,255,255,0.95)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:67 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：ice   : makeGlowSprite('#9fd6ff', 'rgba(165,215,255,0.9)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:68 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：blue  : makeGlowSprite('#47a3ff', 'rgba(85,165,255,0.9)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:69 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：deep  : makeGlowSprite('#2b6bff', 'rgba(55,115,225,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:70 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：violet: makeGlowSprite('#a98ef5', 'rgba(145,115,230,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:71 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：purple: makeGlowSprite('#8f7be0', 'rgba(125,105,210,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:101 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：SPR.star = makeStarSprite('#cfe8ff');

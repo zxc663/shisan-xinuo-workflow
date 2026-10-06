@@ -1,0 +1,4 @@
+DELETE /tasks/{id}
+GET /boards
+PATCH /tasks/{id}
+POST /tasks

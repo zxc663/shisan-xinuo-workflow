@@ -1,0 +1,673 @@
+
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+APICallError [AI_APICallError]: Cannot connect to API: connect ECONNREFUSED 127.0.0.1:8377
+    at handleFetchError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2044:5837)
+    at postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:20318)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964 {
+  cause: Error: connect ECONNREFUSED 127.0.0.1:8377
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16) {
+    errno: -4078,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8377
+  },
+  url: 'http://127.0.0.1:8377/v1/chat/completions',
+  requestBodyValues: {
+    model: 'GLM-5.3-Flash',
+    user: undefined,
+    max_tokens: undefined,
+    temperature: undefined,
+    top_p: undefined,
+    frequency_penalty: undefined,
+    presence_penalty: undefined,
+    response_format: undefined,
+    stop: undefined,
+    seed: undefined,
+    reasoning_effort: undefined,
+    verbosity: undefined,
+    messages: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    tools: [
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object], [Object],
+      [Object], [Object], [Object], [Object]
+    ],
+    tool_choice: 'auto',
+    stream: true,
+    stream_options: { include_usage: true }
+  },
+  statusCode: undefined,
+  responseHeaders: undefined,
+  responseBody: undefined,
+  isRetryable: true,
+  data: undefined,
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+Error: Turn execution failed (traceId: 161052da-4f8a-45a8-b792-9565fdc2073f)

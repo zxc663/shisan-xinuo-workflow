@@ -1,0 +1,17 @@
+{
+  "global_nav": true,
+  "local_nav": true,
+  "location_indicator": true,
+  "routes": [
+    {"path": "/keys", "has_global_nav": true},
+    {"path": "/keys/:id/usage", "has_global_nav": true}
+  ],
+  "pages": [
+    {"path": "/keys", "exits": 2},
+    {"path": "/keys/:id/usage", "exits": 1}
+  ],
+  "find_paths": [
+    {"task": "生成一把新密钥并复制", "clicks": 3, "ok": true}
+  ],
+  "tree_tests": "2026-09 导航实测 3 任务全过"
+}

@@ -32,3 +32,5 @@
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 07:37:29"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 07:52:30"}
 {"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 08:07:05"}
+{"event": "backoff-canary", "rc": 0, "summary": "0/1", "commit_rc": 0, "ts": "2026-09-30 08:21:43"}
+{"event": "loop-exit", "stop_reason": "env-streak", "rounds": 5, "totals": {"rounds": 2, "probes": 13, "pass": 10, "voids": 20, "taps": 6, "commits_fail": 0}, "ts": "2026-09-30 08:30:43"}

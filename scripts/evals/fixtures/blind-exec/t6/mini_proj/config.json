@@ -1,0 +1,5 @@
+{
+  "default_column": "category",
+  "output_encoding": "utf-8",
+  "max_rows": 10000
+}

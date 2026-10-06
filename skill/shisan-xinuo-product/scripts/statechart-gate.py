@@ -28,12 +28,14 @@
   dict 形式的转换若无 "target" 键=内部转换（合法，无出边语义），本 gate 不报。
 
 用法：python statechart-gate.py --file sc.json [--contract contract.json]
+      python statechart-gate.py --probe-recovery <目录>   # 疑似 recovery 语义 markdown 探测（提醒不 FAIL）
       python statechart-gate.py --selftest
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import deque
 from pathlib import Path
@@ -115,6 +117,56 @@ def check(sc: dict, contract: dict | None = None) -> list[str]:
     return fails
 
 
+def contract_c7_hint(contract: dict) -> str | None:
+    """--contract 在场但无 recovery 行时的跑法提醒（site-01 实地轨回流：错传 statechart 自身为
+    contract 时合法 JSON 但 rows=∅ → C7 反向把错误态出边全报「未登记」，表面像项目缺陷实为跑法错；
+    或 recovery 仍停留在 markdown 人工契约——存量项目先忠实转写补 contract.json 再跑 C7）。
+    不 FAIL 化：契约确无错误出路承诺是合法形态，意图不可机判。"""
+    if contract.get("recovery"):
+        return None
+    return ("提醒：--contract 在场但无 recovery 行——C7 反向对账将把错误态出边全报「未登记」。"
+            "请确认非传错文件（如误传 statechart 自身），且 recovery 未停留在 markdown 人工契约"
+            "（存量项目先按忠实转写补 contract.json 再跑 C7）。")
+
+
+# markdown recovery 探测（site-01/02 跨项目双击回流：错误态语义常停留在 markdown 人工契约——
+# contract.md 异常与恢复节 / 交互设计说明「状态与异常总表」——C7 对账天然盲窗）。
+# 命中判据（任一）：标题行「语义词×状态域词」共现（首版单词判据双站实测 2/5 精度——运维备份恢复/
+# 监控异常检测/调试标题全误报，故收紧）｜含「恢复」列的表头行（分隔行 lookahead 防数据行误报）。
+RECOVERY_TITLE = re.compile(
+    r"^#{1,6}\s(?=.*(?:异常|恢复|错误|失败|recovery))(?=.*(?:状态|错误态|异常态|转换|迁移|总表|状态机))",
+    re.IGNORECASE)
+RECOVERY_COL = re.compile(r"恢复|recovery", re.IGNORECASE)
+TABLE_SEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
+PROBE_SKIP = re.compile(r"(node_modules|\.git[\\/]|dist|build|\.next)")
+PROBE_MD_LIMIT, PROBE_HEAD_LIMIT = 200, 65536
+
+
+def probe_recovery_md(root: str | Path) -> list[tuple[str, str]]:
+    """扫目录下疑似 recovery 语义 markdown 档，返回 (路径, 命中依据)。
+    只提醒不 FAIL：markdown 契约在场是存量项目合法普遍形态，价值=引导忠实转写补 contract.json。"""
+    hits: list[tuple[str, str]] = []
+    p = Path(root)
+    if not p.is_dir():
+        return hits
+    md_files = [f for f in p.rglob("*.md") if not PROBE_SKIP.search(str(f))]
+    for f in md_files[:PROBE_MD_LIMIT]:
+        try:
+            head = f.read_text(encoding="utf-8", errors="replace")[:PROBE_HEAD_LIMIT]
+        except OSError:
+            continue
+        lines = head.splitlines()
+        for i, line in enumerate(lines):
+            if RECOVERY_TITLE.match(line):
+                hits.append((str(f), f"标题：{line.strip()[:48]}"))
+                break
+            if line.lstrip().startswith("|") and RECOVERY_COL.search(line) \
+                    and i + 1 < len(lines) and TABLE_SEP.match(lines[i + 1]):
+                hits.append((str(f), f"恢复列表头：{line.strip()[:48]}"))
+                break
+    return hits
+
+
 def reconcile(states: dict, contract: dict) -> list[str]:
     """C7：契约 recovery 行 ↔ statechart 转换双向对账（缺边=承诺落空／多边=未登记发明）。"""
     fails: list[str] = []
@@ -182,11 +234,42 @@ def selftest() -> int:
     ok7b = any("C7 反向" in x and "SECRET" in x for x in f7b)
 
     ok = all([ok1, ok2, ok6, ok_c4, ok7f, ok7a, ok7b])
+
+    # C7 跑法提醒（site-01 回流）：--contract 无 recovery 行 → 提醒在场；正常契约 → 无提醒
+    hint_bad = contract_c7_hint({"contract_version": "0.2.6", "states": {}})
+    hint_good = contract_c7_hint({"recovery": [{"state": "error", "action": "RETRY", "target": "parsing"}]})
+    ok_hint = hint_bad is not None and "recovery" in hint_bad and hint_good is None
+    ok = ok and ok_hint
+
+    # markdown recovery 探测（site-01/02 双击回流）：标题命中+node_modules 排除+README 降误报+裸表头命中
+    import tempfile
+    ok_p1 = ok_p2 = ok_p3 = False
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "node_modules").mkdir()
+        (tdp / "node_modules" / "x.md").write_text("## 错误态与恢复转换\n", encoding="utf-8")
+        (tdp / "交互设计说明.md").write_text(
+            "# 交互设计\n\n## 4 状态与异常总表\n\n| 场景 | 表现 | 恢复 |\n|---|---|---|\n| 数据仓空 | 引导卡 | 引导 |\n",
+            encoding="utf-8")
+        hits = probe_recovery_md(td)
+        ok_p1 = len(hits) == 1 and "交互设计说明" in hits[0][0] and "标题" in hits[0][1]
+        with tempfile.TemporaryDirectory() as td2:
+            (Path(td2) / "README.md").write_text("# 项目\n\n安装与使用说明，性能优异。\n", encoding="utf-8")
+            ok_p2 = probe_recovery_md(td2) == []
+        with tempfile.TemporaryDirectory() as td3:
+            (Path(td3) / "裸表格.md").write_text(
+                "# 模块\n\n| 状态 | 动作 | 恢复目标 |\n|---|---|---|\n| offline | RECONNECT | online |\n",
+                encoding="utf-8")
+            h3 = probe_recovery_md(td3)
+            ok_p3 = len(h3) == 1 and "表头" in h3[0][1]
+    ok = ok and ok_p1 and ok_p2 and ok_p3
     print(f"selftest: 合法机放行={ok1} C2/C3/C4拦截={ok2} C6悬空target拦截={ok6} "
           f"结构化错误态C4拦截={ok_c4} C7正向缺边拦截={ok7a} C7反向多边拦截={ok7b} "
-          f"契约一致放行={ok7f} → {'PASS' if ok else 'FAIL'}")
+          f"契约一致放行={ok7f} 无recovery提醒={ok_hint} "
+          f"md探测标题命中+排除={ok_p1} 普通档零误报={ok_p2} 裸恢复表头命中={ok_p3} → {'PASS' if ok else 'FAIL'}")
     if not ok:
-        print("  detail:", {"basic_bad": f, "c6": f6, "c7_forward": f7a, "c7_reverse": f7b})
+        print("  detail:", {"basic_bad": f, "c6": f6, "c7_forward": f7a, "c7_reverse": f7b,
+                            "probe": {"p1": ok_p1, "p2": ok_p2, "p3": ok_p3}})
     return 0 if ok else 1
 
 
@@ -195,10 +278,30 @@ def main() -> int:
     ap.add_argument("statechart", nargs="?", help="statechart JSON（位置参数，兼容裸路径调用）")
     ap.add_argument("--file", dest="file_opt")
     ap.add_argument("--contract", help="契约 JSON（含 recovery / non_error_failures），启用 C7 双向对账")
+    ap.add_argument("--probe-recovery", dest="probe_recovery",
+                    help="探测目录下疑似 recovery 语义 markdown（提醒不 FAIL，引导忠实转写补 contract.json）")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    if a.probe_recovery:
+        root = Path(a.probe_recovery)
+        if not root.is_dir():
+            print(f"FAIL: --probe-recovery 目录不存在：{a.probe_recovery}")
+            return 1
+        hits = probe_recovery_md(root)
+        if not hits:
+            print("PROBE: 未发现疑似 recovery 语义 markdown（扫描面=目录递归 *.md，"
+                  "排除 node_modules/.git/dist/build，上限 200 档）。")
+            return 0
+        print(f"PROBE: 发现 {len(hits)} 个疑似 recovery 语义 markdown 档"
+              f"（错误态语义停留人工契约=C7 对账输入缺失）：")
+        for pth, why in hits:
+            print(f"  ✗ {pth}")
+            print(f"      ←{why}")
+        print("提醒：markdown 契约不构成 C7 机器可读输入——按忠实转写补 contract.json 的 recovery 键"
+              "（(state, action, target) 行）后重跑 C7；本探针只提醒不 FAIL，转写意图需人工核对。")
+        return 0
     # F6（2026-09-24）：NR6/NR7 两个真会话首调均踩「位置路径不收」——补位置参数兼容
     a.file = a.file_opt or a.statechart
     if not a.file:
@@ -206,14 +309,19 @@ def main() -> int:
         return 1
     sc = json.loads(Path(a.file).read_text(encoding="utf-8"))
     contract = json.loads(Path(a.contract).read_text(encoding="utf-8")) if a.contract else None
+    hint = contract_c7_hint(contract) if contract is not None else None
     fails = check(sc, contract)
     if fails:
+        if hint:
+            print(hint)
         print(f"FAIL: {len(fails)} 项结构缺陷：")
         for x in fails:
             print("  ✗", x)
         return 1
     scope = "含 C7 契约对账" if contract else "无契约（C7 未启用）"
     print(f"OK: statechart 结构检查通过（无死端/全可达/错误态有出路/引用完整；{scope}）")
+    if hint:
+        print(hint)
     return 0
 
 

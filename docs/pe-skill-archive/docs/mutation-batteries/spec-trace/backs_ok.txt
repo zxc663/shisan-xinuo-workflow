@@ -1,0 +1,2 @@
+GET /favorites
+DELETE /favorites

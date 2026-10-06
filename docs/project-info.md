@@ -35,6 +35,7 @@
 | skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 406 条 33 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
 | skill/shisan-xinuo-flows/ | 已实现（v3.0 批次②） | 流程包：SKILL.md（加载后行动契约+依赖声明）+ references/workflows.md（9 类工作流/澄清/双调研/复用五问）+ templates 7 件（规划/验收/任务记录/复盘/回滚点/预算/压缩保留） | flows、workflows、流程包、模板、9 类工作流 |
 | skill/shisan-xinuo-roles/ | 已实现（v3.0 批次③） | 角色包：SKILL.md（dispatch 矩阵+行动契约+依赖声明）+ roles/ 8 角色六字段（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | roles、角色包、dispatch、critic、debugger |
+| skill/shisan-xinuo-single/ | 已实现（2026-10-06，全量核心版） | 单文件版（自用硬注入）：核心包 SKILL.md 全量并入（基线=主体系 v3.4.0）+「硬注入·要动的文件」8 平台表 + 回查指路；细则 / 流程 / 角色 / 产品包与脚本门禁留主体系 | single、单文件、核心全量、硬注入 |
 | scripts/ | 已实现 | install-skill.ps1（agent- 前缀自适配，四包 `-Family`）/ syncer.py（三路合并，`--family` 全家族）/ verify-release.ps1（发布门禁 **8 项**，H=判据自测）/ facts_sync.py（事实对账，含条目上限断言）/ deploy_injection.py（五平台注入 + `--check --hash` 载体哈希验收，细则 #374）/ gate_audit.py（GATE 外部抽检 + `--gate/--high-risk/--independent-cmd` 验证层级，细则 #371）/ probe_runner.py（行为面探针 harness：隔离断言+双因分离+scorecard 随仓+**判据版本 j2.5/指纹/`--judge-selftest` 23-23/`--rescore`**）/ scorecard_agg.py（时序库聚合：剔废/分型/三态对比 + `--exclude-recollect` 口径机检）/ risk_scan.py（清单外高危域召回端口，细则 #370）/ agent_log_rotate.py（记忆档机械归档，细则 #372）/ detail_lookup.py（细则检索端口） | install-skill、syncer、verify-release、facts_sync、deploy_injection、gate_audit、probe_runner、scorecard_agg、risk_scan、agent_log_rotate、判据自测、门禁 |
 | docs/ | 已实现 | project-info.md（本文件）/ reference-sources.md（参考来源）/ skill-split-plan-v3.0.md（v3.0 施工计划与进度表）/ version-plan-v310.md（v3.1 方案与选型）/ independent-review-v3.0-20260918.md（独立审查报告）/ roadtest-scorecards/（行为面 scorecard 时序库 + `JUDGELOG.md` 判据版本史 + evidence 原始输出存证）/ incidents/（事故取证与交接件） | project-info、reference-sources、计划档、独立审查、scorecards、JUDGELOG、判据、incidents |
 | 项目信息.md | 已实现 | 决策与发布史（权威，46KB）——本文件不重复其内容 | 决策史、发布记录、决策 #、About |
@@ -52,6 +53,8 @@
 - 口径核账/细则数 → scripts/facts_sync.py（单源对账，verify G 项底层）。
 - 改判据/路测结论 → 判据实体=`scripts/probe_runner.py`（`JUDGE_VERSION`；改判据→`--judge-selftest` 回归 + `JUDGELOG.md` 留痕）+ 聚合=`scripts/scorecard_agg.py`（剔废/三态）；纪律=details #368。
 - 对标/借鉴外部项目 → `docs/design-specs/benchmark-refresh-20260929.md`（批 R 新贵）＋ `docs/design-specs/benchmark-superpowers-20260929.md`（superpowers 可吸收清单 A-F，含成本/验证法）；对标基线=`docs/comparison-v290-analysis-20260916.md`（十一家）。
+- 改/查单文件版 → 设计档 `docs/design-specs/single-file-distill-20261006.md`（含 v2 全量核心修订说明）；产物=`skill/shisan-xinuo-single/`（核心全量 +「要动的文件」表）；维护口径=衍生物：主体系更新后回主体系重新取用、不自动同步。
+- 改/查技能基质层（S0-S4 层栈 / 层级门 / 缝合契约 / 归因） → `references/skill-usage.md` §9；设计档=`docs/design-specs/skill-substrate-20261006.md`；维护=单一源（本层不复制既有节内容）。
 - 决策追溯 → 项目信息.md（§三 决策 1-54）+ memory/task-log/。
 
 ## ⑤ 参考资源

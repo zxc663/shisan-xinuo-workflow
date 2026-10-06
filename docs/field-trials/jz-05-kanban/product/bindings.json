@@ -1,0 +1,17 @@
+{
+  "bindings_version": "0.2.6",
+  "components": {
+    "BoardColumn": "看板列（卡片容器+空列引导）",
+    "TaskCard": "任务卡（头像/拖拽/删除）",
+    "AddTaskForm": "新建任务表单",
+    "ColumnHeader": "列头（列名+计数，纯展示）"
+  },
+  "bindings": [
+    {"page": "BoardPage", "component": "BoardColumn", "feature": "列内任务列表", "backend": "GET /boards", "evidence": "shot-board.png"},
+    {"page": "BoardPage", "component": "AddTaskForm", "feature": "新建任务", "backend": "POST /tasks", "evidence": "shot-add.png"},
+    {"page": "BoardPage", "component": "TaskCard", "feature": "拖拽移动任务", "backend": "PATCH /tasks/{task_id}", "evidence": "shot-move.png"},
+    {"page": "BoardPage", "component": "TaskCard", "feature": "删除任务", "backend": "DELETE /tasks/{id}", "evidence": "shot-del.png"},
+    {"page": "BoardPage", "component": "TaskCard", "feature": "拖拽移动任务", "backend": "PATCH /tasks/{task_id}", "evidence": "shot-move-dup.png"},
+    {"page": "BoardPage", "component": "ColumnHeader", "feature": "列头展示", "backend": "NONE(纯展示)", "evidence": "shot-head.png"}
+  ]
+}

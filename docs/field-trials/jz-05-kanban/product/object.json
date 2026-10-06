@@ -1,0 +1,24 @@
+{
+  "responsibility": "管理团队任务的流转、阻断与归档",
+  "main_function": "拖拽跨列改状态",
+  "capabilities": [
+    {"name": "拖拽跨列改状态", "role": "核心任务"},
+    {"name": "新建任务", "role": "辅助"},
+    {"name": "删除任务", "role": "辅助"},
+    {"name": "标记/解除阻断", "role": "辅助"},
+    {"name": "归档留痕", "role": "辅助"}
+  ],
+  "operability": [
+    {"item": "数据来源", "answer": "平台任务服务单源，本地不落盘"},
+    {"item": "谁管理", "answer": "团队管理员可在 /team 页移除成员任务"}
+  ],
+  "layers": {
+    "active": "L6",
+    "upstream": {
+      "L1": "brief:团队任务看板，三列+拖拽改状态+新建/删除/阻断/归档（用户口述）",
+      "L2": "brief:能力 5 条",
+      "L3": "brief:主功能=拖拽跨列改状态",
+      "L4": "adjudicated:拖拽是状态变更一等交互——DROP 同列视为取消不发请求（guardDesc）"
+    }
+  }
+}

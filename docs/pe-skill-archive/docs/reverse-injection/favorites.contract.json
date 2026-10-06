@@ -1,0 +1,12 @@
+{
+  "_provenance": "转录自 D:/产品工程闭环实验/docs/contracts/favorites.contract.md §③（行 44-46）+ 附注（行 48）——只做格式转录，不新增裁决；试验仓全程只读。",
+  "recovery": [
+    {"state": "export_failed", "action": "RETRY_EXPORT", "target": "exporting", "note": "重试导出，重新分块+进度"},
+    {"state": "export_failed", "action": "ABORT", "target": "list", "note": "放弃导出回清单，本地数据无损"},
+    {"state": "permission_denied", "action": "DISMISS", "target": "list", "note": "关提示回清单；删除未发生，数据无损"}
+  ],
+  "non_error_failures": [
+    {"state": "loading", "action": "LOAD_FAIL", "target": "empty", "note": "JSON 损坏/读取失败：隔离备份+空启动+醒目提示（附注行 48）"},
+    {"state": "restoring", "action": "RESTORE_FAIL", "target": "recycle_bin", "note": "恢复失败回退，条目仍在回收站（附注行 48）"}
+  ]
+}

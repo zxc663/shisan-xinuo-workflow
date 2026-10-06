@@ -1,0 +1,21 @@
+FAIL: 30 项新增前端 lint 违例（存量 0 条已由基线豁免）：
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:66 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：white : makeGlowSprite('#dbeeff', 'rgba(255,255,255,0.95)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:67 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：ice   : makeGlowSprite('#9fd6ff', 'rgba(165,215,255,0.9)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:68 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：blue  : makeGlowSprite('#47a3ff', 'rgba(85,165,255,0.9)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:69 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：deep  : makeGlowSprite('#2b6bff', 'rgba(55,115,225,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:70 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：violet: makeGlowSprite('#a98ef5', 'rgba(145,115,230,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:71 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：purple: makeGlowSprite('#8f7be0', 'rgba(125,105,210,0.85)'),
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:95 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(0, 'rgba(255,255,255,0.95)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:101 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：SPR.star = makeStarSprite('#cfe8ff');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:131 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：g.fillStyle = '#02040c';
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:135 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：g.fillStyle = `rgba(185,215,255,${rnd(0.02, 0.09).toFixed(3)})`;
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:140 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(0, 'rgba(90,70,160,0.14)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:141 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(1, 'rgba(90,70,160,0)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:146 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(0, 'rgba(60,120,220,0.10)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:147 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(1, 'rgba(60,120,220,0)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:152 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(0, 'rgba(50,90,170,0.06)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:153 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(1, 'rgba(50,90,170,0)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:162 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad2.addColorStop(0, 'rgba(165,195,235,0.09)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:163 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad2.addColorStop(0.65, 'rgba(165,195,235,0.03)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:164 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad2.addColorStop(1, 'rgba(165,195,235,0)');
+  ✗ C:/Users/zxc66/Desktop/个人财务账单智能规划助手-9.20/particle-tree.html:176 [R2] 硬编码色（§4-5，组件区不放色值——色归 token/style 块）：grad.addColorStop(0, 'rgba(70,115,195,0.05)');

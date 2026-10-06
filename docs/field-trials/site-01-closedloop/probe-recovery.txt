@@ -1,0 +1,4 @@
+PROBE: 发现 1 个疑似 recovery 语义 markdown 档（错误态语义停留人工契约=C7 对账输入缺失）：
+  ✗ D:\产品工程闭环实验\docs\contracts\favorites.contract.md
+      ←标题：## ③ 错误态 recovery 行（动作 + 落点）
+提醒：markdown 契约不构成 C7 机器可读输入——按忠实转写补 contract.json 的 recovery 键（(state, action, target) 行）后重跑 C7；本探针只提醒不 FAIL，转写意图需人工核对。

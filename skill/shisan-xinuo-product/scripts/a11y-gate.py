@@ -9,8 +9,8 @@
   A1 img 无 alt：<img> 标签内无 alt 属性（alt="" 装饰图合法）
   A2 表单控件无可访问名：<input|select|textarea> 无 aria-label/aria-labelledby、
      无 label 引用（for=/htmlFor= 字面量对账）、非 <label> 包裹、且非 hidden/submit/button/reset
-  A3 交互元素无可访问名：<button> 或带 href 的 <a>，内容去子标签后为空
-     且无 aria-label/aria-labelledby/title（图标按钮无可访问名=高频真缺陷）
+  A3 交互元素无可访问名：<button> 或带 href 的 <a>，内容去子标签后为空、或内容为纯符号
+     （▶/×/⋯ 有字形无词语），且无 aria-label/aria-labelledby/title（图标按钮无可访问名=高频真缺陷）
   A4 html 无 lang：<html> 标签内无 lang 属性（仅 .html 文件）
 
 诚实边界 v1：正则级检测——不查对比度/焦点顺序/键盘陷阱/ARIA 语义正确性/tabindex 值；
@@ -98,12 +98,19 @@ def scan_file(p: Path) -> list[str]:
             continue
         if has_any(attrs, NAME_ATTRS) or "title" in attrs:
             continue
-        if re.sub(r"<[^>]*>", "", inner).strip():
+        visible = re.sub(r"<[^>]*>", "", inner).strip()
+        if visible and re.search(r"\w", visible):
             continue
-        if re.search(r"\{[^}]*\}", inner):  # JSX 表达式子内容：保守放行
+        if re.search(r"\{[^}]*\}", inner):  # JSX/模板表达式子内容：保守放行
             continue
         name = open_tag[1:open_tag.find(" ")] if " " in open_tag else open_tag[1:-1]
-        out.append((line_of(text, m.start()), "A3", f"<{name}> 内容为空且无可访问名", open_tag[:60]))
+        # 纯符号变体（jz-02 试金石回流）：▶/⏸/× 有字形无词语——读屏读出的是符号名而非语义，
+        # 「内容非空」形态曾从空内容检查漏过
+        if visible:
+            out.append((line_of(text, m.start()), "A3",
+                        f"<{name}> 内容为纯符号（如 ▶/×/⋯）且无可访问名——图标按钮须 aria-label", open_tag[:60]))
+        else:
+            out.append((line_of(text, m.start()), "A3", f"<{name}> 内容为空且无可访问名", open_tag[:60]))
 
     # A3b：伪按钮——click 绑定在非交互元素且无 role（点击热区无语义=键盘/读屏双双不可达）
     for m in TAG_PSEUDO.finditer(text):
@@ -188,6 +195,12 @@ def selftest() -> int:
         pseudook2.write_text('<template><button @click="go()">x</button></template>', encoding="utf-8")
         pseudook3 = t / "PseudoComp.vue"  # A3b 正向：自定义组件（大写开头）保守放行
         pseudook3.write_text('<template><MyRow @click="go()" /></template>', encoding="utf-8")
+        symbolbad = t / "SymbolBad.vue"  # A3 纯符号反向：▶ 无 aria-label 必拦（jz-02 逃逸形态）
+        symbolbad.write_text('<template><button @click="play()">▶</button></template>', encoding="utf-8")
+        symbolok1 = t / "SymbolLabel.vue"  # A3 纯符号正向：aria-label 在场放行
+        symbolok1.write_text('<template><button aria-label="播放" @click="play()">▶</button></template>', encoding="utf-8")
+        symbolok2 = t / "SymbolText.vue"  # A3 纯符号正向：真词语内容放行（含 CJK/字母）
+        symbolok2.write_text('<template><button @click="go()">开始</button></template>', encoding="utf-8")
 
         vb = scan_file(bad)
         ok1 = all(any(f"[{r}]" in x for x in vb) for r in ("A1", "A2", "A3"))
@@ -201,10 +214,13 @@ def selftest() -> int:
         vb_p = scan_file(pseudobad)
         ok8 = any("[A3b]" in x for x in vb_p) and scan_file(pseudook1) == [] \
             and scan_file(pseudook2) == [] and scan_file(pseudook3) == []
+        vb_s = scan_file(symbolbad)
+        ok9 = any("[A3]" in x and "纯符号" in x for x in vb_s) \
+            and scan_file(symbolok1) == [] and scan_file(symbolok2) == []
         print(f"selftest: 坏件三连(A1/A2/A3)={ok1} 好件放行={ok2} label-for豁免={ok3} "
               f"包裹豁免={ok4} html-lang命中={ok5} hidden豁免={ok6} 批X反向AG1/AG2={ok7} "
-              f"A3b伪按钮拦/放行={ok8}")
-        return 0 if all((ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8)) else 1
+              f"A3b伪按钮拦/放行={ok8} A3纯符号拦/放行={ok9}")
+        return 0 if all((ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9)) else 1
 
 
 def main() -> int:

@@ -1,0 +1,14 @@
+{
+  "contract_version": "0.2.6",
+  "states": {
+    "trialing": {"ui": "试用横幅+剩余天数+开通按钮"},
+    "active": {"ui": "当前方案卡+升级/取消入口"},
+    "payment_failed": {"ui": "失败原因+重试支付按钮+联系客服入口"},
+    "support_hold": {"ui": "工单进行中横幅，订阅临时保活"},
+    "expired": {"ui": "只读降级提示+重新订阅入口"},
+    "canceled": {"ui": "已取消（期末生效）回执页"}
+  },
+  "recovery": [
+    {"state": "payment_failed", "action": "CONTACT_SUPPORT", "target": "past_due"}
+  ]
+}

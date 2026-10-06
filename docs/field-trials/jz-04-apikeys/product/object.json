@@ -1,0 +1,24 @@
+{
+  "purpose": "让开发者自助管理开放平台凭证",
+  "responsibility": "管理 API Key 的生成与吊销",
+  "capabilities": [
+    {"name": "生成密钥", "role": "核心任务"},
+    {"name": "一次性展示与复制", "role": "业务操作"},
+    {"name": "吊销密钥", "role": "业务操作"},
+    {"name": "查看用量", "role": "辅助"},
+    {"name": "命名与备注", "role": "辅助"}
+  ],
+  "main_function": "生成密钥",
+  "layers": {
+    "active": "L6",
+    "upstream": {
+      "L1": "brief:API Key 管理页，生成/一次展示/吊销/用量（用户口述）",
+      "L2": "brief:能力 5 条",
+      "L3": "brief:主功能=生成密钥",
+      "L4": "adjudicated:安全域——密钥只存哈希，明文仅生成时返回一次"
+    }
+  },
+  "operability": [
+    {"item": "数据来源", "answer": "平台密钥服务，本地只存指纹"}
+  ]
+}
