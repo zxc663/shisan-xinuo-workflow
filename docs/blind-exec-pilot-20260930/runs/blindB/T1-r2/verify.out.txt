@@ -1,0 +1,9 @@
+PASS None -> provided=False
+PASS None -> merged=defaults
+PASS {} -> provided=True（用户显式全默认）
+PASS {} -> merged=defaults
+PASS 覆盖 -> provided=True
+PASS 覆盖 -> merged 生效
+RESULT: PASS
+
+---STDERR---

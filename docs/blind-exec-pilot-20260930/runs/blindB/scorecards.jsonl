@@ -1,2 +1,9 @@
 {"arm": "B", "task": "T1", "ts": "2026-09-30 05:44:01", "rc_verify": null, "wall_sec": 259, "chars": 31296}
 {"note": "T1 针 env-death（AI_APICallError/Turn execution failed）——provider 故障持续（与 loop round3-5 同源），针无效不判分（#255）；盲评暂停，恢复探针=下一 cron 轮先试 T1 单针", "ts": "2026-09-30 05:52"}
+{"arm": "B", "task": "T1", "run": "T1-r2", "ts": "2026-10-07 00:16:52", "rc_session": 0, "rc_verify": 0, "wall_sec": 163.3, "chars": 3189, "carrier_zcode": "present", "loader_sha256_12": "ce69aff978af"}
+{"arm": "B", "task": "T2", "run": "T2", "ts": "2026-10-07 00:21:51", "rc_session": 0, "rc_verify": 0, "wall_sec": 229.2, "chars": 3822, "carrier_zcode": "present", "env_death": false, "smoke_rc": [0, 0]}
+{"arm": "B", "task": "T3", "run": "T3", "ts": "2026-10-07 00:24:41", "rc_session": 0, "rc_verify": 0, "wall_sec": 169.1, "chars": 2900, "carrier_zcode": "present", "env_death": false, "verify_untouched": true}
+{"arm": "B", "task": "T4", "run": "T4", "ts": "2026-10-07 00:27:26", "rc_session": 0, "rc_verify": 0, "wall_sec": 165.5, "chars": 3352, "carrier_zcode": "present", "env_death": false, "verify_untouched": true}
+{"arm": "B", "task": "T5", "run": "T5", "ts": "2026-10-07 00:29:44", "rc_session": 0, "rc_verify": 0, "wall_sec": 137.8, "chars": 3626, "carrier_zcode": "present", "env_death": false, "verify_untouched": true}
+{"arm": "B", "task": "T6", "run": "T6", "ts": "2026-10-07 00:29:57", "rc_session": 1, "rc_verify": 1, "wall_sec": 12.7, "chars": 2691, "carrier_zcode": "present", "env_death": true, "verify_untouched": true}
+{"arm": "B", "task": "T6", "run": "T6-r2", "ts": "2026-10-07 01:03:33", "rc_session": 1, "rc_verify": 1, "wall_sec": 9.7, "chars": 2690, "carrier_zcode": "present", "env_death": true, "verify_untouched": true}

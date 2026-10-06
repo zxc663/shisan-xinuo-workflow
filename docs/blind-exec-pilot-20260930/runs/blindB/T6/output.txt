@@ -1,0 +1,58 @@
+
+---STDERR---
+ProviderBusinessError: Insufficient Balance (request_id: d4b69a29-38d5-482f-9ccc-9de53f7ec4cf)
+    at detectProviderBusinessError (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2067:11088)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Object.fetch (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2067:10584)
+    at async postToApi (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2048:19658)
+    at async dPs.doStream (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2058:6883)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:15517)
+    at async C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:964
+    at async _retryWithExponentialBackoff (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2094:5143)
+    at async streamStep (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:14640)
+    at async fn (C:\Users\zxc66\AppData\Local\Programs\ZCode\resources\glm\zcode.cjs:2099:20970) {
+  code: 'PROVIDER_BUSINESS_ERROR',
+  isProviderBusinessError: true,
+  providerCode: 'invalid_request_error',
+  providerId: '3e1469e1-3ff6-417f-8d08-a16a0c04b5d9',
+  providerKind: 'openai-compatible',
+  providerMessage: 'Insufficient Balance (request_id: d4b69a29-38d5-482f-9ccc-9de53f7ec4cf)',
+  providerRequestId: undefined,
+  responseBodySummary: {
+    keys: [ 'error' ],
+    success: undefined,
+    code: undefined,
+    error_code: undefined,
+    msg: undefined,
+    message: undefined,
+    request_id: undefined,
+    requestId: undefined,
+    error: {
+      keys: [Array],
+      code: 'invalid_request_error',
+      error_code: undefined,
+      msg: undefined,
+      message: 'Insufficient Balance (request_id: d4b69a29-38d5-482f-9ccc-9de53f7ec4cf)',
+      request_id: undefined,
+      requestId: undefined,
+      type: 'unknown_error'
+    }
+  },
+  responseHeaders: {
+    'access-control-allow-credentials': 'true',
+    connection: 'keep-alive',
+    'content-length': '162',
+    'content-type': 'application/json',
+    date: 'Tue, 06 Oct 2026 16:29:54 GMT',
+    'eo-cache-status': 'MISS',
+    'eo-log-uuid': '12706929285808861862',
+    server: 'openresty',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    vary: 'origin, access-control-request-method, access-control-request-headers',
+    'x-content-type-options': 'nosniff',
+    'x-ds-trace-id': 'f9b7eb89ff93c4124509b4c2505d9a6c'
+  },
+  responseStatus: 402,
+  statusCode: undefined
+}
+Error: Turn execution failed (traceId: 066ca701-fed3-45d3-b1ff-12291c91ccc6)

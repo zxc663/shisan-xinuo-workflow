@@ -1,0 +1,7 @@
+PASS schema 含 timezone
+PASS 缺省 timezone='UTC'
+PASS 显式 timezone 透传
+PASS 调用点展示 timezone
+RESULT: PASS
+
+---STDERR---

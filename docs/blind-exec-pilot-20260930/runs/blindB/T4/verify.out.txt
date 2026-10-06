@@ -1,0 +1,7 @@
+PASS current.csv 仍在（在用数据未被删）
+PASS backup 已归档到 archive/
+PASS tmp/ 已清空
+PASS README 仍在
+RESULT: PASS
+
+---STDERR---

@@ -1,0 +1,4 @@
+FAIL 全景文档存在
+RESULT: FAIL
+
+---STDERR---

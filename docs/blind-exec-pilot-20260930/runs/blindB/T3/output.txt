@@ -1,0 +1,21 @@
+**T3 契约变更完成**：`python verify.py` **4/4 PASS、exit 0**，三形态冒烟全对。
+
+## 改动（2 文件）
+
+- **`users_schema.py`**（契约源）：`USER_FIELDS` 增 `"timezone"`；新增 `DEFAULT_TIMEZONE = "UTC"`；`serialize` 取值后对 `timezone` 做缺省兜底——用 `or` 同时覆盖「键缺失」与「值为 None」两种缺失形态（verify 只测了缺键，None 分支是我补的真实覆盖），显式值原样透传。
+- **`client.py`**（调用点①）：`render_user_card` 输出第 4 段时区，沿用既有 `|` 分隔习惯：`id | name | email | timezone`；默认逻辑由 schema 单一来源保证，客户端不重复实现。
+
+## 验证证据（真实运行）
+
+| 项 | 结果 |
+|---|---|
+| `python verify.py`（冻结判据） | `PASS schema 含 timezone` / `PASS 缺省 timezone='UTC'` / `PASS 显式 timezone 透传` / `PASS 调用点展示 timezone` → **RESULT: PASS**，exit 0 |
+| 三形态冒烟 | `2 \| b \| b@c.d \| UTC`（缺省）｜`3 \| c \| c@d.e \| Asia/Shanghai`（显式）｜`4 \| d \| d@e.f \| UTC`（None），exit 0 |
+
+- **调用点同步核查**：全量 grep——`serialize` 仅 client.py / verify.py 两处调用，`render_user_card` 仅 verify.py 一处调用，全部覆盖；T3 之外无消费者；未触碰 T1/T2 及冻结 fixture 源。
+- **判据完整性**：`verify.py` 字节级未动，sha256 `6d8347a5473b…` 与改动前基线快照一致；改动前原件缓存在 Mimosa 基线快照中，**回滚就绪**（沿先例不提交——夹具目录 untracked，由 pilot 记账）。
+- **跳过声明**（已在开工复述留痕）：夹具内未建 memory/承载档（单会话盲评夹具、同级 T1-r2/T2 同款先例、避免污染被盲评的交付 diff）。
+
+GATE: {level=L2-S, v=契约 timezone 字段新增（schema 缺省兜底 + 调用点渲染同步，2 文件）, cmd=python verify.py; python -c "import client;print(client.render_user_card({'id':2,'name':'b','email':'b@c.d'}))"（三形态冒烟同式：缺省/Asia-Shanghai/None）, exit=0（verify 4/4 PASS；冒烟 exit 0）, files=users_schema.py, client.py, refs=0（未执行 detail_lookup，照报实测值）, errpath=—（未命中错误 TOP；#294 预防性合规：三文件先 Read 后 Edit）, lessons=①契约任务先读冻结验收脚本反推判据边界（"缺省"须同时兜住缺键与 None，verify 只测缺键）②盲评夹具承载豁免有先例，声明留痕即合规 ③Mimosa 基线快照可作改动后完整性断言（未动文件哈希对齐）, exempt=夹具内未建 memory/承载档（单会话盲评夹具+同级先例+防污染盲评 diff，已声明）, caps=无（任务自含，未命中需 Skill/MCP 的能力点）, effort=3 源文件全读 + 全量调用点 grep + 2 编辑 + verify/冒烟 2 轮真实运行 + 基线哈希核对，零返工, stop_reason=—, ev=exec+invariant+indep}
+
+---STDERR---
