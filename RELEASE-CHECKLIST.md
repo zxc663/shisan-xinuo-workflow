@@ -14,7 +14,11 @@
 - [x] R1.4 EVIDENCE 时代回写 3 处（:151×2/:358）
 - [x] R1.3 退役首跑：usage_probe 候选 243/406（docs/retirement-candidates-20261010.md）；D1 批准 #103 进 48h 冷却（真删落 v4.0.x，不阻塞本批）
 - [x] R1.5 版本链 13 处（package/SKILL×3/README/CHANGELOG/本清单/AGENTS/project-info/项目信息 §五+About 槽 §六·十一/facts About 锚/reference-sources）
-- [ ] R1.6 发行面：机检四件+dist 重打+syncer --family+deploy --check --hash → commit/tag/push（终端代提）→ GitHub Release+npm+Gitee Release+About 双端 → 回执写回（O-1/O-2）
+- [x] R1.6 发行面：机检七面全绿+dist 108 项/2,209,350B+syncer --family+deploy `--check --hash` 5/5（重部署 v4.0.0 版本戳）→ commit `51ba87b`+tag v4.0.0（终端代提；GitHub 初推即成〔当时核验通道被网络波动挡=误判未达〕+Gitee 会话直连补推 43f3f5a..51ba87b）→ GitHub Release+npm+Gitee Release+About 双端 ✅（2026-10-10）
+
+**O-1 命令清单回执（2026-10-10 01:2x-02:2x）**：发行前机检=facts PASS（406/33）+narrative 0 FINDING+judge 23/23+verify 8/8 ALL PASS（含 C 新子门）+build-dist 108=108+syncer --family exit=0+deploy --version 4.0.0 重部署+--check --hash 5/5（内容哈希 06db20781d69 不变）+usage_probe 候选 243/406；commit=51ba87b（.git\commit-msg-r1.txt，终端 zx-r1-push.cmd）；推送=GitHub origin（main+tag=51ba87b，API 复核）+Gitee（会话直连补推+API 复核）。
+
+**O-2 渠道回执（2026-10-10）**：GitHub Release ✅ v4.0.0（asset `shisan-xinuo-workflow-v4.0.0.zip` 2,209,350B，notes=docs/release-notes-v4.0.0.md，读回 assets/size 对）/ npm ✅ 4.0.0（89 文件 shasum `48e18e3b…`，带 token 读回 version+shasum 双对）/ Gitee Release ✅ **id=1193457**+附件 **id=3351164**（2,209,350B，attach_files 专端点；正文 1,039 字符 406/liveness 标记读回校验）/ About 双端 ✅ len=**191**（§六·十一 v4.0.0 口径，406/ev= 标记双端读回校验）/ ClawHub ⏳ 用户侧提交（页面实测 1.0.20，建议合并补交）。
 
 ## N. v3.4.0 本批（**已发行 2026-10-07** · 弱锚结构化 + 批X 反向变异修复 + 对标 A/C/D 施工 + 试金石/实地轨 + 单文件版）
 
