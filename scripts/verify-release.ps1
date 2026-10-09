@@ -156,7 +156,7 @@ Add-Result ($probsC3.Count -eq 0) "C 指针健康(rules→targets+§ 锚)" $(if 
 
 # ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16；2026-10-07 历史过程档族补入 field-trials/blind-exec-pilot/pe-skill-：新 tracked 面复跑发现，同例处理） ----------
 if (-not $SkipLeak) {
-    $tracked = (git -c core.quotepath=false ls-files) | Where-Object { $_ -and $_ -notmatch "^(scripts/|EVIDENCE\.md$|docs/roadtest-|docs/field-trials/|docs/blind-exec-pilot-|docs/pe-skill-)" }
+    $tracked = (git -c core.quotepath=false ls-files) | Where-Object { $_ -and $_ -notmatch "^(scripts/|EVIDENCE\.md$|docs/archive/|docs/roadtest-|docs/field-trials/|docs/blind-exec-pilot-|docs/pe-skill-)" }
     $tokenPats = @('ghp_[A-Za-z0-9]{20,}', 'gho_[A-Za-z0-9]{20,}', 'github_pat_[A-Za-z0-9_]{20,}')
     $leakHits = @()
     $scanned = 0

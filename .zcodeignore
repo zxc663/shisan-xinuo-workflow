@@ -4,6 +4,7 @@ npm-debug.log*
 dist/
 .trae/
 .zcode/
+.mimosa/
 pnpm-lock.yaml
 
 # 个人/本地记忆层（绝不上公开仓，防被技能市场扫描收录）
@@ -15,6 +16,11 @@ memory/
 # Python 缓存产物（脚本运行产生，不入仓/不入副本/不入发行 zip）
 __pycache__/
 *.pyc
+detail-embeddings.cache.json
+
+# 浏览器自动化工具残留（本地产物）
+.playwright-mcp/
+.tmp-*/
 
 # ===== ↑ 以上同步自 .gitignore（「从 .gitignore 同步」只重写以上部分）=====
 .git/
