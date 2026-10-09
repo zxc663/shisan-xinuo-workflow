@@ -144,7 +144,7 @@ def _semantic_boost(query, entries, top=5, floor=0.55):
 
 
 def log_usage(query_args, ids):
-    """G4 usage-probe（2026-09-29）：每次检索落一行 JSONL（命中 ids 或空=零命中），
+    """usage-probe：每次检索落一行 JSONL（命中 ids 或空=零命中），
     供退役候选机器判据（零命中 N 批→降级候选，只列候选不删条）。静默失败不碍检索主路。"""
     try:
         import datetime, json

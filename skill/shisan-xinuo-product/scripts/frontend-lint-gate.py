@@ -2,13 +2,13 @@
 """frontend-lint-gate v1 · §4 强制 5/6 的机器子集（内联样式/硬编码色/console/空 catch）。
 
 背景：§4 强制清单第 5（内联样式/硬编码零容忍）与第 6（dead-binding：死代码/空 catch）
-列为「可机器判定」却一直无专属脚本（verification-ledger 🔴 行，2026-09-24 战役补）。
+列为「可机器判定」却一直无专属脚本（原 🔴 行补录）。
 模式对齐 registry-gate：**基线豁免存量、只拦新增**——防「正确但昂贵」杀死采用（§7 同源哲学）。
 
 检查（组件文件，非 <style> 块）：
   R1 内联样式：style=" / :style=" / style={{
   R2 硬编码色：十六进制色 #fff…（3-8 位）与 rgb(/rgba( 字面量（css 文件与 <style> 块合法，不扫；
-    <meta> 行的 content 色值=元数据豁免——2026-09-25 F10 补）
+    <meta> 行的 content 色值=元数据豁免——F10 补）
   R3 console.*：console.log/debug/info/warn/error（交付五查：错误须入日志模块，零容忍）
   R4 空 catch：catch (…) { } 无任何语句（吞错误=dead-binding 家族）
   R5 空态（warning 级，不走基线）：文件含 v-for 列表但无 v-else / v-if="!…length" / 空态
@@ -70,14 +70,14 @@ def scan_file(p: Path, rules: dict[str, re.Pattern]) -> list[str]:
         raw = p.read_text(encoding="utf-8", errors="ignore")
     except OSError:
         return []
-    # R2 的 css 豁免按 docstring 落地：色值归属 css 文件/<style> 块（F10，2026-09-25 实测补——
+    # R2 的 css 豁免按 docstring 落地：色值归属 css 文件/<style> 块（F10 实测补——
     # 此前仅 <style> 块被 strip，.css 文件本体显式传入 --ext 时色值被误报为组件区硬编码）
     active = {k: v for k, v in rules.items() if not (p.suffix == ".css" and k == "R2")}
     text = strip_style_blocks(raw)
     out: list[str] = []
     for i, line in enumerate(text.splitlines(), 1):
         for rid, rx in active.items():
-            # R2 的 meta 豁免：theme-color 等 content 色值是页面元数据非组件样式（F10 族，2026-09-25）
+            # R2 的 meta 豁免：theme-color 等 content 色值是页面元数据非组件样式（F10 族）
             if rid == "R2" and line.lstrip().startswith("<meta"):
                 continue
             # R2 的 canvas 豁免（site-02 回流）：addColorStop( 调用行内的色值是 canvas

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""spec-trace-extract v1 · 绑定清单辅助提取器（队列⑤，2026-09-24）。
+"""spec-trace-extract v1 · 绑定清单辅助提取器（队列⑤）。
 
 用途：spec-trace-gate 的 --components/--backends 两份清单文件 historically 手工维护，
 真实仓库上不可持续（HANDOVER 队列⑤）。本器从代码库自动提取两份清单：

@@ -27,7 +27,7 @@
 | Claude Code | ✅ 支持 | 把 `hooks.example.json` 内容并入 `~/.claude/settings.json`（或独立 `hooks.json`）；Windows 下 .sh 需 bash（Git Bash / WSL），脚本路径按实际调整 | 最成熟的钩子承载平台 |
 | WorkBuddy | ⚠️ 待实测 | 若 `settings.json` 支持 hooks 则同 Claude 模式；否则以 `BOOTSTRAP.md` 作启动锚定（平台机制要求时） | 实测后按真实结果标注 |
 | Codex | ⚠️ 待实测 | `~/.codex/config.toml` 事件/hooks 支持按版本确认；不支持则如实标「平台可选」 | 不清洗 config.toml 既有字段 |
-| ZCode | ✅ 支持（实测 v3.11.2 / CLI 0.16.5） | 用户级 `~/.zcode/cli/config.json` 顶层 `hooks` 段；7 事件=SessionStart/UserPromptSubmit/PreToolUse/PermissionRequest/PostToolUse/PostToolUseFailure/Stop；Windows 推荐 `process` 型（无 shell 参数向量） | **坑（实测 F17）**：事件名写错或形状照抄插件形 → schema 校验**整文件静默失效**（config.file.invalid），其他配置一并失联；`--max-turns`/`--settings` 在该版 help 中列出但解析器未实现 |
+| ZCode | ✅ 支持（实测 v3.11.2 / CLI 0.16.5） | 用户级 `~/.zcode/cli/config.json` 顶层 `hooks` 段；7 事件=SessionStart/UserPromptSubmit/PreToolUse/PermissionRequest/PostToolUse/PostToolUseFailure/Stop；Windows 推荐 `process` 型（无 shell 参数向量） | **坑（实测）**：事件名写错或形状照抄插件形 → schema 校验**整文件静默失效**（config.file.invalid），其他配置一并失联；`--max-turns`/`--settings` 在该版 help 中列出但解析器未实现 |
 | Trae / Cursor / Windsurf | ⚠️ 视版本 | 规则文件/全局设置已覆盖；hooks 属可选加固 | 依赖应用版本能力 |
 
 **统一原则**：模板给的是**可将纪律自动锚定的示例**；hook 脚本不可用时，降级为「规则文件 + 注入核心已在场」即可——hooks 是加固面，不是必需面；本目录文件不参与运行时，发布前仅校验结构齐全（verify-release B 项）。ZCode 的 PostToolUseFailure 事件不覆盖 Bash 非零退出（受控实验：`false` 后无 Failure 事件，Bash 非零退出不入该通道），本守卫注册在全量 PostToolUse 事件上，仅 Bash 且 `tool_response.status=failed`/`exitCode≠0` 时推送 TOP 一行（Edit 等失败仍走 Failure 通道，防双推）。注册示例：config.json hooks.events 增 `PostToolUse` → 本脚本。

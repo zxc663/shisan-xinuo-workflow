@@ -1,6 +1,6 @@
 # 回滚点记录 · Rollback Point Template
 
-> 用途：重大修改 / 不可逆操作**前**必填（规则 43 / security.md）· Required BEFORE major changes or irreversible operations
+> 用途：重大修改 / 不可逆操作**前**必填（rules #43 / security.md）· Required BEFORE major changes or irreversible operations
 > 门禁：回滚点就绪后方可开始改动 · Gate: only start after a rollback point exists
 
 ## 任务 · Task

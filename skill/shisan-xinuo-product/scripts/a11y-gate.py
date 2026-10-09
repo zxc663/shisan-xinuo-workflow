@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """a11y-gate v1 · §4 强制清单第 9 条「可达性静态底线（axe 子集）」的机器子集。
 
-背景：B9 是 verification-ledger 唯一残留 🔴（axe 启发式误报风险高，诚实保留待做，2026-09-24）。
-本 gate = 低误报四格静态子集（2026-09-25 夜战 E4 补），不替代 axe-core 完整审计。
+背景：B9 是 verification-ledger 唯一残留 🔴（axe 启发式误报风险高，诚实保留待做）。
+本 gate = 低误报四格静态子集（E4 补录），不替代 axe-core 完整审计。
 模式对齐 frontend-lint-gate：**基线豁免存量、只拦新增**——防「正确但昂贵」杀死采用。
 
 检查（.html/.vue/.tsx/.jsx）：

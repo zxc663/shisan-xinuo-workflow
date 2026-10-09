@@ -104,7 +104,7 @@ def selftest() -> int:
     ok1 = check(good["bindings"], {"C1", "C2"}, {"POST /a"}) == []
     f = check(bad["bindings"], {"C1", "C9"}, {"/a", "/dead"})
     ok2 = any("T2" in x for x in f) and any("T3" in x for x in f) and any("T4" in x for x in f) and any("T5" in x for x in f)
-    # F2 回归（2026-09-24）：多词 backend id 走「文件→清单→比对」全路径不得假阳/漏检
+    # F2 回归：多词 backend id 走「文件→清单→比对」全路径不得假阳/漏检
     import os
     import tempfile
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as tf:
@@ -147,7 +147,7 @@ def selftest() -> int:
 
 
 def _load_list(path: str) -> set[str]:
-    # F2（2026-09-24）：清单文件语义=每行一个条目，必须整串加载——
+    # F2：清单文件语义=每行一个条目，必须整串加载——
     # 曾按 .split() 全文切块，多词 backend id（如 "GET /favorites"）被切碎，
     # 与绑定字段整串比对不对称 → 合法清单必假阳 T5。
     return {ln.strip() for ln in Path(path).read_text(encoding="utf-8").splitlines() if ln.strip()}

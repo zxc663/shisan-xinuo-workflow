@@ -1,6 +1,6 @@
 # contract-schema · 契约 schema（Interaction / Gate / Evidence 三件）
 
-> 2026-09-23 修正（用户裁决）。目的：把散落工件（六问/statechart/spec-trace/门禁/证据/账本）钉成**可被 Agent 消费、执行、验证、继承的契约**——有 schema 才是规范层，否则只是一堆方法论。
+> 目的：把散落工件（六问/statechart/spec-trace/门禁/证据/账本）钉成**可被 Agent 消费、执行、验证、继承的契约**——有 schema 才是规范层，否则只是一堆方法论。
 > **硬层/软层分界（本文件核心约束）**：硬层=机器可判定字段（态/转换/权限/恢复/门禁输入输出/证据存在性）——可 exit 1；软层=理由与权衡（意图/被否候选/裁决）——只要求可追溯，落在 `decision-ledger.md`。**禁全链 JSON 化**：为填表而填表=Token 爆炸，会杀死采用意愿。
 
 ## 1. Interaction Contract（交互契约 · 硬层）
@@ -49,7 +49,7 @@
 ## 4. 母架构占位（未实现，防冒名）
 
 Product Contracts 全链 = **Intent → Scope → Structure → Interaction → Runtime → Implementation → Verification**。本包**只实现 Interaction**（Gate/Evidence 为其支撑件）；其余域全部未实现——引用时须声明「未实现」，不得以方法论冒充。
-迭代次序（用户 2026-09-23 裁决）：第二版 = Intent/Structure（IA）；第三版 = Runtime；Verification 随证据体系生长。**本文件只描述已落地的三件；未落地域不写字段**（防为填表而填表）。
+迭代次序：第二版 = Intent/Structure（IA）；第三版 = Runtime；Verification 随证据体系生长。**本文件只描述已落地的三件；未落地域不写字段**（防为填表而填表）。
 
 ## 5. 使用时机
 
