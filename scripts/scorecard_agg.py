@@ -45,7 +45,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCORE_DIR = os.path.join(REPO_ROOT, 'docs', 'roadtest-scorecards')
-AGG_VERSION = 'a1.0'
+AGG_VERSION = 'a1.1'
 
 # 复采行识别：文件名以 `<数字>r` 或 `<数字>r<数字>` 结尾（如 `v310-inf-01r.jsonl` / `v300-ab-01r1.jsonl`）
 RECOLLECT_RE = re.compile(r'.*\d+r\d*\.jsonl$')
@@ -70,6 +70,8 @@ def load_rows(score_dir=SCORE_DIR):
             except Exception:
                 continue
             if 'scenario' in r and 'markers' in r:
+                if r.get('liveness'):
+                    continue  # 探活针（a1.1，2026-10-10）：矩阵前强制单跑的 l1-rename 探活行，非行为样本——与 probe_runner SUMMARY 同口径
                 r['_src'] = os.path.basename(f)
                 rows.append(r)
     return rows

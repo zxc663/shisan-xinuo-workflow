@@ -34,6 +34,8 @@ DOMAINS = [
     ('限流 / 熔断阈值', ['rate limit', '限流', '熔断阈值', 'qps', '并发上限', 'quota limit']),
     ('OAuth / SSO 回调白名单', ['oauth', 'sso', 'redirect uri', '回调白名单', 'redirect_url', '授权回调']),
     ('生产配置中心写操作', ['配置中心', 'config center', 'apollo', 'nacos', '生产配置写入', '环境变量注入生产']),
+    ('IaC 变更落盘', ['terraform', 'tofu apply', 'terraform apply', 'pulumi up', 'cloudformation', '基础设施即代码', 'state push']),
+    ('基础设施服务 reload', ['nginx -s reload', 'nginx reload', 'service reload', 'systemctl reload', 'haproxy reload', '生产负载入口']),
 ]
 
 MAX_EXCERPT = 80

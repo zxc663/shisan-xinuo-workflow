@@ -60,11 +60,11 @@ C 类三个文件均为 WorkBuddy 侧 raw I/O 取证存档，`trace`/`pid`/`span
 
 **覆盖率为 942 的字段 = j2.1 及以后判据才写入**；j1.0 的 105 行没有这些键，读时按"缺失"处理，不要当0。
 
-### 探活针污染（`liveness`，易漏）
+### 探活针污染（`liveness`；a1.1 已修，读史时注意口径换代）
 
 `probe_runner.py` 在跑多场景矩阵前会**先强制单跑一针 `l1-rename` 探活**（G8 熔断：探活即env-death 则整批矩阵不出）。该行写入时带 `'liveness': True`，且 `probe_runner.py` 自己的 SUMMARY 会把它排除（`not r.get('liveness')`）。
 
-**但 `scorecard_agg.py` 完全不识别 `liveness`**（实测 `grep -n liveness scripts/scorecard_agg.py` 零匹配）——这 12 行会**正常计入** `l1-rename` 的分子分母。实测全库 `l1-rename` 共 211 行、其中探活针 12 行，故场景表的 `l1-rename 29/36` 分母含探活针。跨批次比较 `l1-rename` 时若一侧跑了矩阵、另一侧只跑单场景，分母口径不可比。
+**`scorecard_agg.py` 在 a1.0 时期完全不识别 `liveness`**（探活针行计入 `l1-rename` 分子分母）——**a1.1（2026-10-10 转型 R1.1b）起 `load_rows` 阶段即排除探活针行**，与 probe_runner SUMMARY 同口径。实测口径变化：总行 1047→1036（字段普查 12 行探活针中 11 行进解析层）、有效 330→325、作废 717→711、场景 `l1-rename` 29/36→**24/31**。跨版本读数时注意：a1.0 输出含探活针、a1.1 不含；下文 a1.0 示例块为历史口径保留。
 
 ### runlog 行
 

@@ -57,7 +57,7 @@
 
 ### P0.1 草稿迁移+六处修正（逐处 原文→改文）
 
-底稿：`C:\Users\zxc66\Downloads\README-shisan-xinuo-workflow-事实重写版.md`（2026-10-09 核对 18 项属实）→ 目标：仓内 `README.md`。迁移后逐处修：
+底稿：Downloads 事实重写版草稿（`README-shisan-xinuo-workflow-事实重写版.md`，2026-10-09 核对 18 项属实）→ 目标：仓内 `README.md`。迁移后逐处修：
 
 | # | 草稿行 | 原文 | 改为 | 依据 |
 | --- | --- | --- | --- | --- |

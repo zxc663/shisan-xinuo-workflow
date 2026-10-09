@@ -137,6 +137,11 @@ Add-Result $true "B hooks 三层(警告级)" $(if($probs2.Count -eq 0){"OK"}else
 $baseVer = ((Get-Content $main -Raw -Encoding UTF8 | Select-String -Pattern '(?s)version\s*:\s*([0-9]+\.[0-9]+\.[0-9]+)' -AllMatches).Matches[0].Groups[1].Value)
 $pkgVersion = ((Get-Content (Join-Path $Root "package.json") -Raw -Encoding UTF8 | ConvertFrom-Json).version)
 Add-Result ($baseVer -eq $pkgVersion) "C 版本一致(交付物=package.json)" "SKILL version=$baseVer ; package.json version=$pkgVersion"
+# C 子项：reference-sources 版本行（2026-10-10 转型 R1.1a 立门——该文件曾停在 v2.9.0 五个大版本无人拦；
+# 版本一致性属 C 项职责域，facts_sync 只断言条数/类数不查版本，不重复）
+$refSrc = Join-Path $Root "docs\reference-sources.md"
+$refVer = ((Get-Content $refSrc -Raw -Encoding UTF8 | Select-String -Pattern '版本[:：]\s*v([0-9]+\.[0-9]+\.[0-9]+)' -AllMatches).Matches[0].Groups[1].Value)
+Add-Result ($refVer -eq $pkgVersion) "C 版本一致(reference-sources 版本行)" "reference-sources 版本=$refVer ; package.json=$pkgVersion"
 
 # ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16；2026-10-07 历史过程档族补入 field-trials/blind-exec-pilot/pe-skill-：新 tracked 面复跑发现，同例处理） ----------
 if (-not $SkipLeak) {
