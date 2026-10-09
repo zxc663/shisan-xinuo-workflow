@@ -1,6 +1,6 @@
 # 转型计划书 · 重定位→迭代兑现→推送（v4.0 转型线 · 预注册·计划门待批）
 
-> 日期：2026-10-10 ｜ 状态：**R2 施工面收官**——v4.0.0 已全渠道发行（回执=RELEASE-CHECKLIST O 节）；R2 四件落位：事故账开账（首批 3 条真实事件）/三站装配卡（D2=三站全接）/quickstart 备件（D4=先备件不发）/方法论交付物（docs/methodology-rule-verification.md）；**余=实地轨首跑（待各站真实开发会话）+#103 真删（2026-10-12 后双批）+R3（可选·D5）+总验收 D90**
+> 日期：2026-10-10 ｜ 状态：**R2 交付物四件落位（出口判据余一项时间性未满）**——v4.0.0 已全渠道发行（回执=RELEASE-CHECKLIST O 节；写回批 6f8a6ba 双远端）；R2 四件：事故账（首批 3 条真实事件）/三站装配卡（D2=三站全接）/quickstart 备件（D4=不发）/方法论交付物；**R2 出口余项=「实地轨 ≥2 站真发现」（待各站真实开发会话，时间性）；待办=#103 真删（2026-10-12 后双批）+盲评 T6-r3/独立评审针（**canary 再死：d5b 0/1+T6-r3 双针新签名 Model creation failed·继续搁置下窗**；判据候选=env-death 签名表补录，随 v4.0.1 走 JUDGELOG 纪律）+v4.0.1（硬化件+签名补录·待令）+总验收 D90+ClawHub 用户侧**
 > 作者令（2026-10-10）：先重定位+重修 README（基于 Downloads 事实重写版草稿）→ 本计划书 → 几轮大迭代 → 推送仓库 + README 对症更新。
 > 四问拍板（AskUserQuestion，2026-10-10）：①定位=**沿用草稿定位**（更少事故的纪律元工作流+诚实分层，方法论记录作显著支撑节）②迭代面=**四批全选**（证据兑现+收敛减法+功能补强+分发对齐）③README=**修完先推** ④版本=**v4.0.0 转型线**。
 > 关联档：README 草稿核对（2026-10-09：18 项属实/6 处待修+1 处撤回）｜七条批判裁决（同日：P5 完全成立/净残余 4 件）｜走偏判定（2026-10-10：三尺判定=方向未偏、重心偏）。
@@ -86,7 +86,7 @@
 ```bash
 python scripts/facts_sync.py --check
 python scripts/narrative_sync.py            # 新 README 数字入对账
-python scripts/probe_runner.py --judge-selftest  # 23/23，零 API 成本，无理由省
+python scripts/probe_runner.py --judge-selftest  # 25/25（j2.6），零 API 成本，无理由省
 powershell -File scripts/verify-release.ps1  # 8/8
 ```
 
@@ -155,7 +155,7 @@ powershell -File scripts/verify-release.ps1  # 8/8
 
 1. 版本链 12 处（R1.5）；
 2. dist 重打：`powershell -File scripts/build-dist.ps1` → `shisan-xinuo-workflow-v4.0.0.zip`，Set-diff 计数核对（上版 108 项为参照，允许±因退役/新增）；
-3. 机检四件：verify 8/8 + facts --check + narrative_sync（0 FINDING）+ `python scripts/probe_runner.py --judge-selftest`（23/23，零 API 成本）；
+3. 机检四件：verify 8/8 + facts --check + narrative_sync（0 FINDING）+ `python scripts/probe_runner.py --judge-selftest`（25/25 j2.6，零 API 成本）；
 4. `python scripts/deploy_injection.py --check --hash` 5/5（injection-core 本轮未动则 hash=06db20781d69 免重部署；**以跑出为准**）；
 5. `powershell -File scripts/sync-all.ps1` 实跑三步（脚本头注实况）：① `syncer --family`（~/.agents **技能家族副本**——R1.1b/1.1c 改了包内 scripts，必走此线，否则装机副本滞后）② `deploy_injection --version`（五平台注入重部署）③ `--check --hash` 验收；**诚实边界（脚本自声明）：WorkBuddy --dest 特例不覆盖，需要时手动 `python scripts/syncer.py --dest …`**；先行可用 `-Dry`；
 6. commit+push main+tag v4.0.0（通道预案同 P0.5：Mimosa→终端代提；schannel→单次禁代理直连；核验三通道）；
@@ -246,6 +246,12 @@ powershell -File scripts/verify-release.ps1  # 8/8
 
 出口：v4.1.0 发行（SOP 同 R1.6 十步）+对账表刷新。
 
+**D5 全批评估记录（2026-10-10，用户选「全批评估」）**：
+- ① facts_sync `verify_carriers` 硬化 **✅已施工**：承载表构造期纯路径校验（绝对路径/`..` 段 fail-fast），resolve+is_relative_to 保留为纵深防御；复跑 FACTS PASS——挂「门禁·事实对账可信度」主张 ✓
+- ② 结构化锚盲评恢复：**provider canary 1/1 PASS**（`canary-d5-1010`，scorecard 在档）=前置已满足；T6-r3+独立评审针待令执行（烧配额，执行前确认）
+- ③ superpowers B（每任务审查常驻化）：挂不上 §八 主张（roles/flows 已有条件式覆盖+与冻结/6000 帽张力）→**砍**；E（移植指南）：无新平台场景→**砍**；F（反合理化常驻）：注入核心已有「借口拦截」等价物+需等量压缩→**砍（已有覆盖）**
+- ④ 无头面对策：README 局限节已载（注入面可能断裂+行为结论只认 rollout 层）→**已覆盖，零动作**
+
 ## §六 停止条件与预算（防转型变成第 39-41 版的新螺旋）
 
 - 轮次上限：**内容轮 ≤3 + 发行节点 2（v4.0.0/v4.1.0）**；单轮时间盒 1-2 周（§〇 时间线）。
@@ -273,7 +279,7 @@ powershell -File scripts/verify-release.ps1  # 8/8
 | --- | --- | --- | --- |
 | 一句话定位 / 四包体系 / 产品包独立仓 | skill/ 四包 + install -Family + 独立仓 | 已兑现 | — |
 | 七样机制（跑道/L3 清单/GATE/跳过声明/判据版本化/反向变异/双仓对照） | SKILL + verify + probe_runner + docs | 已兑现 | — |
-| 判据 j1.0→j2.5 + 金样本 23/23 | `--judge-selftest` + JUDGELOG.md | 已兑现 | — |
+| 判据 j1.0→j2.6 + 金样本 25/25 | `--judge-selftest` + JUDGELOG.md | 已兑现 | — |
 | 高危域 9 域枚举 + risk_scan 兜底 | v3.4.0 发行物（9 域） | 已兑现（与发行物一致） | R1 升 11 域随 v4.0.0 |
 | 验证与证据（诚实分层：第三方 0 次/待证假设/n 小） | EVIDENCE + 2026-10-09 核对 | 已兑现（诚实即兑现） | R2 长出 outcome 数据 |
 | 值得读的记录（事故处置/时序库/判据史/逃逸回流/反向注入/查重/反馈包/方法论） | docs/ 15 件（存在性已核+methodology 新增） | **已兑现（R2.4 方法论已入节）** | — |

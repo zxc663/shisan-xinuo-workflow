@@ -80,6 +80,13 @@ CARRIERS = [
 RANGE_CARRIER = (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
                  r'1\.–(?P<n>\d{1,3})\.')
 
+# 承载表路径构造期校验（2026-10-10 转型 R3 硬化）：表内路径须为无 .. 段的相对路径——
+# 绝对路径/上跳段在 import 建表时即 fail-fast；verify_carriers 内的 resolve+is_relative_to
+# 检查保留为纵深防御（第二层），静态扫描对「拼接式入口」的误报面也随纯校验前置而收窄。
+for _rel, _ in CARRIERS:
+    if Path(_rel).is_absolute() or '..' in Path(_rel).parts:
+        raise SystemExit('E: carrier table path unsafe -> %s' % _rel)
+
 # 分节头范围断言：`## N. …（…条目 X-Y…）` ↔ 节内实际条目
 SECTION_RANGE = re.compile(r'^## \d+\.[^\n]*?条目 (\d{1,3})-(\d{1,3})', re.M)
 
