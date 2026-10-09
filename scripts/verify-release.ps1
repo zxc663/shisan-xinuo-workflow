@@ -142,6 +142,17 @@ Add-Result ($baseVer -eq $pkgVersion) "C 版本一致(交付物=package.json)" "
 $refSrc = Join-Path $Root "docs\reference-sources.md"
 $refVer = ((Get-Content $refSrc -Raw -Encoding UTF8 | Select-String -Pattern '版本[:：]\s*v([0-9]+\.[0-9]+\.[0-9]+)' -AllMatches).Matches[0].Groups[1].Value)
 Add-Result ($refVer -eq $pkgVersion) "C 版本一致(reference-sources 版本行)" "reference-sources 版本=$refVer ; package.json=$pkgVersion"
+# C 子项：指针健康（rules.md 指针目标存在性；S5 2026-10-10——此前覆盖 1/4，路径漂移会退化规则为口号且无机检拦）
+$probsC3 = @()
+$ptrFiles = @('references\security.md', 'references\skill-usage.md', 'references\platform-adaptation.md', 'references\details.md', 'templates\agent-log-template.md')
+foreach ($f in $ptrFiles) { if (-not (Test-Path (Join-Path $skDir $f))) { $probsC3 += "缺 $f" } }
+$flowsSib = Join-Path (Split-Path $skDir -Parent) 'shisan-xinuo-flows'
+if (-not (Test-Path $flowsSib)) { $probsC3 += '缺兄弟包 shisan-xinuo-flows' }
+$skillMain = Get-Content (Join-Path $skDir 'SKILL.md') -Raw -Encoding UTF8
+$suTxt = Get-Content (Join-Path $skDir 'references\skill-usage.md') -Raw -Encoding UTF8
+if ($skillMain -notmatch '## 5\.') { $probsC3 += 'SKILL 缺 §5（判级权威源锚）' }
+foreach ($a in @('## 0\.', '## 4\.', '## 9\.')) { if ($suTxt -notmatch $a) { $probsC3 += "skill-usage 缺 $a 锚" } }
+Add-Result ($probsC3.Count -eq 0) "C 指针健康(rules→targets+§ 锚)" $(if ($probsC3.Count -eq 0) { "5 文件+兄弟包+6 §锚 全在场" } else { $probsC3 -join ';' })
 
 # ---------- D. 泄漏红线（v2.8.x 修正：扫描面=git tracked 全量，豁免缩为自引用+历史过程档；正则补正斜杠——审查 F-16；2026-10-07 历史过程档族补入 field-trials/blind-exec-pilot/pe-skill-：新 tracked 面复跑发现，同例处理） ----------
 if (-not $SkipLeak) {
