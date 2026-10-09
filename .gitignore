@@ -17,3 +17,7 @@ memory/
 __pycache__/
 *.pyc
 detail-embeddings.cache.json
+
+# 浏览器自动化工具残留（本地产物）
+.playwright-mcp/
+.tmp-*/
