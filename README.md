@@ -1,6 +1,6 @@
 # Shisan Xinuo Agent Workflow（十三希诺 · 纪律元工作流）
 
-> **v3.4.0** · MIT · 单人维护 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
+> **v4.0.0** · MIT · 单人维护 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
 **一句话定位**：把「工程纪律」从提示词升级成**机制**的元工作流——三级跑道分流、L3 封闭清单停点、可复跑 `GATE` 证据块、跳过必声明。它不承诺更好的代码，它承诺**更少的事故**。
 
@@ -43,7 +43,7 @@
 同类项目大多在做「流程强化」或「全家桶打包」，本项目做的是**把纪律变成可证伪、可回归、可追溯的实证对象**。七样机制里，前四样常见，后三样罕见：
 
 1. **三级跑道**（L1 快速通道 / L2-S 短工作流 / L2-F 完整 9 步）——按任务风险选深度，不为所有任务套全套流程。
-2. **L3 封闭清单**——仅 6 项（密钥/权限｜数据删除｜迁移｜对外发布｜架构选型｜超预算破坏性操作），清单外一律不是 L3、不得自行扩展；命中**先问再做**。清单外高危域（CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写）另有 `risk_scan.py` 机检兜底。
+2. **L3 封闭清单**——仅 6 项（密钥/权限｜数据删除｜迁移｜对外发布｜架构选型｜超预算破坏性操作），清单外一律不是 L3、不得自行扩展；命中**先问再做**。清单外高危域（CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写·IaC 落盘·基础设施 reload）另有 `risk_scan.py` 机检兜底。
 3. **GATE 12 字段证据块**——每个任务块末尾一行可重跑证据（`level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort/stop_reason` + v3.4.0 起 `ev=` 验证层级 exec/cover/invariant/indep）。把「我做完了」强制变成「这是命令、这是退出码、你重跑一遍」。
 4. **跳过必声明**——任何规则/步骤被跳过，必须复述跳过项、留依据、向用户一行提醒。「跳过+声明」合法，**静默跳过违规**。
 5. **判据版本化（j1.0→j2.5）+ 金样本回归 23/23**——行为面探针的判据是代码（`probe_runner.py`），改判据必过 `--judge-selftest` 并在 `JUDGELOG.md` 留一行变更记录。**判据即代码**，这是同类项目普遍没有的。
@@ -172,9 +172,9 @@
 
 | 渠道 | 版本 | 状态 |
 | --- | --- | --- |
-| GitHub 源库 + Release | v3.4.0 | 权威源；32 stars / 3 forks；每版附 dist zip |
-| npm（GitHub Packages） | 3.4.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-07 发布（89 文件，shasum c3969b15） |
-| Gitee 镜像 + Release | v3.4.0 | 0 stars；与 GitHub 同 commit/tag 双推；Release id=1186732（2026-10-07，附件 2,210,333B） |
+| GitHub 源库 + Release | v4.0.0 | 权威源；32 stars / 3 forks；每版附 dist zip |
+| npm（GitHub Packages） | 4.0.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-07 发布 3.4.0（89 文件，shasum c3969b15），4.0.0 随本批发行（回执见 RELEASE-CHECKLIST O 节） |
+| Gitee 镜像 + Release | v4.0.0 | 0 stars；与 GitHub 同 commit/tag 双推；3.4.0 Release id=1186732（2026-10-07，附件 2,210,333B），4.0.0 随本批发行 |
 | ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow`；Bookmark 0（2026-10-09 实测） |
 | skills.sh（Agent Skills 索引） | 随 GitHub 同步 | 2 skills / 5 次安装 |
 
@@ -195,7 +195,7 @@
 - **上下文成本真实存在**：注入核心常驻 ≤6000 字符（中文约 4–6K token），细则按需 1–3K。窗口越小，收益/成本比越需要权衡。
 - **提示词边界**：无论注入做多少层，终究是提示词范畴，抵不上平台级「新会话自动加载」的机制保证。
 - **平台行为有方差**：无头模式注入面可能断裂；hooks 落盘受平台持久化策略影响。行为结论只认请求体/rollout 层证据。
-- **维护成本**：细则与副本需要同步；改模板 ≠ 改副本。
+- **维护成本**：细则与副本需要同步；改模板 ≠ 改副本。细则库实行**零和上限**（406 为当前上限，新增须合并/替换旧条）；判据冻结于 j2.5、聚合器冻结于 a1.1——维护态不加层。
 - **单人维护**：505 次提交中 501 次署名作者本人、4 次为 agent 自动提交通道，无协作者、无维护者梯队。
 
 ---
@@ -215,11 +215,12 @@ git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
 
 ## 版本历史（要点）
 
+- **v4.0.0**（2026-10-10）：**转型批**——重定位 README（事实重写版+诚实分层）+收敛减法：聚合器 a1.1（liveness 探活针排除）、risk_scan 11 域进发行物（补 v3.4.0 打包漂移）、reference-sources 版本门（verify C 新子项）、细则零和与判据/聚合器冻结、EVIDENCE 时代回写、退役首跑（#103 进冷却期）。细则维持 406 条/33 类。
 - **v3.4.0**（2026-09-30）：弱锚结构化（`ev=` 升格）+ 五 checker 反向变异修复 + 对标 A/C/D 施工；细则 405→406 条、32→33 类。
 - **v3.3.1**（2026-09-29）：双仓门面重构 + 净化瘦身 + 产品工程包联动发行。
 - **v3.3.0**（2026-09-29）：细则 405 条/32 类 + 检索触达三层 + 叙述对账工具化。
 - **v3.2.0**（2026-09-20）：外部评审审计 + 条款级落刀批（373 条/30 类 · judge j2.5）。
-- 完整历史见 [CHANGELOG.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/CHANGELOG.md)（v1.9 → v3.4.0，38 个版本）。
+- 完整历史见 [CHANGELOG.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/CHANGELOG.md)（v1.9 → v4.0.0，39 个版本）。
 
 ---
 
