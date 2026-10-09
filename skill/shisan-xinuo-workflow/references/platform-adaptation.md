@@ -14,7 +14,7 @@
 | Windsurf | 项目存在 `.windsurfrules`；存在 Windsurf 环境变量 |
 | Trae | Trae 运行时特征（插件 / Skill 机制激活、Trae 环境变量） |
 | WorkBuddy | agent-app 全局规则文件（如 `~/.workbuddy/AGENTS.md`，已实证）；`AskUserQuestion` 工具可用 |
-| Reasonix | `AGENTS.md` 作为插件 / 规则输入 |
+| Reasonix | `AGENTS.md` 作为插件 / 规则输入（未部署验证） |
 | 通用 CLI / 其他 | 以上皆无；纯 shell + 模型 API |
 
 无法确定时直接问用户是哪个平台——要写规则文件时不允许猜测。
@@ -101,15 +101,13 @@
 | 模式 | 规则文件内容 | 上下文开销 | 适用场景 |
 |---|---|---|---|
 | **按需注入（默认）** | 精简纪律（约 9 行）+ 回指本 Skill | 最低 | 多数项目；Skill 按触发激活 |
-| **强制注入（硬加载）** | `references/injection-core.md` 核心全文（判级速查 + 9 步主流程 + 上下文预算法 + 设计铁律 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序 + 交付留档） | 每会话固定约 2-3K token | 要求工作流每会话无条件在场、不依赖模型自觉 |
+| **强制注入（硬加载）** | `references/injection-core.md` 核心全文（判级速查 + 9 步主流程 + 上下文预算法 + 设计铁律 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序 + 交付留档） | 每会话固定约 6K 字符（中文实证 ≈9-12K token） | 要求工作流每会话无条件在场、不依赖模型自觉 |
 
 强制注入即把 `references/injection-core.md` 核心全文写入注入点（先备份、合并）——**没有**额外的「每会话必读」行：这类弱指令模型不可靠执行，不得作为强制注入的实现方式。
 
-**安装期「注入模式选择提问」用双语**：这是安装共用的一步，本「先选注入模式」的提问（含选项单与推荐）以**中 + 英双语呈现**，让不同语言用户 / 模型都能看懂并各选其**自己想要的真正答案**——
-
 **请选注入模式（Please choose the injection mode）：**
 1. **按需注入（默认 / On-demand, default）**——只写精简纪律并回指本 Skill，上下文开销最低（writes a compact discipline block and points back to this Skill; lowest context cost）。
-2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 2-3K token/会话（writes the core full-text into the injection point; the workflow is present every session; ~2-3K token/session）。
+2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 6K 字符/会话（中文实证 ≈9-12K token；writes the core full-text into the injection point; the workflow is present every session）。
 
 **推荐 / Recommended**：默认按需注入（On-demand by default）；要求工作流每会话无条件在场时才用强制注入（choose force injection only when you need it present in every session）。
 
@@ -174,6 +172,8 @@
 
 ## 6. 生成规则文件的体量
 
+**按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 6K 字符，每会话固定约 9-12K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
+
 ## 6.1 副本验收：内容哈希（细则 #374）
 
 - **版本串一致 ≠ 内容一致**：注入副本的验收除「版本串 + 锚点在场 + 细条计数」外，必须比**载体内容哈希**。
@@ -193,4 +193,3 @@
 | 会话取证通道 | rollout jsonl（**分钟级清刷**；messages 在 request 层；长会话窗口化记录） | traces（近期会话无模型请求载荷；generation span 键名已变） | — |
 | 按域条件加载 | ✗（症状索引=模型手动等价物） | ✗ | Cursor auto-glob / Kiro fileMatch ✓（平台原生） |
 
-**按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 55 行，每会话固定约 2-3K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
