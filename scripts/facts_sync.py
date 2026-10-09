@@ -44,12 +44,11 @@ CLASSES = len(re.findall(r'^## \d+\. ', details, re.M))
 # (相对路径, [正则…])；命名组 n=活跃条数 / c=类数
 CARRIERS = [
     ('README.md', [
-        r'按症状索引入库（(?P<n>\d+) 条/(?P<c>\d+) 类）',
-        r'\*\*(?P<n>\d+) lessons across (?P<c>\d+) categories\*\*',
-        r'\| 细则库 \| (?P<n>\d+) 条 / (?P<c>\d+) 类，症状索引检索键',
-        r'\| 细则库 \| \*\*(?P<n>\d+) 条 / (?P<c>\d+) 类\*\*（编号至 `#(?P<e>\d+)`',
-        # 「细则 N 条/M 类、判据 j2.5、门禁 8 项不变」式行不入表：它是版本沿革 bullet（本批语义随版本滚动，
-        # 上一版即成史实——2026-09-30 实证 --fix 曾把 README v3.3.1 历史 bullet 的 405/32 机械改写为 406/33）
+        r'不是那 (?P<n>\d+) 条规则',
+        # 事实重写版 README（2026-10-10 转型 Phase 0 重锚）：无口径块/英文摘要，唯一活跃条数锚=「值得读的记录」引言；
+        # 类数 c 在 README 无活跃声明位（版本历史「405→406 条、32→33 类」为沿革 bullet，按本表口径不入表——
+        # 2026-09-30 实证 --fix 曾把 v3.3.1 历史 bullet 的 405/32 机械改写为 406/33），c 由 AGENTS/reference-sources/
+        # project-info/package.json/SKILL/details/项目信息 七处承载；渠道表版本行防漂移走版本链 13 处（README 在列）。
     ]),
     ('AGENTS.md', [r'细则 \*\*(?P<n>\d+) 条·(?P<c>\d+) 类\*\*']),
     ('docs/reference-sources.md', [
