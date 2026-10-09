@@ -212,6 +212,8 @@ git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
 
 平台注入由 `scripts/deploy_injection.py` 执行（先备份、合并不覆盖）。验收判据是**平台加载时的 Base directory**，不是文件版本号。
 
+装完不知道从哪看起？走一遍 **[10 分钟上手](docs/quickstart-10min.md)**：自检 → 三个可观察标志物（每轮首产物复述/关键决策先问/块尾 GATE 行）→ 反馈三问。
+
 ---
 
 ## 版本历史（要点）
