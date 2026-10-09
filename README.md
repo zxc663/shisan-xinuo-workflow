@@ -164,6 +164,7 @@
 
 ### 对外反馈
 
+- **`docs/methodology-rule-verification.md`** —— **「怎么验证一条 agent 规则真的有用」的实证方法论（可移植版）**：三层缺口（在场/遵守/有用）、判据即代码+金样本回归、逃逸分析→回流闭环、反向变异自测、双臂对照与作者污染、环境死亡纪律、负面结论更严、以及**何时别用这套**的过重判定——每节锚定本仓证据工件，可逐条复核。
 - **`docs/mimosa-feedback-pack-20260929.md`** —— 向 ZCode 插件侧提交的误标反馈包（M1-M10 实例 + 7 条最小复现件 + 7 条修复建议），回执 [zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)。它自己就是「把踩坑做成可复现证据」的示范——连「检测器误标会把工程实践推向更危险写法（为绕检而拼接 shell 字符串）」这种方向性反效果都记录在案。
 
 ---
@@ -173,8 +174,8 @@
 | 渠道 | 版本 | 状态 |
 | --- | --- | --- |
 | GitHub 源库 + Release | v4.0.0 | 权威源；32 stars / 3 forks；每版附 dist zip |
-| npm（GitHub Packages） | 4.0.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-07 发布 3.4.0（89 文件，shasum c3969b15），4.0.0 随本批发行（回执见 RELEASE-CHECKLIST O 节） |
-| Gitee 镜像 + Release | v4.0.0 | 0 stars；与 GitHub 同 commit/tag 双推；3.4.0 Release id=1186732（2026-10-07，附件 2,210,333B），4.0.0 随本批发行 |
+| npm（GitHub Packages） | 4.0.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-10 发布 4.0.0（89 文件，shasum 48e18e3b） |
+| Gitee 镜像 + Release | v4.0.0 | 0 stars；与 GitHub 同 commit/tag 双推；4.0.0 Release id=1193457（2026-10-10，附件 2,209,350B） |
 | ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow`；Bookmark 0（2026-10-09 实测） |
 | skills.sh（Agent Skills 索引） | 随 GitHub 同步 | 2 skills / 5 次安装 |
 
@@ -215,7 +216,7 @@ git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
 
 ## 版本历史（要点）
 
-- **v4.0.0**（2026-10-10）：**转型批**——重定位 README（事实重写版+诚实分层）+收敛减法：聚合器 a1.1（liveness 探活针排除）、risk_scan 11 域进发行物（补 v3.4.0 打包漂移）、reference-sources 版本门（verify C 新子项）、细则零和与判据/聚合器冻结、EVIDENCE 时代回写、退役首跑（#103 进冷却期）。细则维持 406 条/33 类。
+- **v4.0.0**（2026-10-10，**已发行**）：**转型批**——重定位 README（事实重写版+诚实分层）+收敛减法：聚合器 a1.1（liveness 探活针排除）、risk_scan 11 域进发行物（补 v3.4.0 打包漂移）、reference-sources 版本门（verify C 新子项）、细则零和与判据/聚合器冻结、EVIDENCE 时代回写、退役首跑（#103 进冷却期）。细则维持 406 条/33 类。
 - **v3.4.0**（2026-09-30）：弱锚结构化（`ev=` 升格）+ 五 checker 反向变异修复 + 对标 A/C/D 施工；细则 405→406 条、32→33 类。
 - **v3.3.1**（2026-09-29）：双仓门面重构 + 净化瘦身 + 产品工程包联动发行。
 - **v3.3.0**（2026-09-29）：细则 405 条/32 类 + 检索触达三层 + 叙述对账工具化。
