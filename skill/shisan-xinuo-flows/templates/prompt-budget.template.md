@@ -1,8 +1,8 @@
 # 提示词预算 · Prompt Budget Template
 
-> 用途：可选——为项目设定预算档位，控制渐进式加载深度与记录体积（省 token 不丢纪律）
+> 用途：可选——为项目设定预算档位，控制加载范围（文件级）与记录体积（省 token 不丢纪律）
 > 复制到项目约定位置（如仓库根 `prompt-budget.md`）填写；预算是指引，不强制
-> 与主流程关系：渐进式披露（SKILL.md 引用地图）、L1 快速通道、记忆文件协议（workflows.md 记忆文件协议节）
+> 与主流程关系：分文件按需（SKILL.md 引用地图）、L1 快速通道、记忆文件协议（workflows.md 记忆文件协议节）
 
 ## 预算档位 · Budget profile
 - **nano**：只加载 SKILL.md 入口 + 本预算文件；L1 快速通道为主。目标 < 3K tokens。
