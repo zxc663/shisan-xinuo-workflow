@@ -18,6 +18,7 @@ def _hook_log(msg):
 # SessionStart 纪律包注入（hooks=实证最强触达载体）：每次会话启动无条件注入最小纪律包
 # （状态行模板 + TOP 一行 + GATE 指针）；cwd 是 git 项目且无 memory/agent-log.md 时
 # 附加承载检查提醒行。措辞与注入核心常驻保留集同源，改措辞先改注入核心再同步此处。
+# TOP 与纪律包为镜像：单源=SKILL.md §10 TOP 行；改动须与注入核心/roles debugger 同批。
 DISCIPLINE_PACK = (
     "[工作流纪律包·hooks 通道]\n"
     "每轮复述：每一用户轮首产物=复述（新任务全量三行；追加/继续=一行：收到 X｜理解为 Y｜边界 Z）\n"

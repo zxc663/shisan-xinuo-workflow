@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """l0-l5-gate v1 · 产品目标合格线 + 信息架构结构底线（层栈 L0/L5 的机器可查子集）。
 
-背景：层×判据矩阵 L0/L5 两层空白（layer-judgement-matrix.md），2026-09-24 由调研档
+背景：层×判据矩阵 L0/L5 两层空白（layer-judgement-matrix.md），由调研档
 （design-specs/l0-l5-criteria-research.md）蒸馏入库。**只检查陈述/工件形态，不生产目标与方案**
-（PE≠PI 边界，用户裁决 2026-09-24：形态合规性=本包可查；内容对错=产品决策侧）。
+（PE≠PI 边界，用户裁决：形态合规性=本包可查；内容对错=产品决策侧）。
 
 输入工件 schema：
 goal.json（产品目标工件，缺失=直接 fail，L0-C10）
@@ -84,7 +84,7 @@ def check_goal(goal: dict) -> tuple[list[str], list[str]]:
     warns: list[str] = []
     ns = goal.get("north_star")
     if ns is None:
-        # F5（2026-09-24）：键缺失≠合法——曾静默放行（None 落空全部检查），
+        # F5：键缺失≠合法——曾静默放行（None 落空全部检查），
         # 电池夹具没盖「文件在、键缺失」变体，与 F2 同族（自测路径缺口）。
         fails.append("L0-C1/C10 主结果声明缺失（north_star 键不存在）——目标未被陈述")
     elif isinstance(ns, list):
@@ -179,7 +179,7 @@ def selftest() -> int:
     g_bad = {"north_star": ["A 指标", "B 指标"], "key_results": ["提高体验"]}
     f3, _ = check_goal(g_bad)
     ok2 = any("L0-C1" in x for x in f3) and any("L0-C5" in x for x in f3)
-    g_nokey = {"key_results": ok_goal_krs()}  # F5 回归（2026-09-24）：文件在、north_star 键缺失 → 必 fail
+    g_nokey = {"key_results": ok_goal_krs()}  # F5 回归：文件在、north_star 键缺失 → 必 fail
     f6, _ = check_goal(g_nokey)
     ok5 = any("L0-C1" in x and "缺失" in x for x in f6)
     g_vanity = {"north_star": "累计注册用户破万", "key_results": ok_goal_krs()}

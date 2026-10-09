@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 """
 shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0）
-协议（用户拍板 2026-08-30）：
+协议：
 - user-notes/（用户规则目录）与 memory/（skill 自身落盘）与 *.bak-* 永不碰；
 - 上游（源库 skill/）整体覆盖：SKILL.md / references/* / templates/*；
 - 副本内非源库文件（如 references/personal-playbook.md）→ 一次性迁移进 user-notes/；
@@ -12,7 +12,7 @@ shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0）
 v2.0 修复（实测驱动）：
 - 首次安装必崩修复：目标目录不存在 → 跳过备份、直接创建并全量复制（exit=0）；
 - 备份路径外置修复：备份默认落 <dest 的上级父目录>/skill-backups/<name>.bak-<ts>，
-  ——平台扫描路径之外；避免备份目录被平台收录为第二个同名 Skill 并选中旧版（WorkBuddy 2026-08-30 实测）；
+  ——平台扫描路径之外；避免备份目录被平台收录为第二个同名 Skill 并选中旧版（平台实测）；
   可用 --backup-dir 覆盖；
 - 空 pass 死代码删除；dry-run break 移出 os.walk（干跑列出全部变更）；
 - 输出解析到的同步路径，供按「平台加载时的 Base directory」验收。

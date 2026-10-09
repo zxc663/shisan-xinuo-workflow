@@ -5,13 +5,13 @@
   C1 initial 存在  C2 无死端（非终态全有出边）  C3 全可达（initial 出发 BFS）
   C4 错误态必有恢复转换（出边指向非错误态）
   C5 带守卫的转换须有 guardDesc 说明
-  C6 引用完整性：每条转换的 target 必须存在于 states（2026-09-23 补；根因=旧版 BFS 静默跳过）
-  C7 recovery 双向对账（需 --contract；2026-09-23 补，候选 12）：
+  C6 引用完整性：每条转换的 target 必须存在于 states（补录；根因=旧版 BFS 静默跳过）
+  C7 recovery 双向对账（需 --contract；候选 12）：
      正向=契约 recovery 每行 (state,action,target) 必须命中 statechart 对应转换（缺边=承诺落空）
      反向=错误态出边 ⊆ recovery 行 ∪ non_error_failures 白名单（多边=未登记发明）
      双向均 exit 1。
 
-错误态识别（2026-09-23 结构化，向后兼容）：
+错误态识别（结构化，向后兼容）：
   声明（状态体 "type": "error"）∪ 态名含 error/fail 的启发式 ∪ 契约 recovery 行提及的状态。
   名启发式会漏掉 permission_denied 这类命名——需要准确识别时请显式声明 "type": "error"，
   或在契约 recovery 中登记该状态的出路。
@@ -20,7 +20,7 @@
   {"recovery": [{"state": "export_failed", "action": "RETRY_EXPORT", "target": "exporting", "note": "…"}],
    "non_error_failures": [{"state": "loading", "action": "LOAD_FAIL", "target": "empty"}]}
 
-能力边界（2026-09-21 peer 实战反哺，诚实声明）：
+能力边界（peer 实战反哺，诚实声明）：
   本 gate 的 schema=扁平 states（无嵌套/并行区域）。文件级/批量等「粒度语义」
   只能用「自环+guardDesc 文字约定」表达，gate 查不了粒度是否正确——结构检查
   （图性质）与领域语义评审（粒度/传播）缺一不可。嵌套 states 支持待真实项目
@@ -302,7 +302,7 @@ def main() -> int:
         print("提醒：markdown 契约不构成 C7 机器可读输入——按忠实转写补 contract.json 的 recovery 键"
               "（(state, action, target) 行）后重跑 C7；本探针只提醒不 FAIL，转写意图需人工核对。")
         return 0
-    # F6（2026-09-24）：NR6/NR7 两个真会话首调均踩「位置路径不收」——补位置参数兼容
+    # F6：两个真会话首调均踩「位置路径不收」——补位置参数兼容
     a.file = a.file_opt or a.statechart
     if not a.file:
         print("FAIL: 需要 statechart 路径（位置参数或 --file）或 --selftest")

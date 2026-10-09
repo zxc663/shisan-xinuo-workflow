@@ -1,6 +1,6 @@
 # 任务记录 · Task Record Template
 
-> 用途：每个任务强制留档（主流程各步出口产物随记录落盘 / 规则 34）· Mandatory per-task record
+> 用途：每个任务强制留档（主流程各步出口产物随记录落盘 / rules #34）· Mandatory per-task record
 > 命名：YYYY-MM-DD-名称.md，存于项目约定任务记录目录 · Name: YYYY-MM-DD-name.md in the project-defined record dir
 
 ## 任务 · Task
@@ -38,6 +38,6 @@
 ## 踩坑提炼（可复用则进经验库）· Pitfall to distill（if reusable, into the experience log）
 - ___
 
-## 双写知识点 · Dual-write knowledge points
-- AI 版（触发场景｜判断｜行动）· AI version (scenario | judgment | action):
-- 个人版（类比 + 判断标准）· Personal version (analogy + criterion):
+## 知识点提炼（1-5 条）· Knowledge distillation
+- 可复用规律（触发场景｜判断｜行动）· Reusable rule (scenario | judgment | action):
+- 个人版＝对话中给用户的受控输出 · Personal version (controlled output in conversation):
