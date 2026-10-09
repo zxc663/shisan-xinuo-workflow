@@ -17,6 +17,10 @@
 - 设计是否完备 · Is the design complete:
 - 体验 / UI / 交互是否符合定位 · Do experience/UI/interaction match positioning:
 
+## 2.5 方案候选（≥2 + 取舍）· Solution candidates (≥2 + trade-offs)
+- 候选 A：＿＿ ｜ 候选 B：＿＿（首案≠最优，`rules #15`；L1 轻任务可豁免单候选）
+- 取舍理由（为何选此、被否候选为何否）· Why this over alternatives:
+
 ## 3. 功能清单与优先级 · Feature list & priorities
 | 功能 Feature | 优先级 Priority | 说明 Note |
 |---|---|---|
