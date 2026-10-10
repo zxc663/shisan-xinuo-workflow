@@ -7,22 +7,30 @@
 用法:
   python scripts/deploy_injection.py --version 2.6.0            # 全部平台
   python scripts/deploy_injection.py --version 2.6.0 --only zcode,codex
-  python scripts/deploy_injection.py --check                    # 只验收不写入（版本+锚点 grep）
-  python scripts/deploy_injection.py --check --hash             # 追加「载体内容哈希」验收（细则 #374）
+  python scripts/deploy_injection.py --check                    # 只验收不写入（版本+锚点 grep=标记级证据）
+  python scripts/deploy_injection.py --check --hash             # 追加「载体内容哈希」验收（=正文级证据，验收默认形态；细则 #374）
+  python scripts/deploy_injection.py --check --hash --strict-hash  # 严格模式：HASH-UNKNOWN/缺载体标记也计 FAIL（发行验收用）
 
-设计: 路径从 USERPROFILE 派生（不硬编码个人路径）；写前备份 .bak-<ts>-pre-v<版本>；
+设计: 路径从 USERPROFILE 派生（不硬编码个人路径；测试可设 SKILL_HOME_OVERRIDE 重定向）；写前备份 .bak-<ts>-pre-v<版本>；
+      **写入=区块合并不是整体覆盖（v4.1.0 R1 · A-15/F-65）**——旧工作流区块就地替换，区块外用户自有
+      内容原样保留+写入后逐行断言（首装=用户内容在前+区块追加在后）；README「合并不覆盖」承诺兑现；
       在场提示锚块单一权威源=templates/memory-anchor.md（本脚本读取+关键行断言，禁内嵌第二份——F-17）；
       --check 不带 --version 时取 package.json 版本严格校验（F-21 假绿防线）；
       写入完成后输出重启+探针验收提示（注入快照=会话创建时快照——v11 机制定论）。
       --hash：--check 时追加内容哈希验收——版本串一致≠内容一致（细则 #374）；
-      哈希不可判定的旧格式副本报 [WARN] 不计 FAIL，重部署一次即带标记。
+      哈希不可判定的旧格式副本默认 [WARN] 不计 FAIL，--strict-hash 时计 FAIL（兼容/验收双模式分离，F-68）。
 """
 import argparse, io, json, re, shutil, sys, os
 import hashlib
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+try:  # Windows 控制台中文兜底；已 utf-8（unittest/管道形态）不重复包装——二次包装会关底层流
+    if (sys.stdout is not None and hasattr(sys.stdout, 'buffer')
+            and (getattr(sys.stdout, 'encoding', '') or '').lower().replace('-', '') != 'utf8'):
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+except Exception:
+    pass
 TZ = timezone(timedelta(hours=8))
 REPO = Path(__file__).resolve().parent.parent
 SK = REPO / 'skill' / 'shisan-xinuo-workflow'
@@ -58,10 +66,36 @@ ANCHOR_REQUIRED_LINES = ('在场提示', '每轮复述', '前置门', '细则 #3
 CORE_FIRST_LINE = '# 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）'
 ANCHOR_START_MARK = '### 在场提示 · 工作流 Skill 现已在场'
 CORE_HASH_TAG = '<!-- core-sha256:{h} -->'
+BLOCK_START_MARK = '# 全局 Agent 工作流核心'  # HEADER 首行与载体首行共同前缀（区块识别起点）
 
 
 def sha256_text(s):
     return hashlib.sha256(s.encode('utf-8')).hexdigest()[:12]
+
+
+def merge_block(old_text, new_block):
+    """A-15① 区块合并：旧工作流区块就地替换，区块外用户内容原样保留（幂等，F-65 修复）。
+
+    区块识别：起点=首个以 BLOCK_START_MARK 开头的行；终点=锚块起点行起至文件尾
+    （锚块无终点标记、部署形态恒为文件尾块——锚块后手工追加的内容会被并入替换区，请置于区块前）。
+    无区块起点=首装：new_block 追加到用户内容之后（全保留）。
+    返回 (merged_text, user_lines)：user_lines=旧文件区块外非空非分隔线行，写入后逐行断言用（A-15②）。
+    """
+    lines = old_text.replace('\r', '').split('\n')
+    start = next((n for n, ln in enumerate(lines) if ln.startswith(BLOCK_START_MARK)), None)
+    user_lines = []
+    if start is None:  # 首装：用户内容在前全保留，区块追加在后
+        head = old_text.rstrip()
+        merged = (head + '\n\n---\n\n' + new_block) if head.strip() else new_block
+        user_lines = [ln for ln in lines if ln.strip() and ln.strip() != '---']
+        return merged, user_lines
+    anchor = next((n for n, ln in enumerate(lines) if ln.startswith(ANCHOR_START_MARK)), None)
+    end = anchor if (anchor is not None and anchor > start) else len(lines)
+    head = lines[:start]
+    user_lines = [ln for ln in head if ln.strip() and ln.strip() != '---']
+    merged_head = '\n'.join(head).rstrip('\n')
+    merged = (merged_head + '\n\n' + new_block) if merged_head.strip() else new_block
+    return merged, user_lines
 
 
 def core_body(t):
@@ -117,7 +151,8 @@ def pkg_version():
 
 
 def targets(only):
-    home = Path.home().as_posix()
+    # SKILL_HOME_OVERRIDE：测试重定向（A-15② 临时目录反例测试用），生产不设=Path.home()
+    home = os.environ.get('SKILL_HOME_OVERRIDE') or Path.home().as_posix()
     val = os.environ.get('SKILL_SRC', home + '/.agents/skills/shisan-xinuo-workflow')
     # 仅相对路径才补盘符前缀；已是盘符绝对路径原样保留（防 C:/C:/ 双前缀）
     src = val if re.match(r'^[A-Za-z]:[/\\]', val) else 'C:/' + val
@@ -133,6 +168,8 @@ def main():
     ap.add_argument('--only', default=None, help='逗号分隔平台名')
     ap.add_argument('--check', action='store_true')
     ap.add_argument('--hash', action='store_true', help='--check 时追加载体内容哈希验收（细则 #374）')
+    ap.add_argument('--strict-hash', action='store_true',
+                    help='严格模式：HASH-UNKNOWN/缺载体标记也计 FAIL（发行验收模式；默认兼容模式只 WARN）')
     a = ap.parse_args()
     only = set(a.only.split(',')) if a.only else None
     count = details_count()
@@ -165,7 +202,11 @@ def main():
             if a.hash:
                 body = core_body(t)
                 if body is None:
-                    print(f'  [WARN] {name}: 缺载体标记，哈希不可判定（重部署一次即带标记）')
+                    if a.strict_hash:
+                        print(f'  [HASH-UNKNOWN-FAIL] {name}: 缺载体标记（--strict-hash 计 FAIL）')
+                        fails.append(f'{name}(hash-unknown)')
+                    else:
+                        print(f'  [WARN] {name}: 缺载体标记，哈希不可判定（重部署一次即带标记）')
                 else:
                     h = sha256_text(body)
                     same = (h == src_hash)
@@ -178,14 +219,23 @@ def main():
         bak = p.with_name(p.name + f'.bak-{datetime.now(TZ).strftime("%Y%m%d-%H%M%S")}-pre-v{a.version}')
         shutil.copy2(p, bak)
         core = CORE.read_text(encoding='utf-8-sig').replace('\r', '').strip()
-        out = HEADER.format(version=a.version, plat=plat, skill_src=src, count=count, classes=classes, now=now).rstrip()
-        out += '\n\n---\n\n' + core + '\n' + CORE_HASH_TAG.format(h=sha256_text(core))
+        block = HEADER.format(version=a.version, plat=plat, skill_src=src, count=count, classes=classes, now=now).rstrip()
+        block += '\n\n---\n\n' + core + '\n' + CORE_HASH_TAG.format(h=sha256_text(core))
         if anchor:
-            out += load_anchor(a.version)
+            block += load_anchor(a.version)
+        # A-15① 区块合并（F-65）：旧区块就地替换/首装追加，用户自有内容不再被覆盖打入备份
+        old_text = p.read_text(encoding='utf-8-sig')
+        out, user_lines = merge_block(old_text, block)
         p.write_text(out, encoding='utf-8-sig', newline='')
         t = p.read_text(encoding='utf-8-sig')
         ok = f'v{a.version}' in t and '开工四步' in t and f'{count} 条细则' in t
-        print(f'[{"PASS" if ok else "FAIL"}] {name} -> v{a.version}（备份 {bak.name}）')
+        mode = '区块替换' if (BLOCK_START_MARK in old_text.replace('\r', '')) else '首装追加'
+        lost = [ln for ln in user_lines if ln not in t]  # A-15② 用户内容保留断言（审计反例测试内联化）
+        if lost:
+            ok = False
+            fails.append(f'{name}: 用户内容丢失 {len(lost)} 行（区块合并断言失败；备份 {bak.name}）')
+            print(f'  [MERGE-FAIL] {name}: 首条丢失={lost[0][:60]}')
+        print(f'[{"PASS" if ok else "FAIL"}] {name} -> v{a.version}（{mode}；用户行保留 {len(user_lines) - len(lost)}/{len(user_lines)}；备份 {bak.name}）')
         if not ok:
             fails.append(name)
     if fails:
