@@ -69,16 +69,17 @@ $targetName = "$Prefix" + $PackageName
 $root = Split-Path -Parent $PSScriptRoot
 $probeOrder = @("workbuddy", "claude", "agents", "codex", "cursor", "trae", "zcode")
 
-# ---------- 多包模式（v3.0 家族：核心由主流程装，flows/roles/product 递归装） ----------
+# ---------- 多包模式（v3.0 家族 → v4.1.0 R2 · A-13/F-53 五包全装：核心包入循环，-Family 单跑不再缺核心） ----------
 if ($Family) {
     $repoSkill = Join-Path (Split-Path -Parent $PSScriptRoot) "skill"
-    foreach ($pkg in @("shisan-xinuo-flows", "shisan-xinuo-roles", "shisan-xinuo-product", "shisan-xinuo-single")) {
+    $familyPkgs = @("shisan-xinuo-workflow", "shisan-xinuo-flows", "shisan-xinuo-roles", "shisan-xinuo-product", "shisan-xinuo-single")
+    foreach ($pkg in $familyPkgs) {
         $pkgSrc = Join-Path $repoSkill $pkg
         Write-Host "`n===== family 安装: $pkg =====" -ForegroundColor Cyan
         & $PSCommandPath -Prefix $Prefix -PackageName $pkg -Source $pkgSrc -Platform $Platform -Target $Target -Dry:$Dry -Force:$Force
-        if (-not $?) { throw "family 子安装失败: $pkg" }
+        if ($LASTEXITCODE -ne 0) { throw "family 子安装失败: $pkg（exit=$LASTEXITCODE）" }
     }
-    Write-Host "[family done] flows/roles/product/single 见上方分节（核心由主流程安装）"
+    Write-Host "[family done] 五包全装完成：$($familyPkgs -join ' / ')"
     exit 0
 }
 
@@ -130,14 +131,33 @@ if (Test-Path $skillsDir) { $skillsDirExists = $true } else { $skillsDirExists =
 if (-not $Dry -and -not $skillsDirExists) { $null = New-Item -ItemType Directory -Path $skillsDir -Force }
 Write-Host "[目标] 安装名=$targetName ｜ 目标目录=$dest"
 
-# ---------- 备份（已存在时，-Force 才覆盖）----------
+# ---------- 事务清单（v4.1.0 R2 · A-14/F-58：步骤状态 PASS/FAIL/NOT_RUN/PARTIAL+末尾 overall 判定） ----------
+$script:tx = New-Object System.Collections.Generic.List[string]
+function Add-TxStep { param($Step, $State, $Note = "") $script:tx.Add(("{0,-8} {1}  {2}" -f $State, $Step, $Note)) }
+function Show-Tx {
+    $overall = "PASS"
+    foreach ($line in $script:tx) {
+        if ($line -match "^\s*FAIL") { $overall = "FAIL" }
+        elseif (($line -match "^\s*PARTIAL") -and ($overall -ne "FAIL")) { $overall = "PARTIAL" }
+    }
+    Write-Host "`n[事务] 安装步骤清单（A-14）："
+    $script:tx | ForEach-Object { Write-Host "  $_" }
+    Write-Host ("[事务] overall = {0}" -f $overall)
+    if ($overall -eq "FAIL") { Write-Host "[事务] 失败步骤请对照上方输出处理；已完成步骤见清单（不做自动回滚——回滚动作本身也可能失败，F-58 轻量版裁决）" }
+    return $overall
+}
+
+# ---------- 备份（已存在时，-Force 才覆盖；备份名含毫秒防同秒重装覆盖 F-63）----------
 $backupRoot = Join-Path $skillsDir "skill-backups"
-$backup = Join-Path $backupRoot ("{0}.bak-{1}" -f $targetName, (Get-Date -Format "yyyyMMdd-HHmmss"))
+$backup = Join-Path $backupRoot ("{0}.bak-{1}" -f $targetName, (Get-Date -Format "yyyyMMdd-HHmmss-fff"))
 if (Test-Path $dest) {
     if (-not $Force) {
         Write-Warning "目标已存在：$dest（如需覆盖请加 -Force；-Force 会先备份到 $backupRoot——平台扫描路径之外，符合 syncer 备份外置纪律）"
+        Add-TxStep "安装" "FAIL" "目标已存在且未指定 -Force"
+        Show-Tx
         exit 1
     }
+    Write-Host "[注意] -Force 覆盖为合并语义：旧版独有文件可能残留在目标目录（Copy-Item 递归覆盖异名保留；不直接删除旧目录=防误删本地内容，F-60）"
     if ($Dry) { Write-Host "[干跑] 备份现有安装 → $backup" }
     else {
         $null = New-Item -ItemType Directory -Path $backupRoot -Force
@@ -146,62 +166,78 @@ if (Test-Path $dest) {
     }
 }
 
-# ---------- 复制 / 软链 ----------
+# ---------- 复制 / 软链（-Link 降级复制后统一验收 F-62）----------
+$installedVia = "复制"
 if ($Dry) {
     $mode = if ($Link) { "软链" } else { "复制" }
     Write-Host "[干跑] $mode $Source`n        → $dest"
+    Add-TxStep "安装" "DRY" "干跑未写盘"
 } elseif ($Link) {
     try {
         $null = New-Item -ItemType SymbolicLink -Path $dest -Target $Source
+        $installedVia = "软链"
         Write-Host "[链接] $dest  →  $Source"
     } catch {
         Write-Warning "软链创建失败（需管理员权限或开发者模式）：$($_.Exception.Message)；降级为复制。"
         Copy-Item -Path $Source -Destination $dest -Recurse -Force
+        $installedVia = "复制（软链降级）"
         Write-Host "[复制] $dest"
     }
 } else {
     Copy-Item -Path $Source -Destination $dest -Recurse -Force
     Write-Host "[复制] $dest"
 }
-
-# ---------- 硬注入（可选；按 platform-adaptation 注入点表）----------
-if ($HardInject) {
-    $core = Join-Path $Source "references\injection-core.md"
-    if (-not (Test-Path $core)) { Write-Warning "[注入] 源缺少 references\injection-core.md，跳过注入（安装已完成，继续验收输出）。" } elseif (-not $injectFile) {
-        $pn = if ($Platform) { $Platform } else { "未指定" }
-        Write-Host "[注入] 平台 $pn 无标准注入点（本脚本未登记），跳过注入（安装已完成）。"
+if (-not $Dry) {
+    # 统一验收（软链/复制同判据，F-62）：SKILL.md 必须在
+    if (Test-Path (Join-Path $dest "SKILL.md")) {
+        Add-TxStep "安装" "PASS" "$installedVia → $dest"
     } else {
-        $ts = Get-Date -Format "yyyyMMdd-HHmmss"
-        if ($Dry) {
-            Write-Host "[干跑] 备份注入点 → $injectFile.bak-$ts ；写入 injection-core 至 $injectFile"
-        } else {
-            $coreText = Get-Content -Raw -Encoding UTF8 $core
-            $header = @"
-# 全局 Agent 工作流核心（十三希诺工作流 · 每会话强制生效）—— v2.0+ 安装脚本注入
-> 平台：$($Platform.ToLower())（$targetName 安装于 $target）
-> 注入来源：$Source\references\injection-core.md
-> 更新协议：python scripts\syncer.py（三路合并，备份落 skill-backups/·平台扫描路径外）｜验收判据：平台加载时的 Base directory，不是文件版本号
-> 注入时间：$(Get-Date -Format "yyyy-MM-dd HH:mm:ss") ｜ 写入前备份：$injectFile.bak-$ts
----
-"@
-            $prev = ""
-            if (Test-Path $injectFile) {
-                Copy-Item -Path $injectFile -Destination "$injectFile.bak-$ts" -Force
-                $prev = Get-Content -Raw -Encoding UTF8 $injectFile
-                Write-Host "[注入] 备份既有注入点 → $injectFile.bak-$ts"
-            }
-            $sep = if ($prev.Trim().Length -gt 0) { "`n`n---`n" } else { "" }
-            Set-Content -Path $injectFile -Value ($prev.TrimEnd() + $sep + $header + $coreText) -Encoding UTF8
-            Write-Host "[注入] $(if ($prev.Trim().Length -gt 0) { '合并（既有内容保留在上方）' } else { '新建' }) → $injectFile"
-        }
+        Add-TxStep "安装" "FAIL" "$installedVia 后缺 SKILL.md（验收不过）"
     }
 }
 
-# ---------- 记忆层（硬注入第三层；-HardInject -MemoryFile 时）----------
-if ($MemoryFile) {
-    if (-not $HardInject) {
-        Write-Warning "[记忆] -MemoryFile 需要与 -HardInject 同用（记忆层是硬注入第三层）；本次跳过记忆层，仅做安装。"
+# ---------- 硬注入（可选；v4.1.0 R2 · F-66 统一语义：改调 deploy_injection.py 同一区块合并实现） ----------
+if ($HardInject) {
+    $core = Join-Path $Source "references\injection-core.md"
+    if (-not (Test-Path $core)) {
+        # A-14 三态：请求了 -HardInject 但源缺核心文件 = FAIL（不再静默跳过——请求与结果必须一致，F-59）
+        Write-Error "[注入] 指定了 -HardInject 但源缺少 references\injection-core.md → 注入层 FAIL（安装本体已完成，见事务清单）"
+        Add-TxStep "注入" "FAIL" "源缺 injection-core.md（请求与结果不一致，F-59 修复）"
+    } elseif (-not $injectFile) {
+        # A-14 三态：指定 -HardInject 但平台无登记注入点 = PARTIAL（明确告知只完成部分）
+        $pn = if ($Platform) { $Platform } else { "未指定" }
+        Write-Warning "[注入] 平台 $pn 无标准注入点（本脚本未登记）→ 注入层 PARTIAL（Skill 安装本体已完成）"
+        Add-TxStep "注入" "PARTIAL" "平台 $pn 无登记注入点，仅完成安装层"
+    } elseif ($Dry) {
+        $vjson = Get-Content -Raw -Encoding UTF8 (Join-Path $root "package.json") | ConvertFrom-Json
+        Write-Host "[干跑] 调用 scripts\deploy_injection.py --only $Platform --version $($vjson.version)（区块合并+备份，统一语义 F-66）"
+        Add-TxStep "注入" "DRY" "干跑未写盘"
     } else {
+        $vjson = Get-Content -Raw -Encoding UTF8 (Join-Path $root "package.json") | ConvertFrom-Json
+        $deployScript = Join-Path $root "scripts\deploy_injection.py"
+        Write-Host "[注入] 统一语义入口：python deploy_injection.py --only $Platform --version $($vjson.version)（区块合并·用户内容保留·写后断言）"
+        $py = if (Get-Command python -ErrorAction SilentlyContinue) { "python" } else { "py" }
+        try {
+            & $py $deployScript --only $Platform --version $vjson.version --hash
+            if ($LASTEXITCODE -ne 0) {
+                Add-TxStep "注入" "FAIL" "deploy_injection exit=$LASTEXITCODE（详见上方逐项输出）"
+            } else {
+                Add-TxStep "注入" "PASS" "deploy_injection 区块合并完成+hash 验收过"
+            }
+        } catch {
+            Add-TxStep "注入" "FAIL" "无法调用 python（$($_.Exception.Message)）；注入层未写"
+        }
+    }
+} elseif ($MemoryFile) {
+    # A-14 预检：-MemoryFile 未与 -HardInject 同用=只装 Skill，明确告知记忆层未写（防误以为已三层）
+    Write-Warning "[预检] 指定了 -MemoryFile 但未指定 -HardInject → 本次只装 Skill（记忆层/规则层均未写入，F-62 家族防误解）"
+    Add-TxStep "注入" "PARTIAL" "请求了 -MemoryFile 但未请求 -HardInject（三层未写；安装本体已完成）"
+} else {
+    Add-TxStep "注入" "NOT_RUN" "未请求 -HardInject（只装 Skill=合法 PASS 态，A-14 三态）"
+}
+
+# ---------- 记忆层（硬注入第三层；-HardInject -MemoryFile 时）----------
+if ($MemoryFile -and $HardInject) {
         # readme 说明：硬注入 = 记忆层 + 规则层 + 配置文件层三层（SKILL.md §3 / platform-adaptation §2.2）
         $anchor = Join-Path $Source "templates\memory-anchor.md"
         if (-not (Test-Path $anchor)) {
@@ -249,15 +285,19 @@ if ($MemoryFile) {
                 $cleanTag = if ($cleanedVersions.Count -gt 0) { "；旧锚清扫 $($cleanedVersions.Count) 块[$($cleanedVersions -join ',')]" } else { "" }
                 Write-Host "[记忆] $(if ($prev.Trim().Length -gt 0) { '合并（既有内容保留在上方）' } else { '新建' }) → $MemoryFile$cleanTag"
                 Write-Host "[记忆] 在场提示已写入首行 —— 新会话读到即识别「工作流 Skill 现已在场」"
+                Add-TxStep "记忆" "PASS" "$MemoryFile$cleanTag"
             }
         }
-    }
+        if (-not (Test-Path (Join-Path $Source "templates\memory-anchor.md"))) { Add-TxStep "记忆" "FAIL" "源缺 memory-anchor.md" }
 }
 
 # ---------- 验收 ----------
 Write-Host ""
-Write-Host "[完成] 安装目录：$dest"
+Write-Host "[完成] 安装目录：$dest（安装方式=$installedVia）"
 Write-Host "[验收] 平台加载时的 Base directory 应指向：$dest（不是文件版本号；若平台扫描到 skill-backups\ 目录，请确认其位于扫描路径之外）"
-if ($MemoryFile -and $HardInject) { Write-Host "[三层] 硬注入三层状态：记忆层=$($MemoryFile) ｜ 规则层=$injectFile ｜ 配置文件层=$(if ($injectCfgFile) { $injectCfgFile } else { '无（平台不支持/未指定）' })" }
+if ($MemoryFile -and $HardInject) { Write-Host "[三层] 硬注入三层状态：记忆层=$($MemoryFile) ｜ 规则层=$(if ($injectFile) { $injectFile } else { 'deploy_injection 按平台表' }) ｜ 配置文件层=$(if ($injectCfgFile) { $injectCfgFile } else { '无（平台不支持/未指定）' })" }
 Write-Host "[提示] 安装名已带 $Prefix 前缀 → SKILL.md §3 第 0 步安装名前缀自检将静默通过；无前缀安装会收到一行适配提示。"
+if (-not $Family) {
+    $null = Show-Tx   # 事务清单+overall（A-14）；-Family 由子进程各自输出
+}
 exit 0
