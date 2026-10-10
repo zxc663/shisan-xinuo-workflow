@@ -19,6 +19,9 @@
   T5 死逻辑：--backends <文件列表> 后端逻辑块存在但无任何组件消费 → classifyNotice 式死代码
   T6 幽灵端点：绑定行 backend 形似 HTTP 端点（动词+路径 / URL）但不在 --backends 实际清单 → 引用不存在的后端
     （jz-02 试金石回流：绑定 GET /api/stats 而后端无此块，T4/T5 双向都查不到；localStorage 等客户端存储非 URL 形，不拦）
+  T7 文件型证据存在性（v4.1.0 R1 · A-11④/F-46 双模式）：evidence 判别为文件型（含常见证据扩展名
+    或路径分隔符）→ 必须真实存在，相对路径以**绑定清单所在目录**为基准（A-19②），目录路径也拒；
+    外部执行记录型文本（不含路径/扩展名特征）保持放行——声明在场≠证据在场，文件型必须摸得到文件
 
 用法：python spec-trace-gate.py --file bindings.json [--components list.txt] [--backends list.txt]
       python spec-trace-gate.py --selftest
@@ -35,6 +38,12 @@ BAD = re.compile(r"^\s*(无|未验证|TODO|待补|暂无|-|NONE)$", re.I)
 PURE_DISPLAY = re.compile(r"^NONE\(.+\)$")
 # URL 形：HTTP 动词+路径（GET /x）或含 scheme（https://）或以 / 开头——localStorage/IndexedDB 等客户端存储不匹配
 URLISH = re.compile(r"^(?:[A-Z]{3,8}\s+\S+|.+:\/\/|\/)")
+# 文件型证据判别：常见证据扩展名结尾，或含路径分隔符（判定保守方向——拿不准按文件型查存在性）
+EVIDENCE_FILEISH = re.compile(r"\.(png|jpe?g|webp|gif|svg|bmp|pdf|md|txt|log|json|csv|html?|mp4|mov)$|[/\\]", re.I)
+
+
+def is_file_evidence(ev: str) -> bool:
+    return bool(EVIDENCE_FILEISH.search(ev or ""))
 
 
 def _norm(s: str) -> str:
@@ -43,7 +52,8 @@ def _norm(s: str) -> str:
     return re.sub(r"\{[^}/]*\}", "{}", s)
 
 
-def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[str] | None) -> list[str]:
+def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[str] | None,
+          base_dir: Path | None = None) -> list[str]:
     fails: list[str] = []
     if not bindings:
         return ["T1 绑定清单为空"]
@@ -60,6 +70,13 @@ def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[st
             continue
         if BAD.match(ev):
             fails.append(f"T2 第{i}行 evidence 占位语（{ev}）——无真渲染证据不得声称已验证")
+        elif is_file_evidence(ev):  # T7 双模式（A-11④/F-46）：文件型摸文件，文本型（外部执行记录）放行
+            p = Path(ev)
+            target = p if p.is_absolute() else (base_dir / ev if base_dir else Path(ev))
+            if target.is_dir():
+                fails.append(f"T7 第{i}行 证据是目录不是文件：{ev}（基准={base_dir or 'CWD'}）")
+            elif not target.exists():
+                fails.append(f"T7 第{i}行 文件型证据不存在：{ev}（基准={base_dir or 'CWD'}）——声明在场≠证据在场")
         if not PURE_DISPLAY.match(be) and BAD.match(be):
             fails.append(f"T1 第{i}行 backend 空且非纯展示声明：{comp}")
         quad = (page, comp, feat, be)
@@ -95,13 +112,21 @@ def check(bindings: list[dict], comp_list: set[str] | None, backend_list: set[st
 
 
 def selftest() -> int:
+    # T7 起 selftest 需真文件（文件型证据存在性）——fixture 目录前置，good/f3 用例绑定 base_dir
+    import os
+    import tempfile
+    td = tempfile.TemporaryDirectory()
+    tdp = Path(td.name)
+    (tdp / "s.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    (tdp / "s2.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    (tdp / "adir").mkdir()
     good = {"bindings": [
         {"page": "P", "component": "C1", "feature": "F1", "backend": "POST /a", "evidence": "s.png"},
         {"page": "P", "component": "C2", "feature": "F2", "backend": "NONE(纯展示)", "evidence": "s2.png"}]}
     bad = {"bindings": [
         {"page": "P", "component": "C1", "feature": "F1", "backend": "POST /a", "evidence": "TODO"},
         {"page": "P", "component": "C1", "feature": "F1", "backend": "POST /a", "evidence": "TODO"}]}
-    ok1 = check(good["bindings"], {"C1", "C2"}, {"POST /a"}) == []
+    ok1 = check(good["bindings"], {"C1", "C2"}, {"POST /a"}, base_dir=tdp) == []
     f = check(bad["bindings"], {"C1", "C9"}, {"/a", "/dead"})
     ok2 = any("T2" in x for x in f) and any("T3" in x for x in f) and any("T4" in x for x in f) and any("T5" in x for x in f)
     # F2 回归：多词 backend id 走「文件→清单→比对」全路径不得假阳/漏检
@@ -116,7 +141,7 @@ def selftest() -> int:
         os.unlink(tmp)
     ok3 = loaded == {"POST /imports/parse", "GET /unused"}
     f3 = check([{"page": "P", "component": "C1", "feature": "F1",
-                 "backend": "POST /imports/parse", "evidence": "s.png"}], None, loaded)
+                 "backend": "POST /imports/parse", "evidence": "s.png"}], None, loaded, base_dir=tdp)
     ok4 = len(f3) == 1 and "T5" in f3[0] and "GET /unused" in f3[0]
     # T6 反向变异（jz-02 回流，#407）：幽灵端点必拦 + localStorage 非URL形不拦
     ghost = [{"page": "P", "component": "C1", "feature": "F1", "backend": "GET /api/stats", "evidence": "s.png"},
@@ -142,8 +167,30 @@ def selftest() -> int:
     t5_dead = next((x for x in f9 if "T5" in x and "GET /dead" in x), "")
     ok9 = ("连带" in t4_c1 and t4_c9 and "连带" not in t4_c9
            and "连带" in t5_a and t5_dead and "连带" not in t5_dead)
-    print(f"selftest: 合法绑定放行={ok1} 占位/冗余/UI孤儿/死逻辑全拦={ok2}（{len(f)} 项） 多词backend整串加载={ok3} 死逻辑只报真死={ok4} 幽灵端点拦/客户端存储豁免={ok5} 空清单仍拦幽灵={ok6} 参数名归一化放行={ok7} 端点真消失仍拦={ok8} T1缺段连带标注四面={ok9}（{len(f9)} 项）")
-    return 0 if ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 else 1
+    # T7 双模式（A-11④/F-46）+ RT-04 假路径拒绝 + RT-05 目录路径拒绝：文件型证据必须真实存在
+    # （相对路径基准=绑定清单所在目录），文本型外部执行记录放行
+    (tdp / "real-shot.png").write_bytes(b"\x89PNG\r\n")
+    ok_file = check([{"page": "P", "component": "C1", "feature": "F1",
+                      "backend": "POST /a", "evidence": "real-shot.png"}],
+                    None, None, base_dir=tdp) == []
+    ok_text = check([{"page": "P", "component": "C1", "feature": "F1",
+                      "backend": "POST /a", "evidence": "外部执行记录：评审会通过并归档"}],
+                    None, None, base_dir=tdp) == []
+    rt04 = check([{"page": "P", "component": "C1", "feature": "F1",
+                   "backend": "POST /a", "evidence": "missing-shot.png"}],
+                 None, None, base_dir=tdp)
+    ok_rt04 = len(rt04) == 1 and "T7" in rt04[0] and "不存在" in rt04[0]
+    rt05 = check([{"page": "P", "component": "C1", "feature": "F1",
+                   "backend": "POST /a", "evidence": "./adir"}],
+                 None, None, base_dir=tdp)
+    ok_rt05 = len(rt05) == 1 and "T7" in rt05[0] and "目录" in rt05[0]
+    ok_abs = check([{"page": "P", "component": "C1", "feature": "F1",
+                     "backend": "POST /a", "evidence": str(tdp / "real-shot.png")}],
+                   None, None, base_dir=Path("Z:/nonexistent-base")) == []
+    td.cleanup()
+    print(f"selftest: 合法绑定放行={ok1} 占位/冗余/UI孤儿/死逻辑全拦={ok2}（{len(f)} 项） 多词backend整串加载={ok3} 死逻辑只报真死={ok4} 幽灵端点拦/客户端存储豁免={ok5} 空清单仍拦幽灵={ok6} 参数名归一化放行={ok7} 端点真消失仍拦={ok8} T1缺段连带标注四面={ok9}（{len(f9)} 项） T7真文件放行={ok_file} T7文本型记录放行={ok_text} RT-04假路径拦={ok_rt04} RT-05目录路径拦={ok_rt05} T7绝对路径直查={ok_abs}")
+    all_ok = all([ok1, ok2, ok3, ok4, ok5, ok6, ok7, ok8, ok9, ok_file, ok_text, ok_rt04, ok_rt05, ok_abs])
+    return 0 if all_ok else 1
 
 
 def _load_list(path: str) -> set[str]:
@@ -168,7 +215,7 @@ def main() -> int:
     bindings = json.loads(Path(a.file).read_text(encoding="utf-8")).get("bindings", [])
     comp_list = _load_list(a.components) if a.components else None
     backend_list = _load_list(a.backends) if a.backends else None
-    fails = check(bindings, comp_list, backend_list)
+    fails = check(bindings, comp_list, backend_list, base_dir=Path(a.file).resolve().parent)
     if fails:
         print(f"FAIL: {len(fails)} 项追溯缺陷：")
         for x in fails:
