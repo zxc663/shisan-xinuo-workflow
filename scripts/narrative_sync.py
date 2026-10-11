@@ -21,6 +21,13 @@
 import json
 import re
 import sys
+
+try:  # CI/charmap 控制台中文输出兜底（gate_audit 同款）
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
 from datetime import datetime
 from pathlib import Path
 

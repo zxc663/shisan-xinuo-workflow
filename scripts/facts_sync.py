@@ -16,6 +16,13 @@
   python facts_sync.py --fix     # 校正：把偏差承载点改写为单源值（读回断言）
 """
 import io, json, re, sys, os
+
+try:  # CI/charmap 控制台中文输出兜底（gate_audit 同款）
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
 from pathlib import Path
 
 def _confine(p, *extra):
