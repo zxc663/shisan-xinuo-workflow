@@ -14,7 +14,7 @@
 - 注入核心自包含：injection-core.md 内禁悬空跨文件指针（须自包含或写全文件名）。
 - 门禁：verify-release E 项（常驻/模板面）+ 全仓 grep 承载点口径，改动后必跑。
 - 新增机制条款不带版本号/拍板人署名（决策记录写项目信息.md §三）。
-- **转型期冻结（2026-10-10 起，docs/transformation-plan-20261010.md §六）**：细则零和——406 为上限，新增须合并/替换旧条；判据 j2.6/聚合器 a1.1/盲评夹具=维护态（修 bug 可以，不加层；j2.5→j2.6=签名补录属修「不识别合规形态」方向）；总验收后恢复「稳定小更新」定调。
+- **转型期冻结（2026-10-10 起，docs/transformation-plan-20261010.md §六）**：细则零和——406 为上限，新增须合并/替换旧条；判据 j2.7/聚合器 a1.1/盲评夹具=维护态（修 bug 可以，不加层；j2.5→j2.6=签名补录、j2.6→j2.7=GATE 收敛语义循环到绿，均属修「不识别合规形态/收口脱节」方向）；总验收后恢复「稳定小更新」定调。
 
 ## 项目承载（已就绪）
 - `memory/`：会话记忆——**gitignore 本地承载，不随仓分发**（一档制 `agent-log.md` 四区；旧五件套历史原件在 `memory/legacy-pre-v250/` 只读保留）。
@@ -25,4 +25,4 @@
 ## 本仓库底线（区别于通用纪律）
 - 密钥/令牌绝不写入本仓库任何文件（verify-release 泄漏红线 D 项会拦）；机密文档仅存本机专用机密目录（位置不在此写出、不随仓，以 memory 最新记录为准）。
 - 发行动作（npm / GitHub Release / Gitee / ClawHub / About）必须先获用户批准 + `verify-release` **10/10** PASS + 观测阶段。
-- 当前基线 = **v4.0.0 转型批（重定位 README+收敛减法：聚合器 a1.1 liveness 修复/risk_scan 11 域进包/reference-sources 版本门 C 子项/冻结与零和立档/EVIDENCE 时代回写/退役首跑 #103 冷却）**（上一发行态 v3.4.0 全渠道 2026-10-07，回执见 RELEASE-CHECKLIST N 节与项目信息 §五）——细则 **406 条·33 类**（编号至 `#407`）+ 判据 **j2.6**（金样本 **25/25**，2026-10-10 签名补录）+ 门禁 **10 项**（A-J：内容锚点含 L3 判级双源对验 / hooks / 版本 / 泄漏 / 正文净化 / 索引 / 事实对账 / 判据自测 / 叙述对账 / 双副本一致性〔CI 无分发根=显式 SKIP〕）+ 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8，已接线 verify I 项）。**三面校准以 sync-all 跑后回执为准**。新会话验收锚=「在场提示」版本行 + `406 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。
+- 当前基线 = **v4.0.0 转型批（重定位 README+收敛减法：聚合器 a1.1 liveness 修复/risk_scan 11 域进包/reference-sources 版本门 C 子项/冻结与零和立档/EVIDENCE 时代回写/退役首跑 #103 冷却）**（上一发行态 v3.4.0 全渠道 2026-10-07，回执见 RELEASE-CHECKLIST N 节与项目信息 §五）——细则 **406 条·33 类**（编号至 `#407`）+ 判据 **j2.7**（金样本 **25/25**；GATE 收敛语义「循环到绿」，JUDGELOG 变更 12）+ 门禁 **10 项**（A-J：内容锚点含 L3 判级双源对验 / hooks / 版本 / 泄漏 / 正文净化 / 索引 / 事实对账 / 判据自测 / 叙述对账 / 双副本一致性〔CI 无分发根=显式 SKIP〕）+ 四个机检端口（`risk_scan` / `agent_log_rotate` / `gate_audit --gate/--high-risk/--independent-cmd` / `deploy_injection --check --hash`）+ 叙述对账机制 `narrative_sync`（F8，已接线 verify I 项）。**三面校准以 sync-all 跑后回执为准**。新会话验收锚=「在场提示」版本行 + `406 条细则` + `zxc663` 应答（注入版本=会话创建时快照，**GUI 长活会话须重启应用**）。

@@ -50,7 +50,7 @@ GATE12 = ['level', 'v', 'cmd', 'exit', 'files', 'refs', 'errpath', 'lessons', 'e
 GATE12_SET = set(GATE12)
 # 可选扩展字段（不属 12 字段定版，故不计入「含杂键」；细则 #371）
 OPTIONAL_KEYS = {'ev'}
-JUDGE_VERSION = 'j2.6'
+JUDGE_VERSION = 'j2.7'
 
 # 「有工作痕迹」标记：env_death 机器签名用——这些标记全假且无 GATE 时，该行表达的是
 # 「会话没产出」而非「行为不合规」，聚合前应剔除（v3.0 余额窗口 :37-:44 实证）。
