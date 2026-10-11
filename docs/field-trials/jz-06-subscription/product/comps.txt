@@ -1,4 +1,0 @@
-BillingPortal
-InvoiceTable
-PlanPicker
-UpgradeButton

@@ -1,6 +1,0 @@
-BookingForm
-DepartmentCard
-MyAppointmentList
-ScheduleTable
-TimeSlotGrid
-WaitingList

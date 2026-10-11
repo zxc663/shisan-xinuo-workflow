@@ -54,7 +54,7 @@ Product Contracts 全链 = **Intent → Scope → Structure → Interaction → 
 ## 5. 使用时机
 
 - **任何档位开工前先过层级门**（`references/layer-stack.md`）：定位层→检上游→放行/回补。
-- **有 recovery 行的契约**：跑 `statechart-gate.py --file <sc.json> --contract <contract.json>` 启用 C7 双向对账（缺边=承诺落空／多边=未登记发明，双向 exit 1；实证=`docs/reverse-injection/EVIDENCE.md`）。
+- **有 recovery 行的契约**：跑 `statechart-gate.py --file <sc.json> --contract <contract.json>` 启用 C7 双向对账（缺边=承诺落空／多边=未登记发明，双向 exit 1；实证=反向注入门禁实测 2026-09-29 批，原始工件 git 历史可溯）。
 - **档1**：口答，不落文件。
 - **档2**：Interaction Contract 落 JSON（statechart 源）+ Gate/Evidence 走通。
 - **档3**：三件全落 + recovery 行 + runtime evidence + regression。

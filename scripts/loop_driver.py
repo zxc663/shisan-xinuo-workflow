@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """无限循环路测驱动（roadtest-loop 3.0 批起 · 纯监控形态，runlog 随 label-prefix 派生）
 
-协议锚：docs/roadtest-loop-plan-3.0.md（3.0 批）/ docs/roadtest-loop-plan-3.1.md（3.1 批）
+协议锚：roadtest-loop-plan-3.0/3.1（已归档，git 历史可溯；scorecard 仍随仓归档 docs/roadtest-scorecards/）
   - 循环体 = probe_runner 20 场景全矩阵机判；scorecard 随仓归档；每轮本地 commit（不 push 不发行）；
   - FAIL → 双击复采（<label>r1/r2 独立目录各补 1 针，防 output.txt 覆写伪差异；作废行不参与复采与统计；
     两针全 PASS=单例方差留观察，任一 FAIL=立条候选留晨班）；

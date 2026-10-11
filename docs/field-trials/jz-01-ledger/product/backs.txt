@@ -1,4 +1,0 @@
-DELETE /ledger/{tx_id}
-GET /categories
-GET /ledger
-POST /ledger

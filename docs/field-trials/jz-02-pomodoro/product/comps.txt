@@ -1,4 +1,0 @@
-BreakSplash
-SettingsDrawer
-StatsPanel
-TimerWidget
