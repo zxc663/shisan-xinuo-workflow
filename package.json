@@ -17,7 +17,9 @@
   "files": [
     "skill",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "!**/.mimosa",
+    "!**/.mimosa/**"
   ],
   "author": "十三希诺",
   "repository": {

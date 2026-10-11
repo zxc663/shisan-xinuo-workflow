@@ -10,14 +10,20 @@
 param([switch]$Dry)
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
+$script:doneSteps = @()
 
 function Step($name, $exe, $argList) {
     Write-Host "== $name =="
     & $exe @argList
     if ($LASTEXITCODE -ne 0) {
         Write-Host "SYNC_ALL FAIL @ $name（exit $LASTEXITCODE）——fail-fast 停止"
+        if ($script:doneSteps.Count -gt 0) {
+            # 部分成功原则（A-14 判例在 sync-all 域延伸，F-73）：失败时输出已完成步骤清单，fail-fast 不回滚
+            Write-Host "已完成步骤（部分成功，不回滚）: $($script:doneSteps -join ' → ')"
+        }
         exit $LASTEXITCODE
     }
+    $script:doneSteps += $name
 }
 
 if ($Dry) {

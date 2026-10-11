@@ -117,8 +117,16 @@ foreach ($fc in $formChecks) {
         if (-not $fl -or -not $fl.StartsWith($fc[2])) { $probsA += "形态冒烟失败：$($fc[0]) 第 $($fc[1]+1) 行形态异常" }
     }
 }
+# 判级双源对验（A-16①/F-70 收窄施工：判级速查是真双源面〔SKILL §5 详版↔injection-core 速查版〕且 F-23 实证漂移过——
+# 最小机检=L3 封闭清单短句族逐字比对；全规则语义映射表=F-40 冻结先例不采纳。缺失输入不静默过=F-47 同款）
+$l3Re = 'L3 封闭清单（仅 6 项，清单外一律不是 L3，不得自行扩展）\*\*：(.+?)。'
+$skL3 = if ($txt -match $l3Re) { $Matches[1] } else { $null }
+$ctL3 = if ($ctxt) { if ($ctxt -match $l3Re) { $Matches[1] } else { $null } } else { $null }
+if (-not $skL3) { $probsA += "判级双源对验：SKILL L3 清单行未找到（缺失输入不得静默过）" }
+if ($ctxt -and -not $ctL3) { $probsA += "判级双源对验：injection-core L3 清单行未找到（缺失输入不得静默过）" }
+if ($skL3 -and $ctL3 -and $skL3 -ne $ctL3) { $probsA += "判级双源 L3 清单漂移（F-23 先例）：SKILL=[$skL3] ≠ core=[$ctL3]" }
 
-Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤6000）"}else{$probsA -join ";"})
+Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤6000 · L3 双源逐字一致）"}else{$probsA -join ";"})
 
 # ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
@@ -263,6 +271,16 @@ if (Test-Path $probeRunner) {
     if ($LASTEXITCODE -ne 0) { $probsH += ($hOut | Where-Object { $_ -match '\[BAD\]|^BAD:' } | Select-Object -First 4) }
 } else { $probsH += "缺 scripts/probe_runner.py" }
 Add-Result ($probsH.Count -eq 0) "H 判据自测(金样本回归 正/负对照)" $(if($probsH.Count -eq 0){$hOut | Select-Object -Last 1}else{$probsH -join ";"})
+
+# ---------- I. 叙述对账（A-16②/F-72 接线：narrative_sync 仓内自declared 待办兑现——发行批=拍板时机；
+# 缺失输入 fail 语义=F-47/RT-06 同款：脚本缺失或对账非零→FAIL，不静默过） ----------
+$probsI = @()
+$narSync = Join-Path $Root "scripts\narrative_sync.py"
+if (Test-Path $narSync) {
+    $iOut = python $narSync 2>&1
+    if ($LASTEXITCODE -ne 0) { $probsI += ($iOut | Select-Object -First 4) }
+} else { $probsI += "缺 scripts/narrative_sync.py" }
+Add-Result ($probsI.Count -eq 0) "I 叙述对账(narrative_sync 当前态叙述)" $(if($probsI.Count -eq 0){$iOut | Select-Object -Last 1}else{$probsI -join ";"})
 
 # ---------- 汇总输出 ----------
 Write-Host ""
