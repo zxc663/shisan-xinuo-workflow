@@ -12,12 +12,15 @@
   2) --cmd：可选复跑，取真实退出码
   3) （可选）--independent-cmd：独立路径命令复跑（≠实现路径的第二手段，如契约测试/独立脚本）；
      与 --cmd 字符串全同→拒绝认定独立（A-11②/F-49：全同命令不构成独立证据）
-  4) （可选）--gate：解析 GATE 行的 `ev=` 验证层级；--high-risk 时——
+  4) （可选）--gate：解析 GATE 行的 `ev=` 验证层级 + `exit=` 收口判据（D3/j2.7 循环到绿）；
+     --high-risk 时——
      a. 缺非 exec 项即 MISMATCH（细则 #371）
      b. 映射式证据对象要求（A-11①/F-45）：ev=cover/invariant 须有 --files 实参、
         ev=indep 须有 --independent-cmd 实参；仅声明无对象→FAIL 不 PASS（声明在场≠证据在场）
+     任意模式下——声明 exit=0（任务收口）须配 --cmd 且复跑 exit=0（循环未到绿禁收口）；
+     exit≠0 且无 stop_reason 声明=虚假GATE 候选（#364）。
 命令执行：Windows=cmd /c 数组形态；POSIX=shell 直跑；执行器故障（超时/OSError）捕获为
-结构化 MISMATCH，不再吞异常（A-11⑥ 最小平台分支；cmd /c 收口语义挂 Phase 4）。
+结构化 MISMATCH，不再吞异常（A-11⑥ 最小平台分支；循环到绿收口已落地，Phase 4/D3）。
 输出：逐项 [OK]/[MISMATCH] + VERDICT；exit=0 全 OK / 1 有 MISMATCH / 2 用法错误
 对账不符 → errpath=虚假GATE 候选：强制降级（exempt 标 unresolved）+ 教训区黑历史行（含命中计数）。
 """
@@ -39,6 +42,13 @@ def parse_ev(gate_text):
     if not m:
         return None
     return {x.strip().lower() for x in re.split(r'[+,|/]', m.group(1)) if x.strip()}
+
+
+def parse_gate_exit(gate_text):
+    """从 GATE 行提取 exit= 字段整数值（D3 循环到绿判据）；缺字段返回 None。"""
+    import re
+    m = re.search(r'(?<![A-Za-z])exit\s*=\s*(-?\d+)', gate_text)
+    return int(m.group(1)) if m else None
 
 
 def run_command(cmd, cwd):
@@ -108,6 +118,12 @@ def selftest():
     cases.append(('RT-03 平台分支：本平台解释器成功命令 exit 0', rc == 0))
     rc, out = _run_cli(['--cmd', ok_cmd, '--independent-cmd', ok_cmd, '--cwd', here])
     cases.append(('RT-08 两命令字符串全同拒绝认定独立', rc == 1 and '全同' in out))
+    rc, out = _run_cli(['--gate', 'GATE: {level=L2-S, exit=0, ev=exec, cmd=pytest}', '--cwd', here])
+    cases.append(('RT-11 声明收口 exit=0 无 --cmd 实参拒绝（D3 循环未到绿禁收口）', rc == 1 and '循环未到绿' in out))
+    rc, out = _run_cli(['--gate', 'GATE: {level=L2-S, exit=3, ev=exec, files=a.py}', '--cwd', here])
+    cases.append(('RT-12 exit≠0 无 stop_reason 拒绝（虚假GATE 候选 #364）', rc == 1 and '虚假GATE 候选' in out))
+    rc, out = _run_cli(['--gate', 'GATE: {level=L2-S, exit=0, ev=exec}', '--cmd', ok_cmd, '--cwd', here])
+    cases.append(('RT-13 GATE exit=0 + cmd 复跑绿=循环到绿达成', rc == 0 and '循环到绿达成' in out))
 
     print('== gate_audit --selftest（RT 反向用例）==')
     failed = 0
@@ -155,8 +171,10 @@ def main():
         else:
             recent = (time.time() - os.path.getmtime(p)) <= a.mtime_min * 60
             (oks if recent else probs).append(f'{f}: 存在{" + 近期 mtime" if recent else "，无 git 环境且 mtime 偏旧——未定论"}')
+    cmd_rc = None
     if a.cmd:
         rc, err = run_command(a.cmd, root)
+        cmd_rc = rc
         if err:
             probs.append(f'cmd 执行器故障 {err}: {a.cmd}')
         else:
@@ -172,6 +190,13 @@ def main():
         else:
             (oks if rc == 0 else probs).append(f'independent cmd exit={rc}: {a.independent_cmd}')
     if a.gate:
+        gexit = parse_gate_exit(a.gate)
+        if gexit == 0 and not a.cmd:
+            probs.append('声明收口 exit=0 但无 --cmd 复跑实参——循环未到绿禁收口（D3/j2.7：声明在场≠绿判在场）')
+        elif gexit == 0 and a.cmd and cmd_rc == 0:
+            oks.append('循环到绿达成：GATE exit=0 与 cmd 复跑 exit=0 一致（D3/j2.7）')
+        elif gexit is not None and gexit != 0 and 'stop_reason=' not in a.gate:
+            probs.append('GATE exit=%d≠0 且无 stop_reason 声明——未到绿又未止损，虚假GATE 候选（#364）' % gexit)
         ev = parse_ev(a.gate)
         if ev is None:
             probs.append('GATE 缺 `ev=` 验证层级声明%s' % ('（高风险任务必填）' if a.high_risk else ''))
