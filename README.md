@@ -2,7 +2,7 @@
 
 > **v4.1.0**（施工中·发行待批） · MIT · 单人维护 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
-**一句话定位**：一个**纪律清单 + 实证方法论的实验库**——把「工程纪律」从提示词升级成机制（三级跑道分流、L3 封闭清单停点、可复跑 `GATE` 证据块、跳过必声明），并用随仓的判据与 scorecard 去验证「规则有没有被遵守」。它不承诺更好的代码；「更少的事故」是**待证假设**（效力未经独立验证），但机制与证据任何人 clone 都能独立核对。
+**一句话定位**：把 AI agent 的工程纪律做成**可机检的门禁，而不是靠自觉**——三级跑道分流、L3 封闭清单停点、可复跑 `GATE` 证据块、跳过必声明，再用随仓的判据与 scorecard 去验证「规则有没有被遵守」。它不承诺更好的代码；「更少的事故」是**待证假设**（效力未经独立验证），但机制与证据任何人 clone 都能独立核对。
 
 ---
 
@@ -56,11 +56,11 @@
 
 ## 与同类项目的分别
 
-2026 年 9 月的对标调研（`docs/comparison-v290-analysis-20260916.md`，11 个项目、6 维矩阵）把同类项目分成四类，本项目与它们都不同：
+2026 年 9 月的对标调研（`docs/comparison-v290-analysis-20260916.md`，11 个项目、6 维矩阵；代表性数据 2026-10-11 联网复核）把同类项目分成四类，本项目与它们都不同：
 
 | 类别 | 代表 | 它们做什么 | 本项目的分别 |
 | --- | --- | --- | --- |
-| **A · 流程强化** | `obra/superpowers`（≈297k★） | 引导协议常驻化、子代理流水线、会话诊断技能 | 机制可借（每任务审查、Ruling 账本、技能写作 TDD），但本项目重心不在「流程更顺」，而在「结论可复算、事故先停」 |
+| **A · 流程强化** | `obra/superpowers`（≈297.4k★，2026-10-11 实测） | 引导协议常驻化、子代理流水线、会话诊断技能 | 机制可借（每任务审查、Ruling 账本、技能写作 TDD），但本项目重心不在「流程更顺」，而在「结论可复算、事故先停」 |
 | **B · 规则承载全家桶** | ECC + Toolkit 类 | 把大量规则/工具打包 | 本项目不做全家桶，做的是**分文件按需加载 + 细则检索端口**——常驻核心 ≤7000 字符，405 条细则经 `detail_lookup.py` 按症状取条（加载单元=文件；无文件内容分段机制） |
 | **C · 多智能体编排** | MetaGPT、ChatDev | 角色编排、流水线协作 | 本项目是**单人单 Agent 的纪律层**，不编排多智能体 |
 | **D · 企业治理平台** | Microsoft 类 | 身份认证、策略引擎、平台审计 | 本项目无这些；它是提示词级的一层纪律，换来的是可测试、可复算 |
@@ -78,7 +78,7 @@
 | `shisan-xinuo-workflow` | **核心**：三级跑道 / 判级 / 必问与红线 / `GATE` / 状态锚定 / 承载与留档 / 五平台注入 |
 | `shisan-xinuo-flows` | **流程包**：9 类任务工作流分册（新功能/Bug/重构/迁移/发布/前端/运维/文档/调研） |
 | `shisan-xinuo-roles` | **角色包**：8 个审查/执行角色（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） |
-| `shisan-xinuo-product` | **产品工程包**（独立版本线 v0.2.7，设计源与实证在独立仓 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill)） |
+| `shisan-xinuo-product` | **产品工程包**（中文权威源；独立英文发行版 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill) v1.x——clean-room 重写、机制等价、版本线各自独立） |
 
 ### 产品工程包——它想解决的问题
 
@@ -100,7 +100,16 @@
 - **statechart C1-C7**：无死端 / 全可达 / 错误态必有恢复转换 / 引用完整性 / 契约 recovery 双向对账。
 - **spec-trace 双向追溯**：正向每条功能行有元素兑现，反向每个元素回指功能行——反向断裂即发明或遗漏。
 - **双底双顶**：不难用/不难看/无障碍为底线，更好用/更好看为上限。
-- **8 台可重跑门禁**（registry / statechart / spec-trace / product-object / l0-l5 / frontend-lint / a11y / usage-probe），各带 `--selftest` 正反样例。
+- **8 台可重跑门禁**（registry / statechart / spec-trace / product-object / l0-l5 / frontend-lint / a11y / usage-probe）+1 台提取器（spec-trace-extract），九个脚本各带 `--selftest` 正反样例。
+
+---
+
+## 仓库结构（`docs/` 是开发工作区）
+
+- **`skill/`** —— 四包交付物（核心 + 流程 + 角色 + 产品工程），发行物本体。
+- **`scripts/`** —— 机检与运维脚本（verify-release / facts_sync / probe_runner / deploy_injection 等），门禁即产品。
+- **`docs/`** —— **开发工作区，不是交付物**。当前只保留：活跃设计档（`design-specs/` 5 件）、判据金样本（`roadtest-scorecards/evidence/`，`--judge-selftest` 回归输入）、判据版本史（`JUDGELOG.md`）、事故记录（`incidents/`）与对外导读（quickstart / methodology / comparison / transformation 等 6 件）。历史实验原始数据（scorecard 时序库、试金石卡、盲评运行档等 550+ 件）已于 2026-10-11 清理出树——**git 历史与发行 tag 全程可溯**，复核时按 commit 取回。
+- **根面** —— README / CHANGELOG / RELEASE-CHECKLIST（发行操作）/ 项目信息.md（决策与发布史）/ AGENTS.md（项目注入）。
 
 ---
 
@@ -127,10 +136,10 @@
 
 ### 尚未被独立验证的（效力层面，诚实标注）
 
-行为面数字（20/20、23/23、24 针 22 PASS）**全部由仓库内自己的判分脚本产出**，记录在 165KB 的 `EVIDENCE.md`（47 节路测，含真实博客项目 dogfooding、盲评夹具、with/without 双仓对照）。这些实验做得系统而勤，但：
+行为面数字（20/20、23/23、24 针 22 PASS）**全部由仓库内自己的判分脚本产出**。历史实验记录（47 节路测，含真实博客项目 dogfooding、盲评夹具、with/without 双仓对照）已于 2026-10-11 归档出树，git 历史与发行 tag 全程可溯。这些实验做得系统而勤，但：
 
 - **「第三方」出现 0 次**：至今没有任何独立复现。
-- 样本 n 普遍较小，同一场景 n=1 不可作结论（EVIDENCE 中已声明此局限）。
+- 样本 n 普遍较小，同一场景 n=1 不可作结论（实验记录中已声明此局限）。
 - 「可复跑」≠「有人复现过」。前者是本工作流的交付标准，后者目前**尚未发生**。
 
 请把「更少事故」当作**待证假设**，而不是已证结论。
@@ -139,30 +148,30 @@
 
 ## 值得读的记录：一份可复用的实证方法论
 
-这个仓库最容易被忽略的价值，不是那 405 条规则，而是**它把「怎么验证一条纪律真的有用」这件事本身做成了可复用的工件**。下面这几份记录，任何想把规则工程做扎实的人都能直接照着学：
+这个仓库最容易被忽略的价值，不是那 405 条规则，而是**它把「怎么验证一条纪律真的有用」这件事本身做成了可复用的工件**。原始实验数据（scorecard 时序库、9 张试金石卡、27 例反向注入变异夹具等 550+ 件）已于 2026-10-11 归档出树，git 历史全程可溯；下面是仍然随仓、可独立核对的记录，任何想把规则工程做扎实的人都能直接照着学：
 
 ### 事故处置记录（踩坑复盘模板）
 
 - **`docs/incidents/zcode-db-corruption-20260918.md`** —— 一次真实事故的完整处置与交接：全树「PAT 消毒」脚本把两个 SQLite 二进制库当文本重写，导致 ZCode 启动报 `corrupt`。记录含报错原文与日志对证、受损面实测表、根因（非法 UTF-8 字节被替换成 U+FFFD，1 字节变 3 字节，页对齐整体错位）、三条修复路线、照抄可跑的抢救命令、以及**禁止清单**（消毒必须带扩展名白名单 + 魔数校验双保险）。这是「事故→根因→预防回流」闭环的范本。
 
-### 行为面 scorecard 时序库 + 判据版本史
+### 判据版本史（判据即代码）
 
-- **`docs/roadtest-scorecards/README.md`** —— 103 个 jsonl / 8304 行 / 1047 探针行的**跨批次可比的时序库**，聚合器按统一口径剔废/分型/三态对比。它专门告诫「直接读原始 jsonl 会得出错结论」——68% 作废率是 provider 欠费窗的历史沉积，不是行为面结论。
-- **`docs/roadtest-scorecards/JUDGELOG.md`** —— **判据即代码**的版本史（j1.0→j2.7）。记录了三次「判据滞后」假 FAIL（高质量合规形态被旧词表误判）、`effort=` 自满足被 GATE 字段名本身满足的空转问题、以及环境死亡行从「人工批注」变成「机器签名」的演进。判据改动必须 ① bump `JUDGE_VERSION` ② 过金样本回归 ③ 留变更记录。
+- **`docs/roadtest-scorecards/JUDGELOG.md`** —— **判据即代码**的版本史（j1.0→j2.7）。记录了三次「判据滞后」假 FAIL（高质量合规形态被旧词表误判）、`effort=` 自满足被 GATE 字段名本身满足的空转问题、以及环境死亡行从「人工批注」变成「机器签名」的演进。判据改动必须 ① bump `JUDGE_VERSION` ② 过金样本回归（`docs/roadtest-scorecards/evidence/`，随仓）③ 留变更记录。scorecard 原始时序库（103 个 jsonl / 1047 探针行）已归档出树，git 历史可溯。
 
 ### 逃逸分析 → 回流闭环（验证机制的真实证据）
 
-- **`docs/field-trials/jz-01-ledger/SCORECARD.md` 等 7 张合成试金石卡（jz-01~07）+ 2 张实地轨卡（site-01/02，真实存量项目只读实测）** —— 每张合成卡拿一个「现实中等水平」的合成产物跑 8 台门禁，再做**逃逸分析**：逐条枚举夹具中真实存在、首跑没被抓到的缺陷，判定「真缺口 / 半缺口 / 边界外」，真缺口**回流成新的判据**（如 E1 空态无引导→回流 R5-W；E2 click-div 伪按钮→回流 A3b），回流后复跑必须命中。带星行的「回流前不命中、回流后命中」就是回流效力的直接证据。jz-02 卡还记录了一个回流时自己抓到的 bug（`if backend_list:` 把空清单当 falsy 跳过）。
+- **7 张合成试金石卡（jz-01~07）+ 2 张实地轨卡（site-01/02，真实存量项目只读实测）**（`docs/field-trials/`，已归档出树，git 历史可溯）—— 每张合成卡拿一个「现实中等水平」的合成产物跑 8 台门禁，再做**逃逸分析**：逐条枚举夹具中真实存在、首跑没被抓到的缺陷，判定「真缺口 / 半缺口 / 边界外」，真缺口**回流成新的判据**（如 E1 空态无引导→回流 R5-W；E2 click-div 伪按钮→回流 A3b），回流后复跑必须命中。带星行的「回流前不命中、回流后命中」就是回流效力的直接证据。jz-02 卡还记录了一个回流时自己抓到的 bug（`if backend_list:` 把空清单当 falsy 跳过）。这套「逃逸→回流→复跑命中」方法已沉淀进 `docs/methodology-rule-verification.md`，不绑定本项目可复用。
 
 ### 反向注入（自测全 PASS ≠ 反向防御）
 
-- **`docs/reverse-injection-gates-20260929/REPORT.md`** —— 27 例变异夹具：**漏报 15 / 误报 1**，其中 `--selftest` 全 PASS 与 15 漏报并存，直接证明「自测只盖正向样例、反向变异是盲区」。每条例给出根因（`if main_fn and …` falsy 短路、`startswith(("展示","显示"))` 只查前缀、字符串 truthy 判真等）与修复建议。
-- **`docs/riskscan-measure-20260929/REPORT.md`** —— 双臂实测：召回 12/14（86%），良性臂噪声 4/6（67%）——诚实标注枚举外域（terraform/nginx reload）与噪声地板。
+- **反向注入门禁实测**（2026-09-29 批，27 例变异夹具，已归档出树、git 历史可溯）—— **漏报 15 / 误报 1**，其中 `--selftest` 全 PASS 与 15 漏报并存，直接证明「自测只盖正向样例、反向变异是盲区」。每条例给出根因（`if main_fn and …` falsy 短路、`startswith(("展示","显示"))` 只查前缀、字符串 truthy 判真等）与修复建议；全部修复已回流进九台门禁的 `--selftest` 负向样例。
+- **risk_scan 双臂实测**（2026-09-29 批，同上可溯）—— 召回 12/14（86%），良性臂噪声 4/6（67%）——诚实标注枚举外域（terraform/nginx reload）与噪声地板。
 
-### 细则查重裁决 + 对标调研
+### 对标调研（随仓）
 
-- **`docs/mining-dedupe-20260929/REPORT.md`** —— 29 条候选 × 405 条 details 的查重裁决，四态判定（撞车已有 6 / 增量并入 10 / 新颖可立 10 / 非细则 3），「只查重不增条」的边界纪律。
+- **`docs/comparison-v290-analysis-20260916.md`** —— 11 个同类项目、6 维矩阵的一手对标（A 流程强化 / B 规则全家桶 / C 多智能体编排 / D 企业治理平台四分法）。
 - **`docs/design-specs/benchmark-superpowers-20260929.md`** —— 对标 obra/superpowers 的可吸收清单，每条带借鉴点/现状/移植成本/验证法四列，并明确「不抄什么」（不抄成本滤镜、不降级去抄独立 evals 仓）。
+- **`docs/design-specs/blind-eval-design.md`** —— 盲评实验设计档：判据 vs 机器判据的对照实验设计与判分口径（细则 #373「机器事实优先于 LLM 判据」的落地设计）。
 
 ### 外部方向的公开佐证（方向性，非同层证据）
 
@@ -170,16 +179,16 @@
 
 ### 对外反馈
 
-- **`docs/methodology-rule-verification.md`** —— **「怎么验证一条 agent 规则真的有用」的实证方法论（可移植版）**：三层缺口（在场/遵守/有用）、判据即代码+金样本回归、逃逸分析→回流闭环、反向变异自测、双臂对照与作者污染、环境死亡纪律、负面结论更严、以及**何时别用这套**的过重判定——每节锚定本仓证据工件，可逐条复核。
-- **`docs/mimosa-feedback-pack-20260929.md`** —— 向 ZCode 插件侧提交的误标反馈包（M1-M10 实例 + 7 条最小复现件 + 7 条修复建议），回执 [zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)。它自己就是「把踩坑做成可复现证据」的示范——连「检测器误标会把工程实践推向更危险写法（为绕检而拼接 shell 字符串）」这种方向性反效果都记录在案。
+- **`docs/methodology-rule-verification.md`** —— **「怎么验证一条 agent 规则真的有用」的实证方法论（可移植版）**：三层缺口（在场/遵守/有用）、判据即代码+金样本回归、逃逸分析→回流闭环、反向变异自测、双臂对照与作者污染、环境死亡纪律、负面结论更严、以及**何时别用这套**的过重判定——每节锚定本仓证据工件（归档件按 git 历史+commit 取回），可逐条复核。
+- **[zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)** —— 向 ZCode 插件侧提交的检测器误标反馈（M1-M10 实例 + 最小复现件 + 修复建议；反馈包原文已归档出树，git 历史可溯）。它自己就是「把踩坑做成可复现证据」的示范——连「检测器误标会把工程实践推向更危险写法（为绕检而拼接 shell 字符串）」这种方向性反效果都记录在案。
 
 ---
 
-## 分发渠道（实际状态，2026-10-09）
+## 分发渠道（实际状态，2026-10-11）
 
 | 渠道 | 版本 | 状态 |
 | --- | --- | --- |
-| GitHub 源库 + Release | v4.0.0 | 权威源；32 stars / 3 forks；每版附 dist zip |
+| GitHub 源库 + Release | v4.0.0 | 权威源；34 stars / 3 forks；每版附 dist zip |
 | npm（GitHub Packages） | 4.0.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-10 发布 4.0.0（89 文件，shasum 48e18e3b） |
 | Gitee 镜像 + Release | v4.0.0 | 0 stars；与 GitHub 同 commit/tag 双推；4.0.0 Release id=1193457（2026-10-10，附件 2,209,350B） |
 | ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow`；Bookmark 0（2026-10-09 实测） |
@@ -245,13 +254,13 @@ git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
 - **v3.3.1**（2026-09-29）：双仓门面重构 + 净化瘦身 + 产品工程包联动发行。
 - **v3.3.0**（2026-09-29）：细则 405 条/32 类 + 检索触达三层 + 叙述对账工具化。
 - **v3.2.0**（2026-09-20）：外部评审审计 + 条款级落刀批（373 条/30 类 · judge j2.5）。
-- 完整历史见 [CHANGELOG.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/CHANGELOG.md)（v1.9 → v4.0.0，39 个版本）。
+- 完整历史见 [CHANGELOG.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/CHANGELOG.md)（v1.9 → v4.1.0，40 个版本）。
 
 ---
 
 ## 来源与许可
 
 - 源库：[github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow)（MIT License）
-- 完整机制与证据：[SKILL.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/SKILL.md)、[EVIDENCE.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/EVIDENCE.md)、[rules.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/references/rules.md)
+- 完整机制与证据：[SKILL.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/SKILL.md)、[rules.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/references/rules.md)、[项目信息.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/项目信息.md)（决策与发布史；历史实验证据见 git 历史与发行 tag）
 - 同类项目对标：[docs/comparison-v290-analysis-20260916.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/docs/comparison-v290-analysis-20260916.md)、[benchmark-superpowers-20260929.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/docs/design-specs/benchmark-superpowers-20260929.md)
-- 值得读的记录：见上文「值得读的记录」一节，全部位于 `docs/` 下。
+- 值得读的记录：见上文「值得读的记录」一节；随仓部分位于 `docs/`，归档部分按 git 历史+commit 取回。
