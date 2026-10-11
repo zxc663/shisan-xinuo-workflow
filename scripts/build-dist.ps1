@@ -16,11 +16,11 @@ $all = ($roots + $scripts + $docs + $skill) | Sort-Object -Unique
 
 Write-Host "待复制: $($all.Count) 项"
 
-# 3) 复制进 staging（保留相对结构）
+# 3) 复制进 staging（保留相对结构；正斜杠直接用——pwsh Core 三平台兼容，反斜杠替换在 Linux 靠兼容层=脆弱）
 New-Item -ItemType Directory -Path $staging -Force | Out-Null
 foreach ($rel in $all) {
-    $s = Join-Path $root ($rel.Replace('/','\'))
-    $d = Join-Path $staging ($rel.Replace('/','\'))
+    $s = Join-Path $root $rel
+    $d = Join-Path $staging $rel
     if (-not (Test-Path $s)) { Write-Error "缺失源: $s" }
     $null = New-Item -ItemType Directory -Path (Split-Path $d -Parent) -Force
     Copy-Item $s $d -Force
@@ -37,7 +37,8 @@ if ($diff1.Count -ne 0 -or $diff2.Count -ne 0) {
 }
 Write-Host "Set-diff 双检: $($stageList.Count)=$($expectList.Count) 一致"
 
-# 5) 压缩
+# 5) 压缩（dist 目录自建幂等——CI 干净环境无预存 dist，Compress-Archive 要求目标目录存在）
+New-Item -ItemType Directory -Path $src -Force | Out-Null
 $zip = Join-Path $src ("shisan-xinuo-workflow-v" + $ver + ".zip")
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path (Join-Path $staging "*") -DestinationPath $zip
