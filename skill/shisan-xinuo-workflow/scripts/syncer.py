@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 """
 shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0）
-协议：
+协议（用户拍板 2026-08-30）：
 - user-notes/（用户规则目录）与 memory/（skill 自身落盘）与 *.bak-* 永不碰；
 - 上游（源库 skill/）整体覆盖：SKILL.md / references/* / templates/*；
 - 副本内非源库文件（如 references/personal-playbook.md）→ 一次性迁移进 user-notes/；
@@ -12,7 +12,7 @@ shisan-xinuo-workflow sync-skill 三路合并更新器（v2.0）
 v2.0 修复（实测驱动）：
 - 首次安装必崩修复：目标目录不存在 → 跳过备份、直接创建并全量复制（exit=0）；
 - 备份路径外置修复：备份默认落 <dest 的上级父目录>/skill-backups/<name>.bak-<ts>，
-  ——平台扫描路径之外；避免备份目录被平台收录为第二个同名 Skill 并选中旧版（平台实测）；
+  ——平台扫描路径之外；避免备份目录被平台收录为第二个同名 Skill 并选中旧版（WorkBuddy 2026-08-30 实测）；
   可用 --backup-dir 覆盖；
 - 空 pass 死代码删除；dry-run break 移出 os.walk（干跑列出全部变更）；
 - 输出解析到的同步路径，供按「平台加载时的 Base directory」验收。
@@ -63,10 +63,26 @@ def main():
     if a.family:
         import subprocess
         fam_root = os.path.join(REPO_ROOT, "skill")
-        pkgs = sorted(d for d in os.listdir(fam_root) if os.path.isdir(os.path.join(fam_root, d)))
+        # F-73：包清单显式化（目录自动发现会把 skill/ 下临时/残留目录一并部署；新增家族包须在此显式登记）
+        FAMILY_PKGS = [
+            "shisan-xinuo-workflow",
+            "shisan-xinuo-flows",
+            "shisan-xinuo-roles",
+            "shisan-xinuo-product",
+            "shisan-xinuo-single",
+        ]
+        found = sorted(d for d in os.listdir(fam_root) if os.path.isdir(os.path.join(fam_root, d)))
+        unregistered = [d for d in found if d not in FAMILY_PKGS]
+        missing = [p for p in FAMILY_PKGS if p not in found]
+        pkgs = [p for p in FAMILY_PKGS if p in found]
+        if unregistered:
+            print(f"[family][WARN] skill/ 下未登记目录（不部署）：{unregistered}——新增家族包须显式登记 FAMILY_PKGS（F-73）")
+        if missing:
+            print(f"[family][WARN] 清单内包目录缺失（跳过）：{missing}")
         base = os.path.expanduser(r"~\.agents\skills")
         rc = 0
-        print(f"[family] 家族包 {len(pkgs)} 个: {pkgs}")
+        done, failed = [], []
+        print(f"[family] 显式清单 {len(pkgs)} 个: {pkgs}")
         for p in pkgs:
             args = [sys.executable, os.path.abspath(__file__),
                     "--src", os.path.join(fam_root, p),
@@ -74,8 +90,11 @@ def main():
             if a.dry: args.append("--dry")
             if a.backup_dir: args += ["--backup-dir", a.backup_dir]
             print(f"\n===== family: {p} =====")
-            rc = max(rc, subprocess.run(args).returncode)
-        print(f"\n[family done] exit={rc}（各包详情见上方分节；验收看 Base directory）")
+            prc = subprocess.run(args).returncode
+            rc = max(rc, prc)
+            (done if prc == 0 else failed).append(p)
+        tail = f"；已完成 {len(done)} 包: {done}" + (f"；失败 {len(failed)} 包: {failed}" if failed else "")
+        print(f"\n[family done] exit={rc}（各包详情见上方分节；验收看 Base directory{tail}）——fail-fast 不回滚=A-14 判例在 syncer 域延伸")
         return rc
 
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -186,31 +205,16 @@ def main():
             if not a.dry:
                 shutil.copy2(a.memory_target, mem_bak)
             mem_prev = open(a.memory_target, encoding="utf-8").read()
-            # 旧锚清扫（批 4 D3）：识别全部「在场提示」锚点块（标题行→下一个 1-2 级标题或文件尾）全部移除——
-            # 治「每次追加新锚、旧版本锚永久残留」的机制根因（记忆层旧锚跨版本残留三例实证），随后写入唯一最新锚
-            outl, i = [], 0
-            removed_preview = []
-            while i < len(mem_prev.splitlines(keepends=True)):
-                ln = mem_prev.splitlines(keepends=True)[i]
-                if re.match(r'^#{2,4} 在场提示 · 工作流 Skill 现已在场', ln):
-                    vm = re.search(r'v\d+\.\d+\.\d+', ln)
-                    cleaned_versions.append(vm.group(0) if vm else '?')
-                    i += 1
-                    # 停止条件（2.8.x 修正：任意层级标题即停，防吞锚点后同层级用户内容）：
-                    # 旧判据 ^##?[^#] 只停在 H1/H2，锚点后同/更深层级标题的用户段落会被静默删除
-                    while i < len(mem_prev.splitlines(keepends=True)) and not re.match(r'^#{1,6}(\s|$)', mem_prev.splitlines(keepends=True)[i]):
-                        removed_preview.append(mem_prev.splitlines(keepends=True)[i].rstrip())
-                        i += 1
-                    while outl and outl[-1].strip() == "":
-                        outl.pop()
-                    continue
-                outl.append(ln)
-                i += 1
-            mem_prev = "".join(outl)
-            if removed_preview:
-                print(f'[记忆清扫留痕] 本块将删除 {len(removed_preview)} 行（预览前 5 行，完整内容见备份）：')
-                for rl in removed_preview[:5]:
-                    print('  -', rl[:80])
+            # 旧锚清扫（批 4 D3 → F-26 单实现 anchor_sweep.py）：识别全部「在场提示」锚点块
+            # （标题行→任意层级标题即停）整体移除，治「每次追加新锚、旧版本锚永久残留」；
+            # 判据单源=scripts/anchor_sweep.py（install-skill.ps1 同调此实现，禁再手抄第二份）
+            from anchor_sweep import sweep as _anchor_sweep
+            mem_prev, _sw = _anchor_sweep(mem_prev)
+            cleaned_versions = _sw["versions"]
+            if _sw["removed"]:
+                print(f'[记忆清扫留痕] 本块将删除 {_sw["removed"]} 行（预览前 5 行，完整内容见备份）：')
+                for rl in _sw["preview"]:
+                    print('  -', rl)
         sep = "\n\n---\n" if mem_prev.strip() else ""
         mem_new = mem_prev.rstrip() + sep + body
         clean_tag = f"；旧锚清扫 {len(cleaned_versions)} 块[{','.join(cleaned_versions)}]" if cleaned_versions else ""
