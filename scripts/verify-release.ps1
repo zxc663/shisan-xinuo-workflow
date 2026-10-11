@@ -233,10 +233,13 @@ if (-not (Test-Path $detailsPath)) { $probsF += "缺 details.md" } else {
     $dtxt = Get-Content $detailsPath -Raw -Encoding UTF8
     # 1) 编号连续：条目编号 = 行首 `N. `（含标签可选）；特殊槽（〔预留槽〕/〔归档〕）不参与覆盖断言（F-19：索引不挂预留槽）
     $allNums = [regex]::Matches($dtxt, '(?m)^(\d+)\. ') | ForEach-Object { [int]$_.Groups[1].Value }
+    # 退役保号名单：真删留空号不参与连续断言；记录=项目信息.md §四+CHANGELOG 对应版本条目（首例 #103：双写旧制退役→#35 受控输出，v4.1.0）
+    $retiredNums = @(103)
     $special = [regex]::Matches($dtxt, '(?m)^(\d+)\. .*(〔预留槽〕|〔归档〕)') | ForEach-Object { [int]$_.Groups[1].Value }
     $nums = $allNums | Where-Object { $special -notcontains $_ } | Sort-Object -Unique
     $expect = 1..($allNums | Sort-Object -Unique | Select-Object -Last 1)
-    $gap = Compare-Object $expect ($allNums | Sort-Object -Unique)
+    $present = (($allNums | Sort-Object -Unique) + $retiredNums) | Sort-Object -Unique
+    $gap = Compare-Object $expect $present
     if ($gap) { $probsF += "编号不连续: $($gap | ForEach-Object { $_.InputObject } | Select-Object -First 5)..." }
     # 2) 索引段覆盖：## 症状索引 与 ## 1. 之间每个活跃编号出现 ≥1 次
     $mIdx = [regex]::Match($dtxt, '(?s)## 症状索引.*?(?=\n## 1\.)')

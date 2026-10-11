@@ -67,7 +67,7 @@ CARRIERS = [
         r'details (?P<n>\d+) 条 (?P<c>\d+) 类',
     ]),
     ('package.json', [
-        r'渐进式披露（(?P<n>\d+) 条细则 (?P<c>\d+) 类',
+        r'分文件按需加载\+细则检索端口（(?P<n>\d+) 条细则 (?P<c>\d+) 类',
         r'\((?P<n>\d+) items / (?P<c>\d+) classes',
     ]),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'SKILL.md'),
@@ -76,12 +76,12 @@ CARRIERS = [
      [r'47 条 / (?P<n>\d+) 细则']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
      [r'活跃 (?P<n>\d+) 条，类数=分节数 (?P<c>\d+)']),
-    # About 活草案槽（P-G，2026-09-29；v4.0.0 升位）：只锚 项目信息.md 最新一节「下一版预案」三处
-    # （节标题/中文变体/英文变体）；历史草案 §六·〇-§六·十=版本时点快照不入表（同头部「历史叙述不入本表」口径）
+    # About 活草案槽（P-G，2026-09-29；v4.0.0 升位→v4.1.0 重锚 2026-10-11）：只锚 项目信息.md 最新一节「下一版预案」三处
+    # （节标题/中文变体/英文变体）；历史草案 §六·〇-§六·十一=版本时点快照不入表（同头部「历史叙述不入本表」口径）
     ('项目信息.md', [
-        r'六·十一、About 描述文案（v4\.0\.0 口径 · (?P<n>\d{1,3}) 条/(?P<c>\d{1,2}) 类',
-        r'中文（v4\.0\.0 预案）[\s\S]{0,300}?／(?P<n>\d{1,3}) 条 (?P<c>\d{1,2}) 类症状索引细则',
-        r'English（v4\.0\.0 预案）[\s\S]{0,600}?(?P<n>\d{1,3}) lessons in (?P<c>\d{1,2}) categories',
+        r'六·十二、About 描述文案（v4\.1\.0 口径 · (?P<n>\d{1,3}) 条/(?P<c>\d{1,2}) 类',
+        r'中文（v4\.1\.0 预案）[\s\S]{0,300}?／(?P<n>\d{1,3}) 条 (?P<c>\d{1,2}) 类症状索引细则',
+        r'English（v4\.1\.0 预案）[\s\S]{0,600}?(?P<n>\d{1,3}) lessons in (?P<c>\d{1,2}) categories',
     ]),
 ]
 RANGE_CARRIER = (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
