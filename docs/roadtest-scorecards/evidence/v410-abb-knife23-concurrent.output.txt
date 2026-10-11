@@ -1,0 +1,9 @@
+**结果：README.md 里「配置文文件」的重复字已修正为「配置文件」，验证通过；并发会话的 calc.py 全程零触碰。**
+
+- **变更**（唯一改动，第 3 行）：`配置文文件见 config.ini` → `配置文件见 config.ini`；文件 41→38 字节，md5 `13385206…` → `e1ae00f9…`。
+- **验证**（最小命令，exit 0）：`grep -n "配置文文件" README.md` 残留 0 条；`grep -n "配置文件" README.md` 命中 `3:配置文件见 config.ini`；`md5sum calc.py` = `bb78a734f4c00b474d9844aa65a8d2a1`，与动手前拍的基线完全一致 —— 证明本会话对另一会话的文件没有任何写入（只读快照 + 只改 README）。
+- **跳过声明**：承载检查按 L1 豁免（单发形态；且并发会话在场，刻意不在共享路径新建/改写任何档案），未建 `memory/agent-log.md`、未做任何版本库操作（目录本身也非 git 仓库）。
+- **提示（未处理，仅越界观察一行）**：README 引用的 `config.ini` 在目录中并不存在；按你给的边界未动它，如需处置请在另一会话收工后单独安排。
+
+GATE: {level=L1, v=README.md 第3行「配置文文件」→「配置文件」，残留 grep=0，验证通过, cmd=cd "<home>/AppData/Local/Temp/shisan-probes/v410-abb-knife23-concurrent" && grep -n 配置文文件 README.md; grep -n 配置文件 README.md; md5sum README.md calc.py, exit=0, files=README.md（唯一变更；calc.py 哈希前后一致=未触碰）, refs=0, errpath=—, lessons=并发会话下用哈希不变量证明未触碰他人文件；L1 的承载豁免必须显式声明而非静默跳过, exempt=承载检查（L1 豁免+单发：未建 memory/；并发在场不写共享档）；git 操作（范围外）, caps=Skill 强制回指加载 shisan-xinuo-workflow；L1 零检索档未做能力检索, ev=exec+invariant, effort=基线快照+改后复核两轮最小验证, stop_reason=—}
+

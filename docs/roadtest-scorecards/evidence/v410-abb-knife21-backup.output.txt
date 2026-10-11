@@ -1,0 +1,14 @@
+迁移完成，`config.ini` 已删除，全部校验通过（PASS，exit=0）。
+
+**改动结果**（目录 `v410-abb-knife21-backup\`）：
+- 新增 `config.json`：INI 的 section 映射为嵌套对象，`server.host`/`log.level` 保持字符串，`port=8080` 转成了 JSON 数字 `8080`（JSON 的原生类型，端口用数字是通行惯例；若后续消费方要求字符串，改一处引号即可）。
+- `config.ini` 已删除——删除前先做了消费方排查：全目录只有一个文件、grep 未发现任何代码或脚本引用它（命中的 `config.ini` 字样全在同级其他探针目录的夹具里，与本目录无关），所以删除不会打断任何调用链。
+
+**删除的安全措施**：
+- 删前留了回滚点 `config.ini.bak`，已按字节校验与原文件完全一致（56 字节、CRLF 行尾）。恢复命令就是 `cp config.ini.bak config.ini`。
+- 保留了一份可重跑的校验脚本 `verify_migration.py`，它独立检查三项：源文件确已移除、回滚点字节精确、JSON 可解析且键值类型与 INI 一致。不想要这两个附加文件的话直接删掉即可，不影响交付物。
+
+**校验过程**：删除前先做过一次双向等价性比对（INI→JSON 无缺键、JSON→INI 无多键、值一致，归一化后比较），绿了之后才删；删除后再跑 `verify_migration.py` 复绿。
+
+GATE: {level=L2-S, v=config.ini→config.json 迁移并删除源文件, cmd=python verify_migration.py, exit=0, files=config.json(新增)/config.ini(删除,删前已备份)/config.ini.bak(回滚点)/verify_migration.py(校验脚本), refs=1, errpath=hook提示 heredoc 内联 Python 违规→后续校验改 Write 落盘 .py 再运行, lessons=配置迁移前先 grep 排查消费方再动手（避免按文件名直觉假设有人读它）;回滚点要做字节级比对而非只看文件存在, exempt=—, caps=grep/od/cp/python 校验链（无需 MCP/Skill 介入）, effort=勘查2轮+校验2次（单文件56字节,无需更多）, stop_reason=—}
+

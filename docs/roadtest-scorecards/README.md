@@ -21,7 +21,9 @@ D 类两个文件都不是标准scorecard 行，**聚合器读不到**：
 
 C 类三个文件均为 WorkBuddy 侧 raw I/O 取证存档，`trace`/`pid`/`span` 分片记录一次会话的注入与回显，不是探针结果：`wb-v1-w0-full.jsonl` 与 `wb-v1-w0-probe.jsonl`（各 3466 行）、`wb-v1-b-arm.jsonl`（32 行）。
 
-另有 `evidence/`（8 个 `.output.txt`，被测会话输出本体，FAIL 行判读取证）、`JUDGELOG.md`（判据版本史，判据实体= `probe_runner.py` 的 `JUDGE_VERSION`）与 `blind-ab-20260926/`（盲测试点子目录，含 A/B 臂执行记录）。
+另有 `evidence/`（20 个 `.output.txt`，被测会话输出本体，FAIL 行判读取证+实验归档单元）、`JUDGELOG.md`（判据版本史，判据实体= `probe_runner.py` 的 `JUDGE_VERSION`）与 `blind-ab-20260926/`（盲测试点子目录，含 A/B 臂执行记录）。
+
+> **v4.1.0 Phase 2.5 精简-行为 A/B 对账（2026-10-11 · 首个正式实验归档单元）**：`v410-aba`/`v410-abb` 两臂×五针同题同判据 j2.7，逐 marker **零差分**（SUMMARY 双臂 4/5 PASS，knife29 两臂同败=规则刀前即零行为贡献）→ Phase 2 五刀零回滚；指纹佐证 skill_md 换血 `a97c1f260ce7`→`062b2a86891d`。明细=EVIDENCE §四十八；归档=`evidence/v410-{aba,abb}-*.output.txt` 12 件+双 scorecard。
 
 （上表数字为 2026-10-06 22:09 实测快照；库在持续追加——`wb-v1-*.jsonl` 三个 raw 存档即快照后 2 分钟内新增，引用前建议按下面的判别条件自行统计。）
 

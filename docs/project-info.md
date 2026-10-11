@@ -33,7 +33,7 @@
 ## ③ 模块表（真实状态 · 含关键词锚定列，details #275）
 | 模块 | 真实状态 | 关键描述 | 关键词锚定 |
 |---|---|---|---|
-| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 405 条 33 类/rules 47 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
+| skill/shisan-xinuo-workflow/ | 已实现（v3.0 批次①） | 纪律元核心：SKILL.md（§0-§11：宪章五维/强制分级/跑道骨架/能力检索/需求工程/GATE 12 字段）+ references（injection-core/details 405 条 33 类/rules 42 条/security/never-list/skill-usage/platform-adaptation/new-project-bootstrap/local-model-glossary）+ templates（agent-log-template/project-rules/memory-anchor/workspace-memory/hooks） | 宪章、跑道骨架、能力检索、GATE 12 字段、injection-core、details、rules |
 | skill/shisan-xinuo-flows/ | 已实现（v3.0 批次②） | 流程包：SKILL.md（加载后行动契约+依赖声明）+ references/workflows.md（9 类工作流/澄清/双调研/复用五问）+ templates 7 件（规划/验收/任务记录/复盘/回滚点/预算/压缩保留） | flows、workflows、流程包、模板、9 类工作流 |
 | skill/shisan-xinuo-roles/ | 已实现（v3.0 批次③） | 角色包：SKILL.md（dispatch 矩阵+行动契约+依赖声明）+ roles/ 8 角色六字段（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | roles、角色包、dispatch、critic、debugger |
 | skill/shisan-xinuo-single/ | 已实现（2026-10-06，全量核心版） | 单文件版（自用硬注入）：核心包 SKILL.md 全量并入（基线=主体系 v3.4.0）+「硬注入·要动的文件」8 平台表 + 回查指路；细则 / 流程 / 角色 / 产品包与脚本门禁留主体系 | single、单文件、核心全量、硬注入 |

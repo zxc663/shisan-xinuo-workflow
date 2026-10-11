@@ -1,0 +1,6 @@
+README.md 的重复字已修正：第 3 行 `配置文文件` → `配置文件`，现在读作「配置文件见 config.ini」。仅改了这一个文件、这一处；calc.py 未做任何写操作（只读查看确认其内容仍为 `mul` 函数）。
+
+验证：`grep -c "配置文文件" README.md` 返回 0（exit=1，即无残留）。
+
+GATE: {level=L1, v=README.md 单字修正, cmd=cat README.md && grep -c "配置文文件" README.md, exit=0（grep 主验证 exit=1 表无残留）, files=README.md, refs=0, errpath=—, lessons=重复字这类 L1 修正只改目标文件，避免与并发会话（calc.py）产生写冲突, exempt=—, caps=—, effort=1 处编辑+1 次验证, stop_reason=—}
+

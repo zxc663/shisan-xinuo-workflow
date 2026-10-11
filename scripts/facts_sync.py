@@ -8,7 +8,7 @@
   - 节头范围：details.md 分节头「条目 X-Y」声明 ↔ 该节实际条目 min/max（声明了就断言）
   - 版本 V = package.json（一致性由 verify C 项覆盖，此处不重复）
 
-承载点（声明值，须 == 单源）：每条 = (文件, 正则)；正则内命名组 (?P<n>\\d+)=活跃条数、(?P<c>\\d+)=类数。
+承载点（声明值，须 == 单源）：每条 = (文件, 正则)；正则内命名组 (?P<n>\\d+)=活跃条数、(?P<c>\\d+)=类数、(?P<r>\\d+)=rules 条数（v4.1.0 五刀起单源化——原「47 条」字面量在刀后静默失配=假绿盲区）。
 历史叙述（沿革/快照/旧版条数：版本历史行、RELEASE-CHECKLIST 时点快照、项目信息决策史）不入本表。
 
 用法：
@@ -47,6 +47,8 @@ active_lines = [l for l in re.findall(r'^(\d{1,3}\. .*)', details, re.M)
 COUNT = len(active_lines)
 MAX_ENTRY = max(int(n) for n in re.findall(r'^(\d{1,3})\. ', details, re.M))
 CLASSES = len(re.findall(r'^## \d+\. ', details, re.M))
+rules = open(os.path.join(SK, 'references', 'rules.md'), encoding='utf-8').read()
+RULES_COUNT = len(re.findall(r'^\d{1,2}\. ', rules, re.M))
 
 # (相对路径, [正则…])；命名组 n=活跃条数 / c=类数
 CARRIERS = [
@@ -73,7 +75,7 @@ CARRIERS = [
     (os.path.join('skill', 'shisan-xinuo-workflow', 'SKILL.md'),
      [r'细则 (?P<n>\d+) 条·(?P<c>\d+) 类']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'templates', 'memory-anchor.md'),
-     [r'47 条 / (?P<n>\d+) 细则']),
+     [r'(?P<r>\d+) 条 / (?P<n>\d+) 细则']),
     (os.path.join('skill', 'shisan-xinuo-workflow', 'references', 'details.md'),
      [r'活跃 (?P<n>\d+) 条，类数=分节数 (?P<c>\d+)']),
     # About 活草案槽（P-G，2026-09-29；v4.0.0 升位→v4.1.0 重锚 2026-10-11）：只锚 项目信息.md 最新一节「下一版预案」三处
@@ -133,12 +135,14 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
             bad.append(('n', COUNT))
         if 'c' in m.groupdict() and m.group('c') and int(m.group('c')) != CLASSES:
             bad.append(('c', CLASSES))
+        if 'r' in m.groupdict() and m.group('r') and int(m.group('r')) != RULES_COUNT:
+            bad.append(('r', RULES_COUNT))
         # 'e' = 条目上限（编号至 #N）——v3.1 补：README 口径行同句写「编号至 #N」，
         # 旧表只断言条数/类数，导致上限漂移（367 vs 368）不被门禁捕获
         if 'e' in m.groupdict() and m.group('e') and int(m.group('e')) != MAX_ENTRY:
             bad.append(('e', MAX_ENTRY))
         if bad:
-            problems.append(f'{rel}: {m.group(0)[:40]!r} 声明 {m.groupdict()} ≠ 单源 n={COUNT}/c={CLASSES}')
+            problems.append(f'{rel}: {m.group(0)[:40]!r} 声明 {m.groupdict()} ≠ 单源 n={COUNT}/c={CLASSES}/r={RULES_COUNT}')
             if fix_holder['fix']:
                 fix_holder['changed'] = True
                 # 同一 match 内多命名组时按 span 起点降序替换：先改靠后的组，
@@ -177,6 +181,8 @@ def verify_carriers(fix=False):
                         problems.append(f'{rel}: fix 读回失败 {m.group(0)[:40]!r}')
                     if 'c' in m.groupdict() and m.group('c') and int(m.group('c')) != CLASSES:
                         problems.append(f'{rel}: fix 读回失败(c) {m.group(0)[:40]!r}')
+                    if 'r' in m.groupdict() and m.group('r') and int(m.group('r')) != RULES_COUNT:
+                        problems.append(f'{rel}: fix 读回失败(r) {m.group(0)[:40]!r}')
     rel, pat = RANGE_CARRIER
     _cr3 = _confine(os.path.join(ROOT, rel))
     t = open(_cr3, encoding='utf-8').read()
@@ -191,7 +197,7 @@ def verify_carriers(fix=False):
             Path(_cp).write_text(t, encoding='utf-8', newline='')
     problems += section_range_problems()
     fix_tag = 'fix' if fix else 'check'
-    print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES}｜模式={fix_tag}')
+    print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES} rules={RULES_COUNT}｜模式={fix_tag}')
     if problems:
         for p_ in problems:
             print('[DIFF]', p_)

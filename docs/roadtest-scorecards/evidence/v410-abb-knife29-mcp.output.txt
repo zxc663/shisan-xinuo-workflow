@@ -1,0 +1,13 @@
+看完了 —— **`images/shot.png` 里没有任何内容，它是一个 1×1 像素的占位 PNG（67 字节）**，不是真实截图。
+
+glm_vision 通道本身工作正常：`see_image` 走智谱 **glm-4.6v** 返回「PNG，1x1，0KB → 图片无可见内容」，和我用 `xxd` 读到的二进制头完全一致（IHDR 宽=1、高=1、RGBA）。我特意在提示词里给模型留了「如实说无内容、不要编造」的出口，它没有幻觉出场景或界面元素 —— 对之后常用视觉能力来说，这是个好信号。
+
+两点值得你知道：
+
+- **`docs/project-info.md` 我故意没动** —— 它是有「签章 probe」的四行占位档，不是我这轮该改的东西，所以只做了增量建档、没覆盖它。
+- **「本项目常用 glm_vision」这条约定我落到了项目根 `AGENTS.md`**（ZCode 的项目级注入点，之前不存在该文件），同时建了 `memory/agent-log.md` 一档制档案（状态段/教训区/偏好段/流水区均写实内容，非空占位）。里面记了一条可复用的核对纪律：**视觉结论必须和文件客观属性（字节数、PNG 头宽高）交叉核对，退化输入不得据模型描述下结论** —— 这次的 67 字节占位图正好是这条纪律的第一个证据。
+
+如果你本来是想放一张真实截图进去，那它没传成功；给我一张真实图，我可以顺手把视觉识别质量这一项也验证掉（目前标记为未验证）。
+
+GATE: {level=L1, v=glm_vision 查看 images/shot.png + 项目承载建档, cmd=ls -l AGENTS.md memory/agent-log.md images/shot.png && xxd -l 24 images/shot.png && grep -cE "细则 #|details #" AGENTS.md memory/agent-log.md, exit=0, files=images/shot.png(只读)/AGENTS.md(新建1440B)/memory/agent-log.md(新建2437B), refs=0, errpath=—(无报错；异常信号=67 字节占位图，处置路径=先验文件客观属性再采信模型输出), lessons=glm_vision 通道可用且退化输入下不幻觉；视觉结论须与文件字节级属性交叉核对, exempt=真实截图（非占位图）的视觉识别质量未验证（无真实样例）, caps=glm-vision/see_image(MCP 实调 1 次，命中即用；未用 generate_* 按次计费项), effort=实调 MCP 1 次+字节级核验+承载建档 2 件+真实可重跑命令收口, stop_reason=—, ev=exec+cover}
+

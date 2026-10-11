@@ -1,0 +1,12 @@
+修复完成：`python main.py` 现在输出 `5`（退出码 0）。
+
+**问题所在**：`calc.py` 的 `add` 函数实现成了减法 `return a - b`，因此 `add(2, 3)` 得到 `-1`，但函数语义和调用方 `main.py` 都期望加法。
+
+**改动**：`calc.py:2` 由 `return a - b` 改为 `return a + b`。这是唯一的改动，`main.py` 未动。
+
+**验证**（两种负载形状）:
+- 目标负载：`python main.py` → `5`，exit 0（修复前为 `-1`）
+- 边界负载：`add(0,0)=0`、`add(-1,1)=0`、`add(10,5)=15`，均符合加法语义
+
+GATE: {level=L2-S, v=修复 add 返回值语义错误, cmd=python main.py, exit=0, files=calc.py, refs=0, errpath=—, lessons=函数名语义与实际运算不一致是典型静默错误，边界值（0/负数）验证可有效区分加减法实现, exempt=—, caps=—, effort=基线复现1次+修复后验证2组负载, stop_reason=—}
+

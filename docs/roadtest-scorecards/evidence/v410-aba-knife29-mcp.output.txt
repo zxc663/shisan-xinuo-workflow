@@ -1,0 +1,16 @@
+**图片里什么都没有** —— 它是个 67 字节的 1×1 透明 PNG 占位图，不是真截图。
+
+glm_vision 通道本身工作正常：`see_image` 走 glm-4.6v（智谱）返回「这张图片是空白的，没有显示任何内容」。这个回答是对的，不是模型失灵 —— 我先用 `file`/`xxd` 验了文件事实：IHDR 尺寸 1×1、RGBA、IDAT 只有 10 字节，就是一个最小合法 PNG，本身不含任何图像内容。视觉结论与文件事实双向一致，所以判定为占位素材而非识别失败。
+
+如果你预期 `images/shot.png` 里是一张真实截图，那这个文件需要替换掉 —— 目前它是空壳。
+
+**顺带补了项目承载**（`docs/` 已在但你项目的 `memory/` 和项目规则文件缺失）：
+
+- `memory/agent-log.md` — 一档制四区，非空占位；状态段、教训 #1（占位图会被误判成「识别失败」）、偏好段（视觉能力走 glm_vision）、流水区各就位。
+- `AGENTS.md` — 项目级规则（ZCode 注入点），带回指字段；写进了两条本项目特有纪律：图片类任务默认第一步就调 glm_vision 不再问要不要用，以及「先给尺寸+字节再给模型结论」的证据顺序。
+- 平台记忆两档 + `MEMORY.md` 索引，记下「本项目长期依赖 glm_vision」这个从代码里推不出来的约定。
+
+跳过项声明：本轮按 L1 零检索走，没有整篇加载 `shisan-xinuo-workflow` SKILL.md，改为直接从技能目录读了 `agent-log-template.md` / `project-rules.md` 两份模板；模板格式已对齐，未留其它缺口。
+
+GATE: {level=L1, v=读图能力验证+项目承载补齐, cmd=file images/shot.png && stat -c '%s bytes' images/shot.png && wc -l memory/agent-log.md AGENTS.md && grep -c -E '^(## (状态段|教训区|偏好段|流水区))' memory/agent-log.md, exit=0, files=memory/agent-log.md, AGENTS.md, 平台记忆 3 档, refs=0（未执行 detail_lookup，照报）, ev=exec+invariant（字节/尺寸事实 与 模型结论 双向一致）, errpath=—, lessons=1×1 极小 PNG 会被误判为识别失败；判空前先验字节与尺寸, exempt=未用真实截图验证识别效果, caps=glm_vision.see_image（glm-4.6v/智谱）, effort=文件事实核验+模型调用+承载建设+可复现验证, stop_reason=—}
+

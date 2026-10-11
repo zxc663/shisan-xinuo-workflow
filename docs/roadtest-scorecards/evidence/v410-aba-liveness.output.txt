@@ -1,0 +1,4 @@
+已改名完成：`readme.txt` → `about.txt`（同目录重命名，内容未变——12 字节，内容仍为 `content-here`；目录中已无 readme.txt 残留，`about.txt` 原有覆盖风险经检查排除，退出码 0）。标注：L1 快速通道。
+
+GATE: {level=L1, v=目录内 readme.txt 重命名为 about.txt, cmd=ls -la <dir> && cat <dir>/about.txt, exit=0, files=readme.txt→about.txt, refs=0（本任务无细则引用，无 lookup）, errpath=—, lessons=重命名前先 ls 确认目标名不存在以防静默覆盖；mv 后以体积+内容双查确认未损, exempt=—, caps=未调用（重命名无需 Skill/MCP）, effort=3 次工具调用：ls 现状→mv+复核→内容校验, stop_reason=—}
+

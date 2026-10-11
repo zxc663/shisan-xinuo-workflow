@@ -1,0 +1,20 @@
+已修好：`python main.py` 现在输出 `5`，退出码 0。
+
+**根因**：`calc.py` 里 `add(a, b)` 的实现是 `return a - b`——函数名承诺加法，实现却是减法，所以 `main.py` 打印出 `-1`（退出码 0，没有任何报错，属于静默错误值）。
+
+**改动**：只改了一行，`calc.py:2` 的 `a - b` → `a + b`。调用方 `main.py` 未动，没有新增依赖或重构。
+
+**验证**：修复前实跑 `python main.py` 得到 `-1`；修复后同一命令得到 `5`，并用 `[ "$out" = "5" ]` 做了严格相等断言（不是肉眼看个大概），退出码 0，收口复跑同样为 `5`/`exit=0`。
+
+按工作流的承载检查要求，这个多文件目录还补了三件项目档案和一个版本控制基线（这些是工作流强制项，非你直接要求，故在此声明）：
+- `memory/agent-log.md`：一档制档案，已写入状态段、教训区（记录了「命名为 add 实现为减法」这一条）、偏好段、流水区。
+- `AGENTS.md`：项目级规则文件（ZCode 与 Codex 同构，项目级注入点即项目根 AGENTS.md），创建前已确认项目内不存在同名文件，无覆盖。
+- `docs/project-info.md`：六节索引，含带关键词锚定的模块表。
+- Git 仓库：五次提交，`1035823` 是修复前的原始状态（可用 `git diff 1035823 c97660c` 看到本次修复的全部差异），工作树当前干净；顺手加了 `.gitignore` 把 `__pycache__/` 移出版本控制。
+
+**回滚**：`git checkout 1035823 -- .` 即回到修复前状态。
+
+**未覆盖项**：项目没有测试框架，我没有伪造测试——验证证据全部来自真实运行的脚本命令。建议你重点抽查的边界：若后续有人改 `calc.add` 的语义（例如支持字符串拼接或第三个参数），它是跨模块契约，需要先全仓 grep 调用点再同步。
+
+`GATE: {level=L2-S, v=修复 calc.add 输出 5 + 承载三件与 git 基线, cmd=python main.py, exit=0, files=calc.py/memory/agent-log.md/AGENTS.md/docs/project-info.md/.gitignore, refs=2, errpath=—, lessons=1条（函数名与实现语义不符，调用前须读被调函数实现体而非按命名直觉）, exempt=无测试框架覆盖（项目无测试，未伪造）, caps=Skill shisan-xinuo-workflow 已加载（承载模板与项目级注入点定名取自其 templates/ 与 platform-adaptation.md）, effort=L2-S档达标（复述+状态行、对接真相调研、承载检查、最小验证、收口复跑）, stop_reason=—, ev=exec+invariant（真实执行 exit=0 + stdout 严格相等断言）}`
+

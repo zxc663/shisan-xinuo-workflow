@@ -951,3 +951,36 @@ oadtest-v11\summary-v11-full.md，scorecards 三件落盘。
 **工件**：`scripts/wb_judge.py` ｜scorecards `wb-v1-{b,a}-arm.jsonl`（A 29 行 / B 32 行）＋ `wb-v1-w0-full.jsonl`（3,466 行全量终判）｜`D:\roadtest-wb-v1\fingerprint-A.json`（仓外）｜探针 `wb-v1-w0-probe.jsonl` = **判据修订前旧版**（1.1MB，留档标注不删）。
 
 **本批GATE**：`GATE: {level=L2-S, v=WorkBuddy 路测 v1 阶段 0-2, cmd=python scripts/syncer.py --dest C:/Users/zxc66/.workbuddy/skills/shisan-xinuo-workflow --memory-target C:/Users/zxc66/.workbuddy/MEMORY.md && python scripts/deploy_injection.py --check --hash && python scripts/facts_sync.py --check && python scripts/wb_judge.py --judge-selftest && python scripts/wb_judge.py --label wb-v1-w0-full, exit=0, files=scripts/wb_judge.py+docs/roadtest-scorecards/wb-v1-{a,b}-arm.jsonl+wb-v1-w0-full.jsonl+~/.workbuddy/{skills 副本,MEMORY.md}, refs=细则 #255=1（截断不计负）/#407=1（反向变异负例）/#374=1（载体哈希验收）, errpath=判据二连假阳（anchor 落在任务prompt/三级跑道落在项目级文件）→修订载体独占串+补负例；判据正则 \\d{3} 条细则 实测不匹配真实形态「406 细则」→ 按 T1 取真实形态修正；docstring \\d 转义 SyntaxWarning→raw string, lessons=载体交叉污染=短marker必同时命中多载体，判据须用载体独占串；无头不可移（zcode.cjs 硬编码）→真人 GUI 为唯一路径；A臂反直觉更保守=n1 未定论不作结论, exempt=发行面（待批）+W3/W4压缩与多轮衰减（未跑）+两通道断因（H1待验）+盲评批3b（provider 通道）, caps=无（真人 GUI 驱动）, effort=阶段 0-2 约 40 分钟 + 用户 2 个真实会话 23 轮×2, stop_reason=—}`
+
+## 四十八、v4.1.0 Phase 2 五刀+Phase 2.5 两段夹刀 A/B 收官（2026-10-11 · 作者令放开）
+
+**实验设计**（manifest Phase 2.5，两段夹刀）：2.5-a 基线臂（刀前）→Phase 2 五刀→syncer 部署→2.5-b 复针臂（刀后）；两臂同场景同判据 j2.7，五针全为新造（knife39-loop/knife29-mcp/knife31-emergency/knife23-concurrent/knife21-backup），探活 l1-rename 先行（env-death 即熔断不出矩阵）。
+
+**差分判定（刀级红线：任一刀场景回归→该刀回滚）**：
+
+| 场景（对应刀） | A 臂 v410-aba（刀前） | B 臂 v410-abb（刀后） | 差分 |
+| --- | --- | --- | --- |
+| l1-rename（探活） | PASS | PASS | — |
+| knife39-loop（#39→注入核心交付段承载） | PASS | PASS | 0 |
+| knife29-mcp（#29→项目资源文档层） | **FAIL**（registered=False） | **FAIL**（registered=False） | 0（两臂同败） |
+| knife31-emergency（#31→details #75 并入） | PASS | PASS | 0 |
+| knife23-concurrent（#23→details #94 并入） | PASS | PASS | 0 |
+| knife21-backup（#21→#34/#45 措辞合并） | PASS | PASS | 0 |
+
+**SUMMARY 双臂 4/5 PASS，逐 marker 严格零差分 → 五刀全部过刀级红线，零回滚。**
+
+**A/B 有效性指纹**：skill_md `a97c1f260ce7`（A 臂）→`062b2a86891d`（B 臂）=部署副本确实换血；core_md/hooks_carrier/hooks_top/platform 恒定=注入面未动（Phase 8 边界守住）。
+
+**头条发现：knife29 两臂同败**——rules #29 在位（A 臂）时无头会话同样不把 MCP 登记进 project-info（registered=False）。该条规则在无头面对行为贡献为零，「下放=行为丢失」的担忧方向反了——**先于刀就不存在行为**；同时暴露下放承接层（project-info 模板六节）在无头面同样零触达，与 stateLine/ev=/lookup 弱锚同根（散文锚无头不驱动，M 家族第五域复现）。下放承接的真正杠杆在 hooks/机制层。
+
+**次级观察**：①knife21 A 臂 GATE 形态 extra-keys(15/12)+extra:a,b → B 臂 package-12——臂间噪声级差异不影响判定；②stateLine 两臂 12 针仅 1 真（knife31-A 臂）——无头面状态行弱锚既有结论再复现。
+
+**Phase 2 五刀施工记录**（rules 47→42，编号至 #48 保号不重编，缺 21/23/29/31/37/39）：#39 净刀（注入核心交付段已载）｜#29 净刀（project-info 模板六节已含；rules #46 承接引用改指）｜#31 并入 details #75｜#23 并入 details #94｜#21 半句并入 #34/#45。指针联动：never-list :4 计数/:8→#1/#6/:23→details #94/:27→#34/#45；security :46→details #94/:66→details #75；rules #46 承接引用；号段退役槽说明句随批落。计数联动 8 文件（workflow/single SKILL 路由行/critic/platform-adaptation/memory-anchor/project-info/reference-sources/rules 首行）。
+
+**facts_sync 单源化补口**：memory-anchor 载体正则原把「47 条」写死字面量——刀后将静默失配（载体找不到=不报 DIFF=假绿盲区）；随刀改为 `(?P<r>\d+) 条 / (?P<n>\d+) 细则` 命名组+RULES_COUNT 单源（数 rules.md 活跃条目行）+_check_pattern/fix 读回 r 组断言。
+
+**归档单元（A-5/F-18 首个正式实验归档实践）**：`docs/roadtest-scorecards/evidence/v410-{aba,abb}-*.output.txt` 12 件（脱敏四形态：<probe-root>/<home>/<repo>/<gh-account>，残留 grep 零命中复验）+scorecard `v410-aba.jsonl`/`v410-abb.jsonl`+probe_runner.py 五针判定器（judge/expect 各五+_read/_run_py 助手，selftest 25/25 过）。
+
+**机检**：facts PASS（单源行新含 rules=42）｜verify-release 10/10 ALL PASS（归档入库后复跑仍全绿）｜narrative 0 FINDING。
+
+**本批GATE**：`GATE: {level=L2-F, v=v4.1.0 Phase 2 五刀+Phase 2.5 两段夹刀 A/B, cmd=python scripts/probe_runner.py --label v410-aba knife39-loop knife29-mcp knife31-emergency knife23-concurrent knife21-backup && python scripts/syncer.py && python scripts/probe_runner.py --label v410-abb knife39-loop knife29-mcp knife31-emergency knife23-concurrent knife21-backup && python scripts/facts_sync.py --check && powershell -ExecutionPolicy Bypass -File scripts/verify-release.ps1, exit=0, files=skill/{references/rules,never-list,security,details,platform-adaptation}.md+SKILL.md×2+critic.md+memory-anchor.md+docs/{project-info,reference-sources}.md+scripts/{facts_sync,probe_runner}.py+docs/roadtest-scorecards/{v410-aba,v410-abb}.jsonl+evidence/v410-*.output.txt×12, refs=0, errpath=TOP #294 三连（跨会话 Read 状态丢失→重 Read 后 Edit）；sed 引号地狱致归档 12 件空壳→python 落盘脚本重做；正斜杠路径+账号名两形态脱敏残留→补刀复验零残留, lessons=散文锚无头零驱动第五域复现（knife29 两臂同败=刀前行为本就不存在）；facts 载体正则写死计数字面量=改数后静默失配假绿盲区（单源化补口）；A/B 有效性必须指纹佐证（skill_md 哈希换血=两臂异文本实锤，非自报）; exempt=knife29 承接层机制化（hooks 层杠杆另行立项）+Phase 6/7/8/9（批内后续相位）+single 包副本 syncer 管辖缺口（本轮手工 cp 补刷，Phase 8 整刷收口）, caps=probe_runner 无头探针×12 会话（烧配额已获作者令）+syncer 部署+facts/verify 机检, effort=五针判据设计（防作弊最小标记+脆标记只记录不进 expect）+引用面 grep 穷尽（五编号全仓扫）+机检三轮全跑, stop_reason=—}`

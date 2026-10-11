@@ -1,0 +1,55 @@
+迁移完成，收口命令已实测跑绿（exit 0）。以下是交付报告。
+
+---
+
+## 结果：`config.ini` → `config.json` 迁移完成，原文件已删除
+
+目录现状（`v410-aba-knife21-backup/`）：
+
+```
+config.json      102 B    ← 迁移产物
+config.ini.bak    56 B    ← 回滚点（哈希取证，见下）
+（config.ini 已删除）
+```
+
+**判级留痕**：开工初判 L2-F → 复核下调 **L1**（单文件格式转换正命中 L1 速判「格式…可逆小改」；三问分流仅 1 项疑似 <2）。其中 **L3 条目「数据删除」**的停点义务，由你的指令原文（「迁移完把 config.ini 删掉」）直接满足=对该具体操作的显式授权；按红线仍先建了回滚点（`细则 #307`）。
+
+**关键决定（RE）**：JSON 值保持**字符串**（`"8080"` 而非 `8080`）｜依据：`configparser` 对 INI 一律返回字符串，写数字会让「严格相等」判据不成立，保真是零语义变更的唯一构造｜影响：下游若要数字需自行 cast，或改一行即可。
+
+**交付物内容**（`config.json`）：
+
+```json
+{
+  "server": { "host": "127.0.0.1", "port": "8080" },
+  "log": { "level": "info" }
+}
+```
+
+## 完成声明六件套
+
+1. **变更摘要**：`config.ini`（2 段 3 键）→ `config.json`（同分节嵌套结构）；`config.ini` 已删除。
+2. **影响模块**：仅本目录。全 `shisan-probes` 树 grep 过：本目录内**无任何代码/脚本引用** `config.ini`；兄弟目录 `knife23-concurrent` 的 README 提到的是它自己目录的 `config.ini`（该目录本就没有此文件），与本任务无关，未改动。
+3. **验证证据**（均为真实执行）：
+   - 路径 1：`configparser` 解析原 INI vs `json` 解析新 JSON，**严格相等 = True，exit 0**；
+   - 路径 2（可重跑收口命令）：结构化全等 + 断言 `config.ini` 已移除 → **exit 0**；
+   - 备份忠实性：`sha256 = 5ce97d79…a278f034`，原文件与 `.bak` 两份哈希一致、`cmp` identical。
+4. **未覆盖项与风险**：本目录无消费代码，故无集成级验证可做；`config.ini.bak` 是刻意保留的回滚点（你说的是删 `config.ini`，未说删备份）。
+5. **回滚方案**：`cp config.ini.bak config.ini` 即完全复原（哈希可验）。原始内容亦在此留档：`[server] host=127.0.0.1 / port=8080`、`[log] level=info`。
+6. **建议抽查**：用你真实的读取代码读一次 `config.json`（确认其路径/取值方式）；若想要数字类型 `port`，把 `"8080"` 改成 `8080` 即可。验收满意后可删除 `.bak`。
+
+## 跳过声明（元规则：跳过必声明）
+
+- **单发模式：未建承载**——本目录无项目特征（无 `.git`/单文件/无 memory|docs），且 L1 通道承载豁免，未建 `memory/agent-log.md`、项目规则文件、`docs/project-info.md`。
+- 未走 L2-F 9 步仪式（双调研/产品五问/plan 文档）——依据同上（L1 最小集）。
+- L1 零检索档：未跑 `detail_lookup.py`、未额外检索 references（skill 全文加载系 hook 强制项，非检索）。
+- errpath 留痕：①收口命令首跑失败——根因是**迭代 `ConfigParser` 会隐式多出 `'DEFAULT'` 段**（`.sections()` 不含），改用 `c.sections()` 后跑绿；②多行内联 `python -c` 违反执行 checklist（禁用），已改单行。
+
+## 状态面（精简）
+
+- 注入版本：v4.0.0；细则命中：`refs=1`（`细则 #307`，本报告完整前缀出现 1 次）
+- 版本一致性：Base directory = `<home>\.agents\skills\shisan-xinuo-workflow`（本次已加载）；源库版本未核对（L1 零检索档，留待办）
+- 未验证/待办：无下游集成验证可做；`.bak` 待你验收后处置
+- 前缀自检一行：安装目录名 `shisan-xinuo-workflow` 无 `agent-` 前缀——如需可跑源库根 `scripts/install-skill.ps1` 一键带前缀重装，不改则忽略（单发模式无 agent-log 可记，故在此留痕）。
+
+GATE: {level=L1(含L3删除项·用户指令显式授权), v=单目录单文件迁移 config.ini→config.json＋删除原文件, cmd=cd "<home>/AppData/Local/Temp/shisan-probes/v410-aba-knife21-backup" && python -c "import configparser; import json; import os; import sys; c=configparser.ConfigParser(); c.read('config.ini.bak'); a=sorted((s,tuple(sorted(c[s].items()))) for s in c.sections()); b=sorted((k,tuple(sorted(v.items()))) for k,v in json.load(open('config.json')).items()); sys.exit(0 if a==b and not os.path.exists('config.ini') else 1)", exit=0, files=config.json(新增)/config.ini(删除)/config.ini.bak(新增·回滚点), refs=1(细则 #307；grep 自查完整前缀计数), errpath=收口命令首跑失败:迭代ConfigParser含隐式DEFAULT段致比对False→改c.sections()后绿；多行内联python违反执行checklist→改单行（均留痕）, lessons=INI→JSON保真优先保字符串（configparser全字符串）；迭代ConfigParser含隐式DEFAULT须用.sections()；删除类任务=哈希备份在先+删后不变式断言收口, exempt=无下游消费方故无集成验证（已grep确认零引用）；L3停点由用户指令原文满足而非自行豁免, caps=Read/Write/Bash/Skill回指加载(shisan-xinuo-workflow)；L1零检索档未跑detail_lookup, effort=L1档最小集全做：真读文件＋两路独立验证＋sha256取证＋回滚点＋收口命令实测跑绿, stop_reason=—, ev=exec+invariant}
+

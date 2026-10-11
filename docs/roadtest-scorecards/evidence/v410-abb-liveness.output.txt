@@ -1,0 +1,4 @@
+改好了：`readme.txt` 已重命名为 `about.txt`，目录里只有这一个文件，内容原样保留（12 字节，仍是 `content-here`），没有需要同步修改的引用方。
+
+`GATE: {level=L1, v=readme.txt→about.txt 改名, cmd=mv readme.txt about.txt && ls -la, exit=0, files=readme.txt→about.txt, refs=0, errpath=—, lessons=改名前列目录确认无同名目标与引用方, exempt=—, caps=—, effort=目录核查+内容确认+改后复验, stop_reason=—}`
+
