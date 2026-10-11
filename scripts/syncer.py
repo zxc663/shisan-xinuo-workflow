@@ -62,10 +62,26 @@ def main():
     if a.family:
         import subprocess
         fam_root = os.path.join(REPO_ROOT, "skill")
-        pkgs = sorted(d for d in os.listdir(fam_root) if os.path.isdir(os.path.join(fam_root, d)))
+        # F-73：包清单显式化（目录自动发现会把 skill/ 下临时/残留目录一并部署；新增家族包须在此显式登记）
+        FAMILY_PKGS = [
+            "shisan-xinuo-workflow",
+            "shisan-xinuo-flows",
+            "shisan-xinuo-roles",
+            "shisan-xinuo-product",
+            "shisan-xinuo-single",
+        ]
+        found = sorted(d for d in os.listdir(fam_root) if os.path.isdir(os.path.join(fam_root, d)))
+        unregistered = [d for d in found if d not in FAMILY_PKGS]
+        missing = [p for p in FAMILY_PKGS if p not in found]
+        pkgs = [p for p in FAMILY_PKGS if p in found]
+        if unregistered:
+            print(f"[family][WARN] skill/ 下未登记目录（不部署）：{unregistered}——新增家族包须显式登记 FAMILY_PKGS（F-73）")
+        if missing:
+            print(f"[family][WARN] 清单内包目录缺失（跳过）：{missing}")
         base = os.path.expanduser(r"~\.agents\skills")
         rc = 0
-        print(f"[family] 家族包 {len(pkgs)} 个: {pkgs}")
+        done, failed = [], []
+        print(f"[family] 显式清单 {len(pkgs)} 个: {pkgs}")
         for p in pkgs:
             args = [sys.executable, os.path.abspath(__file__),
                     "--src", os.path.join(fam_root, p),
@@ -73,8 +89,11 @@ def main():
             if a.dry: args.append("--dry")
             if a.backup_dir: args += ["--backup-dir", a.backup_dir]
             print(f"\n===== family: {p} =====")
-            rc = max(rc, subprocess.run(args).returncode)
-        print(f"\n[family done] exit={rc}（各包详情见上方分节；验收看 Base directory）")
+            prc = subprocess.run(args).returncode
+            rc = max(rc, prc)
+            (done if prc == 0 else failed).append(p)
+        tail = f"；已完成 {len(done)} 包: {done}" + (f"；失败 {len(failed)} 包: {failed}" if failed else "")
+        print(f"\n[family done] exit={rc}（各包详情见上方分节；验收看 Base directory{tail}）——fail-fast 不回滚=A-14 判例在 syncer 域延伸")
         return rc
 
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
