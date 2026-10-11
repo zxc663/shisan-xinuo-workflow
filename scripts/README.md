@@ -22,6 +22,8 @@
 
 从仓库 `skill/` 复制（或 `-Link` 软链）到目标平台技能目录，安装名统一为 `agent-shisan-xinuo-workflow`（字母序置顶便于发现）。幂等、可干跑；已存在时提示，`-Force` 先备份到 `<技能目录>\skill-backups\`（平台扫描路径之外）再覆盖。
 
+> **注入写入原则（A-1④）**：同一注入点的权威写入实现 = `deploy_injection.py`（区块合并·旧块就地替换·写后断言，F-65/F-66）；`install-skill.ps1 -HardInject` 自 v4.1.0 起改为调用同一实现的安装便捷路径，不再有第二套写入逻辑。
+
 ```powershell
 # 干跑（只列动作不写盘）
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install-skill.ps1 -Dry

@@ -16,7 +16,9 @@
      作废行不进分子分母，但明细可打印（--show-void）。
   2) 通过率=该轮/该场景 有效行内 PASS/有效行数。
   3) 三态：改善 / 持平 / 退化（按场景配对比较，仅两侧都有有效样本时计入）。
-  4) 判据版本不同的行**不作直接比较**（打 [judge-mismatch] 标记），这是 v3.0 归因错位的对策。
+  4) 判据版本不同的行**不作直接比较**，这是 v3.0 归因错位的对策。a1.2 兑现为代码：
+     mismatch 场景三态输出「不可比」且**不入退化统计**（--fail-on-regress 不再被 mismatch 误伤，
+     A-5/F-20 双实跑复现三方合流）；显式跨版本分析须 --force-cross-judge，引用结论须声明归因限制。
   5) 复采行（--exclude-recollect，可选）：文件名形如 `<label>-r[数字].jsonl` 的双击复采行默认计入；
      声明口径若为「剔除复采」，须显式开启本开关——即默认行为保持不变，剔除从叙述变为可机检。
 """
@@ -45,7 +47,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCORE_DIR = os.path.join(REPO_ROOT, 'docs', 'roadtest-scorecards')
-AGG_VERSION = 'a1.1'
+AGG_VERSION = 'a1.2'
 
 # 复采行识别：文件名以 `<数字>r` 或 `<数字>r<数字>` 结尾（如 `v310-inf-01r.jsonl` / `v300-ab-01r1.jsonl`）
 RECOLLECT_RE = re.compile(r'.*\d+r\d*\.jsonl$')
@@ -107,6 +109,8 @@ def main():
     ap.add_argument('--fail-on-regress', action='store_true', help='出现退化场景则 exit 3')
     ap.add_argument('--exclude-recollect', action='store_true',
                     help='剔除复采行（文件名 <label>-r[数字].jsonl）；声明口径为「剔除复采」时开启，默认不剔除')
+    ap.add_argument('--force-cross-judge', action='store_true',
+                    help='允许判据版本不同的场景作直接三态比较（跨版本分析专用；引用结论须声明归因限制）')
     a = ap.parse_args()
 
     rows = load_rows(a.score_dir)
@@ -178,20 +182,29 @@ def main():
             return 2
         b_map = scen_map(base)
         print('\n-- 三态对比（基线 %s → 当前 %s） --' % (a.baseline, a.current or 'ALL'))
+        if a.force_cross_judge:
+            print('  [--force-cross-judge] 跨判据版本直接比较：结果受判据变更混杂，'
+                  '引用结论须声明归因限制（判读口径 #4）')
+        incomparable = []
         for k in sorted(set(b_map) | set(cur_map)):
             if k not in b_map or k not in cur_map:
                 print('  %-14s [单侧样本，不比较]' % k)
+                continue
+            jb = {(r.get('judge_version') or 'j1.0') for r in base if r['scenario'] == k}
+            jc = {(r.get('judge_version') or 'j1.0') for r in cur if r['scenario'] == k}
+            tag = '' if jb == jc else ' [judge-mismatch:%s→%s]' % (','.join(sorted(jb)), ','.join(sorted(jc)))
+            if tag and not a.force_cross_judge:
+                incomparable.append(k)
+                print('  %-14s 不可比%s（判据版本不同，不入退化统计；跨版本分析须 --force-cross-judge）' % (k, tag))
                 continue
             bo, bn = rate(b_map[k]); co, cn = rate(cur_map[k])
             br, cr = bo / bn, co / cn
             state = '改善' if cr > br else ('退化' if cr < br else '持平')
             if state == '退化':
                 regress.append(k)
-            jb = {(r.get('judge_version') or 'j1.0') for r in base if r['scenario'] == k}
-            jc = {(r.get('judge_version') or 'j1.0') for r in cur if r['scenario'] == k}
-            tag = '' if jb == jc else ' [judge-mismatch:%s→%s]' % (','.join(sorted(jb)), ','.join(sorted(jc)))
             print('  %-14s %s  %d/%d → %d/%d%s' % (k, state, bo, bn, co, cn, tag))
         summary['regress'] = regress
+        summary['incomparable'] = incomparable
 
     if a.show_void:
         print('\n-- 作废行明细 --')

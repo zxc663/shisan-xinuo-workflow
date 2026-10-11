@@ -228,11 +228,12 @@ def platform_version(zcode):
         return 'unknown'
 
 
-def fingerprints(zcode):
+def fingerprints(zcode, skill_dir=''):
     """被测物 + 平台 + 判据指纹：回答「这行结论属于谁」。"""
     home = os.path.expanduser('~')
-    base = os.path.join(home, '.agents', 'skills', 'shisan-xinuo-workflow')
+    base = skill_dir or os.path.join(home, '.agents', 'skills', 'shisan-xinuo-workflow')
     return {
+        'skill_base': base,
         'carrier_zcode': _sha12(os.path.join(home, '.zcode', 'AGENTS.md')),
         'hooks_carrier': _sha12(os.path.join(home, '.zcode', 'cli', 'hooks', 'carrier_reminder.py')),
         'hooks_top': _sha12(os.path.join(home, '.zcode', 'cli', 'hooks', 'top_push.py')),
@@ -892,6 +893,7 @@ def main():
     ap.add_argument('--timeout', type=int, default=300)
     ap.add_argument('--allow-outside-scenario', action='store_true', help='允许运行未登记场景名之外的自定义场景（默认拒绝）')
     ap.add_argument('--no-provider-env', action='store_true', help='不注入 provider 配置路径环境变量（默认注入；缺失会导致 CLI 报 builtin provider config 定位失败）')
+    ap.add_argument('--skill-dir', default='', help='被测 Skill 副本目录覆盖（默认 ~/.agents/skills/shisan-xinuo-workflow；自定义 --dest 部署〔WorkBuddy 特例〕时指定，指纹 skill_base 显式记录，证据归属正确）')
     args = ap.parse_args()
 
     if args.judge_selftest:
@@ -922,7 +924,7 @@ def main():
     os.makedirs(args.score_dir, exist_ok=True)
     provider_env = {} if args.no_provider_env else resolve_provider_env(args.zcode)
     print('provider-env: %s' % (', '.join('%s=%s' % kv for kv in sorted(provider_env.items())) or '(未解析到，按原样继承)'))
-    fp = fingerprints(args.zcode)
+    fp = fingerprints(args.zcode, args.skill_dir)
     print('fingerprint: ' + json.dumps(fp, ensure_ascii=False))
     sc_path = os.path.join(args.score_dir, '%s.jsonl' % args.label)
     results = []
@@ -1009,12 +1011,32 @@ def main():
             print('CIRCUIT-BREAK %s: 连续 3 针 env-death（%s），熔断止损，剩余场景跳过（缺口如实报）。' % (
                 args.label, death_reason))
             break
+    circuit_broken = consec_deaths >= 3
     npass = sum(1 for r in results if r['verdict'] == 'PASS' and not r.get('liveness'))
     ntotal = sum(1 for r in results if not r.get('liveness'))
     print('SUMMARY %s: %d/%d PASS%s' % (args.label, npass, ntotal,
           '（另探活针 1，不计入）' if any(r.get('liveness') for r in results) else ''))
     print('GATE12 覆盖样本: ' + ', '.join('%s:%d' % (r['scenario'], r['gate_count']) for r in results))
     print('scorecard: %s' % sc_path)
+    # F-21 meta 行：运行状态+expected/actual 场景清单——第三方可确认哪些场景被执行/跳过及缺失是否源自预期熔断。
+    # 无 scenario/markers 键，scorecard_agg.load_rows 天然跳过（meta 非行为样本）。
+    expected = [n for n in names if not (liveness_done and n == 'l1-rename')]
+    actual = [r['scenario'] for r in results if not r.get('liveness')]
+    skipped = [n for n in expected if n not in actual]
+    run_state = 'COMPLETED' if not skipped else 'PARTIAL_ENV_ABORT' if circuit_broken else 'PARTIAL'
+    meta = {'loop': args.label, 'meta': True, 'run_state': run_state,
+            'expected': expected, 'actual': actual, 'skipped': skipped,
+            'pass': npass, 'total': ntotal, 'judge_version': JUDGE_VERSION,
+            'fingerprint': fp, 'ts': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+    with open(sc_path, 'a', encoding='utf-8') as f:
+        f.write(json.dumps(meta, ensure_ascii=False) + '\n')
+    print('run-state: %s%s' % (run_state, ('（跳过 %d: %s）' % (len(skipped), ', '.join(skipped))) if skipped else ''))
+    # F-08 退出码契约：场景 FAIL（非 env-death 作废行）或熔断致缺失 → 1；全过且完整 → 0。
+    hard_fails = [r['scenario'] for r in results if not r.get('liveness') and not r.get('env_death')
+                  and r['verdict'] == 'FAIL']
+    if hard_fails or skipped:
+        print('EXIT 1: 行为 FAIL=%s；矩阵缺失=%s' % (hard_fails or '无', skipped or '无'))
+        return 1
     return 0
 
 

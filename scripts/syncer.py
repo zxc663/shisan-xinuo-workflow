@@ -147,16 +147,26 @@ def main():
         else:
             print(f"[备份] (dry) {backup}")
 
-    # 3) 迁移 personal-playbook 等 → user-notes/
+    # 3) 迁移 personal-playbook 等 → user-notes/（F-10：保留相对目录结构，禁 basename 压平——
+    #    子目录同名文件压平会互相覆盖；目标已存在且内容不同=冲突，迁移件落 .conflict-<ts> 后缀并显式报出，不静默覆盖）
     migrated = []
+    conflicts = []
     for f in user_owned:
         if not f:
             continue
-        target = os.path.join(log_dir(a.dest), os.path.basename(f))
+        target = os.path.join(log_dir(a.dest), f)
+        conflict = ''
         if not a.dry and os.path.exists(os.path.join(a.dest, f)):
+            os.makedirs(os.path.dirname(target) or os.path.join(a.dest, 'user-notes'), exist_ok=True)
+            if os.path.exists(target) and open(target, 'rb').read() != open(os.path.join(a.dest, f), 'rb').read():
+                target = target + f'.conflict-{fmt}'
+                conflict = '（冲突：user-notes 同名不同内容，落 conflict 后缀未覆盖）'
+                conflicts.append(f)
             shutil.move(os.path.join(a.dest, f), target)
-        migrated.append(f"{f} -> user-notes/{os.path.basename(f)}")
+        migrated.append(f"{f} -> user-notes/{f}{conflict}" + (" (dry)" if a.dry else ""))
     print(f"[迁移] {migrated or '无'}")
+    if conflicts:
+        print(f"[冲突] {len(conflicts)} 件迁移目标已存在且内容不同（未覆盖，见 conflict 后缀件）: {conflicts}")
 
     # 4) 上游覆盖（排除 user-notes/memory/.bak；dry 模式只列变更不写盘）
     changed = []

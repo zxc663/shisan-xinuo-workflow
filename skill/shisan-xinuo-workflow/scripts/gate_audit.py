@@ -1,4 +1,4 @@
-# 分发副本：权威=家族源库根 scripts/gate_audit.py（随包分发供 shisan-xinuo-workflow/scripts/ 调用；修改时两处同步，见 RELEASE-CHECKLIST）。
+# 分发副本：权威=家族源库根 scripts/gate_audit.py（改根版后同批覆盖此副本；verify-release J 项机检）
 # -*- coding: utf-8 -*-
 """gate_audit.py · GATE 证据外部审计端口（v3.0 反作弊批 details #364；v4.1.0 R1 三假绿修复 A-11①②⑤⑥）
 

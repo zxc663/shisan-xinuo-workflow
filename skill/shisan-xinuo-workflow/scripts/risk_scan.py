@@ -1,4 +1,4 @@
-# 分发副本：权威=家族源库根 scripts/risk_scan.py（随包分发供 shisan-xinuo-workflow/scripts/ 调用；修改时两处同步，见 RELEASE-CHECKLIST）。
+# 分发副本：权威=家族源库根 scripts/risk_scan.py（改根版后同批覆盖此副本；verify-release J 项机检）
 # -*- coding: utf-8 -*-
 """risk_scan.py · L3 清单外高危域机检端口（细则 #370；v4.1.0 R1 三态修复 A-11③/F-47）
 

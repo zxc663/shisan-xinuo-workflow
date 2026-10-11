@@ -1,4 +1,4 @@
-# 分发副本：权威=家族源库根 scripts/agent_log_rotate.py（随包分发供 shisan-xinuo-workflow/scripts/ 调用；修改时两处同步，见 RELEASE-CHECKLIST）。
+# 分发副本：权威=家族源库根 scripts/agent_log_rotate.py（改根版后同批覆盖此副本；verify-release J 项机检）
 # -*- coding: utf-8 -*-
 """agent_log_rotate.py · 记忆档机械归档（细则 #372）
 
