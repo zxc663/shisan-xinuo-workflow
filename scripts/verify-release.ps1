@@ -282,6 +282,54 @@ if (Test-Path $narSync) {
 } else { $probsI += "缺 scripts/narrative_sync.py" }
 Add-Result ($probsI.Count -eq 0) "I 叙述对账(narrative_sync 当前态叙述)" $(if($probsI.Count -eq 0){$iOut | Select-Object -Last 1}else{$probsI -join ";"})
 
+# ---------- J. 双副本一致性（RT-09/A-11⑧/F-52：根/包双副本全集统一机检——
+#   对①根版 scripts/<f>.py ↔ 核心包 skill/shisan-xinuo-workflow/scripts/<f>.py（规范=包内=「# 分发副本」头注+根版内容，去头注逐行比对；
+#     detail_lookup 例外=根版为 shim 转发包内实现，只断言转发目标存在）
+#   对②skill/<pkg>/scripts/*.py ↔ 本机分发副本 ~/.agents/skills/<pkg>/scripts/*.py（逐文件 SHA256）
+# 分发根不存在=CI/未部署环境→对②显式 SKIP（不算 PASS 假绿）；副本缺失/漂移→FAIL 指向 sync-all/两处同步） ----------
+$probsJ = @()
+$skBase = Join-Path $HOME ".agents\skills"
+$pkgsJ = @('shisan-xinuo-workflow','shisan-xinuo-flows','shisan-xinuo-roles','shisan-xinuo-product','shisan-xinuo-single')
+# 对①：根版 ↔ 核心包分发副本（头注豁免比对）
+$cmpJ1 = 0
+foreach ($f in (Get-ChildItem (Join-Path $Root "scripts") -File -Filter *.py)) {
+    $pkgF = Join-Path $Root "skill\shisan-xinuo-workflow\scripts\$($f.Name)"
+    if (-not (Test-Path $pkgF)) { continue }
+    if ($f.Name -eq 'detail_lookup.py') {
+        $cmpJ1++
+        continue  # shim/实现分工：包内=单一实现（265 行），根版=12 行 shim——分工态即合规
+    }
+    $cmpJ1++
+    $pkgLines = @(Get-Content $pkgF -Encoding UTF8)
+    # 头注定位：首行，或 shebang 后第二行（规范=「# 分发副本：权威=家族源库根 scripts/<f>…」）
+    $hdrIdx = -1
+    for ($i = 0; $i -lt [Math]::Min(2, $pkgLines.Count); $i++) { if ($pkgLines[$i] -like '# 分发副本：权威=家族源库根 scripts/*') { $hdrIdx = $i; break } }
+    if ($hdrIdx -lt 0) { $probsJ += "包内缺分发头注: $($f.Name)"; continue }
+    # 规范=包内 = [shebang] + 头注 + 根版全文——仅剔除头注行后与根版全文逐行比对（shebang 保留）
+    $rest = New-Object System.Collections.Generic.List[string]
+    for ($i = 0; $i -lt $pkgLines.Count; $i++) { if ($i -ne $hdrIdx) { $rest.Add($pkgLines[$i]) } }
+    $pkgRest = $rest -join "`n"
+    $rootFull = (Get-Content $f.FullName -Encoding UTF8) -join "`n"
+    if ($pkgRest -ne $rootFull) { $probsJ += "根/包漂移: scripts/$($f.Name)（包内≠[shebang]+头注+根版；两处同步）" }
+}
+# 对②：skill/ ↔ 本机分发副本
+$cmpJ2 = 0
+if (-not (Test-Path $skBase)) {
+    Add-Result ($probsJ.Count -eq 0) "J 双副本一致性(根/包+包/分发)" $(if($probsJ.Count -eq 0){"OK（对① $cmpJ1 件规范一致；对② SKIP=分发根不存在: $skBase，CI/未部署环境本机专属）"}else{$probsJ -join ";"})
+} else {
+    foreach ($p in $pkgsJ) {
+        $srcScripts = Join-Path $Root "skill\$p\scripts"
+        if (-not (Test-Path $srcScripts)) { continue }
+        foreach ($f in (Get-ChildItem $srcScripts -File -Filter *.py)) {
+            $dstF = Join-Path $skBase "$p\scripts\$($f.Name)"
+            $cmpJ2++
+            if (-not (Test-Path $dstF)) { $probsJ += "副本缺失: $p/scripts/$($f.Name)（跑 sync-all）" }
+            elseif ((Get-FileHash $f.FullName -Algorithm SHA256).Hash -ne (Get-FileHash $dstF -Algorithm SHA256).Hash) { $probsJ += "副本漂移: $p/scripts/$($f.Name)（跑 sync-all）" }
+        }
+    }
+    Add-Result ($probsJ.Count -eq 0) "J 双副本一致性(根/包+包/分发)" $(if($probsJ.Count -eq 0){"OK（对① $cmpJ1 件规范一致；对② $cmpJ2 件 SHA256 一致）"}else{$probsJ -join ";"})
+}
+
 # ---------- 汇总输出 ----------
 Write-Host ""
 Write-Host "=== verify-release 结果 ===" -ForegroundColor Cyan

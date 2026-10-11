@@ -7,6 +7,7 @@ on:
       - "skill/**"
       - "versions/**"
       - "scripts/**"
+      - "tests/**"
       - "docs/**"
       - "package.json"
       - "README.md"
@@ -28,6 +29,7 @@ permissions:
   contents: read
 
 jobs:
+  # Job 1：Windows 全量门禁（verify-release.ps1 10 项；J 项在 CI 无分发根=显式 SKIP）
   verify:
     runs-on: windows-latest
     steps:
@@ -35,3 +37,30 @@ jobs:
       - name: Verify release consistency
         shell: pwsh
         run: pwsh scripts/verify-release.ps1
+
+  # Job 2：Linux 门禁回归（A-12⑦/F-51：单 Windows runner 上 cmd /c 永绿=跨平台故障不可见——
+  # RT-03 平台分支用例须在真 Linux 跑；接线既有 selftest/unittest 非新基建层）
+  gates-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Gate selftests + unittest (cross-platform regression)
+        run: |
+          python --version
+          python scripts/gate_audit.py --selftest
+          python scripts/risk_scan.py --selftest
+          python skill/shisan-xinuo-product/scripts/spec-trace-gate.py --selftest
+          python scripts/narrative_sync.py --selftest
+          python -m unittest discover -s tests -v
+
+  # Job 3：交付物验证（A-13②/F-54：CI 检查对象从源库面扩到真交付物——
+  # build→zip 断言→源库↔zip 逐文件哈希→版本三面一致→零 .mimosa 净化红线）
+  artifact-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Build dist
+        shell: pwsh
+        run: pwsh scripts/build-dist.ps1
+      - name: Artifact assertions
+        run: python scripts/ci_artifact_check.py

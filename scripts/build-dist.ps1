@@ -2,7 +2,8 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $ts = Get-Date -Format "yyyyMMdd-HHmmss"
 $src = Join-Path $root "dist"
-$staging = Join-Path $env:TEMP ("xinuo-dist-staging-" + $ts)
+$tmpBase = if ($env:TEMP) { $env:TEMP } else { [System.IO.Path]::GetTempPath() }  # Linux pwsh 无 TEMP（CI 兼容，A-12⑦）
+$staging = Join-Path $tmpBase ("xinuo-dist-staging-" + $ts)
 $ver = (Get-Content (Join-Path $root "package.json") -Raw | ConvertFrom-Json).version
 Write-Host "版本 = $ver"
 
