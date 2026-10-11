@@ -117,7 +117,7 @@ foreach ($fc in $formChecks) {
         if (-not $fl -or -not $fl.StartsWith($fc[2])) { $probsA += "形态冒烟失败：$($fc[0]) 第 $($fc[1]+1) 行形态异常" }
     }
 }
-# 判级双源对验（A-16①/F-70 收窄施工：判级速查是真双源面〔SKILL §5 详版↔injection-core 速查版〕且 F-23 实证漂移过——
+# 判级双源对验（A-16①/F-70 收窄施工：判级速查是真双源面〔SKILL §2.2 详版↔injection-core 速查版〕且 F-23 实证漂移过——
 # 最小机检=L3 封闭清单短句族逐字比对；全规则语义映射表=F-40 冻结先例不采纳。缺失输入不静默过=F-47 同款）
 $l3Re = 'L3 封闭清单（仅 6 项，清单外一律不是 L3，不得自行扩展）\*\*：(.+?)。'
 $skL3 = if ($txt -match $l3Re) { $Matches[1] } else { $null }
@@ -158,7 +158,8 @@ $flowsSib = Join-Path (Split-Path $skDir -Parent) 'shisan-xinuo-flows'
 if (-not (Test-Path $flowsSib)) { $probsC3 += '缺兄弟包 shisan-xinuo-flows' }
 $skillMain = Get-Content (Join-Path $skDir 'SKILL.md') -Raw -Encoding UTF8
 $suTxt = Get-Content (Join-Path $skDir 'references\skill-usage.md') -Raw -Encoding UTF8
-if ($skillMain -notmatch '## 5\.') { $probsC3 += 'SKILL 缺 §5（判级权威源锚）' }
+# 标题语义锚（A-6/F-23：旧锚 '## 5\.' 被「## 5. 执行模式」章节号撞车骗过=锚存在≠语义在）
+if ($skillMain -notmatch '## 2\.2 判级速查') { $probsC3 += 'SKILL 缺 §2.2 判级速查（判级权威源锚·标题语义）' }
 foreach ($a in @('## 0\.', '## 4\.', '## 9\.')) { if ($suTxt -notmatch $a) { $probsC3 += "skill-usage 缺 $a 锚" } }
 Add-Result ($probsC3.Count -eq 0) "C 指针健康(rules→targets+§ 锚)" $(if ($probsC3.Count -eq 0) { "5 文件+兄弟包+6 §锚 全在场" } else { $probsC3 -join ';' })
 
