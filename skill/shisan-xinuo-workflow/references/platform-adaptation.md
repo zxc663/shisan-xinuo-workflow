@@ -101,13 +101,13 @@
 | 模式 | 规则文件内容 | 上下文开销 | 适用场景 |
 |---|---|---|---|
 | **按需注入（默认）** | 精简纪律（约 9 行）+ 回指本 Skill | 最低 | 多数项目；Skill 按触发激活 |
-| **强制注入（硬加载）** | `references/injection-core.md` 核心全文（判级速查 + 9 步主流程 + 上下文预算法 + 设计铁律 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序 + 交付留档） | 每会话固定约 6K 字符（中文实证 ≈9-12K token） | 要求工作流每会话无条件在场、不依赖模型自觉 |
+| **强制注入（硬加载）** | `references/injection-core.md` 核心全文（判级速查 + 9 步主流程 + 上下文预算法 + 设计铁律 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序 + 交付留档） | 每会话固定约 7K 字符（中文实证 ≈10-14K token） | 要求工作流每会话无条件在场、不依赖模型自觉 |
 
 强制注入即把 `references/injection-core.md` 核心全文写入注入点（先备份、合并）——**没有**额外的「每会话必读」行：这类弱指令模型不可靠执行，不得作为强制注入的实现方式。
 
 **请选注入模式（Please choose the injection mode）：**
 1. **按需注入（默认 / On-demand, default）**——只写精简纪律并回指本 Skill，上下文开销最低（writes a compact discipline block and points back to this Skill; lowest context cost）。
-2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 6K 字符/会话（中文实证 ≈9-12K token；writes the core full-text into the injection point; the workflow is present every session）。
+2. **强制注入 / 硬加载（Force injection / Hard-load）**——把核心全文写入注入点，工作流每会话无条件在场、固定约 7K 字符/会话（中文实证 ≈10-14K token；writes the core full-text into the injection point; the workflow is present every session）。
 
 **推荐 / Recommended**：默认按需注入（On-demand by default）；要求工作流每会话无条件在场时才用强制注入（choose force injection only when you need it present in every session）。
 
@@ -172,7 +172,7 @@
 
 ## 6. 生成规则文件的体量
 
-**按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 6K 字符，每会话固定约 9-12K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
+**按需注入**：规则文件控制在约 30 行内（即上文精简块）。**强制注入（硬加载）**：写入 `references/injection-core.md` 核心全文（含判级速查 + 主流程 + 上下文预算法 + 双模式 + 红线 + 工作区 `memory/` 约定 + 完成后更新序，约 7K 字符，每会话固定约 10-14K token——用固定小成本换取工作流无条件在场、不再依赖模型自觉加载）。完整 47 条规则与工作流细节保留在本 Skill 的 `references/` 中按需加载。若平台规则机制只接受单个短文件，用精简块即可。
 
 ## 6.1 副本验收：内容哈希（细则 #374）
 
