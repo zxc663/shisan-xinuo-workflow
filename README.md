@@ -1,6 +1,6 @@
 # Shisan Xinuo Agent Workflow（十三希诺 · 纪律元工作流）
 
-> **v4.1.0**（施工中·发行待批） · MIT · 单人维护 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
+> **v4.1.0**（已发行 2026-10-12） · MIT · 单人维护 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
 **一句话定位**：把 AI agent 的工程纪律做成**可机检的门禁，而不是靠自觉**——三级跑道分流、L3 封闭清单停点、可复跑 `GATE` 证据块、跳过必声明，再用随仓的判据与 scorecard 去验证「规则有没有被遵守」。它不承诺更好的代码；「更少的事故」是**待证假设**（效力未经独立验证），但机制与证据任何人 clone 都能独立核对。
 
@@ -108,7 +108,7 @@
 
 - **`skill/`** —— 四包交付物（核心 + 流程 + 角色 + 产品工程），发行物本体。
 - **`scripts/`** —— 机检与运维脚本（verify-release / facts_sync / probe_runner / deploy_injection 等），门禁即产品。
-- **`docs/`** —— **开发工作区，不是交付物**。当前只保留：活跃设计档（`design-specs/` 5 件）、判据金样本（`roadtest-scorecards/evidence/`，`--judge-selftest` 回归输入）、判据版本史（`JUDGELOG.md`）、事故记录（`incidents/`）与对外导读（quickstart / methodology / comparison / transformation 等 6 件）。历史实验原始数据（scorecard 时序库、试金石卡、盲评运行档等 550+ 件）已于 2026-10-11 清理出树——**git 历史与发行 tag 全程可溯**，复核时按 commit 取回。
+- **`docs/`** —— **开发工作区，不是交付物**。当前只保留：活跃设计档（`design-specs/` 9 件）、判据金样本（`roadtest-scorecards/evidence/`，`--judge-selftest` 回归输入）、判据版本史（`JUDGELOG.md`）、事故记录（`incidents/`）与对外导读（quickstart / methodology / comparison / transformation 等 6 件）。历史实验原始数据（scorecard 时序库、试金石卡、盲评运行档等 550+ 件）已于 2026-10-11 清理出树——**git 历史与发行 tag 全程可溯**，复核时按 commit 取回。
 - **根面** —— README / CHANGELOG / RELEASE-CHECKLIST（发行操作）/ 项目信息.md（决策与发布史）/ AGENTS.md（项目注入）。
 
 ---
@@ -184,14 +184,14 @@
 
 ---
 
-## 分发渠道（实际状态，2026-10-11）
+## 分发渠道（实际状态，2026-10-12）
 
 | 渠道 | 版本 | 状态 |
 | --- | --- | --- |
-| GitHub 源库 + Release | v4.0.0 | 权威源；34 stars / 3 forks；每版附 dist zip |
-| npm（GitHub Packages） | 4.0.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-10 发布 4.0.0（89 文件，shasum 48e18e3b） |
-| Gitee 镜像 + Release | v4.0.0 | 0 stars；与 GitHub 同 commit/tag 双推；4.0.0 Release id=1193457（2026-10-10，附件 2,209,350B） |
-| ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow`；Bookmark 0（2026-10-09 实测） |
+| GitHub 源库 + Release | v4.1.0 | 权威源；34 stars / 3 forks（2026-10-12 实测）；每版附 dist zip（v4.1.0=96 项/2,129,624B） |
+| npm（GitHub Packages） | 4.1.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-12 发布 4.1.0（76 文件，shasum 576b563f） |
+| Gitee 镜像 + Release | v4.1.0 | 0 stars；与 GitHub 同 commit/tag 双推；4.1.0 Release id=1198410（2026-10-12，附件 3,366,221B） |
+| ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow`；v3.4.0 起三版待并批补交（用户侧）；Bookmark 0（2026-10-09 实测） |
 | skills.sh（Agent Skills 索引） | 随 GitHub 同步 | 2 skills / 5 次安装 |
 
 ---
@@ -249,6 +249,7 @@ git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
 
 ## 版本历史（要点）
 
+- **v4.1.0**（2026-10-12，**已发行**）：**门禁防线+部署链+规则层定型批**——verify 门禁 8→10 项（A-J：内容锚点含 L3 判级双源对验、双副本一致性等）；判据 j2.6→j2.7（GATE 收敛语义「循环到绿」，金样本 25/25）；`gate_audit` 证据对象映射+独立命令检查、`deploy_injection` 区块合并（「合并不覆盖」承诺兑现）；`install-skill -Family` 五包全装+三态语义；细则 406→405 条（#103 真删收冷却期）；单文件重蒸馏基线 v4.1.0；两仓清洗（551 件出树，git 历史可溯）+母仓/英文仓 README 重定位。计划=`docs/design-specs/v410-batch-manifest-20261010.md`。
 - **v4.0.0**（2026-10-10，**已发行**）：**转型批**——重定位 README（事实重写版+诚实分层）+收敛减法：聚合器 a1.1（liveness 探活针排除）、risk_scan 11 域进发行物（补 v3.4.0 打包漂移）、reference-sources 版本门（verify C 新子项）、细则零和与判据/聚合器冻结、EVIDENCE 时代回写、退役首跑（#103 进冷却期）。细则维持 406 条/33 类。
 - **v3.4.0**（2026-09-30）：弱锚结构化（`ev=` 升格）+ 五 checker 反向变异修复 + 对标 A/C/D 施工；细则 405→406 条、32→33 类。
 - **v3.3.1**（2026-09-29）：双仓门面重构 + 净化瘦身 + 产品工程包联动发行。
