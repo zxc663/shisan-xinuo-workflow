@@ -113,7 +113,7 @@ python scripts/deploy_injection.py --check   # 五平台注入副本哈希验收
 | `shisan-xinuo-workflow` | **核心**：三级跑道 / 判级 / 必问与红线 / `GATE` / 状态锚定 / 承载与留档 / 五平台注入 |
 | `shisan-xinuo-flows` | **流程包**：9 类任务工作流分册（新功能/Bug/重构/迁移/发布/前端/运维/文档/调研） |
 | `shisan-xinuo-roles` | **角色包**：8 个审查/执行角色（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） |
-| `shisan-xinuo-product` | **产品工程包**（中文权威源；独立英文发行版 [product-engineering-skill](https://github.com/zxc663/product-engineering-skill) v1.x——clean-room 重写、机制等价、版本线各自独立） |
+| `shisan-xinuo-product` | **产品工程包**（中文权威源；独立英文发行版 [shisan-xinuo-product-en](https://github.com/zxc663/shisan-xinuo-product-en) v1.x——clean-room 重写、机制等价、版本线各自独立） |
 | `shisan-xinuo-single` | **单文件蒸馏版**：核心全量并入一文件，自用硬注入形态 |
 
 ### 产品工程包——它想解决的问题
