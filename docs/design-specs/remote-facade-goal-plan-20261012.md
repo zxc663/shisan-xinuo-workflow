@@ -92,13 +92,13 @@ N2-N5（门面线收官）─→ N6 v4.1.0发行（dist重打→tag→五渠道�
 |---|---|---|
 | N0 计划档 | ✅ 本 commit | — |
 | N1 审计+机检 | ✅ | facts=0；verify 10/10（初跑 D 项拦计划档盘符路径→脱敏复跑绿）；narrative 0 FINDING；judge 25/25（j2.7）；子代理三行结论：博客纯快进／About §六·十二预案已备／英文仓 tag=v1.0.0（frontmatter 实证） |
-| N2 母仓push | ⏳ | ls-remote 回执=待记 |
-| N3 英文仓push | ⏳ | 同上 |
-| N4 元数据 | ⏳ | API 读回=待记 |
-| N5 博客push | ⏳ | 同上 |
-| N6 v4.1.0 发行 | ⏳ | 渠道回执=待记 |
-| N7 产品仓 tag | ⏳ | 同上 |
-| N8 写回+收尾push | ⏳ | commit hash=待记 |
+| N2 母仓push | ✅ | GitHub `6ad2d8d..3e4d7b0`／Gitee `d8951dd..3e4d7b0`；ls-remote 双验=3e4d7b0 |
+| N3 英文仓push | ✅ | `41cc84c..43c76e1`；ls-remote 验 |
+| N4 元数据 | ✅ | 三面读回全 MATCH（母仓 GH/Gitee desc+topics 15→17；产品仓 desc+topics 0→10）；Gitee keywords 无读回字段=未验证（用户侧 web 核对） |
+| N5 博客push | ✅ | `4cac108..3954a64`（44 commit 纯快进） |
+| N6 v4.1.0 发行 | ✅ | dist 96 项/2,129,624B；tag v4.1.0 双远端；GH Release asset 吻合；npm 76 文件 shasum `576b563f…`；Gitee id=1198410+附件 3366221；About=批次 D 文案（§六·十二预案留档未启用）；ClawHub=用户侧 |
+| N7 产品仓 tag | ✅ | v1.0.0（frontmatter 实证）+GitHub Release（无附件，npx 安装） |
+| N8 写回+收尾push | ✅ | RELEASE-CHECKLIST P 节+项目信息 §五+CHANGELOG 发行态+agent-log；发行前机检复跑+本批收尾 commit |
 | N9 算子起草 | ⏳（预算允许） | 档路径=待记 |
 | N10 dev 修复 | ⏳ | 同上 |
 | N11 总收尾 | ⏳ | 终报=待记 |

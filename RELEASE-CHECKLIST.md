@@ -1,6 +1,6 @@
-# 发行执行清单（**v4.1.0 批（施工中·未发行；计划=docs/design-specs/v410-batch-manifest-20261010.md，P 节待发行批写）**；上一发行态 v4.0.0 · 转型批（发行批 2026-10-10，命令清单与回执见 O 节）；v3.4.0 回执见 N 节；v3.3.1 回执见 B/M 节；v3.3.0 回执见 A/B 节；v3.2.0 回执见 L 节；v3.1.0 见 I-1/J 节；v3.0.0 见 I-2/F 节；v2.9.0 及更早在 git 历史）
+# 发行执行清单（**v4.1.0 批（已发行 2026-10-12；计划=docs/design-specs/v410-batch-manifest-20261010.md，回执见 P 节）**；上一发行态 v4.0.0 · 转型批（发行批 2026-10-10，命令清单与回执见 O 节）；v3.4.0 回执见 N 节；v3.3.1 回执见 B/M 节；v3.3.0 回执见 A/B 节；v3.2.0 回执见 L 节；v3.1.0 见 I-1/J 节；v3.0.0 见 I-2/F 节；v2.9.0 及更早在 git 历史）
 
-> **版本沿革**：**v4.1.0 批（2026-10-11 施工）=门禁防线+部署链+规则层定型+Phase 1-8**（详见 CHANGELOG v4.1.0 条）；**上一版 v4.0.0 转型批（2026-10-10）=重定位 README+收敛减法**（详见 CHANGELOG v4.0.0 条）；发行批准=2026-10-10 AskUserQuestion 双批（D1 退役+发行）。v3.4.0 已发行（2026-10-07，回执=N-1/N-2 节+项目信息 §五）。
+> **版本沿革**：**v4.1.0 批（2026-10-11 施工·2026-10-12 发行）=门禁防线+部署链+规则层定型+Phase 1-8+两仓清洗重定位+批次 D**（详见 CHANGELOG v4.1.0 条与 P 节回执）；**上一版 v4.0.0 转型批（2026-10-10）=重定位 README+收敛减法**（详见 CHANGELOG v4.0.0 条）；发行批准=2026-10-10 AskUserQuestion 双批（D1 退役+发行）。v3.4.0 已发行（2026-10-07，回执=N-1/N-2 节+项目信息 §五）。
 
 ## O. v4.0.0 转型批（**发行批 2026-10-10** · 重定位 README + 收敛减法；计划=docs/transformation-plan-20261010.md）
 
@@ -19,6 +19,21 @@
 **O-1 命令清单回执（2026-10-10 01:2x-02:2x）**：发行前机检=facts PASS（406/33）+narrative 0 FINDING+judge 23/23+verify 8/8 ALL PASS（含 C 新子门）+build-dist 108=108+syncer --family exit=0+deploy --version 4.0.0 重部署+--check --hash 5/5（内容哈希 06db20781d69 不变）+usage_probe 候选 243/406；commit=51ba87b（.git\commit-msg-r1.txt，终端 zx-r1-push.cmd）；推送=GitHub origin（main+tag=51ba87b，API 复核）+Gitee（会话直连补推+API 复核）。
 
 **O-2 渠道回执（2026-10-10）**：GitHub Release ✅ v4.0.0（asset `shisan-xinuo-workflow-v4.0.0.zip` 2,209,350B，notes=docs/release-notes-v4.0.0.md，读回 assets/size 对）/ npm ✅ 4.0.0（89 文件 shasum `48e18e3b…`，带 token 读回 version+shasum 双对）/ Gitee Release ✅ **id=1193457**+附件 **id=3351164**（2,209,350B，attach_files 专端点；正文 1,039 字符 406/liveness 标记读回校验）/ About 双端 ✅ len=**191**（§六·十一 v4.0.0 口径，406/ev= 标记双端读回校验）/ ClawHub ⏳ 用户侧提交（页面实测 1.0.20，建议合并补交）。
+
+## P. v4.1.0 批（**发行批 2026-10-12** · 门禁防线+部署链+规则层定型+两仓清洗重定位；计划=docs/design-specs/v410-batch-manifest-20261010.md+two-repo-clean-reposition-plan-20261011.md；总控=docs/design-specs/remote-facade-goal-plan-20261012.md）
+
+> 本批拍板：2026-10-12 用户令「目标模式逐项完成 ac，尤其远端门面」（批次 D 单独口令+Phase 9 批准门一并授权）；四问空答项保守缺省（定位句不加/walk-t11 不动/toast 94 处不修/算子起草降末位）。
+
+- [x] 批次 D（two-repo 计划档 §5）：母仓双远端 push（GitHub `6ad2d8d..3e4d7b0`／Gitee `d8951dd..3e4d7b0`，ls-remote 双验）+英文仓 push（`41cc84c..43c76e1` 补 2）+博客仓 push（`4cac108..3954a64` 补 44，纯快进）+远端元数据三面（母仓 GitHub/Gitee description=两仓档 §3.4 定版 168 字+topics 15→17〔+quality-gates/agent-workflow〕；产品仓 description 重定位 240 字+topics 0→10；读回全 MATCH；Gitee keywords API 无读回字段=未验证，列用户侧 web 核对）
+- [x] 发行前机检：facts PASS（405/33）+verify-release **10/10 ALL PASS**（初跑 D 项拦总控计划档盘符路径→脱敏复跑绿）+judge-selftest 25/25（j2.7，verify H 内含）+narrative 0 FINDING（verify I 内含）
+- [x] dist 终版重打：`shisan-xinuo-workflow-v4.1.0.zip` **96 项/2,129,624B**（Set-diff 96=96；Phase 8 时 97 项→两仓清洗批树面缩小）
+- [x] tag `v4.1.0`（=3e4d7b0）双远端推送
+- [x] GitHub Release ✅（asset 读回 2,129,624B 吻合；notes=CHANGELOG v4.1.0 条程序化提取，摘「施工中」标+尾句随发行更新）
+- [x] npm ✅ @zxc663/shisan-xinuo-workflow@4.1.0（76 文件，shasum `576b563f…`，带 token 读回 version+shasum 双对）
+- [x] Gitee Release ✅ **id=1198410**+附件 **id=3366221**（2,129,624B；attach_files 专端点+detail `assets` 字段读回；POST 缺 target_commitish=API 新要求补参重试成）
+- [x] About 双端 ✅＝批次 D 重定位文案（两仓档 §3.4 定版；**取代 §六·十二指标型预案**——裁决：重定位文案为 10-11 晚定版且含 405 口径，指标细节由 Release 正文承载，§六·十二留档备查）
+- [x] 产品仓 **v1.0.0**：tag+GitHub Release（clean-room 英文重写首版，frontmatter metadata.version=1.0.0 实证；无附件，install=npx skills add zxc663/product-engineering-skill）
+- [ ] ClawHub ⏳ 用户侧并批补交（v3.4.0+v4.0.0+v4.1.0 内容一次提交，版本号=顺延惯例）
 
 ## N. v3.4.0 本批（**已发行 2026-10-07** · 弱锚结构化 + 批X 反向变异修复 + 对标 A/C/D 施工 + 试金石/实地轨 + 单文件版）
 
