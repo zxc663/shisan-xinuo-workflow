@@ -99,6 +99,6 @@ N2-N5（门面线收官）─→ N6 v4.1.0发行（dist重打→tag→五渠道�
 | N6 v4.1.0 发行 | ✅ | dist 96 项/2,129,624B；tag v4.1.0 双远端；GH Release asset 吻合；npm 76 文件 shasum `576b563f…`；Gitee id=1198410+附件 3366221；About=批次 D 文案（§六·十二预案留档未启用）；ClawHub=用户侧 |
 | N7 产品仓 tag | ✅ | v1.0.0（frontmatter 实证）+GitHub Release（无附件，npx 安装） |
 | N8 写回+收尾push | ✅ | RELEASE-CHECKLIST P 节+项目信息 §五+CHANGELOG 发行态+agent-log；发行前机检复跑+本批收尾 commit |
-| N9 算子起草 | ⏳（预算允许） | 档路径=待记 |
-| N10 dev 修复 | ⏳ | 同上 |
-| N11 总收尾 | ⏳ | 终报=待记 |
+| N9 算子起草 | ✅ | docs/design-specs/questioning-operator-draft-20261012.md（自研重建·过目门未开——批准才施工） |
+| N10 dev 修复 | ✅ | 博客 nonce 修复 commit 67ea132+记账 ff56cc4 已推（真机水合告警零出现）；api 死因=日志面缺失**未定论**记档 |
+| N11 总收尾 | ✅ | 本状态板全勾+agent-log 两行+平台记忆+终报（B 类待拍板与 ClawHub 用户侧见终报） |
