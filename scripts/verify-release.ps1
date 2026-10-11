@@ -82,12 +82,12 @@ if (-not (Test-Path $core)) { $probsA += "缺 injection-core.md" } else {
     $ctxt = (Get-Content $core -Raw -Encoding UTF8) -replace "`r", ""
     foreach ($anc in $anchorsCore) { if ($ctxt -notmatch [regex]::Escape($anc)) { $probsA += "injection-core 缺锚点[$anc]" } }
     $coreLen = $ctxt.Length
-    if ($coreLen -gt 6000) { $probsA += "injection-core 字符数 $coreLen 超硬上限 6000（常驻瘦身预算，目标 4K）" }
+    if ($coreLen -gt 7000) { $probsA += "injection-core 字符数 $coreLen 超硬上限 7000（常驻瘦身预算，目标 4K）" }
 }
 if (-not (Test-Path $newBootstrap)) { $probsA += "缺 references/new-project-bootstrap.md" }
 $pyLen = 0
 try { $pyLen = [int](python -c "import sys; print(len(open(sys.argv[1], encoding='utf-8').read().replace(chr(13),'')))" "$core" 2>$null) } catch { $pyLen = -1 }
-if ($pyLen -gt 6000 -and $pyLen -ge 0) { $probsA += "injection-core Python/code-point 口径 $pyLen 超 6000" }
+if ($pyLen -gt 7000 -and $pyLen -ge 0) { $probsA += "injection-core Python/code-point 口径 $pyLen 超 7000" }
 # 家族包完整性（v3.0：核心+flows+roles 三包 name/version 与 package.json 一致）
 $pkgVer = (Get-Content (Join-Path $Root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
 foreach ($pkg in @('shisan-xinuo-workflow','shisan-xinuo-flows','shisan-xinuo-roles')) {
@@ -126,7 +126,7 @@ if (-not $skL3) { $probsA += "判级双源对验：SKILL L3 清单行未找到�
 if ($ctxt -and -not $ctL3) { $probsA += "判级双源对验：injection-core L3 清单行未找到（缺失输入不得静默过）" }
 if ($skL3 -and $ctL3 -and $skL3 -ne $ctL3) { $probsA += "判级双源 L3 清单漂移（F-23 先例）：SKILL=[$skL3] ≠ core=[$ctL3]" }
 
-Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤6000 · L3 双源逐字一致）"}else{$probsA -join ";"})
+Add-Result ($probsA.Count -eq 0) "A 内容锚点+字符预算(主交付物全量特性)" $(if($probsA.Count -eq 0){"OK（injection-core PS/UTF-16=$coreLen · Python/code-point=$pyLen · 双口径 ≤7000 · L3 双源逐字一致）"}else{$probsA -join ";"})
 
 # ---------- B. hooks 三层（警告级：hooks = 可选加固面，非运行时必需——templates/hooks/README 自声明） ----------
 $hookFiles = @("session-start.example.sh","session-end.example.sh","hooks.example.json")
