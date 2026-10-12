@@ -35,6 +35,21 @@
 - [x] 产品仓 **v1.0.0**：tag+GitHub Release（clean-room 英文重写首版，frontmatter metadata.version=1.0.0 实证；无附件，install=npx skills add zxc663/product-engineering-skill）
 - [ ] ClawHub ⏳ 用户侧并批补交（v3.4.0+v4.0.0+v4.1.0 内容一次提交，版本号=顺延惯例）
 
+## Q. v4.1.0 后修正批②（**2026-10-13 · 未发行** · README 重写 + facts_sync 零命中断言 + 计划门铁律）
+
+> 本批拍板：用户 2026-10-13「按推荐和最优解继续」+ 选定「**C · 折中**」——不升版本；仅更新 GitHub/Gitee Release 正文说明（记「已含 v4.1.0 后修正批②」），npm 记录「无可发版本」。**未触碰任何发行资产**（tag/zip/附件均未动）。
+
+- [x] 批内施工：README 采纳外审成稿重写（+「作者的话」保留+六处事实修正）+ `facts_sync` 逐模式零命中断言（+清 `docs/project-info.md` 陈旧死模式）+ injection-core `#346`——commit `efb6662`（3 files，+125/−199）
+- [x] 推送：GitHub/Gitee main `289fb68..efb6662`（代理瞬断→单次禁代理直连；`ls-remote` 双端=efb6662）
+- [x] CI：GitHub Actions run `38292560801` **success**（verify / gates-linux / artifact-check 三 job 全过）
+- [x] GitHub Release 正文更新：v4.1.0（id=409851552）追加「v4.1.0 后修正批②」说明，正文 2727→**3110** 字符（PATCH 200，读回 hasMark=true）；资产 `shisan-xinuo-workflow-v4.1.0.zip` **2,129,624B 未动**
+- [x] Gitee Release 正文更新：id=1198410 同步（PATCH 200，读回 len=**3110**，与 GitHub **逐字一致**）；附件 id=3366221 未动
+- [x] npm：**无可发版本**（4.1.0 已发布、同名不可覆盖；带 token 读回版本列表最高=4.1.0）
+- [ ] ClawHub ⏳ 用户侧（本机无 CLI 通道，沿先例）
+
+**Q-1 渠道回执（2026-10-13）**：GitHub Release ✅（body 3110 / 资产 2,129,624B 未动）· Gitee Release ✅（id=1198410 / body 与 GitHub 逐字一致）· npm ⏸ **无可发版本** · ClawHub ⏳ 用户侧。
+**Q-2 已知限制**：Gitee Release PATCH 必带 `tag_name`+`name` 两必填参（缺=400 `tag_name is missing / name is missing`）；`access_token` 须置 **query**（置 form body=401「Access token does not exist」）。
+
 ## N. v3.4.0 本批（**已发行 2026-10-07** · 弱锚结构化 + 批X 反向变异修复 + 对标 A/C/D 施工 + 试金石/实地轨 + 单文件版）
 
 > 本批拍板（用户「全序连跑」授权+AskUserQuestion 三答）：范围=全部待办批次自主连跑（L3 停）/ 余额先探再定三线循环规模 / 版本 v3.4.0 / 盲评实验也做（第三方审查 §八·6 欠账）。**发行批准=2026-10-07 用户明示两段口令（「推送3.4」+「发行3.4」）**。
