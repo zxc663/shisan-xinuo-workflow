@@ -1,8 +1,8 @@
-# Shisan Xinuo Agent Workflow（十三希诺 · 纪律元工作流）
+# Shisan Xinuo Agent Workflow（十三希诺工作流）
 
-> **v4.1.0**（已发行 2026-10-12） · MIT · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
+> **v4.1.0**（已发行 2026-10-12）· MIT · 中文为主 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
-**一句话定位**：**把思考变成可证伪工序。** 把 AI agent 的工程纪律做成**可机检的门禁，而不是靠自觉**——三级跑道按任务风险分流，L3 封闭清单把高危动作拦在发生之前，每个任务收尾留下**可重跑的 GATE 证据**（命令 + 退出码 + 变更文件），verify 10 项发行门禁与 CI 三 job **公开可看**。规则有没有被遵守、结论能不能复算，不靠信任——任何人 clone 下来重跑一遍即可。
+**一句话定位**：一套把 AI 编码 Agent 的工程纪律做成「按风险选深度、高危先停、完成留证据」的可审计工作流 Skill 家族——它的独特之处不在规则数量，而在于**纪律的验证链本身随仓库公开，任何人都能重跑核对**。
 
 ---
 
@@ -16,244 +16,162 @@
 
 ---
 
-## 这是什么，不是什么
+## 它解决什么问题
 
-### 它是什么
+AI 编码 Agent 在真实项目里的七类工程失败，以及本项目对应的机制（全部指向仓库内可查的文件）：
 
-一个 **纪律元工作流（discipline meta-workflow）**：只管 Agent「怎么做」，不管「做什么」。它把工程纪律做成四样可以真正执行的东西——**流程结构**、**可跑门禁**、**可复算证据**、**停点与记忆**。
+| 失败场景 | 表层表现 | 深层原因 | 对应机制 |
+| --- | --- | --- | --- |
+| 需求有歧义，Agent 未确认就动手 | 做出来的东西不是用户要的 | 模型倾向于「补全」而不是「承认不知道」 | 每轮复述前置 + 必问协议 + 计划模式必问（`skill/shisan-xinuo-workflow/SKILL.md` §4、§2.6） |
+| 为求快省略调查、澄清、验证 | 「我先直接写吧」 | 省 Token 是即时收益，返工是延迟成本 | 开工四步每步有出口产物 + 努力预算下限 + 「省的是仪式不是实质」（SKILL.md §2.0、§0） |
+| 方向错了，但局部任务都顺利 | 每步都对，整体白做 | 局部正确性无法抵消方向错误 | 设计确认先于写码 + 回滚点前置 + 纠偏续跑（SKILL.md §2.5、`references/injection-core.md` 设计铁律） |
+| 跨会话记忆丢失，重复调查 | 新会话问旧会话早已确认过的问题 | 过程信息没有可靠落点 | 项目根 `memory/agent-log.md` 一档制四区 + 折叠协议保留清单（injection-core.md「memory/ 一档制」、SKILL.md §8） |
+| 忽略既有能力，重复造轮子 | 重新实现已有 Skill/组件 | 清单不在注意力里 | 能力检索协议：开工先匹配 Skill/MCP 清单，未命中才自写并留归因（SKILL.md §2.1） |
+| 表面完成被当成真完成 | 「做完了」但没跑过、没证据 | 没有把「完成」定义为可复算的检查点 | GATE 一行证据（命令 + 退出码 + 变更文件）+ `gate_audit.py` 外部抽检 + 「循环到绿」收口判据（injection-core.md「交付与留档」段） |
+| 流程越加越繁琐，为合规做无意义动作 | 小任务也走全套 | 治理成本没有与任务风险挂钩 | 三级跑道按风险选深度 + Token 精算机 + 压缩级（存在性不可压缩、形态可压缩）（SKILL.md §0、§2.2） |
 
-### 它跟 AGENTS.md / CLAUDE.md 的分别
+**为什么这些问题值得专门处理**：它们共享同一个深层原因——**规则在场 ≠ 规则被遵守 ≠ 遵守带来好结果**。这个「三层缺口」的完整论证在 `docs/methodology-rule-verification.md` §0：把规则写进 AGENTS.md 只解决第一层（文本到达上下文）；行为是否遵守需要行为面证据；遵守是否改善结果需要对照实验。大多数规则工程只做第一层，然后宣传第三层的收益。本项目把三层分开处理，并明确标注每层目前的验证状态（见「什么已验证、什么没有」）。
 
-- **AGENTS.md / CLAUDE.md 是「载体」**——声明式配置，告诉 Agent「这个项目怎么构建、什么风格、哪些红线」。
-- **本工作流是「引擎」**——命令式流程，规定 Agent「任务怎么分级、什么时候停下来问、做完怎么留下可重跑的证明」。
-- 它**往这些载体里写东西**：平台适配检测到 Codex / Claude Code / Trae / WorkBuddy / ZCode，就把浓缩纪律写进对应的 `AGENTS.md` / `CLAUDE.md` / 平台规则文件，先备份、合并不覆盖，再回指本 Skill 取详细规则。
+## 核心设计思路
 
-一句话：AGENTS.md 是法律条文，本工作流是**律师 + 执法记录仪 + 卷宗归档流程**。它写进去的东西本质仍是提示词——只是外面套了一层能真跑的脚本与门禁，把提示词范畴用到了接近极限。
+不是「更多规则」，而是四个工程取舍：
 
-### 它不是什么
+1. **按风险选深度**。三级跑道：L1 快速通道（可逆小改，直接做）、L2-S 短工作流（≤3 文件）、L2-F 完整 9 步（大模块/高风险）。判级 10 秒一句话定论，判不了默认 L2——**不为所有任务套全套流程**。
+2. **高危动作靠停点，不靠自觉**。L3 封闭清单只有 6 项（密钥/权限、数据删除、数据或服务迁移、对外发布、架构选型、超预算破坏性操作），命中即停、列出命令清单、等用户确认——**清单外一律不是 L3，不得自行扩展**（扩展会让「可测试性」失效）。清单外高危域（CI/CD、DNS、IAM、计费等 11 域）由 `scripts/risk_scan.py` 关键词召回兜底。
+3. **「完成」必须是可复跑的证据**。每个任务块收尾一行 GATE：真实命令、真实退出码、变更文件、验证层级。**可重跑工件 > 自我叙述**；收口必须「循环到绿」（exit 0），带红交付必须显式声明。
+4. **规则本身是被治理的工程对象**。规则可跳过，但跳过必须声明（复述跳过项 + 留依据 + 提醒用户）；405 条细则零和上限（新增须合并/替换）；全仓数字由 `facts_sync.py` 单源对账；行为判据是代码（`probe_runner.py`，j2.7），改判据必须过金样本回归并留变更记录。
 
-- **不是代码质量工具**。质量由评审与测试负责，本工作流不碰。
-- **不是零事故保证**。它降低的是「根本不该发生的动作」（删库、泄密、误发布、失守迁移）的发生率，不是缺陷率。
-- **不是企业级治理平台**。没有身份认证、策略引擎、平台级审计——它做的是提示词层能触达的部分，换来的是可测试、可复算。
+## 关键机制与对应文件
 
----
+| 机制 | 文件 | 类型（诚实标注） |
+| --- | --- | --- |
+| 三级跑道 / 判级 / 三模式 / 复述 / 必问协议 | `skill/shisan-xinuo-workflow/SKILL.md` | 提示词自律（模型读指令执行） |
+| 常驻最小集（判级速查/红线/GATE 12 字段/开工四步） | `skill/shisan-xinuo-workflow/references/injection-core.md`（6328 字符） | 提示词自律（注入到平台规则文件后每会话在场） |
+| 落地细则 405 条 · 33 类（T1/T2/T3 三层按需加载） | `skill/shisan-xinuo-workflow/references/details.md` | 提示词自律 + `scripts/detail_lookup.py` 一键检索（标准库只读工具） |
+| 工程纪律 42 条（G0-G8 场景索引） | `skill/shisan-xinuo-workflow/references/rules.md` | 提示词自律 |
+| GATE 证据外部审计 | `scripts/gate_audit.py` | **机检端口**（需人/Agent 主动运行；核对文件存在性、git 痕迹、命令复跑、验证层级） |
+| 清单外高危域召回 | `scripts/risk_scan.py` | **机检端口**（关键词召回，非判级权威） |
+| 跨会话档案（状态/教训/偏好/流水四区） | 项目根 `memory/agent-log.md`（模板 `skill/shisan-xinuo-workflow/templates/agent-log-template.md`） | 提示词自律 + `scripts/agent_log_rotate.py` 机械归档 |
+| hooks 纪律包（会话启动提醒 / 工具失败时刻 TOP 推送） | `skill/shisan-xinuo-workflow/templates/hooks/`（**配置示例，非捆绑运行时**） | **平台机制**（依赖 Claude Code/ZCode 等平台的 hooks 支持；WorkBuddy/Codex 待实测） |
+| 五平台注入（先备份、合并不覆盖） | `scripts/deploy_injection.py` | 部署脚本（一次性执行） |
+| 发行门禁（内容锚点/hooks/版本/泄漏/正文净化/索引/事实对账/判据自测/叙述对账/双副本一致性） | `scripts/verify-release.ps1`（PowerShell）+ `.github/workflows/verify-release.yml`（CI 三 job 公开运行） | 脚本门禁（发行动作前必跑） |
+| 判据即代码 + 金样本回归 | `scripts/probe_runner.py` + `docs/roadtest-scorecards/JUDGELOG.md`（j1.0→j2.7 版本史） | 机检端口 |
+| 流程分册 9 类 / 审查角色 8 个 / 产品工程门禁 | `skill/shisan-xinuo-flows/`、`skill/shisan-xinuo-roles/`、`skill/shisan-xinuo-product/` | 按需加载的 Skill（独立可装） |
 
-## 它能拦住什么
+**上面的「类型」列是本 README 最重要的诚实声明**：这套体系的大部分环节仍靠模型阅读指令后自觉执行；机检端口是外部可跑脚本，但需要被主动运行；hooks 提供平台级的自动触达，但受平台支持面限制。它不承诺「规则不可绕过」，它承诺的是「绕过和不绕过都留下可查的痕迹」。
 
-它拦的是「根本不该发生的动作」——这类动作不靠写得更优雅来防，只靠停点来防：
+## 一次任务的完整生命周期
 
-| 事故形态 | 拦截机制 |
-| --- | --- |
-| 密钥写进代码 / 提交 / 对话 | L3 封闭清单（密钥/权限）命中先问 + 门禁泄漏扫描 |
-| 未经确认的对外发布 | L3「对外发布」停点 |
-| 通配符 / 递归删库 | L3「数据删除」停点问询 |
-| 无回滚点的数据 / 服务迁移 | L3「迁移」停点 + 回滚点红线 |
-| 「你看着选」式笼统授权被扩大 | 只覆盖明示项，未答项仍必问 |
-| 清单外高危域（CI/CD·DNS·IAM·计费·feature flag·webhook·限流·OAuth 回调·生产配置写·IaC·reload） | `risk_scan.py` 机检兜底，命中至少按 L3 停点 |
+以 L2-F 为例，串联各机制：
 
----
+1. **开工四步**（每步有出口产物，无产物不进下一步）：复述 + 状态行 → 承载检查（自动建 `memory/agent-log.md`、项目规则文件，先备份合并不覆盖）→ 记忆对齐（只读状态段一屏，按症状检索）→ 前置门 + 能力检索 + 判级选道。
+2. **选道**：三问分流（跨 ≥3 包？涉契约/架构/迁移/发布/安全？用户点名按流程？≥2 命中走 L2-F）。L3 命中永远 L2-F + 先停。
+3. **执行中**：对接真相调研（写码前先 grep 调用点、读 schema，禁命名直觉）→ 复述 → 疑问必问 → 五问审查 + 回滚点 → 规划文档（含可验证验收标准）→ 执行 → 自查归档。
+4. **停点**：L3 六项命中即列命令清单、结束回合等确认；普通模式下方向/歧义/风险也必问。
+5. **收尾**：最小验证（真实跑一遍，记退出码）→ 完成声明六件套 + 用户验收 → GATE 一行 → agent-log 流水/状态/教训/偏好更新 → 文档代码同批提交。
+6. **下一会话**：读状态段一屏对齐，复述接续，按症状检索教训区——不再从头调查。
 
-## 真正有分别的地方
+**哪些环节可能失效**（项目自己记录的边界）：模型可能忽略或误解指令（提示词边界）；无头/非交互环境注入面可能断裂（`docs/design-specs/` 与 CHANGELOG 中有实测记录）；hooks 落盘受平台持久化策略影响；GATE 的「真实退出码」依赖 agent 如实填写，`gate_audit.py` 抽检但不可能全量覆盖。
 
-同类项目大多在做「流程强化」或「全家桶打包」，本项目做的是**把纪律变成可证伪、可回归、可追溯的实证对象**。七样机制里，前四样常见，后三样罕见：
+## 五包结构
 
-1. **三级跑道**（L1 快速通道 / L2-S 短工作流 / L2-F 完整 9 步）——按任务风险选深度，不为所有任务套全套流程。
-2. **L3 封闭清单**——仅 6 项（密钥/权限｜数据删除｜迁移｜对外发布｜架构选型｜超预算破坏性操作），清单外一律不是 L3、不得自行扩展；命中**先问再做**。清单外高危域另有 `risk_scan.py` 机检兜底。
-3. **GATE 12 字段证据块**——每个任务块末尾一行可重跑证据（`level/v/cmd/exit/files/refs/errpath/lessons/exempt/caps/effort/stop_reason` + `ev=` 验证层级 exec/cover/invariant/indep）。把「我做完了」强制变成「这是命令、这是退出码、你重跑一遍」。
-4. **跳过必声明**——任何规则/步骤被跳过，必须复述跳过项、留依据、向用户一行提醒。「跳过+声明」合法，**静默跳过违规**。
-5. **判据版本化（j1.0→j2.7）+ 金样本回归 25/25**——行为面探针的判据是代码（`probe_runner.py`），改判据必过 `--judge-selftest` 并在 `JUDGELOG.md` 留一行变更记录。**判据即代码**，这是同类项目普遍没有的。
-6. **反向变异自测 / 内容哈希验收 / 叙述对账 / 反作弊**——门禁自带负向样例；五平台注入副本做内容哈希验收（版本串一致≠内容一致）；`facts_sync.py` 让全部数字单源可断言；`gate_audit.py` 对虚假 GATE 降级。
-7. **with/without 双仓对照 + 负面结论更严**——判"不复现/不存在"需判据逐字对齐 + 真实调用链，否则降"未定论"。
+| 包 | 定位 | 独立安装 |
+| --- | --- | --- |
+| `skill/shisan-xinuo-workflow` | 核心：三级跑道 / 判级 / 必问与红线 / GATE / 记忆留档 / 平台注入 | 是 |
+| `skill/shisan-xinuo-flows` | 流程包：9 类任务工作流分册 + 7 件模板 | 是 |
+| `skill/shisan-xinuo-roles` | 角色包：8 个审查/执行角色（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） | 是 |
+| `skill/shisan-xinuo-product` | 产品工程包（v0.2.7，独立版本线）：交互工程判据与 8 台可重跑门禁——「功能该有的都有」的缺失可检出 | 是 |
+| `skill/shisan-xinuo-single` | 单文件蒸馏版：核心全量并入一文件，硬注入形态 | 是 |
 
-2026-10-10 起核心规则层（`rules.md` 47 条）重构为**场景索引**：G0-G8 组导航（红线/开工/执行/思考/排障/收尾/委托/跨时间/注入）、判级锚定的加载契约（L1 不加载、L2+ 与纪律争议全文一读）、#48「诚实与自我怀疑」四件族（断层诚实 / 完成诚实 / 不假装知道 / 主动找反例——「反例自测」与判据层的反向变异自测**同名同源**）、11 行反借口红旗表（`references/red-flags.md`，借口原句→处置）。
+`pwsh scripts/install-skill.ps1 -Family` 一次装齐五包。
 
----
+## 什么已验证、什么没有
 
-## 门禁真跑：每一项声称都可独立核对
+先说一句容易被忽略的：**这个仓库的价值不是那 405 条规则本身，而是它的验证链随仓、任何人都能重跑核对**。这是本 README 与同类项目最不同的部分——**验证链本身就是交付物的一部分**。
 
-这套体系最不寻常的一点：**验证链本身就是产品的一部分，而且公开跑给你看。**
-
-- **verify-release 10 项发行门禁（A-J）**——内容锚点（含判级双源对验）、hooks 面、版本链、泄漏红线、正文净化、索引完整性、事实对账（`facts_sync`）、判据自测、叙述对账、双副本一致性。任何一次发行动作前必跑，不 PASS 不发行。
-- **CI 三 job 公开运行**——`.github/workflows/verify-release.yml` 接入 GitHub Actions，每次 push 门禁自动重放，运行记录任何人可查。
-- **j2.7「循环到绿」**——GATE 收口判据：门禁不过就继续迭代，**不允许带红收尾**；确需带病交付必须显式标注 unresolved 与止损原因。这条纪律独立于本仓库也成立。
-- **反作弊三件**——`gate_audit.py` 对虚假 GATE 降级；五平台注入副本内容哈希验收（版本串一致≠内容一致）；`facts_sync.py` 把全仓数字收敛为单源可断言。
-
-**核对命令**（clone 后全部本地可跑）：
+**可以直接重跑核对的**（clone 后本地执行，均为纯 Python，零 API 成本）：
 
 ```bash
-pwsh scripts/verify-release.ps1              # 10 项发行门禁全量
-python scripts/facts_sync.py --check         # 数字单源对账
-python scripts/probe_runner.py --judge-selftest   # 判据金样本回归 25/25
-python scripts/deploy_injection.py --check   # 五平台注入副本哈希验收
+python scripts/facts_sync.py --check        # 全仓数字单源对账（405 条/33 类/42 条口径）
+python scripts/probe_runner.py --judge-selftest   # 行为判据金样本回归 25/25
+python scripts/gate_audit.py --selftest     # GATE 证据审计自测 8/8
+python scripts/risk_scan.py --selftest      # 高危域召回自测 4/4
+python scripts/narrative_sync.py --selftest # 叙述对账自测 7/7
+python -m unittest discover -s tests        # 单元回归 14/14
 ```
 
----
+发行门禁 `pwsh scripts/verify-release.ps1`（10 项，需要 PowerShell）由 GitHub Actions 三 job 在每次 push 时公开运行，运行记录在仓库 Actions 页可查。
 
-## 与同类项目的分别
+**部分验证的**：行为面探针（路测 v3.0/v3.1/v4.1 证据与判据版本史随仓，`docs/roadtest-scorecards/`）证明了「系统在作者定义的判据下合规」——这验证的是**遵守**，不是**有用**。
 
-2026 年 9 月的对标调研（`docs/comparison-v290-analysis-20260916.md`，11 个项目、6 维矩阵；代表性数据 2026-10-11 联网复核）把同类项目分成四类，本项目与它们都不同：
+**尚未验证的（如实告知）**：
 
-| 类别 | 代表 | 它们做什么 | 本项目的分别 |
+- **效果对照**：盲评实验（配对设计、外部评审、n≥30）已完整设计并预注册（`docs/design-specs/blind-eval-design.md`），试点 n=6 已执行，正式批**未跑**。README 因此不出现「效果更好/更省返工」类结论。
+- **第三方复现**：目前 0 次（`docs/methodology-rule-verification.md` §4 的诚实现状）。
+- **与裸 Agent 的 A/B 对照**：本工作流自身声明「规则有效性（对照 A/B）未达显著」（`skill/shisan-xinuo-workflow/SKILL.md` §6）。
+
+**本工作流不宣称正确性优势**。它提供的是：可追溯（每个任务块有可重跑证据）、可审计（机检端口）、防返工机制在位（复述/澄清/回滚点）、点破后恢复机制（纠偏续跑/重载守卫）。如果这些不是你要的，往下看「不适合谁」。
+
+## 与相邻方案的关系
+
+同类项目四分法（完整对标见 `docs/comparison-v290-analysis-20260916.md`，11 个项目、6 维矩阵，随仓可查）：
+
+| 类别 | 代表 | 它们做什么 | 与本项目的关系 |
 | --- | --- | --- | --- |
-| **A · 流程强化** | `obra/superpowers`（≈297.4k★，2026-10-11 实测） | 引导协议常驻化、子代理流水线、会话诊断技能 | 机制可借（每任务审查、Ruling 账本、技能写作 TDD），但本项目重心不在「流程更顺」，而在「结论可复算、事故先停」 |
-| **B · 规则承载全家桶** | ECC + Toolkit 类 | 把大量规则/工具打包 | 本项目不做全家桶，做的是**分文件按需加载 + 细则检索端口**——常驻核心 ≤7000 字符，405 条细则经 `detail_lookup.py` 按症状取条（加载单元=文件；无文件内容分段机制） |
-| **C · 多智能体编排** | MetaGPT、ChatDev | 角色编排、流水线协作 | 本项目是**单人单 Agent 的纪律层**，不编排多智能体 |
-| **D · 企业治理平台** | Microsoft 类 | 身份认证、策略引擎、平台审计 | 本项目无这些；它是提示词级的一层纪律，换来的是可测试、可复算 |
+| 方法论框架 | obra/superpowers（≈298k★）、github/spec-kit（≈141k★）、BMAD-METHOD（≈54k★）、Wirasm/PRPs-agentic-eng（≈2.3k★）（星标 2026-10-13 实测） | 把 SDLC 阶段做成强制技能/命令/子代理流水线 | 同层竞品。它们强在流程与生态；本项目重心不同：**停点优先 + 证据可复跑 + 验证链随仓**。superpowers 的评测在独立仓库，本项目判据与金样本随仓且版本化 |
+| 规则承载标准 | AGENTS.md 开放标准（Linux Foundation 治理，60k+ 项目采用）、Cursor rules、Kiro steering | 声明式知识文件 + 平台原生加载（四态/条件触发） | **互补而非竞争**：本项目把浓缩纪律写入这些载体，平台负责加载，本项目负责纪律内容与验证 |
+| 平台 hooks 与记忆工具 | Claude Code hooks、claude-mem 类记忆系统 | 事件触发的自动注入/记忆持久化 | 互补：本项目提供 hooks 纪律包模板（SessionStart 提醒 + 失败时刻 TOP 推送）与文件态记忆方案，但不做数据库/向量记忆 |
+| 企业治理平台 | Microsoft/平台级方案 | 身份认证、策略引擎、平台审计 | 不可比：本项目无这些，是提示词层的一层纪律，换来可测试、可复算 |
 
-一句话分界：**主张说小、证据说满**——superpowers 的 README 通篇不提 token/成本，本项目把「治理有代价、代价有界且可审计」写进头条；superpowers 把评测放独立仓，本项目把探针与 scorecard **随仓**并判据版本化。对标结论记录在 `docs/design-specs/benchmark-superpowers-20260929.md`（借鉴点/现状/移植成本/验证法四列）。
+**如实说明**：以上任一类别都有成熟方案，本项目没有单点「市场空白」。它相对明确的特点有三个：①**中文原生**（同类主流方案均为英文）；②**把「怎么验证一条纪律有用」做成了随仓可复跑的工件**（判据版本化、金样本回归、逃逸分析回流、反向变异自测——方法论独立成文 `docs/methodology-rule-verification.md`）；③**治理代价有界且可审计**（注入核心 6328 字符常驻、细则按症状检索、零和上限），并把「主张说小、证据说满」作为自身纪律。
 
----
-
-## 五包体系
-
-五包独立可装、组合使用（`pwsh scripts/install-skill.ps1 -Family` 一次装齐）：
-
-| 包 | 定位 |
-| --- | --- |
-| `shisan-xinuo-workflow` | **核心**：三级跑道 / 判级 / 必问与红线 / `GATE` / 状态锚定 / 承载与留档 / 五平台注入 |
-| `shisan-xinuo-flows` | **流程包**：9 类任务工作流分册（新功能/Bug/重构/迁移/发布/前端/运维/文档/调研） |
-| `shisan-xinuo-roles` | **角色包**：8 个审查/执行角色（critic/risk-reviewer/security-auditor/debugger/contract/test/frontend/perf） |
-| `shisan-xinuo-product` | **产品工程包**（中文权威源；独立英文发行版 [shisan-xinuo-product-en](https://github.com/zxc663/shisan-xinuo-product-en) v1.x——clean-room 重写、机制等价、版本线各自独立） |
-| `shisan-xinuo-single` | **单文件蒸馏版**：核心全量并入一文件，自用硬注入形态 |
-
-### 产品工程包——它想解决的问题
-
-产品工程包针对的是另一类失败：**「产品该有的都得有」缺了没人报**。缺失是不可观测的偏差——测试全绿不代表该有的都在。
-
-核心思路可以概括为三句判断：
-
-> **「3 万与 30 万的功能清单可以完全相同，差价全在旅程完整性。」** AI 把组件与样式压成通缩品，溢价全部集中在体验完整性——第一次打开知道去哪（空态有引导）、等待不焦虑（进度有预期）、出错不慌（错误有出路）、反悔有路（撤销与确认）、下次回来还认识（持久一致）。
-
-> **「产品工程 ≠ 产品构想。」** 创新属产品决策侧（该创造什么）；产品工程管「既然决定做，它具体应该是什么」——核心敌人是「产品已决定，但 AI 把它做歪了」。
-
-> **「实现层完备 ≠ 产品工程完备。」** 下游全绿不能补上游的缺。产品工程 = **把「完整性」翻译成「可判定性」的工程**——它的成功判据是「缺失可检出」。
-
-落到机制上，是八样可以真跑的东西：
-
-- **层级门（L0-L10）**：先定位「在回答哪一层的问题」，再检上游，未确认停下回补、不得越级下沉。
-- **产品对象六问**：Purpose 为什么存在 / Responsibility 职责句（「X 管理」，不是「展示 X 数据」）/ Capability 能力清单 / Priority 恰好一个主功能 / Completeness 能力完整 / Operability 后台能不能管。
-- **功能面盘点**：把用户在应用里会看到的**一切可见面**（含管理面/空态/错误页/加载/帮助）先枚举出来——漏盘点面 = 后续一切工序对它失效。
-- **statechart C1-C7**：无死端 / 全可达 / 错误态必有恢复转换 / 引用完整性 / 契约 recovery 双向对账。
-- **spec-trace 双向追溯**：正向每条功能行有元素兑现，反向每个元素回指功能行——反向断裂即发明或遗漏。
-- **双底双顶**：不难用/不难看/无障碍为底线，更好用/更好看为上限。
-- **8 台可重跑门禁**（registry / statechart / spec-trace / product-object / l0-l5 / frontend-lint / a11y / usage-probe）+1 台提取器（spec-trace-extract），九个脚本各带 `--selftest` 正反样例。
-
----
-
-## 仓库结构（`docs/` 是开发工作区）
-
-- **`skill/`** —— 五包交付物（核心 + 流程 + 角色 + 产品工程 + 单文件蒸馏），发行物本体。
-- **`scripts/`** —— 机检与运维脚本（verify-release / facts_sync / probe_runner / deploy_injection 等），门禁即产品。
-- **`docs/`** —— **开发工作区，不是交付物**。当前只保留：活跃设计档（`design-specs/`）、判据金样本（`roadtest-scorecards/evidence/`，`--judge-selftest` 回归输入）、判据版本史（`JUDGELOG.md`）、事故记录（`incidents/`）与对外导读（quickstart / methodology / comparison 等）。历史实验原始数据（scorecard 时序库、试金石卡、盲评运行档等 550+ 件）已于 2026-10-11 清理出树——**git 历史与发行 tag 全程可溯**，复核时按 commit 取回。
-- **根面** —— README / CHANGELOG / RELEASE-CHECKLIST（发行操作）/ 项目信息.md（决策与发布史）/ AGENTS.md（项目注入）。
-
----
-
-## 值得读的记录：一份可复用的实证方法论
-
-这个仓库最容易被忽略的价值，不是那 405 条规则，而是**它把「怎么验证一条纪律真的有用」这件事本身做成了可复用的工件**。原始实验数据（scorecard 时序库、9 张试金石卡、27 例反向注入变异夹具等 550+ 件）已于 2026-10-11 归档出树，git 历史全程可溯；下面是仍然随仓、可独立核对的记录，任何想把规则工程做扎实的人都能直接照着学：
-
-### 事故处置记录（踩坑复盘模板）
-
-- **`docs/incidents/zcode-db-corruption-20260918.md`** —— 一次真实事故的完整处置与交接：全树「PAT 消毒」脚本把两个 SQLite 二进制库当文本重写，导致 ZCode 启动报 `corrupt`。记录含报错原文与日志对证、受损面实测表、根因（非法 UTF-8 字节被替换成 U+FFFD，1 字节变 3 字节，页对齐整体错位）、三条修复路线、照抄可跑的抢救命令、以及**禁止清单**（消毒必须带扩展名白名单 + 魔数校验双保险）。这是「事故→根因→预防回流」闭环的范本。
-
-### 判据版本史（判据即代码）
-
-- **`docs/roadtest-scorecards/JUDGELOG.md`** —— **判据即代码**的版本史（j1.0→j2.7）。记录了三次「判据滞后」假 FAIL（高质量合规形态被旧词表误判）、`effort=` 自满足被 GATE 字段名本身满足的空转问题、以及环境死亡行从「人工批注」变成「机器签名」的演进。判据改动必须 ① bump `JUDGE_VERSION` ② 过金样本回归（`docs/roadtest-scorecards/evidence/`，随仓）③ 留变更记录。scorecard 原始时序库（103 个 jsonl / 1047 探针行）已归档出树，git 历史可溯。
-
-### 逃逸分析 → 回流闭环（验证机制的真实证据）
-
-- **7 张合成试金石卡（jz-01~07）+ 2 张实地轨卡（site-01/02，真实存量项目只读实测）**（`docs/field-trials/`，已归档出树，git 历史可溯）—— 每张合成卡拿一个「现实中等水平」的合成产物跑 8 台门禁，再做**逃逸分析**：逐条枚举夹具中真实存在、首跑没被抓到的缺陷，判定「真缺口 / 半缺口 / 边界外」，真缺口**回流成新的判据**（如 E1 空态无引导→回流 R5-W；E2 click-div 伪按钮→回流 A3b），回流后复跑必须命中。带星行的「回流前不命中、回流后命中」就是回流效力的直接证据。jz-02 卡还记录了一个回流时自己抓到的 bug（`if backend_list:` 把空清单当 falsy 跳过）。这套「逃逸→回流→复跑命中」方法已沉淀进 `docs/methodology-rule-verification.md`，不绑定本项目可复用。
-
-### 反向注入（自测全 PASS ≠ 反向防御）
-
-- **反向注入门禁实测**（2026-09-29 批，27 例变异夹具，已归档出树、git 历史可溯）—— **漏报 15 / 误报 1**，其中 `--selftest` 全 PASS 与 15 漏报并存，直接证明「自测只盖正向样例、反向变异是盲区」。每条例给出根因（`if main_fn and …` falsy 短路、`startswith(("展示","显示"))` 只查前缀、字符串 truthy 判真等）与修复建议；全部修复已回流进九台门禁的 `--selftest` 负向样例。
-- **risk_scan 双臂实测**（2026-09-29 批，同上可溯）—— 召回 12/14（86%），良性臂噪声 4/6（67%）——诚实标注枚举外域（terraform/nginx reload）与噪声地板。
-
-### 对标调研（随仓）
-
-- **`docs/comparison-v290-analysis-20260916.md`** —— 11 个同类项目、6 维矩阵的一手对标（A 流程强化 / B 规则全家桶 / C 多智能体编排 / D 企业治理平台四分法）。
-- **`docs/design-specs/benchmark-superpowers-20260929.md`** —— 对标 obra/superpowers 的可吸收清单，每条带借鉴点/现状/移植成本/验证法四列，并明确「不抄什么」（不抄成本滤镜、不降级去抄独立 evals 仓）。
-- **`docs/design-specs/blind-eval-design.md`** —— 盲评实验设计档：判据 vs 机器判据的对照实验设计与判分口径（细则 #373「机器事实优先于 LLM 判据」的落地设计）。
-
-### 外部方向的公开佐证（方向性，非同层证据）
-
-- **DeepSWE-Preview（Agentica × Together AI，2025-07 全开源）**——纯强化学习 + 可验证奖励（单元测试通过=奖励信号，无监督微调阶段），在 Qwen3-32B 思考模式上仅约 200 步 RL（6 天 / 64×H100）就把 SWE-Bench Verified 推到 42.2% pass@1（发布时开源权重最好成绩）。它与本仓不是同层证据——那边是训练期机制、这边是推理期纪律——但它是「**把思考约束进可证伪工序（可验证判据），胜过自由发挥**」这一方向的独立公开实证，与本仓方法论（判据即代码 / 金样本回归 / 逃逸回流）押注的是同一个方向。
-
-### 对外反馈
-
-- **`docs/methodology-rule-verification.md`** —— **「怎么验证一条 agent 规则真的有用」的实证方法论（可移植版）**：三层缺口（在场/遵守/有用）、判据即代码+金样本回归、逃逸分析→回流闭环、反向变异自测、双臂对照与作者污染、环境死亡纪律、负面结论更严、以及**何时别用这套**的过重判定——每节锚定本仓证据工件（归档件按 git 历史+commit 取回），可逐条复核。
-- **[zai-org/zcode-plugins#58](https://github.com/zai-org/zcode-plugins/issues/58)** —— 向 ZCode 插件侧提交的检测器误标反馈（M1-M10 实例 + 最小复现件 + 修复建议；反馈包原文已归档出树，git 历史可溯）。它自己就是「把踩坑做成可复现证据」的示范——连「检测器误标会把工程实践推向更危险写法（为绕检而拼接 shell 字符串）」这种方向性反效果都记录在案。
-
----
-
-## 分发渠道（实际状态，2026-10-12）
-
-| 渠道 | 版本 | 状态 |
-| --- | --- | --- |
-| GitHub 源库 + Release | v4.1.0 | 权威源；34 stars / 3 forks（2026-10-12 实测）；每版附 dist zip（v4.1.0=96 项/2,129,624B） |
-| npm（GitHub Packages） | 4.1.0 | **visibility=private**，读取需 PAT，npmjs.org 未分发；2026-10-12 发布 4.1.0（76 文件，shasum 576b563f） |
-| Gitee 镜像 + Release | v4.1.0 | 与 GitHub 同 commit/tag 双推；4.1.0 Release id=1198410（2026-10-12，附件 3,366,221B） |
-| ClawHub（OpenClaw 技能市场） | 1.0.20（平台递增号） | `openclaw skills install @zxc663/shisan-xinuo-workflow` |
-| skills.sh（Agent Skills 索引） | 随 GitHub 同步 | 2 skills / 5 次安装 |
-
----
-
-## 适合谁，不适合谁
-
-**适合两类人**：
-
-- **想给自己的 Agent 工作流加「停点 + 证据」纪律的个人开发者**——不必整套采用，**最小采用四件套**就够用：①L3 封闭清单（仅 6 项，命中先问再做）②GATE 一行证据（真实命令 + 退出码 + 变更文件）③跳过必声明（静默跳过=违规）④循环到绿（门禁不过继续迭代，不带红收尾）。这四条不依赖本仓库任何基建，把理念抄进你自己的 AGENTS.md 就能用——**成文版见 [10 分钟上手 §6](docs/quickstart-10min.md)**。
-- **研究「怎么验证一条 agent 规则真的有用」的人**——`docs/methodology-rule-verification.md` 与上文「值得读的记录」整节可独立复用，判据版本化 / 金样本回归 / 逃逸回流 / 反向变异这套方法论不绑定本项目。
-
-**不适合**：
-
-- 想**整套照搬**的小团队——405 条细则的同步与维护成本在多人协作下不现实；建议只取四件套与判据方法。
-- 找平台级治理（身份认证/策略引擎/审计）的——那是另一层的事，见「它不是什么」。
-
----
-
-## 局限与代价
-
-- **上下文成本真实存在**：注入核心常驻 ≤7000 字符（中文约 5–7K token），细则按需 1–3K。窗口越小，收益/成本比越需要权衡。
-- **提示词边界**：无论注入做多少层，终究是提示词范畴，抵不上平台级「新会话自动加载」的机制保证。
-- **平台行为有方差**：无头模式注入面可能断裂；hooks 落盘受平台持久化策略影响。行为结论只认请求体/rollout 层证据。
-- **维护成本**：细则与副本需要同步；改模板 ≠ 改副本。细则库实行**零和上限**（405 为当前上限，新增须合并/替换旧条）；判据冻结于 j2.7、聚合器冻结于 a1.1——维护态不加层。
-
----
-
-## 快速开始
+## 安装与上手
 
 ```bash
 # 任选其一
-npx skills add zxc663/shisan-xinuo-workflow                # skills.sh
-openclaw skills install @zxc663/shisan-xinuo-workflow     # ClawHub
-git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库
+npx skills add zxc663/shisan-xinuo-workflow                # skills.sh 索引
+openclaw skills install @zxc663/shisan-xinuo-workflow     # ClawHub 技能市场
+git clone https://github.com/zxc663/shisan-xinuo-workflow # 源库（含全部验证脚本）
+pwsh scripts/install-skill.ps1 -Family                    # 源库内：五包一次装齐（需 PowerShell）
 ```
 
-平台注入由 `scripts/deploy_injection.py` 执行（先备份、合并不覆盖）。验收判据是**平台加载时的 Base directory**，不是文件版本号。
+npm 通道 `npm install @zxc663/shisan-xinuo-workflow` 为 GitHub Packages 私有可见性，读取需 PAT；npmjs.org 未分发。
 
-装完不知道从哪看起？走一遍 **[10 分钟上手](docs/quickstart-10min.md)**：自检 → 三个可观察标志物（每轮首产物复述/关键决策先问/块尾 GATE 行）→ **最小采用四件套成文规则**（可直接贴进 AGENTS.md）→ 反馈三问。
+**装完三步验证**：
 
-不想整套采用？只取**四件套**（L3 清单 + GATE 一行 + 跳过必声明 + 循环到绿）——理念可独立使用，零依赖。
+1. **自检**：重开新会话（注入版本=会话创建时快照），输入 `zxc663`——应答应包含注入方式、源库 vs 副本版本、Base directory。
+2. **观察三个标志物**：每轮首产物=复述（收到 X｜理解为 Y｜边界 Z）+ 状态行；关键决策先问（密钥/删除/迁移/发布/架构/超预算六类必停）；任务块末尾有 GATE 单行。
+3. **只取四件套**（不想整套采用）：L3 封闭清单必问 + GATE 一行证据 + 跳过必声明 + 循环到绿——四条理念可直接贴进你自己的 AGENTS.md，零依赖本仓库基建。成文版见 `docs/quickstart-10min.md` §6。
 
----
+## 适合谁，不适合谁
 
-## 版本历史（要点）
+**适合**：
 
-- **v4.1.0**（2026-10-12，**已发行**）：**门禁防线+部署链+规则层定型批**——verify 门禁 8→10 项（A-J：内容锚点含 L3 判级双源对验、双副本一致性等）；判据 j2.6→j2.7（GATE 收敛语义「循环到绿」，金样本 25/25）；`gate_audit` 证据对象映射+独立命令检查、`deploy_injection` 区块合并（「合并不覆盖」承诺兑现）；`install-skill -Family` 五包全装+三态语义；细则 406→405 条（#103 真删收冷却期）；单文件重蒸馏基线 v4.1.0；两仓清洗（551 件出树，git 历史可溯）+母仓/英文仓 README 重定位。计划=`docs/design-specs/v410-batch-manifest-20261010.md`。
-- **v4.0.0**（2026-10-10，**已发行**）：**转型批**——重定位 README（事实重写版+诚实分层）+收敛减法：聚合器 a1.1（liveness 探活针排除）、risk_scan 11 域进发行物（补 v3.4.0 打包漂移）、reference-sources 版本门（verify C 新子项）、细则零和与判据/聚合器冻结、EVIDENCE 时代回写、退役首跑（#103 进冷却期）。细则维持 406 条/33 类。
-- **v3.4.0**（2026-09-30）：弱锚结构化（`ev=` 升格）+ 五 checker 反向变异修复 + 对标 A/C/D 施工；细则 405→406 条、32→33 类。
-- **v3.3.1**（2026-09-29）：双仓门面重构 + 净化瘦身 + 产品工程包联动发行。
-- **v3.3.0**（2026-09-29）：细则 405 条/32 类 + 检索触达三层 + 叙述对账工具化。
-- **v3.2.0**（2026-09-20）：外部评审审计 + 条款级落刀批（373 条/30 类 · judge j2.5）。
-- 完整历史见 [CHANGELOG.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/CHANGELOG.md)（v1.9 → v4.1.0，40 个版本）。
+- 用 AI Agent 做真实工程任务（多文件、跨模块、要发布要迁移）的个人开发者，想要「停点 + 证据」纪律且能接受中文规则体系。
+- 研究「怎么验证一条 agent 规则真的有用」的人——`docs/methodology-rule-verification.md` 与 `docs/roadtest-scorecards/JUDGELOG.md` 可独立复用。
+- 想借鉴「按风险选深度」设计而不想全盘采用的人（四件套 + 三级跑道）。
 
----
+**不适合**：
 
-## 来源与许可
+- 想整套照搬的多人团队——405 条细则的同步与维护成本在多人协作下不现实（项目自身 README 与 docs 均如此声明）。
+- 需要平台级强制（身份认证、策略引擎、不可绕过的权限拦截）的场景——那是平台能力层，本项目是提示词层。
+- 纯聊天问答、单文件只读查询——本项目明确排除（SKILL.md §1）。
+- 期望「装上就自动变好」的用户——效果未经对照实验验证，且触达（注入/hooks）本身需要按平台配置。
 
-- 源库：[github.com/zxc663/shisan-xinuo-workflow](https://github.com/zxc663/shisan-xinuo-workflow)（MIT License）
-- 完整机制与证据：[SKILL.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/SKILL.md)、[rules.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/skill/shisan-xinuo-workflow/references/rules.md)、[项目信息.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/项目信息.md)（决策与发布史；历史实验证据见 git 历史与发行 tag）
-- 同类项目对标：[docs/comparison-v290-analysis-20260916.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/docs/comparison-v290-analysis-20260916.md)、[benchmark-superpowers-20260929.md](https://github.com/zxc663/shisan-xinuo-workflow/blob/main/docs/design-specs/benchmark-superpowers-20260929.md)
-- 值得读的记录：见上文「值得读的记录」一节；随仓部分位于 `docs/`，归档部分按 git 历史+commit 取回。
+## 成本与已知局限
+
+- **上下文成本**：注入核心常驻 6328 字符（约 5-7K token）；细则按症状检索，单次 1-3K。窗口越小的模型，收益/成本比越需权衡。
+- **提示词边界**：无论如何注入，终究是提示词范畴；模型可能忽略、误解或错误执行规则。没有平台级「新会话自动加载」的机制保证。
+- **平台方差**：无头模式注入面可能断裂；hooks 支持面不一（Claude Code/ZCode 实测支持，WorkBuddy/Codex 待实测，Trae/Cursor/Windsurf 视版本）。这些断裂项目自身会如实报告（CHANGELOG 有记录）。
+- **维护成本**：细则与多平台副本需要同步（`syncer.py` 三路合并）；细则库零和上限（405 为当前上限，新增须合并/替换旧条）；判据冻结于 j2.7。
+- **效果未证**：如「什么已验证」一节所述，不宣称正确性/返工率优势。
+
+## 版本与状态
+
+- **当前**：v4.1.0（2026-10-12 发行）——门禁防线 + 部署链 + 规则层定型批；判据 j2.7（金样本 25/25）；细则 405 条/33 类。
+- **发行渠道**：GitHub（源库 + Release）、Gitee 镜像（同 commit/tag 双推）、npm（GitHub Packages，私有）、ClawHub、skills.sh。
+- **规模**：555 commits，版本标签 v0.2.6-product 至 v4.1.0（远端 39 个）；完整历史见 CHANGELOG.md（v1.9 → v4.1.0，40 个版本）。
+
+## 贡献与反馈
+
+最有价值的反馈是**摩擦报告**：装不上在哪一步？看不懂哪一句？嫌重在哪一段？——通过 GitHub issue（bug/feature 模板齐备）或直接联系作者。开发流程见 CONTRIBUTING.md；发行操作见 RELEASE-CHECKLIST.md；安全披露见 SECURITY.md。许可：MIT。

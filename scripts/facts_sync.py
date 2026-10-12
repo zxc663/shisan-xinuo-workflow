@@ -65,7 +65,8 @@ CARRIERS = [
         r'活跃细则 (?P<n>\d+)',
     ]),
     ('docs/project-info.md', [
-        r'细则 (?P<n>\d+) 条/(?P<c>\d+) 类',
+        # 2026-10-13：删除陈旧死模式 r'细则 (?P<n>\d+) 条/(?P<c>\d+) 类'——该形态在文件内零命中
+        # （从不参与检查），逐模式零命中断言上线时暴露；本文件活跃锚为下一条。
         r'details (?P<n>\d+) 条 (?P<c>\d+) 类',
     ]),
     ('package.json', [
@@ -129,7 +130,9 @@ def section_range_problems():
 
 
 def _check_pattern(t, pat, rel, problems, fix_holder):
+    hits = 0
     for m in re.finditer(pat, t, re.M):
+        hits += 1
         bad = []
         if 'n' in m.groupdict() and m.group('n') and int(m.group('n')) != COUNT:
             bad.append(('n', COUNT))
@@ -150,7 +153,7 @@ def _check_pattern(t, pat, rel, problems, fix_holder):
                 for grp, val in sorted(bad, key=lambda x: -m.span(x[0])[0]):
                     s, e = m.span(grp)
                     t = t[:s] + str(val) + t[e:]
-    return t
+    return t, hits
 
 
 def verify_carriers(fix=False):
@@ -165,7 +168,12 @@ def verify_carriers(fix=False):
         _cr = _confine(p)
         t = open(_cr, encoding='utf-8').read()
         for pat in patterns:
-            t = _check_pattern(t, pat, rel, problems, fix_holder)
+            t, _hits = _check_pattern(t, pat, rel, problems, fix_holder)
+            # 零命中断言（2026-10-13 加）：承载锚形态整体消失时，旧实现 re.finditer 零匹配=静默跳过，
+            # 检查力归零而 --check 仍 PASS（README 重写实证：整句「不是那 N 条规则」消失后门禁仍全绿）。
+            # 逐模式要求 ≥1 命中——「check 能过 ≠ 检查在检查」。
+            if _hits == 0:
+                problems.append(f'{rel}: 承载锚零命中（形态可能已消失→检查力静默归零）: {pat[:40]!r}')
         if fix_holder['changed']:
             _cp = _confine(p)
             Path(_cp).write_text(t, encoding='utf-8', newline='')
