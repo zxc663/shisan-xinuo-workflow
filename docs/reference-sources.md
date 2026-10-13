@@ -15,7 +15,7 @@ shisan-xinuo-workflow 是一个跨平台"工程治理元 Skill"（governance met
 - npm 包：@zxc663/shisan-xinuo-workflow （GitHub Packages 源 npm.pkg.github.com）
 - skills.sh 收录页：https://skills.sh/zxc663/shisan-xinuo-workflow/shisan-xinuo-workflow
 - ClawHub：https://clawhub.ai （搜索 shisan-xinuo-workflow）
-- 版本：v4.1.0（施工中·发行待批；计划=docs/design-specs/v410-batch-manifest-20261010.md；本批=门禁防线+部署链+规则层定型〔j2.7 循环到绿/门禁 10 项 A-J/区块合并+哈希验收〕+Phase 1 细则 406→405+Phase 6-8 单文件重蒸馏/对外素材/审计小件+聚合器 a1.2），活跃细则 405 条/33 类（编号至 #407），判据 j2.7（金样本回归 25/25），发行门禁 10 项。完整沿革见仓库 CHANGELOG.md（v1.9 → v4.0.0，39 个已发行版本）。
+- 版本：v4.2.0（施工中·发行待批；计划=docs/design-specs/v420-plan-unfreeze-decouple-privacy-20261013.md；本批=细则双库解冻〔条款账零和 405 + 教训账解冻不占 405〕+教训域/态字段与生命周期协议〔active/fixed/retired + 修复三要件 + 复活回指〕+开源隐私门〔四层扫描 privacy_gate.py + 门禁 K 项〕+时间戳强制场景 + 代拟用户言论词表机检面；上一发行态 v4.1.0〔门禁防线+部署链+规则层定型，2026-10-12 发行〕），活跃细则 405 条/33 类（编号至 #407），教训账 0 条（合法初态），判据 j2.7（金样本回归 25/25），发行门禁 11 项（A-K）。完整沿革见仓库 CHANGELOG.md。
 
 核心概念：42 条纪律规则（rules.md）+ **三级跑道**（L1 快速通道 / L2-S 短工作流（对接真相清单必做）/ L2-F 完整 9 步，每步出口产物门禁）+
 405 条落地细则（33 类）+ 分文件按需加载 + 细则检索端口 + 会话钩子示例 + 一键安装脚本（agent- 前缀自适配）+ 硬注入三层承载（记忆层在场提示 + 规则层 + 配置层）+ 发布一致性校验脚本（内容锚点门禁 + 正文净化检查）+ 上下文主动管理（折叠协议 / 保留清单 / 紧凑档 / 模块锚点表 / 按需符号召回 / 大文件读取协议 / 决策时效）。

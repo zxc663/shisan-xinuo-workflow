@@ -1,6 +1,6 @@
 # Shisan Xinuo Agent Workflow（十三希诺工作流）
 
-> **v4.1.0**（已发行 2026-10-12）· MIT · 中文为主 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
+> **v4.2.0**（施工中·发行待批 · 上一发行态 v4.1.0 / 2026-10-12）· MIT · 中文为主 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
 **一句话定位**：一套把 AI 编码 Agent 的工程纪律做成「按风险选深度、高危先停、完成留证据」的可审计工作流 Skill 家族——它的独特之处不在规则数量，而在于**纪律的验证链本身随仓库公开，任何人都能重跑核对**。
 
@@ -168,9 +168,9 @@ npm 通道 `npm install @zxc663/shisan-xinuo-workflow` 为 GitHub Packages 私�
 
 ## 版本与状态
 
-- **当前**：v4.1.0（2026-10-12 发行）——门禁防线 + 部署链 + 规则层定型批；判据 j2.7（金样本 25/25）；细则 405 条/33 类。
+- **当前**：v4.2.0（施工中·发行待批）——细则双库解冻（条款账零和 405 条 + 教训账解冻不占 405）+ 教训域/态字段与生命周期协议 + 开源隐私门（四层扫描，门禁 11 项 A-K）+ 时间戳强制场景 + 代拟用户言论词表机检面；判据 j2.7（金样本 25/25）；细则 405 条/33 类；教训账 0 条（合法初态）。上一发行态 v4.1.0（2026-10-12）。
 - **发行渠道**：GitHub（源库 + Release）、Gitee 镜像（同 commit/tag 双推）、npm（GitHub Packages，私有）、ClawHub、skills.sh。
-- **规模**：555 commits，版本标签 v0.2.6-product 至 v4.1.0（远端 39 个）；完整历史见 CHANGELOG.md（v1.9 → v4.1.0，40 个版本）。
+- **规模**：本地 563 commits、53 个版本标签；**远端状态以 README 沿革节与 CHANGELOG 记载为准**（历史身份清洗后本地与远端全分叉，force push 待批——远端仍停在上一发行态）。完整历史见 CHANGELOG.md。
 
 ## 贡献与反馈
 
