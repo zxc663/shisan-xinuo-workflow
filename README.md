@@ -1,6 +1,6 @@
 # Shisan Xinuo Agent Workflow（十三希诺工作流）
 
-> **v4.2.0**（源码已推送 2026-10-14 · 发行面待批 · 上一发行态 v4.1.0 / 2026-10-12）· MIT · 中文为主 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
+> **v4.2.0**（2026-10-14 已发 GitHub Release · npm/Gitee/About 待批 · 上一全渠道发行态 v4.1.0 / 2026-10-12）· MIT · 中文为主 · [GitHub 源库](https://github.com/zxc663/shisan-xinuo-workflow)
 
 **一句话定位**：一套把 AI 编码 Agent 的工程纪律做成「按风险选深度、高危先停、完成留证据」的可审计工作流 Skill 家族——它的独特之处不在规则数量，而在于**纪律的验证链本身随仓库公开，任何人都能重跑核对**。
 
@@ -168,9 +168,9 @@ npm 通道 `npm install @zxc663/shisan-xinuo-workflow` 为 GitHub Packages 私�
 
 ## 版本与状态
 
-- **当前**：v4.2.0（源码已推送 2026-10-14 · **发行面待批**）——细则双库解冻（条款账零和 405 条 + 教训账解冻不占 405）+ 教训域/态字段与生命周期协议 + 开源隐私门（四层扫描，门禁 11 项 A-K）+ 时间戳强制场景 + 代拟用户言论词表机检面；判据 j2.7（金样本 25/25）；细则 405 条/33 类；教训账 0 条（合法初态）。上一发行态 v4.1.0（2026-10-12 全渠道发行）。
+- **当前**：v4.2.0（2026-10-14 已发 **GitHub Release** id=411885438；**npm / Gitee Release / About 双端待批**）——细则双库解冻（条款账零和 405 条 + 教训账解冻不占 405）+ 教训域/态字段与生命周期协议 + 开源隐私门（四层扫描，门禁 11 项 A-K）+ 时间戳强制场景 + 代拟用户言论词表机检面；判据 j2.7（金样本 25/25）；细则 405 条/33 类；教训账 0 条（合法初态）。上一发行态 v4.1.0（2026-10-12 全渠道发行）。
 - **发行渠道**：GitHub（源库 + Release）、Gitee 镜像（同 commit/tag 双推）、npm（GitHub Packages，私有）、ClawHub、skills.sh。
-- **规模**：564 commits、53 个版本标签；GitHub 与 Gitee 的 `main` 均为 `5612a0d`（双端 ls-remote + GitHub API 交叉核验）。**注意**：本仓库历史做过一次身份清洗（提交者邮箱重写为 noreply 形式），因此历史 commit 的 hash 与清洗前不同——按 hash 引用旧记录前请先确认。完整历史见 CHANGELOG.md。
+- **规模**：564 commits、54 个版本标签；GitHub 与 Gitee 的 `main` 均为 `b8a78d9`（双端 ls-remote + GitHub API 交叉核验）。**注意**：本仓库历史做过一次身份清洗（提交者邮箱重写为 noreply 形式），因此历史 commit 的 hash 与清洗前不同——按 hash 引用旧记录前请先确认。完整历史见 CHANGELOG.md。
 
 ## 贡献与反馈
 

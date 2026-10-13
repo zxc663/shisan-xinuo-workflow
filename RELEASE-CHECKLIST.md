@@ -299,13 +299,18 @@
 - [x] 批 5：版本链刷新（package.json / 三包 frontmatter / README / AGENTS 基线行 / reference-sources / project-info / 项目信息 §五 / CHANGELOG / 本节）+ dist 重打 + 五平台重部署校验
 - [x] 门禁：verify-release **11/11 ALL PASS**（A-K）+ facts PASS（405 条 / 33 类 / rules 42 / lessons 0）+ `privacy_gate --selftest` **14/14** + `judge-selftest` 25/25（j2.7）+ narrative_sync 0 FINDING
 
-### R-2 发行面（**待作者口令，未执行**）
+### R-2 发行面（**部分执行** · 2026-10-14 · 作者口令「双远端 force push」+「只发 GitHub Release」）
 
-> 以下全部属 L3（对外发布 / force push 双远端），作者未开口令前一律不动。
+> **已执行回执**：①force push 双远端（作者明示）②tag v4.2.0 双远端推送 ③dist 重打 ④GitHub Release v4.2.0。**未执行**：npm / Gitee Release / About 双端（作者选定「只发 GitHub Release」）/ ClawHub（用户侧）。
 
-- [ ] **force push 双远端**（历史身份清洗后本地与远端全分叉，hash 全变）：`git push origin main --force --tags` + `git push gitee main --force --tags`（**先 `--dry-run`**）。回滚点=`<REPO_ROOT>-backup-20261013.bundle`（6.2MB，重写前快照）
-- [ ] **dist 重打**：`scripts/build-dist.ps1` → `shisan-xinuo-workflow-v4.2.0.zip`（项数/B 待回执）
-- [ ] **GitHub Release v4.2.0**（asset=上条 zip）+ **npm @zxc663/shisan-xinuo-workflow@4.2.0**（带 token 读回 version+shasum 双对）+ **Gitee Release v4.2.0**（附件走 `attach_files` 专端点）+ **About 双端**（§六·十二 三处 v4.2.0 口径）+ **ClawHub 用户侧补交**
+- [x] **force push 双远端**（作者明示批准·2026-10-14）：`--dry-run` 双端先验（Gitee 显 `7bcbe84...5612a0d main (forced update)`）→ 实际推送 → **GitHub + Gitee `main` 均 = `5612a0d`（双端 ls-remote + GitHub API 交叉核验）**；53 个 tag 全推。回滚点=`<REPO_ROOT>-backup-20261013.bundle`（6.2MB，重写前快照，未动）
+- [x] **dist 重打**：`build-dist.ps1` → `shisan-xinuo-workflow-v4.2.0.zip` **98 项 / 2,147,117 B**（Set-diff 双检 98=98 一致）
+- [x] **tag v4.2.0**：annotated tag 于 `b8a78d9`（README 回写 commit），双远端推送成功（双端 `refs/tags/v4.2.0` = `1ab4ecd2…` 一致）
+- [x] **GitHub Release v4.2.0**：id=**411885438**，正文 **3411 字符**，asset `shisan-xinuo-workflow-v4.2.0.zip` **2,147,117 B**（读回 size 吻合），draft=false / prerelease=false，**已挂 Latest 标记**（列表首行）
+- [ ] **npm @zxc663/shisan-xinuo-workflow@4.2.0**（未执行·待批）
+- [ ] **Gitee Release v4.2.0** + 附件（未执行·待批；附件走 `attach_files` 专端点）
+- [ ] **About 双端**（未执行·待批；§六·十二 三处 v4.2.0 口径）
+- [ ] **ClawHub 用户侧补交**（用户侧）
 - [ ] 已发行历史产物不可撤回声明：v4.1.0 及更早的 npm 包 / Release 附件均为历史快照，不含本批任何个人信息清洗前的身份信息（QQ 邮箱清洗发生在 commit 层面，未进入任何发行物）
 
 ### R-3 遗留与待批
