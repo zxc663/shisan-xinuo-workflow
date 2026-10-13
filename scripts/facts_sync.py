@@ -50,6 +50,16 @@ CLASSES = len(re.findall(r'^## \d+\. ', details, re.M))
 rules = open(os.path.join(SK, 'references', 'rules.md'), encoding='utf-8').read()
 RULES_COUNT = len(re.findall(r'^\d{1,2}\. ', rules, re.M))
 
+# 教训账（v4.2.0 双库解冻批）：lessons.md 存在则计 LESSONS_COUNT（与 details 同口径：活跃条目行，排除预留槽/归档）；
+# 不存在=0（迁移施工前兼容态，不报错——双库批 1-2 完成后转为硬源）
+les_path = os.path.join(SK, 'references', 'lessons.md')
+if os.path.exists(les_path):
+    _les = open(les_path, encoding='utf-8').read()
+    LESSONS_COUNT = len([l for l in re.findall(r'^(\d{1,3}\. .*)', _les, re.M)
+                         if '〔预留槽〕' not in l and '〔归档〕' not in l])
+else:
+    LESSONS_COUNT = 0
+
 # (相对路径, [正则…])；命名组 n=活跃条数 / c=类数
 CARRIERS = [
     ('README.md', [
@@ -205,7 +215,7 @@ def verify_carriers(fix=False):
             Path(_cp).write_text(t, encoding='utf-8', newline='')
     problems += section_range_problems()
     fix_tag = 'fix' if fix else 'check'
-    print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES} rules={RULES_COUNT}｜模式={fix_tag}')
+    print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES} rules={RULES_COUNT} lessons={LESSONS_COUNT}｜模式={fix_tag}')
     if problems:
         for p_ in problems:
             print('[DIFF]', p_)
