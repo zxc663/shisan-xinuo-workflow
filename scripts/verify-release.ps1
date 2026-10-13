@@ -17,6 +17,9 @@
     项目根目录，默认取脚本所在目录的上一级。
 .PARAMETER SkipLeak
     跳过泄漏红线检测（如仅做结构/版本/钩子校验时）。
+.PARAMETER SkipPrivacy
+    跳过开源隐私门（K 项）的全量扫描，仅保留结构校验（privacy_gate --selftest 必须绿）。
+    发行前不得使用此开关——发行跑默认全量（block 级命中即红）。
 .OUTPUTS
     PASS / FAIL 逐项清单；退出码 0=全过，1=任一失败；2=参数/路径错误。
 .EXAMPLE
@@ -26,7 +29,8 @@
 [CmdletBinding()]
 param(
     [string]$Root = "",
-    [switch]$SkipLeak
+    [switch]$SkipLeak,
+    [switch]$SkipPrivacy
 )
 
 # ---------- 路径解析 ----------
@@ -333,6 +337,36 @@ if (-not (Test-Path $skBase)) {
     }
     Add-Result ($probsJ.Count -eq 0) "J 双副本一致性(根/包+包/分发)" $(if($probsJ.Count -eq 0){"OK（对① $cmpJ1 件规范一致；对② $cmpJ2 件 SHA256 一致）"}else{$probsJ -join ";"})
 }
+
+# ---------- K. 开源隐私门（v4.2.0 批 3：privacy_gate.py 四层扫描接线） ----------
+# 四层覆盖 D 项扫不到的面：层1 tracked 文本身份维度（QQ 邮箱/本机用户名/家目录/机密目录）
+# 层2 git 全历史身份 层3 发行物元数据（package.json author 等） 层4 二进制清单化人工过窗。
+# --SkipPrivacy = 结构校验路径（跳过全量扫描但仍校验「门禁本身可用」：脚本存在 + selftest 绿）；
+# 发行跑默认全量（block 级命中即红）。存量清洗与门建成是两个决策（设计档 §4.4/§6）。
+$probsK = @()
+$pg = Join-Path $Root "scripts\privacy_gate.py"
+if (-not (Test-Path $pg)) {
+    $probsK += '缺 scripts/privacy_gate.py（隐私门不可用即门禁缺口，不得静默跳过）'
+} else {
+    if ($SkipPrivacy) {
+        # 结构校验：selftest 必须绿（门禁自身可信），全量扫描跳过
+        $kOut = python $pg --selftest 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            $probsK += ("privacy_gate --selftest 未过: " + (($kOut | Where-Object { $_ -match 'FAIL' }) -join ';'))
+        }
+        $kDetail = "SKIP-全量（--SkipPrivacy）；结构校验=selftest " + ($kOut | Select-String 'VERDICT' | Select-Object -Last 1)
+    } else {
+        $kOut = python $pg --check 2>&1
+        $kExit = $LASTEXITCODE
+        if ($kExit -ne 0) {
+            $probsK += (($kOut | Where-Object { $_ -match '^\s+- \[block\]|BLOCK 级命中' }) -join ';')
+        }
+        $kDetail = ($kOut | Select-String 'PRIVACY' | Select-Object -Last 1)
+        $kScanned = ($kOut | Where-Object { $_ -match '扫描面|历史身份' }) -join ' ｜ '
+        if ($kScanned) { $kDetail = "$kDetail；$kScanned" }
+    }
+}
+Add-Result ($probsK.Count -eq 0) "K 开源隐私门(privacy_gate 四层扫描)" $(if($probsK.Count -eq 0){$kDetail}else{$probsK -join ';'})
 
 # ---------- 汇总输出 ----------
 Write-Host ""
