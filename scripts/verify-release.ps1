@@ -214,21 +214,30 @@ if (Test-Path (Join-Path $skDir "templates")) {
     $cleanFiles += Get-ChildItem (Join-Path $skDir "templates") -Recurse -File -Filter *.md | ForEach-Object { $_.FullName }
 }
 # v2.6.0 强化：日期串/拍板叙述/案例代号/会话ID/批次词 全模式；details 单独行过滤扫描（来源/晋升字段与节首注记豁免）
+# v4.2.0 批 4：净化词表扩「代拟用户言论」族（红线「记录诚实性」的机检面）。
+#   判据 = **归因句式**（某用户已作出某决策的转述），而非描述适用场景或规则内容本身：
+#     违规：用户拍板/裁定/要求/令 X（陈述已发生的决策，且无原话锚）
+#     放行：①「用户要求纪律化执行」= 描述本 Skill 适用场景 ②「须问用户裁定方向」= 规则内容（要求去问，不是代述已问）
+#   归因合法形态 = 带原话引号 + 日期锚（史料属性），已在 *来源/晋升* 与节首注记豁免内。
+$attribPats = '(用户|作者)\s?(拍板|定调|裁定|要求|令|指示|强调)'
+# 描述性用法豁免：主语是能力/场景/对象而非决策者转述（如「用户要求纪律化执行」= 本 Skill 适用场景；
+# 「须问用户裁定方向」= 规则要求去问）。命中归因词但落这两形态的放行，避免机检把规则正文判违规。
+$attribExempt = '要求纪律化|要求规范|需要用户|须问用户|问用户|交用户|由用户(裁定|拍板|定调)(方向|范围|口径)|用户(裁定|拍板|定调)(结果|后)'
 foreach ($cf in $cleanFiles) {
     if (-not (Test-Path $cf)) { continue }
     $bad = Get-Content $cf -Encoding UTF8 | Where-Object {
-        $_ -notmatch '\*来源|\*晋升|^## |^> 来源|^> \*来源' -and $_ -match '用户拍板|用户定调|作者定调|2026-\d{2}-\d{2}|二轮证伪|本批次|sess_[a-z0-9]{6}'
+        $_ -notmatch '\*来源|\*晋升|^## |^> 来源|^> \*来源' -and $_ -notmatch $attribExempt -and $_ -match "$attribPats|2026-\d{2}-\d{2}|二轮证伪|本批次|sess_[a-z0-9]{6}"
     }
-    if ($bad) { $probsE += "$(Split-Path $cf -Leaf) 含过程注记 $($bad.Count) 处" }
+    if ($bad) { $probsE += "$(Split-Path $cf -Leaf) 含过程注记/代拟言论 $($bad.Count) 处" }
 }
 $detailsE = Join-Path $skDir "references\details.md"
 if (Test-Path $detailsE) {
     $bad = Get-Content $detailsE -Encoding UTF8 | Where-Object {
-        $_ -notmatch '\*来源|\*晋升|^## |^> ' -and $_ -match '用户拍板|2026-\d{2}-\d{2}|sess_[a-z0-9]{6}'
+        $_ -notmatch '\*来源|\*晋升|^## |^> ' -and $_ -notmatch $attribExempt -and $_ -match "$attribPats|2026-\d{2}-\d{2}|sess_[a-z0-9]{6}"
     }
-    if ($bad) { $probsE += "details.md 正文含日期/拍板 $($bad.Count) 处" }
+    if ($bad) { $probsE += "details.md 正文含日期/代拟言论 $($bad.Count) 处" }
 }
-Add-Result ($probsE.Count -eq 0) "E 正文净化(常驻/模板面过程注记=0)" $(if($probsE.Count -eq 0){"OK"}else{$probsE -join ";"})
+Add-Result ($probsE.Count -eq 0) "E 正文净化(常驻/模板面过程注记/代拟言论=0)" $(if($probsE.Count -eq 0){"OK"}else{$probsE -join ";"})
 
 # ---------- F. 索引完整性（details 症状索引覆盖全部细则编号 + 编号连续；v2.3.0） ----------
 $probsF = @()
