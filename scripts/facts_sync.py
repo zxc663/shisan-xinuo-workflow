@@ -57,8 +57,14 @@ if os.path.exists(les_path):
     _les = open(les_path, encoding='utf-8').read()
     LESSONS_COUNT = len([l for l in re.findall(r'^(\d{1,3}\. .*)', _les, re.M)
                          if '〔预留槽〕' not in l and '〔归档〕' not in l])
+    # 硬断言（v4.2.0 批 2 收口，兼容态转硬源）：lessons.md 缺失即门禁红——双库解冻后教训账是必存在载体，
+    # 「不存在=0 静默通过」会让双库退化为单库而不被察觉（检查力静默归零，与零命中断言同族问题）。
+    # 承载点=本文件头部自述行「教训账条数：N 条」，声明值须 == 计算值（改动条数后忘改头部即红）。
+    _m = re.search(r'教训账条数：(\d{1,4})\s*条', _les)
+    LESSONS_DECLARED = int(_m.group(1)) if _m else None
 else:
     LESSONS_COUNT = 0
+    LESSONS_DECLARED = None
 
 # (相对路径, [正则…])；命名组 n=活跃条数 / c=类数
 CARRIERS = [
@@ -214,6 +220,13 @@ def verify_carriers(fix=False):
             _cp = _confine((os.path.join(ROOT, rel)))
             Path(_cp).write_text(t, encoding='utf-8', newline='')
     problems += section_range_problems()
+    # 教训账硬断言（批 2 收口）：载体缺失 / 头部自述行缺失或与计算值不符 → exit 1
+    if not os.path.exists(les_path):
+        problems.append('lessons.md: 教训账载体缺失（双库解冻后必存在；静默 0 会让双库退化为单库而不被察觉）')
+    elif LESSONS_DECLARED is None:
+        problems.append('lessons.md: 缺头部自述行「教训账条数：N 条」（lessons 计数承载点消失=检查力静默归零）')
+    elif LESSONS_DECLARED != LESSONS_COUNT:
+        problems.append(f'lessons.md: 头部声明 {LESSONS_DECLARED} ≠ 单源计算 {LESSONS_COUNT}（改条数后忘改头部）')
     fix_tag = 'fix' if fix else 'check'
     print(f'单源: 活跃细则={COUNT} 条目上限={MAX_ENTRY} 类数(=分节数)={CLASSES} rules={RULES_COUNT} lessons={LESSONS_COUNT}｜模式={fix_tag}')
     if problems:

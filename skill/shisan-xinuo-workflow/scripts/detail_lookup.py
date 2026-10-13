@@ -4,10 +4,13 @@
 用法:
   python scripts/detail_lookup.py <关键词> [关键词2...]   # 关键词检索（任意命中，按命中数排序）
   python scripts/detail_lookup.py --id 233               # 按编号直查（T3）
-  python scripts/detail_lookup.py --domain 前端           # 按症状域列出条目
+  python scripts/detail_lookup.py --domain 前端           # 按【症状域】列出条目（T2/T3 索引域）
+  python scripts/detail_lookup.py --dm 通用               # 按【域字段】过滤检索结果（通用/平台=X/环境）
   python scripts/detail_lookup.py --index                # 打印症状索引全表
   加 --full 输出条目全文（默认摘要 160 字）
-设计: 只用标准库；输出紧凑（token 友好）；命中行可直接贴进任务记录作 errpath 证据。
+双库检索（v4.2.0 乙方案）: 条款账 references/details.md + 教训账 references/lessons.md 同库检索，
+  教训条目以 `lessons #M` 标注（编号空间独立，不与 details 混号）。
+  --dm 过滤按条目 `[域:…]` 字段：条目未标域字段时归入「通用」（判据默认，见域判据）。
 语义层: references/detail-expansions.json 查询扩写（同义/英文/口语 → 词面锚），
   仅在原始词零召回时触发扩写重试（不污染良性查询）；2-gram 回退带垃圾护栏
   （全库共振 >20 条或首位覆盖率不足 → 诚实报 0，防假阳性——外部审计 E6 修复）。
@@ -23,7 +26,19 @@ _CANDIDATES = [
     _SELF.parent.parent / 'skill' / 'shisan-xinuo-workflow' / 'references' / 'details.md',  # 源库布局（仓库根 scripts/）
 ]
 DETAILS = next((c for c in _CANDIDATES if c.is_file()), _CANDIDATES[0])
+LESSONS = DETAILS.parent / 'lessons.md'      # 教训账（双库检索第二源；缺失=迁移前合法初态）
 EXPANSIONS = DETAILS.parent / 'detail-expansions.json'
+
+# 域字段正则：`[域:通用]` / `[域:平台=Prisma]` / `[域:环境]`
+DOMAIN_RE = re.compile(r'\[域:([^\]]{1,24})\]')
+
+# 域判据默认：条目未标 `[域:…]` 字段时归「通用」（判据=因果是否依赖特有机制，无依赖即共性层）
+DEFAULT_DOMAIN = '通用'
+
+
+def entry_domain(text):
+    m = DOMAIN_RE.search(text)
+    return m.group(1).strip() if m else DEFAULT_DOMAIN
 
 # 垃圾/过泛护栏阈值：真症状不会全库共振
 GENERIC_LIMIT = 100    # 单词命中条目数 ≥ 该值=过泛查询（如单字虚词）
@@ -59,7 +74,19 @@ def parse():
         end = starts[i + 1][0] if i + 1 < len(starts) else len(t)
         block = t[pos:end].strip()
         entries[num] = block
-    return t, domains, entries
+    # 教训账（第二源）：编号空间独立，用 'lessons #M' 字符串键避免与 details 数字键混号
+    n_les = 0
+    if LESSONS.is_file():
+        lt = LESSONS.read_text(encoding='utf-8')
+        lstarts = [(m.start(), int(m.group(1))) for m in re.finditer(r'^(\d{1,3})\. ', lt, re.M)]
+        for i, (pos, num) in enumerate(lstarts):
+            end = lstarts[i + 1][0] if i + 1 < len(lstarts) else len(lt)
+            block = lt[pos:end].strip()
+            if '〔预留槽〕' in block or '〔归档〕' in block:
+                continue
+            entries[f'lessons #{num}'] = block
+            n_les += 1
+    return t, domains, entries, n_les
 
 
 def load_expansions():
@@ -143,6 +170,11 @@ def _semantic_boost(query, entries, top=5, floor=0.55):
     return scored[:top]
 
 
+def label(num):
+    """条目显示名：条款账 `#N` / 教训账 `lessons #M`（编号空间独立，引用不混号）。"""
+    return f'#{num}' if isinstance(num, int) else str(num)
+
+
 def log_usage(query_args, ids):
     """usage-probe：每次检索落一行 JSONL（命中 ids 或空=零命中），
     供退役候选机器判据（零命中 N 批→降级候选，只列候选不删条）。静默失败不碍检索主路。"""
@@ -151,7 +183,7 @@ def log_usage(query_args, ids):
         from pathlib import Path
         p = Path.home() / '.zcode' / 'cli' / 'detail-lookup-usage.jsonl'
         rec = {'ts': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-               'q': ' '.join(query_args), 'ids': [int(i) for i in ids[:12]]}
+               'q': ' '.join(query_args), 'ids': [str(i) for i in ids[:12]]}
         with open(p, 'a', encoding='utf-8') as f:
             f.write(json.dumps(rec, ensure_ascii=False) + '\n')
     except Exception:
@@ -162,7 +194,24 @@ def main():
     args = [a for a in sys.argv[1:]]
     full = '--full' in args
     args = [a for a in args if a != '--full']
-    t, domains, entries = parse()
+    # --dm <域值>：域字段过滤（与 --domain 症状域区分，键位不撞名）
+    dm = None
+    if '--dm' in args:
+        i = args.index('--dm')
+        dm = args[i + 1] if i + 1 < len(args) else ''
+        args = args[:i] + args[i + 2:]
+    t, domains, entries, n_les = parse()
+    # 域过滤：未声明 --dm 时全库；声明后只保留匹配域（未标域字段的条目按判据默认归「通用」）
+    if dm is not None:
+        want = dm.strip()
+        if want in ('环境', 'platform'):   # platform=前缀匹配入口（--dm platform 等价全部平台域）
+            entries = {k: v for k, v in entries.items()
+                       if entry_domain(v) == '环境' or entry_domain(v).startswith('平台=')}
+        else:
+            entries = {k: v for k, v in entries.items() if entry_domain(v) == want}
+        if not entries:
+            print(f'0 命中（--dm {dm!r} 无匹配条目；可用域值: 通用 / 平台=<名> / 环境）')
+            return
 
     if not args:
         print(__doc__)
@@ -173,9 +222,14 @@ def main():
         return
     if args[0] == '--id':
         for a in args[1:]:
-            num = int(re.sub(r'\D', '', a) or 0)
-            e = entries.get(num)
-            print(e if e else f'#{num} 不存在（范围 1-{max(entries)}）')
+            s = a.strip()
+            if s.lower().startswith('lessons'):
+                m = re.search(r'(\d+)', s)
+                key = f'lessons #{int(m.group(1))}' if m else s
+            else:
+                key = int(re.sub(r'\D', '', s) or 0)
+            e = entries.get(key)
+            print(e if e else f'{s} 不存在（details 范围 1-{max(k for k in entries if isinstance(k, int))}；教训账用 `lessons #M`）')
         return
     if args[0] == '--domain':
         key = args[1] if len(args) > 1 else ''
@@ -202,14 +256,15 @@ def main():
         return out
 
     def emit(scored, mode):
-        scored.sort(key=lambda x: (-x[0], x[1]))
+        scored.sort(key=lambda x: (-x[0], str(x[1])))
         log_usage(args, [str(num) for _, num, _ in scored[:12]])
-        head = f'{len(scored)} 命中（{mode}；errpath 证据格式: detail_lookup "{" ".join(args)}" → #{scored[0][1]}）'
+        head = f'{len(scored)} 命中（{mode}；errpath 证据格式: detail_lookup "{" ".join(args)}" → {label(scored[0][1])}）'
         print(head)
         for hits, num, text in scored[:12]:
             doms = '/'.join(id2domains.get(num, []))
+            dmv = entry_domain(text)
             body = text if full else text[:160].replace('\n', ' ') + ('…' if len(text) > 160 else '')
-            print(f'\n#{num} [{doms}] 命中×{hits}\n{body}')
+            print(f'\n{label(num)} [{doms or "—"}·域:{dmv}] 命中×{hits}\n{body}')
             if num in FIX_TEMPLATES:
                 print(f'修复模板: {FIX_TEMPLATES[num]}')
 
@@ -243,7 +298,7 @@ def main():
         if cand and len(cand) > GRAM_MAX_MATCHES:
             cand = []  # 全库共振判垃圾——落语义兜底层做最后一道诚实尝试
         if cand:
-            cand.sort(key=lambda x: (-x[0], x[1]))
+            cand.sort(key=lambda x: (-x[0], str(x[1])))
             if cand[0][0] * GRAM_MIN_COVER < len(grams):
                 cand = []  # 首位覆盖率不足——落语义兜底层做最后一道诚实尝试
             else:
